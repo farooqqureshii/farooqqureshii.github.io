@@ -3,4 +3,6 @@ layout: page
 title: "Now"
 ---
 
-About me
+Begin studies in Electrical Engineering & Computer Science @ The University of Ottawa this coming fall. 
+
+
