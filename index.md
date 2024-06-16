@@ -3,6 +3,6 @@ layout: page
 title: "Now"
 ---
 
-Persuing Electrical Engineering & Computer Science at The University of Ottawa this coming fall. 
+Starting in Electrical Engineering & Computer Science (EECS) at The University of Ottawa this coming fall. 
 
 
