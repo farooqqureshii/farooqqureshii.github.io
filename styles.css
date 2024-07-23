@@ -1,0 +1,215 @@
+/* Reset some default browser styles */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300&family=Assistant:wght@300;800&display=swap');
+
+/* Basic styling */
+body {
+    font-family: 'Assistant', Helvetica, sans-serif;
+    background-color: #f8f6ec;
+    color: #333;
+    margin: 0;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align items at the top */
+    min-height: 100vh;
+    padding: 10px; /* Reduced padding for top space */
+}
+
+header {
+    margin-top: 100px; /* Space from the top */
+    width: 100%;
+    max-width: 600px; /* Ensure it matches the width of the text block */
+    text-align: left;
+    opacity: 0; /* Initially hidden */
+    animation: fadeIn 1s ease-in forwards; /* Animation for header */
+    animation-delay: 0s; /* First to appear */
+    margin-bottom: 10px;
+}
+
+.home-link {
+    font-size: 24px;
+    text-decoration: none;
+    color: #333;
+}
+
+nav {
+    width: 100%;
+    max-width: 600px; /* Ensure it matches the width of the text block */
+    margin-bottom: 10px; /* Space below the nav */
+    text-align: left; /* Align nav links to the left */
+    opacity: 0; /* Initially hidden */
+    animation: fadeIn 1s ease-in forwards; /* Animation for nav */
+    animation-delay: 0.5s; /* Second to appear */
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Vertically center items */
+    gap: 10px; /* Space between links and button */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: left; /* Align nav links to the left */
+    gap: 10px; /* Space between the links */
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: #4f94df;
+    font-size: 18px;
+}
+
+main {
+    max-width: 600px;
+    width: 100%;
+    text-align: left;
+    opacity: 0; /* Initially hidden */
+    animation: fadeIn 1s ease-in forwards; /* Animation for content */
+    animation-delay: 1s; /* Last to appear */
+}
+
+.typing-container {
+    max-width: 600px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 20px;
+    overflow: hidden; /* Hide overflow to ensure clean animation */
+}
+
+.typing-text {
+    font-size: 18px;
+    white-space: normal;
+    display: inline;
+    color: lightseagreen; /* Typing text color */
+    animation: typing 3.5s steps(40, end);
+}
+
+/* Animation for typing effect */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+
+    .home-link {
+        font-size: 20px;
+    }
+
+    nav ul {
+        gap: 8px; /* Adjusted space for smaller screens */
+    }
+
+    nav a {
+        font-size: 16px;
+    }
+
+    .typing-text {
+        font-size: 16px;
+    }
+
+    body { 
+        font-size: 14px;
+    }
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #1C1C1E; /* Dark background color */
+    color: #e0e0e0; /* Light text color */
+}
+
+body.dark-mode nav a {
+    color: #60a6f0; /* Light purple for links */
+}
+
+body.dark-mode .typing-text {
+    color: #04dfc9; /* Light teal for typing text */
+}
+
+body.dark-mode p {
+    color: #e0e0e0; /* Light text color for paragraphs */
+}
+
+/* Icon button */
+.dark-mode-toggle {
+    display: inline-block;
+    width: 24px; /* Adjust size as needed */
+    height: 24px;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-left: 10px; /* Space between button and "Blog" link */
+}
+
+/* Default (light mode) styles */
+.home-link {
+    font-size: 24px;
+    text-decoration: none;
+    color: #333; /* Light mode text color */
+}
+
+/* Dark mode styles */
+body.dark-mode .home-link {
+    color: #f8f6ec; /* Dark mode text color for header */
+}
+
+/* Default (Light Mode) Styles */
+a {
+    color: #f07167; /* Light mode link color (currently purple) */
+    text-decoration: none;
+}
+
+/* Dark Mode Styles */
+body.dark-mode a {
+    color: #f5736a; /* Dark mode link color */
+}
+
+::selection{ 
+    background: #FFEAA7;
+    color: #333; /* Dark text color for contrast */
+}
+
+/* Selected text color for Dark Mode */
+body.dark-mode ::selection {
+    background: #bdb084; /* Orange background */
+    color: #1a1a1a; /* Dark text color for contrast */
+}
+
+.footer {
+    font-size: 14px; /* Slightly smaller font size */
+    width: 100%;
+    max-width: 600px; /* Ensure it matches the width of the text block */
+    margin: 40px auto 20px auto; /* Center the footer with margin on top */
+    text-align: center; /* Left justify */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s ease; /* Smooth transition */
+}
+
+/* Show footer when user scrolls to bottom or if no scrolling required */
+.footer.visible {
+    opacity: 1;
+}
