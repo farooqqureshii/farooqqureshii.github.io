@@ -177,20 +177,10 @@ body.dark-mode .home-link {
     color: #f8f6ec; /* Dark mode text color for header */
 }
 
-/* Default (Light Mode) Styles */
-a {
-    color: #f07167; /* Light mode link color (currently purple) */
-    text-decoration: none;
-}
-
-/* Dark Mode Styles */
-body.dark-mode a {
-    color: #f5736a; /* Dark mode link color */
-}
 
 ::selection{ 
     background: #FFEAA7;
-    color: #333; /* Dark text color for contrast */
+    color: #333; /* Dark t   color for contrast */
 }
 
 /* Selected text color for Dark Mode */
@@ -212,4 +202,25 @@ body.dark-mode ::selection {
 /* Show footer when user scrolls to bottom or if no scrolling required */
 .footer.visible {
     opacity: 1;
+}
+
+.external-link{
+    text-decoration: underline;
+    color: rgb(80, 80, 80)
+}
+
+body.dark-mode .external-link:hover{ 
+    color: #f5736a; /* Dark mode link color */
+    transition: color 0.5s ease-in-out, color 0.5s ease-in-out; /* Smooth transition */
+}
+
+.external-link:hover{ 
+    color: #f07167; /* Light mode link color (currently purple) */
+    transition: color 0.5s ease-in-out, color 0.5s ease-in-out; /* Smooth transition */
+}
+
+
+body.dark-mode .external-link{ 
+    color: rgb(174, 174, 174);
+    text-decoration: underline;
 }
