@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const typingTextElement = document.querySelector('.typing-text');
     let textIndex = 0;
     let charIndex = 0;
-    const typingSpeed = 100; // Speed of typing
-    const delayBetweenTexts = 2000; // Delay between texts in ms
+    const typingSpeed = 100;
+    const delayBetweenTexts = 2000;
 
     function type() {
         if (charIndex < texts[textIndex].length) {
@@ -25,22 +25,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Start typing after all animations are done
-    setTimeout(type, 1500); // Adjust this timeout to match the end of the fade-in animations
+    setTimeout(type, 1500);
 
-    // Dark mode toggle
     const darkModeToggle = document.createElement('img');
-    darkModeToggle.src = 'moon.svg'; // Default icon
+    darkModeToggle.src = 'moon.svg';
     darkModeToggle.alt = 'Toggle dark mode';
     darkModeToggle.classList.add('dark-mode-toggle');
 
     document.querySelector('nav').appendChild(darkModeToggle);
 
-    // Load the saved theme from localStorage
     const currentMode = localStorage.getItem('theme') || 'light';
     if (currentMode === 'dark') {
         document.body.classList.add('dark-mode');
-        darkModeToggle.src = 'sun.svg'; // Dark mode icon
+        darkModeToggle.src = 'sun.svg';
     }
 
     darkModeToggle.addEventListener('click', () => {
@@ -52,14 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const footer = document.querySelector('.footer');
 
-    // Show footer if no scrolling is required
-    if (document.body.scrollHeight <= window.innerHeight) {
+if (document.body.scrollHeight <= window.innerHeight) {
+    footer.classList.add('visible');
+}
+
+window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         footer.classList.add('visible');
     }
-
-    // Show footer when scrolled to the bottom
-    window.addEventListener('scroll', () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-            footer.classList.add('visible');
-        }
-    });
+});
