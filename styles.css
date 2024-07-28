@@ -52,7 +52,7 @@ nav {
     text-align: left;
     opacity: 0;
     animation: fadeIn 1s ease-in forwards;
-    animation-delay: 0.5s;
+    animation-delay: 0.2s;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -82,7 +82,7 @@ main {
     text-align: left;
     opacity: 0;
     animation: fadeIn 1s ease-in forwards;
-    animation-delay: 1s;
+    animation-delay: 0.75s;
 }
 
 .typing-container {
@@ -133,81 +133,81 @@ main {
 }
 
 body.dark-mode {
-    background-color: #1C1C1E; 
-    color: #e0e0e0; 
+    background-color: #1C1C1E;
+    color: #e0e0e0;
 }
 
 body.dark-mode nav a {
-    color: #60a6f0; 
+    color: #60a6f0;
 }
 
 body.dark-mode .typing-text {
-    color: #04dfc9; 
+    color: #04dfc9;
 }
 
 body.dark-mode p {
-    color: #e0e0e0; 
+    color: #e0e0e0;
 }
 
 .dark-mode-toggle {
     display: inline-block;
-    width: 24px; 
+    width: 24px;
     height: 24px;
     cursor: pointer;
     vertical-align: middle;
-    margin-left: 10px; 
+    margin-left: 10px;
 }
 
 .home-link {
     font-size: 24px;
     text-decoration: none;
-    color: #333; 
+    color: #333;
 }
 
 body.dark-mode .home-link {
-    color: #f8f6ec; 
+    color: #f8f6ec;
 }
 
-::selection{ 
+::selection { 
     background: #FFEAA7;
-    color: #333; 
+    color: #333;
 }
 
 body.dark-mode ::selection {
-    background: #bdb084; 
-    color: #1a1a1a; 
+    background: #bdb084;
+    color: #1a1a1a;
 }
 
 .footer {
-    font-size: 14px; 
+    font-size: 14px;
     width: 100%;
-    max-width: 600px; 
-    margin: 40px auto 20px auto; 
-    text-align: center; 
-    opacity: 0; 
-    transition: opacity 0.5s ease; 
+    max-width: 600px;
+    margin: 40px auto 20px auto;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
 .footer.visible {
     opacity: 1;
 }
 
-.external-link{
+.external-link {
     text-decoration: underline;
-    color: rgb(80, 80, 80)
+    color: rgb(80, 80, 80);
 }
 
-body.dark-mode .external-link:hover{ 
-    color: #f5736a; 
-    transition: color 0.5s ease-in-out, color 0.5s ease-in-out; 
+body.dark-mode .external-link:hover { 
+    color: #f5736a;
+    transition: color 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
-.external-link:hover{ 
-    color: #f07167; 
-    transition: color 0.5s ease-in-out, color 0.5s ease-in-out; 
+.external-link:hover { 
+    color: #f07167;
+    transition: color 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
-body.dark-mode .external-link{ 
+body.dark-mode .external-link { 
     color: rgb(174, 174, 174);
     text-decoration: underline;
 }
