@@ -4,12 +4,8 @@ body, h1, h2, h3, p, ul, li {
     box-sizing: border-box;
 }
 
-
-/* Import font */
 @import url('https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300&family=Assistant:wght@300;800&display=swap');
 
-
-/* Body fonts */
 body {
     font-family: 'Assistant', Helvetica, sans-serif;
     background-color: #f8f6ec;
@@ -76,7 +72,7 @@ nav ul li {
 
 nav a {
     text-decoration: none;
-    color: #4f94df;
+    color: rgb(67, 133, 190);
     font-size: 18px;
 }
 
@@ -101,7 +97,7 @@ main {
     font-size: 18px;
     white-space: normal;
     display: inline;
-    color: lightseagreen;
+    color: rgb(58, 169, 159);
     animation: typing 3.5s steps(40, end);
 }
 
@@ -110,9 +106,6 @@ main {
     to { width: 100%; }
 }
 
-
-
-/* MOBILE ADJUSTMENTS */
 @media (max-width: 600px) {
     .container {
         padding: 25px;
@@ -139,18 +132,17 @@ main {
     }
 }
 
-/* Dark mode */
 body.dark-mode {
     background-color: #1C1C1E;
     color: #e0e0e0;
 }
 
 body.dark-mode nav a {
-    color: #60a6f0;
+    color: #4c90cc;
 }
 
 body.dark-mode .typing-text {
-    color: #04dfc9;
+    color: rgb(50, 140, 132);
 }
 
 body.dark-mode p {
@@ -186,8 +178,6 @@ body.dark-mode ::selection {
     color: #1a1a1a;
 }
 
-
-/* Footer */
 .footer {
     font-size: 14px;
     width: 100%;
@@ -203,27 +193,47 @@ body.dark-mode ::selection {
 }
 
 .external-link {
-    text-decoration: underline;
-    color: rgb(80, 80, 80);
-}
-
-body.dark-mode .external-link:hover { 
-    color: #f5736a;
-    transition: color 0.5s ease-in-out, color 0.5s ease-in-out;
-}
-
-.external-link:hover { 
-    color: #f07167;
-    transition: color 0.5s ease-in-out, color 0.5s ease-in-out;
+    text-decoration: none;
+    color: rgb(209, 77, 65);
+    position: relative;
 }
 
 body.dark-mode .external-link { 
-    color: rgb(174, 174, 174);
-    text-decoration: underline;
+    color: rgb(222, 94, 83);
+}
+
+.external-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: rgb(209, 77, 65);
+    left: 0;
+    bottom: -2px;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s ease;
+}
+
+.external-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.external-link:hover { 
+    color: rgb(209, 77, 65);
+}
+
+body.dark-mode .external-link::after {
+    background-color: rgb(222, 94, 83);
+}
+
+body.dark-mode .external-link:hover::after {
+    background-color: rgb(222, 94, 83)
 }
 
 .signature-img {
-    width: 200px; 
+    width: 170px; 
     height: auto;
     margin-top: 0px;
 }
