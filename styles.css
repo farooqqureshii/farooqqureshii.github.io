@@ -196,44 +196,36 @@ body.dark-mode ::selection {
     text-decoration: none;
     color: rgb(209, 77, 65);
     position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
 }
 
 body.dark-mode .external-link { 
     color: rgb(222, 94, 83);
 }
 
-.external-link::after {
+.external-link::before {
     content: '';
     position: absolute;
     width: 100%;
-    height: 2px;
-    background-color: rgb(209, 77, 65);
+    height: 20%;
+    background-color: rgba(209, 77, 65, 0.3);
+    bottom: 0;
     left: 0;
-    bottom: -2px;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.5s ease;
+    transform: translateY(2%) scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.external-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
+.external-link:hover::before {
+    transform: translateY(-2%) scaleY(1);
+    background-color: rgba(209, 77, 65, 0.5);
 }
 
-.external-link:hover { 
-    color: rgb(209, 77, 65);
+body.dark-mode .external-link::before {
+    background-color: rgba(222, 94, 83, 0.3);
 }
 
-body.dark-mode .external-link::after {
-    background-color: rgb(222, 94, 83);
-}
-
-body.dark-mode .external-link:hover::after {
-    background-color: rgb(222, 94, 83)
-}
-
-.signature-img {
-    width: 170px; 
-    height: auto;
-    margin-top: 0px;
+body.dark-mode .external-link:hover::before {
+    background-color: rgba(222, 94, 83, 0.5);
 }
