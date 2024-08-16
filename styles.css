@@ -91,19 +91,24 @@ main {
     text-align: left;
     margin-bottom: 20px;
     overflow: hidden;
+    height: 24px;
 }
 
 .typing-text {
     font-size: 18px;
-    white-space: normal;
-    display: inline;
+    white-space: nowrap;
+    display: inline-block;
     color: rgb(58, 169, 159);
-    animation: typing 3.5s steps(40, end);
+    animation: typing 3.5s steps(40, end) forwards, blink 0.75s step-end infinite;
 }
 
 @keyframes typing {
     from { width: 0; }
     to { width: 100%; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
 }
 
 @media (max-width: 600px) {
@@ -125,10 +130,15 @@ main {
 
     .typing-text {
         font-size: 16px;
+        white-space: normal;
     }
 
     body { 
         font-size: 14px;
+    }
+
+    .typing-container {
+        height: auto;
     }
 }
 
