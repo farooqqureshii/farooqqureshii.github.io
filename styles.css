@@ -4,7 +4,7 @@ body, h1, h2, h3, p, ul, li {
     box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300&family=Assistant:wght@300;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;800&display=swap');
 
 body {
     font-family: 'Assistant', Helvetica, sans-serif;
@@ -74,6 +74,8 @@ nav a {
     text-decoration: none;
     color: rgb(67, 133, 190);
     font-size: 18px;
+    position: relative;
+    display: inline-block;
 }
 
 main {
@@ -133,7 +135,7 @@ main {
         white-space: normal;
     }
 
-    body { 
+    body {
         font-size: 14px;
     }
 
@@ -178,7 +180,7 @@ body.dark-mode .home-link {
     color: #f8f6ec;
 }
 
-::selection { 
+::selection {
     background: #FFEAA7;
     color: #333;
 }
@@ -209,10 +211,6 @@ body.dark-mode ::selection {
     display: inline-block;
 }
 
-body.dark-mode .external-link { 
-    color: rgb(222, 94, 83);
-}
-
 .external-link::before {
     content: '';
     position: absolute;
@@ -231,6 +229,10 @@ body.dark-mode .external-link {
     transform: scaleY(1);
 }
 
+body.dark-mode .external-link {
+    color: rgb(222, 94, 83);
+}
+
 body.dark-mode .external-link::before {
     background-color: rgba(222, 94, 83, 0.2);
 }
@@ -239,59 +241,31 @@ body.dark-mode .external-link:hover::before {
     background-color: rgba(222, 94, 83, 0.2);
 }
 
-.signature-img {
-    width: 170px; 
-    height: auto;
-    margin-top: 0px;
+.icon-container {
+    display: inline-flex;
+    gap: 10px;
 }
 
-nav a {
-    text-decoration: none;
-    color: rgb(67, 133, 190);
-    font-size: 18px;
-    position: relative;
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
     display: inline-block;
-}
-
-nav a::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(67, 133, 190, 0.2);
-    left: 0;
-    bottom: 0;
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.3s ease;
-    z-index: -1;
-}
-
-nav a:hover::before {
-    transform: scaleY(1);
-    background-color: rgba(67, 133, 190, 0.2);
-}
-
-body.dark-mode nav a {
-    color: #4c90cc;
-}
-
-body.dark-mode nav a::before {
-    background-color: rgba(76, 144, 204, 0.2);
-}
-
-body.dark-mode nav a:hover::before {
-    background-color: rgba(76, 144, 204, 0.2);
-}
-
-hr {
+    transition: filter 0.3s;
+    position: relative;
     border: none;
-    height: 1px;
-    background-color: rgba(18, 18, 18, 0.1); 
-    margin: 20px0;
+    outline: none;
 }
 
-body.dark-mode hr {
-    background-color: rgba(255, 255, 255, 0.1); 
+body.dark-mode .icon {
+    fill: rgb(222, 94, 83);
 }
 
+.icon:hover {
+    filter: drop-shadow(0 0 6px rgba(222, 94, 83, 0.7));
+}
+
+.icon-external-link {
+    position: relative;
+    z-index: 1;
+}
