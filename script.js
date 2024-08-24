@@ -1,15 +1,21 @@
-
-// only run after dom is loaded 
+// only run after DOM is loaded 
 document.addEventListener('DOMContentLoaded', function() {
-    // array of texts to type 
+    // array of texts to type
     const texts = [
-        "I'm: studying EE and CS @ uOttawa this coming Fall.",
-        "I've: expanded education in public speaking.",
-        "I'm: excited to learn more."
+        "studying EE and CS @ uOttawa this coming Fall.",
+        "a leader in expanding public speaking.",
+        "excited to learn more."
     ];
 
-    // html element for text 
+    // html element for text
     const typingTextElement = document.querySelector('.typing-text');
+    const fixedTextElement = document.createElement('span');
+    fixedTextElement.textContent = "Hi, I'm: ";
+    fixedTextElement.style.color = "rgb(58, 169, 159)";
+    typingTextElement.appendChild(fixedTextElement);
+    const dynamicTextElement = document.createElement('span');
+    typingTextElement.appendChild(dynamicTextElement);
+
     // for iteration
     let textIndex = 0;
     let charIndex = 0;
@@ -20,27 +26,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const delayBetweenTexts = 2000;
     const delayAfterDelete = 1000;
 
-
     function type() {
         // if current index in iteration is < than the length of the text, then we add the next character to type 
         if (charIndex < texts[textIndex].length) {
-            typingTextElement.textContent += texts[textIndex].charAt(charIndex);
+            dynamicTextElement.textContent += texts[textIndex].charAt(charIndex);
             charIndex++;
             
             // delay time 
             setTimeout(type, typingSpeed);
         } else {
-            // if the whole sentence is typed, then we want to start the new one
+            // if the whole sentence is typed, then we want to start deleting
             setTimeout(deleteText, delayAfterDelete);
         }
     }
-
 
     function deleteText() {
         // ie: if we have not fully iterated through (stuff to delete)
         if (charIndex > 0) {
             // start by removing one character 
-            typingTextElement.textContent = texts[textIndex].substring(0, charIndex - 1);
+            dynamicTextElement.textContent = texts[textIndex].substring(0, charIndex - 1);
             // decrement to continue taking ones off 
             charIndex--;
             setTimeout(deleteText, deletingSpeed);
@@ -67,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // add to navbar 
     document.querySelector('nav').appendChild(darkModeToggle);
 
-
     // set the default to light theme 
     const currentMode = localStorage.getItem('theme') || 'light';
     if (currentMode === 'dark') {
@@ -84,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const footer = document.querySelector('.footer');
-
 
     // FOOTER
 
