@@ -13,12 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // html element for text
         const fixedTextElement = document.createElement('span');
         fixedTextElement.textContent = "Hi, I'm: ";
+        fixedTextElement.classList.add('fixed-text');  // Apply the class for consistent styling
         typingTextElement.appendChild(fixedTextElement);
-
-        // set the color based on dark mode
-        const currentMode = localStorage.getItem('theme') || 'light';
-        const fixedTextColor = currentMode === 'dark' ? "rgb(50, 140, 132)" : "rgb(58, 169, 159)";
-        fixedTextElement.style.color = fixedTextColor;
 
         const dynamicTextElement = document.createElement('span');
         typingTextElement.appendChild(dynamicTextElement);
