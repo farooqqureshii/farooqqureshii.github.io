@@ -311,6 +311,13 @@ body:not(.dark-mode) .typing-text {
     color: var(--typing-text-color-light);
 }
 
+
+.signature-img {
+    width: 160px; 
+    height: auto;
+    margin-top: 0px;
+}
+
 .typing-text .fixed-text {
     color: inherit; 
 }
