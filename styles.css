@@ -292,8 +292,25 @@ body.dark-mode .icon {
     z-index: 1;
 }
 
-.signature-img {
-    width: 160px; 
-    height: auto;
-    margin-top: 0px;
+/* Define a CSS variable for typing text color */
+:root {
+    --typing-text-color-light: rgb(58, 169, 159);
+    --typing-text-color-dark: rgb(50, 140, 132);
+}
+
+body.dark-mode {
+    background-color: #1C1C1E;
+    color: #e0e0e0;
+}
+
+body.dark-mode .typing-text {
+    color: var(--typing-text-color-dark);
+}
+
+body:not(.dark-mode) .typing-text {
+    color: var(--typing-text-color-light);
+}
+
+.typing-text .fixed-text {
+    color: inherit; 
 }
