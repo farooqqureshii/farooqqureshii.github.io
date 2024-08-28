@@ -292,7 +292,6 @@ body.dark-mode .icon {
     z-index: 1;
 }
 
-/* Define a CSS variable for typing text color */
 :root {
     --typing-text-color-light: rgb(58, 169, 159);
     --typing-text-color-dark: rgb(50, 140, 132);
@@ -320,4 +319,22 @@ body:not(.dark-mode) .typing-text {
 
 .typing-text .fixed-text {
     color: inherit; 
+}
+
+hr {
+    border: none;
+    border-top: 0.5px solid;
+    color: inherit;
+    background-color: inherit;
+    width: 100%;
+    max-width: 600px;
+    margin: 5px auto;
+    opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+    hr {
+        max-width: 100%;
+        margin: 10px auto;
+    }
 }
