@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typingTextElement) {
         // array of texts to type
         const texts = [
-            "studying EE and CS @ uOttawa this coming Fall.",
+            "studying EE and CS @ uOttawa.",
             "a leader in expanding public speaking.",
             "excited to learn more."
         ];
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // html element for text
         const fixedTextElement = document.createElement('span');
         fixedTextElement.textContent = "Hi, I'm: ";
-        fixedTextElement.classList.add('fixed-text');  // Apply the class for consistent styling
+        fixedTextElement.classList.add('fixed-text');  // apply the class for consistent styling
         typingTextElement.appendChild(fixedTextElement);
 
         const dynamicTextElement = document.createElement('span');
