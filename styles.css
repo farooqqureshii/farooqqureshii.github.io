@@ -8,7 +8,7 @@ body, h1, h2, h3, p, ul, li {
 
 body {
     font-family: 'Assistant', Helvetica, sans-serif;
-    background-color: #f8f6ec;
+    background-color: #FEFFFE;
     color: #333;
     margin: 0;
     transition: background-color 0.5s ease, color 0.5s ease;
