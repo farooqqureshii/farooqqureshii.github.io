@@ -116,6 +116,7 @@ main {
 
 .typing-text {
     font-size: 18px;
+    font-style: italic
     white-space: nowrap;
     display: inline-block;
     color: rgb(58, 169, 159);
