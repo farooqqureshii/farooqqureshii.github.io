@@ -4,11 +4,11 @@ body, h1, h2, h3, p, ul, li {
     box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;800&display=swap');
 
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #FEFFFE;
+    font-family: 'Assistant', Helvetica, sans-serif;
+    background-color: #f8f6ec;
     color: #333;
     margin: 0;
     transition: background-color 0.5s ease, color 0.5s ease;
