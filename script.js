@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // array of texts to type
         const texts = [
             "studying EE and CS @ uOttawa.",
-            "a leader in expanding public speaking.",
+            "a MLH hackathon organizer.",
             "excited to learn more."
         ];
 
