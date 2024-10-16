@@ -4,10 +4,10 @@ body, h1, h2, h3, p, ul, li {
     box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
 
 body {
-    font-family: 'Assistant', Helvetica, sans-serif;
+    font-family: 'Fira Code', 'Fira Mono', Consolas, 'Courier New', monospace;
     background-color: #f8f6ec;
     color: #333;
     margin: 0;
