@@ -10,4 +10,14 @@ const posts = defineCollection({
   }),
 });
 
-export const collections = { posts };
+const notes = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    image: z.string().default("/static/blog-placeholder.png"),
+  }),
+});
+
+export const collections = { posts, notes };

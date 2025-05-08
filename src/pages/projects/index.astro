@@ -1,0 +1,60 @@
+---
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+import Layout from "../../layouts/Layout.astro";
+
+const projects = [
+  {
+    title: "Analyzing and predicting housing prices in London",
+    description: "Pandas, Matplotlib, Scikit-learn, SHAP, LightGBM ",
+    image: "/static/data_vizual_img.png",
+    link: "https://farooq.craft.me/write-up",
+    type: "image"
+  },
+  {
+    title: "uOttaHack | Director",
+    description: "PM, UI/UX, Figma, Software, Sales",
+    image: "/static/uottahack.jpg",
+    link: "uottahack.ca",
+    type: "image"
+  },
+  {
+    title: "NLP for Google Calendar",
+    description: "LangChain, Rasa, Typescript, OAuth",
+    image: "/static/blog-placeholder.png",
+    link: "https://example.com/project3",
+    type: "video",
+    video: "/static/nlp for gcal mvp.mp4"
+  }
+];
+---
+
+<Layout title="Projects / Farooq Qureshi" description={SITE_DESCRIPTION}>
+  <main>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      {projects.map((project) => (
+        <div class="flex flex-col items-start">
+          <a
+            href={project.link}
+            target="_blank"
+            class="block w-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-700 transition-colors hover:border-zinc-900 dark:hover:border-zinc-100 mb-4"
+          >
+            {project.type === "video" ? (
+              <video autoplay muted loop playsinline class="w-full aspect-[4/3] object-cover h-40 bg-zinc-100 dark:bg-zinc-900">
+                <source src={project.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <img
+                src={project.image}
+                alt={project.title}
+                class="w-full aspect-[4/3] object-cover h-40 bg-zinc-100 dark:bg-zinc-900"
+              />
+            )}
+          </a>
+          <div class="font-medium text-base mb-1">{project.title}</div>
+          <div class="text-zinc-500 text-sm leading-snug">{project.description}</div>
+        </div>
+      ))}
+    </div>
+  </main>
+</Layout> 

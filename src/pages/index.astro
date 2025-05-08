@@ -4,36 +4,26 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout
-  title={SITE_TITLE}
+  title="Farooq Qureshi"
   description={SITE_DESCRIPTION}
-  className="flex h-svh max-w-sm flex-col justify-center"
+  className="flex h-svh max-w-lg flex-col justify-center"
 >
   <main class="space-y-4">
-    <p>
-      Miniblog is an opinionated and extremely minimal blogging template built
-      with <a
-        href="https://astro.build/"
-        target="_blank"
-        class="text-blue-500 underline">Astro</a
-      > and <a
-        href="https://tailwindcss.com/"
-        target="_blank"
-        class="text-blue-500 underline">Tailwind</a
-      >.
-    </p>
-    <p>
-      Design heavily inspired by <a
-        href="https://jrmyphlmn.com/"
-        target="_blank"
-        class="text-blue-500 underline">jrmyphlmn.com</a
-      >.
-    </p>
-    <p>
-      To use this template, check out the <a
-        href="https://github.com/nicholasdly/miniblog?tab=readme-ov-file"
-        target="_blank"
-        class="text-blue-500 underline">GitHub repository</a
-      >.
-    </p>
+    <div class="w-full text-base">
+      <p class="mb-3">Hi I'm Farooq.</p>
+      <p class="mb-3">
+        I study Electrical Engineering at <a href="https://uottawa.ca" target="_blank" class="text-blue-500 underline">uOttawa</a>. I'm also the director for <a href="https://uottahack.ca" target="_blank" class="text-blue-500 underline">uOttaHack</a>, the nation's capital hackathon for 850+ students.
+      </p>
+      <p class="mb-3">
+        In my free time I teach competitive debating. Students of mine have won at Canada's National Debating Championships.
+      </p>
+      <p class="mb-3">More of me can be found below.</p>
+    </div>
+    <div class="text-base">
+      <a href="mailto:your.email@example.com" class="text-blue-500 underline mb-3 inline-block">email</a>
+      <a href="https://github.com/yourusername" target="_blank" class="text-blue-500 underline ml-4 mb-3 inline-block">github</a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank" class="text-blue-500 underline ml-4 mb-3 inline-block">linkedin</a>
+      <a href="https://substack.com/@yourusername" target="_blank" class="text-blue-500 underline ml-4 mb-3 inline-block">substack</a>
+    </div>
   </main>
 </Layout>

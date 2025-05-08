@@ -3,11 +3,13 @@ import { EMAIL } from "../consts";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<header class="mb-6 flex items-center justify-between" transition:name="header">
+<header class="mb-6 mt-4 flex items-center justify-between" transition:name="header">
   <nav class="flex items-center gap-4">
-    <a href="/"> home </a>
-    <a href="/posts"> posts </a>
-    <a href={`mailto:${EMAIL}`}>email</a>
+    <a href="/">home</a>
+    <a href="/posts">posts</a>
+    <a href="/notes">notes</a>
+    <a href="/artifacts">artifacts</a>
+    <a href="/projects">projects</a>
   </nav>
   <ThemeToggle />
 </header>
