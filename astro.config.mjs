@@ -9,7 +9,8 @@ import { SITE_URL } from "./src/consts";
 
 // https://astro.build/config
 export default defineConfig({
-  site: SITE_URL,
+  site: 'https://farooqqureshi.github.io',
+  base: '/V5Website',
   integrations: [mdx(), sitemap(), tailwind()],
   markdown: {
     shikiConfig: {
