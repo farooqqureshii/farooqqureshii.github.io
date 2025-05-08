@@ -9,8 +9,12 @@ import { SITE_URL } from "./src/consts";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://farooqqureshi.github.io',
-  base: '/V5Website',
+  site: process.env.NODE_ENV === 'production' 
+    ? 'https://farooqqureshi.com'  // Production domain
+    : 'https://farooqqureshii.github.io', // GitHub Pages domain
+  base: process.env.NODE_ENV === 'production' 
+    ? '/'  // No base path for custom domain
+    : '/V5Website', // Base path for GitHub Pages
   integrations: [mdx(), sitemap(), tailwind()],
   markdown: {
     shikiConfig: {
