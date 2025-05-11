@@ -1,3 +1,3 @@
-#🕸️ Personal Website, Version 3
+# Personal Website, Version 3 ⌨️
 
 🔨 Astro, TS, Tailwind
