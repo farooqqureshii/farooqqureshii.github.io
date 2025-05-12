@@ -21,6 +21,15 @@
     font-weight: var(--shiki-dark-font-weight) !important;
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
+  /* Custom text selection styles */
+  ::selection {
+    @apply bg-yellow-200/70 text-black dark:bg-yellow-500/30 dark:text-white;
+  }
+  
+  /* Ensure links remain visible when selected */
+  a::selection {
+    @apply bg-yellow-200/70 text-blue-600 dark:bg-yellow-500/30 dark:text-blue-400;
+  }
 }
 
 @layer components {
