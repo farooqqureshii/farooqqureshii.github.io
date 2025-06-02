@@ -1,0 +1,94 @@
+<div class="flex flex-col gap-0.5 text-xs text-zinc-500">
+  <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
+      <span id="now-playing-label"></span>
+      <a id="now-playing-link" href="#" target="_blank" rel="noopener noreferrer" class="hover:underline overflow-hidden whitespace-nowrap block max-w-[160px]">
+        <span id="now-playing" class="marquee-text">Loading...</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-0.5 h-2" id="now-playing-bars">
+      <div class="bar bar1"></div>
+      <div class="bar bar2"></div>
+      <div class="bar bar3"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.bar {
+  width: 2px;
+  height: 100%;
+  background: currentColor;
+  margin-right: 2px;
+  display: inline-block;
+  border-radius: 1px;
+  animation: bounce 1s infinite ease-in-out;
+}
+.bar1 { animation-delay: 0s; }
+.bar2 { animation-delay: 0.2s; }
+.bar3 { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 100% { height: 30%; }
+  50% { height: 100%; }
+}
+.marquee-text {
+  display: inline-block;
+  min-width: 100%;
+  animation: marquee 12s linear infinite;
+}
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.marquee-paused {
+  animation-play-state: paused !important;
+}
+.bars-static .bar {
+  animation: none !important;
+  opacity: 0.4;
+}
+.no-marquee {
+  animation: none !important;
+  transform: none !important;
+  white-space: normal !important;
+  min-width: 0 !important;
+}
+</style>
+
+<script>
+  async function updateNowPlaying() {
+    try {
+      const res = await fetch('/api/now-playing');
+      const data = await res.json();
+      const span = document.getElementById('now-playing');
+      const link = document.getElementById('now-playing-link');
+      const label = document.getElementById('now-playing-label');
+      const bars = document.getElementById('now-playing-bars');
+      if (span && link && label && bars) {
+        const a = link as HTMLAnchorElement;
+        if (data.isPlaying) {
+          label.textContent = 'listening to:';
+          span.textContent = `${data.title} — ${data.artist}`;
+          a.href = data.url || '#';
+          a.style.pointerEvents = data.url ? 'auto' : 'none';
+          bars.classList.remove('bars-static');
+          span.classList.remove('marquee-paused', 'no-marquee');
+        } else {
+          label.textContent = '';
+          span.textContent = 'not listening to anything';
+          a.href = '#';
+          a.style.pointerEvents = 'none';
+          bars.classList.add('bars-static');
+          span.classList.add('no-marquee');
+          span.classList.remove('marquee-paused');
+        }
+      }
+    } catch (error) {
+      const span = document.getElementById('now-playing');
+      if (span) span.textContent = 'Error loading track';
+    }
+  }
+
+  updateNowPlaying();
+  setInterval(updateNowPlaying, 10000);
+</script> 
