@@ -1,12 +1,12 @@
 import { defineCollection, z } from "astro:content";
 
-const posts = defineCollection({
+const writing = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    description: z.string(),
     date: z.coerce.date(),
-    image: z.string().default("/static/blog-placeholder.png"),
+    description: z.string(),
+    draft: z.boolean().default(false),
   }),
 });
 
@@ -14,10 +14,10 @@ const notes = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    description: z.string(),
     date: z.coerce.date(),
-    image: z.string().default("/static/blog-placeholder.png"),
+    description: z.string(),
+    draft: z.boolean().default(false),
   }),
 });
 
-export const collections = { posts, notes };
+export const collections = { writing, notes };

@@ -65,7 +65,14 @@
       @apply my-4 border-l-2 pl-4;
     }
     a {
-      @apply text-blue-500 underline;
+      color: #3b82f6;
+      text-decoration: underline;
+      transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    }
+    a:hover {
+      color: #ff4500 !important;
+      transform: scale(1.05) !important;
+      background-color: rgba(255, 69, 0, 0.1) !important;
     }
     table {
       @apply my-4 w-full table-auto border-collapse text-sm;
@@ -88,5 +95,31 @@
     mark {
       @apply dark:bg-yellow-500/50 dark:text-white;
     }
+  }
+}
+
+@layer utilities {
+  .slide-in {
+    animation: slideIn 0.7s cubic-bezier(0.33,1,0.68,1) both;
+  }
+  .slide-in:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .slide-in:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .slide-in:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
