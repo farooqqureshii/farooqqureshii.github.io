@@ -58,7 +58,7 @@
 <script>
   async function updateNowPlaying() {
     try {
-      const res = await fetch('/api/now-playing');
+      const res = await fetch('https://farooqqureshii-github-io-dr48.vercel.app/api/now-playing');
       const data = await res.json();
       const span = document.getElementById('now-playing');
       const link = document.getElementById('now-playing-link');
