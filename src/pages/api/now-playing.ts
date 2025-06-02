@@ -19,7 +19,7 @@ async function getAccessToken() {
   });
 
   const data = await response.json();
-  // console.log('Access token response:', data);
+  console.log('Vercel Access token response:', data);
   return data.access_token;
 }
 
@@ -43,7 +43,7 @@ export const GET: APIRoute = async () => {
     }
 
     const data = await response.json();
-    // console.log('Spotify API response:', JSON.stringify(data, null, 2));
+    console.log('Vercel Spotify API response:', JSON.stringify(data, null, 2));
     const track = data.item;
     if (track) {
       // console.log('Currently playing track:', track.name, 'by', track.artists.map((a: any) => a.name).join(', '));
