@@ -1,0 +1,24 @@
+---
+// This page will handle the Spotify OAuth callback
+---
+
+<html>
+  <head>
+    <title>Spotify Authorization</title>
+  </head>
+  <body>
+    <div id="message">Processing authorization...</div>
+    <script>
+      // Get the authorization code from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      
+      if (code) {
+        // Display the code to the user
+        document.getElementById('message').textContent = `Authorization successful! Your code is: ${code}`;
+      } else {
+        document.getElementById('message').textContent = 'No authorization code received.';
+      }
+    </script>
+  </body>
+</html> 
