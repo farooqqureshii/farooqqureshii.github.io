@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import vercel from '@astrojs/vercel';
 
 export const prerender = false;
 
@@ -83,6 +82,4 @@ export const GET: APIRoute = async () => {
       },
     });
   }
-};
-
-export const adapter = vercel({}); 
+}; 
