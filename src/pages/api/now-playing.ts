@@ -27,7 +27,7 @@ export const GET: APIRoute = async () => {
   try {
     const access_token = await getAccessToken();
 
-    const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+    const response = await fetch('https://api.spotify.com/v1/me/player', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
