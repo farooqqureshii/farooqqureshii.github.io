@@ -58,7 +58,12 @@
 <script>
   async function updateNowPlaying() {
     try {
-      const res = await fetch('https://farooqqureshii-github-io-dr48.vercel.app/api/now-playing');
+      const apiUrl =
+        location.hostname === "localhost" || location.hostname === "127.0.0.1"
+          ? "/api/now-playing"
+          : "https://farooqqureshii-github-io-dr48.vercel.app/api/now-playing";
+      const res = await fetch(apiUrl + '?t=' + Date.now());
+      console.log('Fetching now playing from:', apiUrl);
       const data = await res.json();
       const span = document.getElementById('now-playing');
       const link = document.getElementById('now-playing-link');
