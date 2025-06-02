@@ -13,13 +13,21 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
     <span></span>
   </div>
   <script>
-    function updateCalgaryTime() {
-      const now = new Date();
-      // Calgary is in Mountain Time (UTC-7 or UTC-6 with DST)
-      const options = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Edmonton' };
-      const time = now.toLocaleTimeString('en-CA', options);
-      const el = document.getElementById('calgary-time');
-      if (el) el.innerHTML = `${time} | <i>calgary</i>`;
+    async function updateCalgaryTime() {
+      try {
+        const res = await fetch('https://worldtimeapi.org/api/timezone/America/Edmonton');
+        const data = await res.json();
+        // data.datetime is like "2024-06-08T13:45:12.345678-06:00"
+        const time = data.datetime.slice(11, 16); // "HH:mm"
+        const el = document.getElementById('calgary-time');
+        if (el) el.innerHTML = `${time} | <i>calgary</i>`;
+      } catch {
+        // fallback to local time if API fails
+        const now = new Date();
+        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const el = document.getElementById('calgary-time');
+        if (el) el.innerHTML = `${time} | <i>calgary</i>`;
+      }
     }
     updateCalgaryTime();
     setInterval(updateCalgaryTime, 60000);
