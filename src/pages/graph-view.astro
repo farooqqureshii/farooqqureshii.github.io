@@ -1,0 +1,123 @@
+---
+---
+
+<html>
+  <head>
+    <title>Substack Graph View</title>
+    <meta name="description" content="Interactive graph of creator and reader relationships for the Substack case study.">
+    <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.css" />
+    <style>
+      html, body { height: 100%; margin: 0; padding: 0; }
+      body { background: #18181b; font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
+      #graph-network {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #18181b;
+        z-index: 1;
+      }
+      .back-btn {
+        position: absolute;
+        top: 32px;
+        left: 32px;
+        z-index: 10;
+        background: rgba(24,24,27,0.85);
+        color: #a5b4fc;
+        border: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        padding: 10px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px #0005;
+        cursor: pointer;
+      }
+      .back-btn:hover {
+        background: #a5b4fc;
+        color: #18181b;
+      }
+      #tooltip {
+        display: none;
+      }
+      a {
+        color: #a5b4fc;
+        text-decoration: none;
+        transition: color 0.2s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      a:hover {
+        color: #818cf8;
+        background: none;
+      }
+      a:active {
+        background: none !important;
+        color: #6366f1 !important;
+      }
+      a:focus {
+        outline: none;
+        box-shadow: none;
+      }
+      ::selection {
+        background: #27272a;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/writing/substack/" class="back-btn">← Back</a>
+    <div id="graph-network"></div>
+    <div id="tooltip"></div>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const nodes = [
+          { id: 1, label: 'Central', color: { background: '#6366f1', border: '#818cf8', highlight: { background: '#818cf8', border: '#fff' } }, font: { color: '#fff', size: 28, face: 'Inter' }, size: 50 },
+          { id: 2, label: 'PL', color: '#22c55e', font: { color: '#fff' }, size: 36 },
+          { id: 3, label: 'AJ', color: '#22c55e', font: { color: '#fff' }, size: 36 },
+          { id: 4, label: 'BO', color: '#22c55e', font: { color: '#fff' }, size: 36 },
+          { id: 5, label: 'WJ', color: '#22c55e', font: { color: '#fff' }, size: 36 },
+          { id: 6, label: 'Writing with M.', color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
+          { id: 7, label: 'Design with Roe', color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
+          { id: 8, label: "Erick's Newsletter", color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
+          { id: 9, label: "Amy's Substack", color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
+        ];
+        const edges = [
+          { from: 1, to: 2 }, { from: 1, to: 3 }, { from: 1, to: 4 }, { from: 1, to: 5 },
+          { from: 2, to: 6 }, { from: 2, to: 1 }, { from: 3, to: 7 }, { from: 4, to: 9 },
+          { from: 5, to: 8 }, { from: 6, to: 2 }, { from: 7, to: 3 }, { from: 8, to: 5 },
+          { from: 9, to: 4 },
+        ];
+        const container = document.getElementById('graph-network');
+        const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+        const options = {
+          nodes: {
+            shape: 'dot',
+            borderWidth: 2,
+            shadow: true,
+          },
+          edges: {
+            width: 2,
+            color: { color: '#a1a1aa', highlight: '#818cf8' },
+            smooth: true,
+            shadow: true,
+          },
+          physics: {
+            enabled: true,
+            barnesHut: { gravitationalConstant: -20000, springLength: 200 },
+          },
+          interaction: {
+            hover: false,
+            tooltipDelay: 0,
+            navigationButtons: false,
+            zoomView: true,
+            dragView: true,
+            dragNodes: true,
+            selectable: false,
+          },
+        };
+        new vis.Network(container, data, options);
+      });
+    </script>
+  </body>
+</html> 
