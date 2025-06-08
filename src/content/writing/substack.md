@@ -104,9 +104,12 @@ We show below the visualization of user flow for a reader in Substack. Important
 ![Welcome Page Redesign](/static/connections.png)
 
 ## Graph View
-### Medium Fidelity
+
+Mockup
 
 ![Graph Mockup](/static/Graph_Mockup.png)
+
+[Prototype](/graph-view)
 
 ## Marketing Mockups
 
@@ -119,4 +122,13 @@ We show below the visualization of user flow for a reader in Substack. Important
 
 ## Inspiration Board
 
-![Inspiration Board](/static/Insporatio_Board.png) 
+![Inspiration Board](/static/Insporatio_Board.png)
+
+/* Remove orange highlight on link selection and active state */
+::selection {
+  background: #dbeafe !important; /* soft blue or use transparent if you want none */
+}
+a:active {
+  background: none !important;
+  color: inherit !important;
+} 
