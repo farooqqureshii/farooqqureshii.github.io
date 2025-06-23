@@ -34,10 +34,10 @@ async function getAccessToken() {
 export const GET: APIRoute = async () => {
   try {
     console.log('API endpoint called');
-    console.log('Environment variables check:', {
-      hasClientId: !!client_id,
-      hasClientSecret: !!client_secret,
-      hasRefreshToken: !!refresh_token
+    console.log('Loaded env:', {
+      id: import.meta.env.SPOTIFY_CLIENT_ID,
+      secret: import.meta.env.SPOTIFY_CLIENT_SECRET,
+      refresh: import.meta.env.SPOTIFY_REFRESH_TOKEN
     });
 
     const { access_token } = await getAccessToken();
@@ -57,6 +57,7 @@ export const GET: APIRoute = async () => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, max-age=0',
         },
       });
     }
@@ -70,6 +71,7 @@ export const GET: APIRoute = async () => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, max-age=0',
         },
       });
     }
@@ -96,6 +98,7 @@ export const GET: APIRoute = async () => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, max-age=0',
         },
       }
     );
@@ -105,6 +108,7 @@ export const GET: APIRoute = async () => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, max-age=0',
       },
     });
   }
