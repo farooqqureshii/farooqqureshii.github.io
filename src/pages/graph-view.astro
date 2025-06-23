@@ -68,9 +68,9 @@
     <a href="/writing/substack/" class="back-btn">← Back</a>
     <div id="graph-network"></div>
     <div id="tooltip"></div>
-    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
+    <script type="module">
+      document.addEventListener('DOMContentLoaded', async function () {
+        const vis = await import('vis-network');
         const nodes = [
           { id: 1, label: 'Central', color: { background: '#6366f1', border: '#818cf8', highlight: { background: '#818cf8', border: '#fff' } }, font: { color: '#fff', size: 28, face: 'Inter' }, size: 50 },
           { id: 2, label: 'PL', color: '#22c55e', font: { color: '#fff' }, size: 36 },
