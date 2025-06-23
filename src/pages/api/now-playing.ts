@@ -39,9 +39,21 @@ export const GET: APIRoute = async () => {
       secret: import.meta.env.SPOTIFY_CLIENT_SECRET,
       refresh: import.meta.env.SPOTIFY_REFRESH_TOKEN
     });
+    const now = new Date().toISOString();
 
     const { access_token } = await getAccessToken();
     console.log('Access token obtained:', !!access_token);
+
+    if (!access_token) {
+      console.error('No access token received from Spotify');
+      return new Response(JSON.stringify({ isPlaying: false, error: 'No access token', timestamp: now }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, max-age=0',
+        },
+      });
+    }
 
     const response = await fetch(NOW_PLAYING_ENDPOINT, {
       headers: {
@@ -53,7 +65,7 @@ export const GET: APIRoute = async () => {
 
     if (response.status === 204 || response.status > 400) {
       console.log('No content or error from Spotify API');
-      return new Response(JSON.stringify({ isPlaying: false }), {
+      return new Response(JSON.stringify({ isPlaying: false, error: 'Spotify API returned no content or error', status: response.status, timestamp: now }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -62,12 +74,24 @@ export const GET: APIRoute = async () => {
       });
     }
 
-    const song = await response.json();
+    let song;
+    try {
+      song = await response.json();
+    } catch (jsonErr) {
+      console.error('Error parsing Spotify response as JSON:', jsonErr);
+      return new Response(JSON.stringify({ isPlaying: false, error: 'Invalid JSON from Spotify', timestamp: now }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, max-age=0',
+        },
+      });
+    }
     console.log('Spotify song data:', song);
 
-    if (song.item === null) {
+    if (!song || song.item === null) {
       console.log('No song item in response');
-      return new Response(JSON.stringify({ isPlaying: false }), {
+      return new Response(JSON.stringify({ isPlaying: false, error: 'No song item', timestamp: now }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -93,6 +117,7 @@ export const GET: APIRoute = async () => {
         isPlaying,
         songUrl,
         title,
+        timestamp: now,
       }),
       {
         status: 200,
@@ -103,8 +128,9 @@ export const GET: APIRoute = async () => {
       }
     );
   } catch (error) {
+    const now = new Date().toISOString();
     console.error('Error fetching Spotify data:', error);
-    return new Response(JSON.stringify({ isPlaying: false }), {
+    return new Response(JSON.stringify({ isPlaying: false, error: String(error), timestamp: now }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
