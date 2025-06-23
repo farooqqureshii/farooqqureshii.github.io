@@ -13,6 +13,37 @@
     src: url("/fonts/geist-mono-variable.woff2") format("woff2");
     font-display: swap;
   }
+  
+  /* Custom cursor */
+  body {
+    cursor: none;
+  }
+  
+  .custom-cursor {
+    width: 4px;
+    height: 4px;
+    background: #000;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+  
+  .custom-cursor.hover {
+    transform: scale(2);
+  }
+  
+  /* Dark mode cursor */
+  html.dark .custom-cursor {
+    background: #fff;
+  }
+  
+  /* Show default cursor on interactive elements for accessibility */
+  a, button, input, textarea, select, [role="button"] {
+    cursor: pointer;
+  }
+  
   html.dark .astro-code,
   html.dark .astro-code span {
     color: var(--shiki-dark) !important;
@@ -28,7 +59,7 @@
   
   /* Ensure links remain visible when selected */
   a::selection {
-    @apply bg-yellow-200/70 text-blue-600 dark:bg-yellow-500/30 dark:text-blue-400;
+    @apply bg-yellow-200/70 text-black dark:bg-yellow-500/30 dark:text-white;
   }
 }
 
@@ -68,11 +99,6 @@
       color: #3b82f6;
       text-decoration: underline;
       transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
-    }
-    a:hover {
-      color: #ff4500 !important;
-      transform: scale(1.05) !important;
-      background-color: rgba(255, 69, 0, 0.1) !important;
     }
     table {
       @apply my-4 w-full table-auto border-collapse text-sm;
@@ -124,15 +150,4 @@
   }
 }
 
-/* Remove orange highlight on link selection and active state */
-::selection {
-  background: #dbeafe !important; /* soft blue or use transparent if you want none */
-}
-a:active {
-  background: none !important;
-  color: inherit !important;
-}
-a:focus {
-  outline: none;
-  box-shadow: none;
-}
+

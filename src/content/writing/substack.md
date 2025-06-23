@@ -124,11 +124,3 @@ Mockup
 
 ![Inspiration Board](/static/Insporatio_Board.png)
 
-/* Remove orange highlight on link selection and active state */
-::selection {
-  background: #dbeafe !important; /* soft blue or use transparent if you want none */
-}
-a:active {
-  background: none !important;
-  color: inherit !important;
-} 
