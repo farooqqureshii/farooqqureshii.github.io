@@ -1,5 +1,8 @@
 import type { APIRoute } from 'astro';
 
+// Force Vercel to not cache this route
+export const fetchCache = 'force-no-store';
+
 const client_id = import.meta.env.SPOTIFY_CLIENT_ID;
 const client_secret = import.meta.env.SPOTIFY_CLIENT_SECRET;
 const refresh_token = import.meta.env.SPOTIFY_REFRESH_TOKEN;
@@ -21,6 +24,7 @@ async function getAccessToken() {
         grant_type: 'refresh_token',
         refresh_token: refresh_token || '',
       }),
+      cache: 'no-store',
     });
 
     const data = await response.json();
@@ -64,6 +68,7 @@ export const GET: APIRoute = async ({ params }) => {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
+      cache: 'no-store',
     });
 
     console.log('Spotify API response status:', response.status);
