@@ -16,19 +16,34 @@ const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-pla
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 
 async function getAccessToken() {
-  const response = await fetch(TOKEN_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${basic}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token || '',
-    }),
-  });
+  try {
+    console.log('Attempting to get access token...');
+    const response = await fetch(TOKEN_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${basic}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refresh_token || '',
+      }),
+    });
 
-  return response.json();
+    const data = await response.json();
+    console.log('Token refresh response status:', response.status);
+    console.log('Token refresh response:', data);
+    
+    if (!data.access_token) {
+      console.error('No access token in response:', data);
+      throw new Error('No access token received');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Error getting access token:', error);
+    throw error;
+  }
 }
 
 export const GET: APIRoute = async () => {
@@ -55,6 +70,7 @@ export const GET: APIRoute = async () => {
       });
     }
 
+    console.log('Fetching from Spotify API with token:', access_token.substring(0, 20) + '...');
     const response = await fetch(NOW_PLAYING_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -62,6 +78,7 @@ export const GET: APIRoute = async () => {
     });
 
     console.log('Spotify API response status:', response.status);
+    console.log('Spotify API response headers:', Object.fromEntries(response.headers.entries()));
 
     if (response.status === 204 || response.status > 400) {
       console.log('No content or error from Spotify API');
@@ -77,6 +94,7 @@ export const GET: APIRoute = async () => {
     let song;
     try {
       song = await response.json();
+      console.log('Raw Spotify API response:', JSON.stringify(song, null, 2));
     } catch (jsonErr) {
       console.error('Error parsing Spotify response as JSON:', jsonErr);
       return new Response(JSON.stringify({ isPlaying: false, error: 'Invalid JSON from Spotify', timestamp: now }), {
@@ -107,7 +125,7 @@ export const GET: APIRoute = async () => {
     const albumImageUrl = song.item.album.images[0].url;
     const songUrl = song.item.external_urls.spotify;
 
-    console.log('Processed song data:', { isPlaying, title, artist });
+    console.log('Processed song data:', { isPlaying, title, artist, device: song.device?.name || 'unknown device' });
 
     return new Response(
       JSON.stringify({
@@ -118,6 +136,7 @@ export const GET: APIRoute = async () => {
         songUrl,
         title,
         timestamp: now,
+        device: song.device?.name || 'unknown',
       }),
       {
         status: 200,
