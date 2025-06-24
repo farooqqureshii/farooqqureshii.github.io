@@ -3,6 +3,9 @@ import type { APIRoute } from 'astro';
 // Force Vercel to not cache this route
 export const fetchCache = 'force-no-store';
 
+// Tell Astro this is a server-rendered route, not static
+export const prerender = false;
+
 const client_id = import.meta.env.SPOTIFY_CLIENT_ID;
 const client_secret = import.meta.env.SPOTIFY_CLIENT_SECRET;
 const refresh_token = import.meta.env.SPOTIFY_REFRESH_TOKEN;
