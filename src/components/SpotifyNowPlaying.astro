@@ -60,7 +60,8 @@
   async function updateNowPlaying() {
     try {
       console.log('Fetching Spotify data...');
-      const res = await fetch('/api/now-playing?t=' + Date.now());
+      const randomParam = Math.random().toString(36).substring(7);
+      const res = await fetch(`/api/now-playing?t=${Date.now()}&r=${randomParam}`);
       console.log('Response status:', res.status);
       
       if (!res.ok) {
