@@ -2,6 +2,7 @@
 title: "Seven Things I Believe In"
 description: "A personal reflection on core beliefs and values"
 date: "Oct 17 2024"
+draft: false
 ---
 
 I've seen lots of posts from people, much farther along in life than me, detail a set of things that they believe in. I've always strayed away from publishing one of my own, primarily because I find myself possibly being too young to have beliefs that I can concretely say I will always follow.

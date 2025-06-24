@@ -2,6 +2,7 @@
 title: "On Reading"
 description: "Thoughts on Reading as it Pertains to Engineering'"
 date: "May 30 2025"
+draft: false
 ---
 
 If you study Engineering you should read. In-fact, no matter what, you should read. But for Engineering specifically, I've met a significant amount of people who once loved reading of all kinds stop because of their studies. Of course, saying that you should follow through with a hobby even when things get busy is not really anything new.
