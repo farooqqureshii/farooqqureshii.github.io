@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
+import vercel from "@astrojs/vercel";
 import { SITE_URL } from "./src/consts";
 
 // https://astro.build/config
@@ -11,6 +12,8 @@ export default defineConfig({
     ? 'https://farooqqureshi.com'  // Production domain
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
   integrations: [mdx(), sitemap(), tailwind()],
+  output: 'server',
+  adapter: vercel(),
   markdown: {
     shikiConfig: {
       themes: {
@@ -27,5 +30,4 @@ export default defineConfig({
       'process.env.SPOTIFY_REFRESH_TOKEN': JSON.stringify(process.env.SPOTIFY_REFRESH_TOKEN),
     },
   },
-  // No output: 'server', no adapter, static only
 });
