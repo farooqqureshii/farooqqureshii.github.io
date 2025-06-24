@@ -2,6 +2,7 @@
 title: "Some Favourite Latin Phrases"
 description: "A Latin phrase meaning 'To be, rather than to seem'"
 date: "May 7 2025"
+draft: false
 ---
 
 Esse quam videri

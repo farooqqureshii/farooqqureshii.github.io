@@ -2,6 +2,7 @@
 title: "Fall 2024 Course Review at uOttawa"
 description: "A detailed review of my first semester courses at the University of Ottawa"
 date: "Dec 31 2024"
+draft: false
 ---
 
 I'm writing this post on December 31st, which means it's been just over 2 weeks since my first semester at the University of Ottawa has ended. As such, I've decided to write a tiny review about the courses I took this semester, in efforts to self-reflect, and also — to maybe help out students in the future.
@@ -23,13 +24,13 @@ As such, the most beneficial thing you can do for yourself is to not blindly pro
 
 ## Calculus I (MAT 1320)
 
-I found this course to be pretty easy and well-taught. The content up to the first midterm is review for almost all students with any exposure to Calculus in high school. It's important to not be deceived, though, as the course quickly gets into integration, which is not covered for most Ontario students. Stewart’s *Calculus* (the textbook for the course) is extremely useful, and has more than enough practice problems to go through. I had Professor E. Maltais for this course and thought she was fantastic, though all sections seem to get similar exams so you should be fine regardless of your instructor.
+I found this course to be pretty easy and well-taught. The content up to the first midterm is review for almost all students with any exposure to Calculus in high school. It's important to not be deceived, though, as the course quickly gets into integration, which is not covered for most Ontario students. Stewart's *Calculus* (the textbook for the course) is extremely useful, and has more than enough practice problems to go through. I had Professor E. Maltais for this course and thought she was fantastic, though all sections seem to get similar exams so you should be fine regardless of your instructor.
 
 ## Principles of Chemistry (CHM 1311)
 
-This course varies in difficulty greatly based on your professor from what I gauged. I was lucky enough to have Dr. Fox, who was absolutely amazing. Apart from being an excellent instructor, her exams for 20+ years are given, and questions on exams are extremely similar to ones in the past. Regardless, even if you don’t have her, the textbook is still quite a good resource, since it provides problems that are more "involved" than the ones you see in high school, which are the main subject matter of the exams in this course.
+This course varies in difficulty greatly based on your professor from what I gauged. I was lucky enough to have Dr. Fox, who was absolutely amazing. Apart from being an excellent instructor, her exams for 20+ years are given, and questions on exams are extremely similar to ones in the past. Regardless, even if you don't have her, the textbook is still quite a good resource, since it provides problems that are more "involved" than the ones you see in high school, which are the main subject matter of the exams in this course.
 
-The lab section of this course is quite hard, and I don’t think there is much advice to provide in that regard. Study the labs thoroughly ahead of time, and do the online simulations given multiple times so you understand them. The actual experiments tend to be stressful, but a good TA can go a long way in easing this.
+The lab section of this course is quite hard, and I don't think there is much advice to provide in that regard. Study the labs thoroughly ahead of time, and do the online simulations given multiple times so you understand them. The actual experiments tend to be stressful, but a good TA can go a long way in easing this.
 
 ## Engineering Mechanics (GNG 1105)
 
@@ -43,4 +44,4 @@ Reading and doing the [textbook](https://ruor.uottawa.ca/items/f66a4ede-e276-486
 
 ---
 
-And that’s that! I plan to publish, at another time, some broader reflections after a semester at university.
+And that's that! I plan to publish, at another time, some broader reflections after a semester at university.
