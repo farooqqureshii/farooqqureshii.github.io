@@ -55,23 +55,24 @@ export const GET: APIRoute = async () => {
       refresh: import.meta.env.SPOTIFY_REFRESH_TOKEN
     });
     const now = new Date().toISOString();
+    const randomId = Math.random().toString(36).substring(7);
 
     const { access_token } = await getAccessToken();
     console.log('Access token obtained:', !!access_token);
 
     if (!access_token) {
       console.error('No access token received from Spotify');
-      return new Response(JSON.stringify({ isPlaying: false, error: 'No access token', timestamp: now }), {
+      return new Response(JSON.stringify({ isPlaying: false, error: 'No access token', timestamp: now, randomId }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store, max-age=0',
+          'Cache-Control': 'no-store, max-age=0, must-revalidate',
         },
       });
     }
 
     console.log('Fetching from Spotify API with token:', access_token.substring(0, 20) + '...');
-    const response = await fetch(NOW_PLAYING_ENDPOINT, {
+    const response = await fetch(`${NOW_PLAYING_ENDPOINT}?t=${Date.now()}&r=${randomId}`, {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
@@ -82,11 +83,11 @@ export const GET: APIRoute = async () => {
 
     if (response.status === 204 || response.status > 400) {
       console.log('No content or error from Spotify API');
-      return new Response(JSON.stringify({ isPlaying: false, error: 'Spotify API returned no content or error', status: response.status, timestamp: now }), {
+      return new Response(JSON.stringify({ isPlaying: false, error: 'Spotify API returned no content or error', status: response.status, timestamp: now, randomId }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store, max-age=0',
+          'Cache-Control': 'no-store, max-age=0, must-revalidate',
         },
       });
     }
@@ -97,11 +98,11 @@ export const GET: APIRoute = async () => {
       console.log('Raw Spotify API response:', JSON.stringify(song, null, 2));
     } catch (jsonErr) {
       console.error('Error parsing Spotify response as JSON:', jsonErr);
-      return new Response(JSON.stringify({ isPlaying: false, error: 'Invalid JSON from Spotify', timestamp: now }), {
+      return new Response(JSON.stringify({ isPlaying: false, error: 'Invalid JSON from Spotify', timestamp: now, randomId }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store, max-age=0',
+          'Cache-Control': 'no-store, max-age=0, must-revalidate',
         },
       });
     }
@@ -109,11 +110,11 @@ export const GET: APIRoute = async () => {
 
     if (!song || song.item === null) {
       console.log('No song item in response');
-      return new Response(JSON.stringify({ isPlaying: false, error: 'No song item', timestamp: now }), {
+      return new Response(JSON.stringify({ isPlaying: false, error: 'No song item', timestamp: now, randomId }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store, max-age=0',
+          'Cache-Control': 'no-store, max-age=0, must-revalidate',
         },
       });
     }
@@ -137,23 +138,25 @@ export const GET: APIRoute = async () => {
         title,
         timestamp: now,
         device: song.device?.name || 'unknown',
+        randomId,
       }),
       {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store, max-age=0',
+          'Cache-Control': 'no-store, max-age=0, must-revalidate',
         },
       }
     );
   } catch (error) {
     const now = new Date().toISOString();
+    const randomId = Math.random().toString(36).substring(7);
     console.error('Error fetching Spotify data:', error);
-    return new Response(JSON.stringify({ isPlaying: false, error: String(error), timestamp: now }), {
+    return new Response(JSON.stringify({ isPlaying: false, error: String(error), timestamp: now, randomId }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'no-store, max-age=0',
+        'Cache-Control': 'no-store, max-age=0, must-revalidate',
       },
     });
   }
