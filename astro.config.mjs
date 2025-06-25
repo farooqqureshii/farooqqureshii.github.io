@@ -1,18 +1,18 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel"; // ✅ modern import
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/serverless"; // ✅ serverless adapter
-import { SITE_URL } from "./src/consts";
+import { SITE_URL } from "./src/consts"; // (optional, unused but included for future use)
 
 export default defineConfig({
-  site: process.env.NODE_ENV === 'production' 
+  site: process.env.NODE_ENV === 'production'
     ? 'https://farooqqureshi.com'
     : 'https://farooqqureshii.github.io',
+  output: 'server', // ✅ required for SSR
+  adapter: vercel(), // ✅ auto-detects server/edge based on output
   integrations: [mdx(), sitemap(), tailwind()],
-  output: 'server',
-  adapter: vercel({}), // ✅ pass empty config object
   markdown: {
     shikiConfig: {
       themes: {
