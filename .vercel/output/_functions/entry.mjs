@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports } from './chunks/entrypoint_BK6EI_4i.mjs';
-import { manifest } from './manifest_BpPov3hS.mjs';
+import { c as createExports } from './chunks/entrypoint_v0vLGXd9.mjs';
+import { manifest } from './manifest_CfCjfLk4.mjs';
 
 const serverIslandMap = new Map();;
 
@@ -28,7 +28,7 @@ const pageMap = new Map([
     ["src/pages/api/[...spotify].ts", _page4],
     ["src/pages/artifacts/index.astro", _page5],
     ["src/pages/graph-view.astro", _page6],
-    ["src/pages/misc/books.mdx", _page7],
+    ["src/pages/misc/books.md", _page7],
     ["src/pages/misc/music.astro", _page8],
     ["src/pages/misc/index.astro", _page9],
     ["src/pages/projects/index.astro", _page10],
@@ -47,7 +47,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "1e07721b-4ec2-4e88-962a-bb155e20932f",
+    "middlewareSecret": "d20916da-6fdc-4bd5-8534-71b63f343082",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);

@@ -1,220 +1,52 @@
 /* empty css                                    */
-import { _ as __astro_tag_component__, d as createVNode, F as Fragment } from '../../chunks/astro/server_DeArHbKV.mjs';
-import { $ as $$Layout } from '../../chunks/Layout_eI1_hp_t.mjs';
-import '../../chunks/index_DfOMS8cV.mjs';
-import { $ as $$Image } from '../../chunks/_astro_assets_Cqd381NS.mjs';
-import 'clsx';
+import { c as createComponent, r as renderComponent, a as renderTemplate, u as unescapeHTML } from '../../chunks/astro/server_C-dnnmbC.mjs';
+import 'kleur/colors';
+import { $ as $$Layout } from '../../chunks/Layout_DNkzyJPv.mjs';
 export { renderers } from '../../renderers.mjs';
 
-const MDXLayout = function ({children}) {
-  const {layout, ...content} = frontmatter;
-  content.file = file;
-  content.url = url;
-  return createVNode($$Layout, {
-    file,
-    url,
-    content,
-    frontmatter: content,
-    headings: getHeadings(),
-    'server:root': true,
-    children
-  });
-};
-const frontmatter = {
-  "layout": "../../layouts/Layout.astro",
-  "title": "Books",
-  "description": "Some of my favorite books."
-};
-function getHeadings() {
-  return [];
-}
-const __usesAstroImage = true;
-function _createMdxContent(props) {
-  const _components = {
-    hr: "hr",
-    li: "li",
-    p: "p",
-    ul: "ul",
-    ...props.components
-  };
-  return createVNode(Fragment, {
-    children: [createVNode(_components.p, {
-      children: "Books I’ve read in no particular order."
-    }), "\n", createVNode(_components.hr, {}), "\n", createVNode("br", {}), "\n", createVNode(_components.ul, {
-      children: ["\n", createVNode(_components.li, {
-        children: "Everything I Never Told You"
-      }), "\n", createVNode(_components.li, {
-        children: "Belzhar"
-      }), "\n", createVNode(_components.li, {
-        children: "Animal Farm"
-      }), "\n", createVNode(_components.li, {
-        children: "1984"
-      }), "\n", createVNode(_components.li, {
-        children: "Brave New World"
-      }), "\n", createVNode(_components.li, {
-        children: "Bluets"
-      }), "\n", createVNode(_components.li, {
-        children: "Sapiens"
-      }), "\n", createVNode(_components.li, {
-        children: "Homo Deus"
-      }), "\n", createVNode(_components.li, {
-        children: "Skin in the Game"
-      }), "\n", createVNode(_components.li, {
-        children: "Dopamine Nation"
-      }), "\n", createVNode(_components.li, {
-        children: "All the Light We Cannot See"
-      }), "\n", createVNode(_components.li, {
-        children: "The Alchemist"
-      }), "\n", createVNode(_components.li, {
-        children: "South of the Border, West of the Sun"
-      }), "\n", createVNode(_components.li, {
-        children: "Klara and the Sun"
-      }), "\n", createVNode(_components.li, {
-        children: "Wit"
-      }), "\n", createVNode(_components.li, {
-        children: "The Subject Was Roses"
-      }), "\n", createVNode(_components.li, {
-        children: "Outliers"
-      }), "\n", createVNode(_components.li, {
-        children: "Homegoing"
-      }), "\n", createVNode(_components.li, {
-        children: "Speedboat"
-      }), "\n", createVNode(_components.li, {
-        children: "The Folded Clock"
-      }), "\n", createVNode(_components.li, {
-        children: "We the Animals"
-      }), "\n", createVNode(_components.li, {
-        children: "So Sad Today"
-      }), "\n", createVNode(_components.li, {
-        children: "Milkman"
-      }), "\n", createVNode(_components.li, {
-        children: "Weather, Jenny Offill"
-      }), "\n", createVNode(_components.li, {
-        children: "The Sad Part Was"
-      }), "\n", createVNode(_components.li, {
-        children: "Call Me Zebra"
-      }), "\n", createVNode(_components.li, {
-        children: "Native Speaker"
-      }), "\n", createVNode(_components.li, {
-        children: "Your Utopia"
-      }), "\n", createVNode(_components.li, {
-        children: "Temporary"
-      }), "\n", createVNode(_components.li, {
-        children: "The Employees"
-      }), "\n", createVNode(_components.li, {
-        children: "Drinking Coffee Elsewhere"
-      }), "\n", createVNode(_components.li, {
-        children: "No One Is Talking About This"
-      }), "\n", createVNode(_components.li, {
-        children: "The Year of Magical Thinking"
-      }), "\n", createVNode(_components.li, {
-        children: "If You Leave Me"
-      }), "\n", createVNode(_components.li, {
-        children: "How Much of These Hills Is Gold"
-      }), "\n", createVNode(_components.li, {
-        children: "The Loneliness of the Long Distance Runner"
-      }), "\n", createVNode(_components.li, {
-        children: "Can’t and Won’t"
-      }), "\n", createVNode(_components.li, {
-        children: "A Heartbreaking Work of Staggering Genius"
-      }), "\n", createVNode(_components.li, {
-        children: "Celestial Bodies"
-      }), "\n", createVNode(_components.li, {
-        children: "Go Home!"
-      }), "\n", createVNode(_components.li, {
-        children: "Interpreter of Maladies"
-      }), "\n", createVNode(_components.li, {
-        children: "The Emperor of All Maladies"
-      }), "\n", createVNode(_components.li, {
-        children: "The Boat"
-      }), "\n", createVNode(_components.li, {
-        children: "The Ones Who Walk Away from Omelas"
-      }), "\n", createVNode(_components.li, {
-        children: "The Dispossessed"
-      }), "\n", createVNode(_components.li, {
-        children: "The Left Hand of Darkness"
-      }), "\n", createVNode(_components.li, {
-        children: "Frankenstein"
-      }), "\n", createVNode(_components.li, {
-        children: "In Search of Lost Time"
-      }), "\n", createVNode(_components.li, {
-        children: "The Trial"
-      }), "\n", createVNode(_components.li, {
-        children: "To the Lighthouse"
-      }), "\n", createVNode(_components.li, {
-        children: "The Crucible"
-      }), "\n", createVNode(_components.li, {
-        children: "The Double Helix"
-      }), "\n", createVNode(_components.li, {
-        children: "Dune"
-      }), "\n", createVNode(_components.li, {
-        children: "The Electric Kool-Aid Acid Test"
-      }), "\n", createVNode(_components.li, {
-        children: "Danube"
-      }), "\n", createVNode(_components.li, {
-        children: "The Road to Oxiana"
-      }), "\n", createVNode(_components.li, {
-        children: "And the Band Played On"
-      }), "\n", createVNode(_components.li, {
-        children: "Postwar"
-      }), "\n", createVNode(_components.li, {
-        children: "The Catcher in the Rye"
-      }), "\n", createVNode(_components.li, {
-        children: "Middlemarch"
-      }), "\n", createVNode(_components.li, {
-        children: "The Sun Also Rises"
-      }), "\n", createVNode(_components.li, {
-        children: "Midnight’s Children"
-      }), "\n", createVNode(_components.li, {
-        children: "The Plague"
-      }), "\n", createVNode(_components.li, {
-        children: "The Man Without Qualities"
-      }), "\n", createVNode(_components.li, {
-        children: "The Tale of Genji"
-      }), "\n", createVNode(_components.li, {
-        children: "In Cold Blood"
-      }), "\n", createVNode(_components.li, {
-        children: "Man’s Search for Meaning"
-      }), "\n", createVNode(_components.li, {
-        children: "Homage to Catalonia"
-      }), "\n", createVNode(_components.li, {
-        children: "I Know Why the Caged Bird Sings"
-      }), "\n", createVNode(_components.li, {
-        children: "All the President’s Men"
-      }), "\n", createVNode(_components.li, {
-        children: "The Warmth of Other Suns"
-      }), "\n"]
-    })]
-  });
-}
-function MDXContent(props = {}) {
-  return createVNode(MDXLayout, {
-    ...props,
-    children: createVNode(_createMdxContent, {
-      ...props
-    })
-  });
-}
+const html = () => "<div class=\"prose dark:prose-invert max-w-2xl mx-auto\">\n  <h2>Books I've read in no particular order.</h2>\n  <br>\n  <hr>\n  <br>\n  <ul>\n    <li>Everything I Never Told You</li>\n    <li>Belzhar</li>\n    <li>Animal Farm</li>\n    <li>1984</li>\n    <li>Brave New World</li>\n    <li>Bluets</li>\n    <li>Sapiens</li>\n    <li>Homo Deus</li>\n    <li>Skin in the Game</li>\n    <li>Dopamine Nation</li>\n    <li>All the Light We Cannot See</li>\n    <li>The Alchemist</li>\n    <li>South of the Border, West of the Sun</li>\n    <li>Klara and the Sun</li>\n    <li>Wit</li>\n    <li>The Subject Was Roses</li>\n    <li>Outliers</li>\n    <li>Homegoing</li>\n    <li>Speedboat</li>\n    <li>The Folded Clock</li>\n    <li>We the Animals</li>\n    <li>So Sad Today</li>\n    <li>Milkman</li>\n    <li>Weather, Jenny Offill</li>\n    <li>The Sad Part Was</li>\n    <li>Call Me Zebra</li>\n    <li>Native Speaker</li>\n    <li>Your Utopia</li>\n    <li>Temporary</li>\n    <li>The Employees</li>\n    <li>Drinking Coffee Elsewhere</li>\n    <li>No One Is Talking About This</li>\n    <li>The Year of Magical Thinking</li>\n    <li>If You Leave Me</li>\n    <li>How Much of These Hills Is Gold</li>\n    <li>The Loneliness of the Long Distance Runner</li>\n    <li>Can't and Won't</li>\n    <li>A Heartbreaking Work of Staggering Genius</li>\n    <li>Celestial Bodies</li>\n    <li>Go Home!</li>\n    <li>Interpreter of Maladies</li>\n    <li>The Emperor of All Maladies</li>\n    <li>The Boat</li>\n    <li>The Ones Who Walk Away from Omelas</li>\n    <li>The Dispossessed</li>\n    <li>The Left Hand of Darkness</li>\n    <li>Frankenstein</li>\n    <li>In Search of Lost Time</li>\n    <li>The Trial</li>\n    <li>To the Lighthouse</li>\n    <li>The Crucible</li>\n    <li>The Double Helix</li>\n    <li>Dune</li>\n    <li>The Electric Kool-Aid Acid Test</li>\n    <li>Danube</li>\n    <li>The Road to Oxiana</li>\n    <li>And the Band Played On</li>\n    <li>Postwar</li>\n    <li>The Catcher in the Rye</li>\n    <li>Middlemarch</li>\n    <li>The Sun Also Rises</li>\n    <li>Midnight's Children</li>\n    <li>The Plague</li>\n    <li>The Man Without Qualities</li>\n    <li>The Tale of Genji</li>\n    <li>In Cold Blood</li>\n    <li>Man's Search for Meaning</li>\n    <li>Homage to Catalonia</li>\n    <li>I Know Why the Caged Bird Sings</li>\n    <li>All the President's Men</li>\n    <li>The Warmth of Other Suns</li>\n  </ul>\n</div>";
 
-const url = "/misc/books";
-const file = "C:/dev/Some Fixes/farooqqureshii.github.io/src/pages/misc/books.mdx";
-const Content = (props = {}) => MDXContent({
-  ...props,
-  components: { Fragment: Fragment, ...props.components, "astro-image":  props.components?.img ?? $$Image },
-});
-Content[Symbol.for('mdx-component')] = true;
-Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "C:/dev/Some Fixes/farooqqureshii.github.io/src/pages/misc/books.mdx";
-__astro_tag_component__(Content, 'astro:jsx');
+				const frontmatter = {"layout":"../../layouts/Layout.astro","title":"Books","description":"Some of my favorite books."};
+				const file = "C:/dev/Some Fixes/farooqqureshii.github.io/src/pages/misc/books.md";
+				const url = "/misc/books";
+				function rawContent() {
+					return "   \n                                  \n            \n                                       \n   \n\n<div class=\"prose dark:prose-invert max-w-2xl mx-auto\">\n  <h2>Books I've read in no particular order.</h2>\n  <br>\n  <hr>\n  <br>\n  <ul>\n    <li>Everything I Never Told You</li>\n    <li>Belzhar</li>\n    <li>Animal Farm</li>\n    <li>1984</li>\n    <li>Brave New World</li>\n    <li>Bluets</li>\n    <li>Sapiens</li>\n    <li>Homo Deus</li>\n    <li>Skin in the Game</li>\n    <li>Dopamine Nation</li>\n    <li>All the Light We Cannot See</li>\n    <li>The Alchemist</li>\n    <li>South of the Border, West of the Sun</li>\n    <li>Klara and the Sun</li>\n    <li>Wit</li>\n    <li>The Subject Was Roses</li>\n    <li>Outliers</li>\n    <li>Homegoing</li>\n    <li>Speedboat</li>\n    <li>The Folded Clock</li>\n    <li>We the Animals</li>\n    <li>So Sad Today</li>\n    <li>Milkman</li>\n    <li>Weather, Jenny Offill</li>\n    <li>The Sad Part Was</li>\n    <li>Call Me Zebra</li>\n    <li>Native Speaker</li>\n    <li>Your Utopia</li>\n    <li>Temporary</li>\n    <li>The Employees</li>\n    <li>Drinking Coffee Elsewhere</li>\n    <li>No One Is Talking About This</li>\n    <li>The Year of Magical Thinking</li>\n    <li>If You Leave Me</li>\n    <li>How Much of These Hills Is Gold</li>\n    <li>The Loneliness of the Long Distance Runner</li>\n    <li>Can't and Won't</li>\n    <li>A Heartbreaking Work of Staggering Genius</li>\n    <li>Celestial Bodies</li>\n    <li>Go Home!</li>\n    <li>Interpreter of Maladies</li>\n    <li>The Emperor of All Maladies</li>\n    <li>The Boat</li>\n    <li>The Ones Who Walk Away from Omelas</li>\n    <li>The Dispossessed</li>\n    <li>The Left Hand of Darkness</li>\n    <li>Frankenstein</li>\n    <li>In Search of Lost Time</li>\n    <li>The Trial</li>\n    <li>To the Lighthouse</li>\n    <li>The Crucible</li>\n    <li>The Double Helix</li>\n    <li>Dune</li>\n    <li>The Electric Kool-Aid Acid Test</li>\n    <li>Danube</li>\n    <li>The Road to Oxiana</li>\n    <li>And the Band Played On</li>\n    <li>Postwar</li>\n    <li>The Catcher in the Rye</li>\n    <li>Middlemarch</li>\n    <li>The Sun Also Rises</li>\n    <li>Midnight's Children</li>\n    <li>The Plague</li>\n    <li>The Man Without Qualities</li>\n    <li>The Tale of Genji</li>\n    <li>In Cold Blood</li>\n    <li>Man's Search for Meaning</li>\n    <li>Homage to Catalonia</li>\n    <li>I Know Why the Caged Bird Sings</li>\n    <li>All the President's Men</li>\n    <li>The Warmth of Other Suns</li>\n  </ul>\n</div>\n\n\n\n\n\n\n";
+				}
+				async function compiledContent() {
+					return await html();
+				}
+				function getHeadings() {
+					return [];
+				}
+
+				const Content = createComponent((result, _props, slots) => {
+					const { layout, ...content } = frontmatter;
+					content.file = file;
+					content.url = url;
+
+					return renderTemplate`${renderComponent(result, 'Layout', $$Layout, {
+								file,
+								url,
+								content,
+								frontmatter: content,
+								headings: getHeadings(),
+								rawContent,
+								compiledContent,
+								'server:root': true,
+							}, {
+								'default': () => renderTemplate`${unescapeHTML(html())}`
+							})}`;
+				});
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 	__proto__: null,
 	Content,
-	__usesAstroImage,
+	compiledContent,
 	default: Content,
 	file,
 	frontmatter,
 	getHeadings,
+	rawContent,
 	url
 }, Symbol.toStringTag, { value: 'Module' }));
 

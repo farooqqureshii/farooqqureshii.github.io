@@ -1,4 +1,4 @@
-import { c as createComponent, m as maybeRenderHead, q as renderScript, a as renderTemplate, r as renderComponent, f as createAstro, s as renderSlot, e as addAttribute, b as renderHead } from './astro/server_DeArHbKV.mjs';
+import { c as createComponent, m as maybeRenderHead, q as renderScript, a as renderTemplate, r as renderComponent, e as createAstro, s as renderSlot, d as addAttribute, b as renderHead } from './astro/server_C-dnnmbC.mjs';
 import 'kleur/colors';
 import { clsx } from 'clsx';
 /* empty css                         */
@@ -47,59 +47,7 @@ const $$Layout = createComponent(($$result, $$props, $$slots) => {
     image = "/static/blog-placeholder.png",
     className
   } = Astro2.props;
-  return renderTemplate(_a || (_a = __template(['<html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator"', '><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical"', "><!-- Primary Meta Tags --><title>", '</title><meta name="title"', '><meta name="description"', '><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url"', '><meta property="og:title"', '><meta property="og:description"', '><meta property="og:image"', '><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url"', '><meta property="twitter:title"', '><meta property="twitter:description"', '><meta property="twitter:image"', ">", '</head> <body class="font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"> <div class="custom-cursor"></div> <div', "> ", " ", " ", ` </div> <script>
-  const setTheme = () => {
-    let theme;
-
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      theme = localStorage.getItem("theme");
-    } else {
-      theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-    }
-
-    document.documentElement.classList[theme ? "add" : "remove"](theme);
-
-    if (typeof localStorage !== "undefined") {
-      const observer = new MutationObserver(() => {
-        const isDark = document.documentElement.classList.contains("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-      });
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-    }
-  };
-
-  setTheme();
-
-  document.addEventListener("astro:after-swap", setTheme);
-<\/script> <script>
-  // Custom cursor functionality
-  const cursor = document.querySelector('.custom-cursor');
-  
-  if (cursor) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
-    
-    // Add hover effect on interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, [role="button"]');
-    
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-      });
-      
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-      });
-    });
-  }
-<\/script></body></html>`])), addAttribute(Astro2.generator, "content"), addAttribute(canonicalURL, "href"), title, addAttribute(title, "content"), addAttribute(description, "content"), addAttribute(Astro2.url, "content"), addAttribute(title, "content"), addAttribute(description, "content"), addAttribute(new URL(image, Astro2.url), "content"), addAttribute(Astro2.url, "content"), addAttribute(title, "content"), addAttribute(description, "content"), addAttribute(new URL(image, Astro2.url), "content"), renderHead(), addAttribute(cn("max-w-xl mx-auto p-4 slide-in", className), "class"), renderComponent($$result, "Header", $$Header, {}), renderSlot($$result, $$slots["default"]), renderComponent($$result, "Footer", $$Footer, {}));
+  return renderTemplate(_a || (_a = __template(['<html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator"', '><!-- Font preloads --><link rel="preload" href="/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical"', "><!-- Primary Meta Tags --><title>", '</title><meta name="title"', '><meta name="description"', '><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url"', '><meta property="og:title"', '><meta property="og:description"', '><meta property="og:image"', '><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url"', '><meta property="twitter:title"', '><meta property="twitter:description"', '><meta property="twitter:image"', ">", '</head> <body class="font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"> <div', "> ", " ", " ", ' </div> <script>\n  const setTheme = () => {\n    let theme;\n\n    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {\n      theme = localStorage.getItem("theme");\n    } else {\n      theme = window.matchMedia("(prefers-color-scheme: dark)").matches\n        ? "dark"\n        : "light";\n    }\n\n    document.documentElement.classList[theme ? "add" : "remove"](theme);\n\n    if (typeof localStorage !== "undefined") {\n      const observer = new MutationObserver(() => {\n        const isDark = document.documentElement.classList.contains("dark");\n        localStorage.setItem("theme", isDark ? "dark" : "light");\n      });\n      observer.observe(document.documentElement, {\n        attributes: true,\n        attributeFilter: ["class"],\n      });\n    }\n  };\n\n  setTheme();\n\n  document.addEventListener("astro:after-swap", setTheme);\n<\/script></body></html>'])), addAttribute(Astro2.generator, "content"), addAttribute(canonicalURL, "href"), title, addAttribute(title, "content"), addAttribute(description, "content"), addAttribute(Astro2.url, "content"), addAttribute(title, "content"), addAttribute(description, "content"), addAttribute(new URL(image, Astro2.url), "content"), addAttribute(Astro2.url, "content"), addAttribute(title, "content"), addAttribute(description, "content"), addAttribute(new URL(image, Astro2.url), "content"), renderHead(), addAttribute(cn("max-w-xl mx-auto p-4 slide-in", className), "class"), renderComponent($$result, "Header", $$Header, {}), renderSlot($$result, $$slots["default"]), renderComponent($$result, "Footer", $$Footer, {}));
 }, "C:/dev/Some Fixes/farooqqureshii.github.io/src/layouts/Layout.astro", void 0);
 
 export { $$Layout as $, formatDate as f };
