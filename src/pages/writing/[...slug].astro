@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { formatDate } from "../../lib/utils";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const writing = await getCollection("writing");
+  return writing.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+const post = Astro.props;
+
+// Add defensive programming to handle undefined post or post.data
+if (!post) {
+  throw new Error(`Post not found for slug: ${Astro.params.slug}`);
+}
+
+if (!post.data) {
+  throw new Error(`Post data is undefined for slug: ${Astro.params.slug}. Post object: ${JSON.stringify(post, null, 2)}`);
+}
+
+const { title, date, description } = post.data;
+const { Content } = await post.render();
+---
+
+<Layout title={title} description={description}>
+  <main>
+    <h1 class="mb-5 text-xl font-medium">
+      {title}
+    </h1>
+    <p class="mb-1 font-medium text-zinc-500">
+      {formatDate(date)}
+    </p>
+    <article>
+      <Content />
+    </article>
+  </main>
+</Layout> 

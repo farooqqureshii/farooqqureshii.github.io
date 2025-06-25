@@ -1,0 +1,114 @@
+<div class="flex flex-col gap-0.5 text-xs text-zinc-500">
+  <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
+      <span id="now-playing-label"></span>
+      <div class="overflow-hidden max-w-[200px]">
+        <a id="now-playing-link" href="#" target="_blank" rel="noopener noreferrer" class="hover:underline">
+          <span id="now-playing" class="marquee-text">Loading...</span>
+        </a>
+      </div>
+    </div>
+    <div class="flex items-center gap-0.5 h-2" id="now-playing-bars">
+      <div class="bar bar1"></div>
+      <div class="bar bar2"></div>
+      <div class="bar bar3"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.bar {
+  width: 2px;
+  height: 100%;
+  background: currentColor;
+  margin-right: 2px;
+  display: inline-block;
+  border-radius: 1px;
+  animation: bounce 1s infinite ease-in-out;
+}
+.bar1 { animation-delay: 0s; }
+.bar2 { animation-delay: 0.2s; }
+.bar3 { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 100% { height: 30%; }
+  50% { height: 100%; }
+}
+.marquee-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 15s linear infinite;
+}
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.marquee-paused {
+  animation-play-state: paused !important;
+}
+.bars-static .bar {
+  animation: none !important;
+  opacity: 0.4;
+}
+.no-marquee {
+  animation: none !important;
+  transform: none !important;
+  white-space: normal !important;
+}
+</style>
+
+<script>
+  async function updateNowPlaying() {
+    try {
+      console.log('Fetching Spotify data...');
+      const res = await fetch(`/api/spotify-now-playing/`, {
+        cache: 'no-store',
+      });
+      console.log('Response status:', res.status);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      console.log('Spotify data received:', data);
+      
+      const span = document.getElementById('now-playing');
+      const link = document.getElementById('now-playing-link');
+      const label = document.getElementById('now-playing-label');
+      const bars = document.getElementById('now-playing-bars');
+      
+      if (span && link && label && bars) {
+        const a = link as HTMLAnchorElement;
+        
+        if (data.isPlaying) {
+          console.log('Song is playing:', data.title, 'by', data.artist);
+          label.textContent = 'listening to:';
+          span.textContent = `${data.title} — ${data.artist}`;
+          a.href = data.songUrl || '#';
+          a.style.pointerEvents = data.songUrl ? 'auto' : 'none';
+          bars.classList.remove('bars-static');
+          span.classList.remove('marquee-paused', 'no-marquee');
+        } else {
+          console.log('Not currently playing anything');
+          label.textContent = '';
+          span.textContent = 'not listening';
+          a.href = '#';
+          a.style.pointerEvents = 'none';
+          bars.classList.add('bars-static');
+          span.classList.add('no-marquee');
+          span.classList.remove('marquee-paused');
+        }
+      } else {
+        console.error('Could not find required DOM elements');
+      }
+    } catch (error) {
+      console.error('Error fetching Spotify data:', error);
+      const span = document.getElementById('now-playing');
+      if (span) span.textContent = 'Error loading track';
+    }
+  }
+
+  console.log('Spotify component loaded, starting update...');
+  updateNowPlaying();
+  setInterval(updateNowPlaying, 10000);
+</script> 
