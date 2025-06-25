@@ -5,7 +5,11 @@ import Layout from "../../layouts/Layout.astro";
 import { formatDate } from "../../lib/utils";
 
 const posts = await getCollection("writing");
-const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.data.date);
+  const dateB = new Date(b.data.date);
+  return dateB.valueOf() - dateA.valueOf();
+});
 ---
 
 <Layout title="Writing / Farooq Qureshi" description={SITE_DESCRIPTION}>

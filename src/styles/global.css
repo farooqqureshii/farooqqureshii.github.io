@@ -14,34 +14,9 @@
     font-display: swap;
   }
   
-  /* Custom cursor */
+  /* Restore default cursor */
   body {
-    cursor: none;
-  }
-  
-  .custom-cursor {
-    width: 4px;
-    height: 4px;
-    background: #000;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease;
-  }
-  
-  .custom-cursor.hover {
-    transform: scale(2);
-  }
-  
-  /* Dark mode cursor */
-  html.dark .custom-cursor {
-    background: #fff;
-  }
-  
-  /* Show default cursor on interactive elements for accessibility */
-  a, button, input, textarea, select, [role="button"] {
-    cursor: pointer;
+    cursor: auto;
   }
   
   html.dark .astro-code,

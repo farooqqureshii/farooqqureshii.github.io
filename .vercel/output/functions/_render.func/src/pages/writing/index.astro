@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import { SITE_DESCRIPTION } from "../../consts";
+import Layout from "../../layouts/Layout.astro";
+import { formatDate } from "../../lib/utils";
+
+const posts = await getCollection("writing");
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.data.date);
+  const dateB = new Date(b.data.date);
+  return dateB.valueOf() - dateA.valueOf();
+});
+---
+
+<Layout title="Writing / Farooq Qureshi" description={SITE_DESCRIPTION}>
+  <main>
+    <ul class="flex flex-col gap-1.5">
+      {sortedPosts.map((post) => (
+        <li>
+          <a
+            href={`/writing/${post.slug}`}
+            class="group flex justify-between gap-3"
+          >
+            <span class="group-hover:underline">{post.data.title}</span>
+            <span class="text-nowrap text-zinc-500">
+              {formatDate(post.data.date)}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Layout> 

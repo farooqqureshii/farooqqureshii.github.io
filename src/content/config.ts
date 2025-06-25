@@ -4,7 +4,7 @@ const writing = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    date: z.coerce.date(),
+    date: z.string(),
     description: z.string(),
     draft: z.boolean().default(false),
   }),
@@ -14,7 +14,7 @@ const notes = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    date: z.coerce.date(),
+    date: z.string(),
     description: z.string(),
     draft: z.boolean().default(false),
   }),

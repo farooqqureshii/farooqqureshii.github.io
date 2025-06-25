@@ -3,6 +3,8 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { formatDate } from "../../lib/utils";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const writing = await getCollection("writing");
   return writing.map((post) => ({
@@ -12,6 +14,22 @@ export async function getStaticPaths() {
 }
 
 const post = Astro.props;
+
+// Check if post exists
+if (!post) {
+  throw new Error("Post object is undefined");
+}
+
+// Check if post.slug exists
+if (!post.slug) {
+  throw new Error("Post slug is undefined");
+}
+
+// Check if post.data exists before destructuring
+if (!post.data) {
+  throw new Error(`Post data is missing for slug: ${post.slug}`);
+}
+
 const { title, date, description } = post.data;
 const { Content } = await post.render();
 ---
