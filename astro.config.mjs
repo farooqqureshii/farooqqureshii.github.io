@@ -13,7 +13,7 @@ export default defineConfig({
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
   integrations: [mdx(), sitemap(), tailwind()],
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({ mode: 'server' }),
   markdown: {
     shikiConfig: {
       themes: {
