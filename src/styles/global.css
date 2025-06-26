@@ -3,13 +3,23 @@
 @tailwind utilities;
 
 @layer base {
-  /* Smooth theme transitions */
+  /* Smooth theme transitions - more selective for better performance */
   html {
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.2s ease-out;
   }
   
-  html * {
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  body {
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
+  }
+  
+  /* Only transition specific elements that commonly change with theme */
+  h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select {
+    transition: color 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
+  }
+  
+  /* Exclude elements that shouldn't transition */
+  pre, code, svg, img, video, canvas {
+    transition: none;
   }
   
   @font-face {
