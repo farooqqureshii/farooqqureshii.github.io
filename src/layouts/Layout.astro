@@ -70,7 +70,6 @@ const {
   <body
     class="font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"
   >
-    <div class="custom-cursor"></div>
     <div class={cn("max-w-xl mx-auto p-4 slide-in", className)}>
       <Header />
       <slot />
@@ -108,29 +107,4 @@ const {
   setTheme();
 
   document.addEventListener("astro:after-swap", setTheme);
-</script>
-
-<script is:inline>
-  // Custom cursor functionality
-  const cursor = document.querySelector('.custom-cursor');
-  
-  if (cursor) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
-    
-    // Add hover effect on interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, [role="button"]');
-    
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-      });
-      
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-      });
-    });
-  }
 </script>
