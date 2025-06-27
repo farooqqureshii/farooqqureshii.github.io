@@ -36,10 +36,10 @@
 .marquee-text {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee 8s linear infinite;
+  animation: marquee 12s linear infinite;
 }
 @keyframes marquee {
-  0% { transform: translateX(0%); }
+  0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
 .marquee-paused {
@@ -83,7 +83,8 @@
         if (data.isPlaying) {
           console.log('Song is playing:', data.title, 'by', data.artist);
           label.textContent = 'listening to:';
-          span.textContent = `${data.title} — ${data.artist}`;
+          const songText = `${data.title} — ${data.artist}`;
+          span.textContent = `${songText} • ${songText}`;
           a.href = data.songUrl || '#';
           a.style.pointerEvents = data.songUrl ? 'auto' : 'none';
           bars.classList.remove('bars-static');
