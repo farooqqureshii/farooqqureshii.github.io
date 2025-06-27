@@ -8,12 +8,47 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
   <div class="flex justify-between text-xs text-zinc-500">
     <div class="flex flex-col gap-1">
       <span>crafted with care by farooq</span>
-      <span id="calgary-time" class="opacity-0 transition-opacity duration-300">--:-- | calgary</span>
+      <div class="flex items-center gap-1">
+        <div class="flip-clock-container">
+          <span id="calgary-time" class="flip-clock opacity-0 transition-opacity duration-300">--:--</span>
+        </div>
+        <span>| calgary</span>
+      </div>
     </div>
     <SpotifyNowPlaying />
   </div>
 
+  <style>
+    .flip-clock-container {
+      perspective: 100px;
+      display: inline-block;
+    }
+    
+    .flip-clock {
+      display: inline-block;
+      transition: transform 0.3s ease-out;
+    }
+    
+    .flip-clock.flip {
+      animation: flipAnimation 0.3s ease-out;
+    }
+    
+    @keyframes flipAnimation {
+      0% {
+        transform: rotateX(0deg);
+      }
+      50% {
+        transform: rotateX(90deg);
+      }
+      100% {
+        transform: rotateX(0deg);
+      }
+    }
+  </style>
+
   <script>
+    let previousTime = '';
+    
     function updateCalgaryTime() {
       const calgaryTime = new Date().toLocaleTimeString('en-CA', {
         timeZone: 'America/Edmonton',
@@ -24,8 +59,17 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 
       const el = document.getElementById('calgary-time');
       if (el) {
-        el.innerHTML = `${calgaryTime} | calgary`;
+        // Check if time actually changed
+        if (previousTime && previousTime !== calgaryTime) {
+          el.classList.add('flip');
+          setTimeout(() => {
+            el.classList.remove('flip');
+          }, 300);
+        }
+        
+        el.textContent = calgaryTime;
         el.classList.remove('opacity-0');
+        previousTime = calgaryTime;
       }
     }
 
