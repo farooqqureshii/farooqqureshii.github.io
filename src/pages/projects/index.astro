@@ -5,7 +5,7 @@ import Layout from "../../layouts/Layout.astro";
 const projects = [
   {
     title: "Code Compass",
-    description: "A tool for exploring codebases visually and semantically.",
+    description: "Understand any GitHub repo and find beginner-friendly issues, fast",
     gif: "/static/codecompass_vid.mp4",
     link: "https://trycodecompass.vercel.app/",
     github: "https://github.com/farooqqureshii/code-compass",
@@ -14,7 +14,7 @@ const projects = [
   },
   {
     title: "Substack Case Study",
-    description: "Product/strategy case study for Substack growth.",
+    description: "Product/strategy case study for Substack growth",
     image: "/static/Marketing_Spaces.png",
     link: "/writing/substack/",
     figma: "https://www.figma.com/design/xo2LM1oobkjEsaIASej3v1/Substack-%7C-Product---Design?node-id=1-4&p=f",
@@ -23,7 +23,7 @@ const projects = [
   },
   {
     title: "uOttaHack | Director",
-    description: "Led Ottawa's largest hackathon as Director.",
+    description: "Leading the team behind Ottawa's largest tech event",
     image: "/static/uottahack.jpg",
     link: "https://www.uottahack.ca/",
     technologies: ["PM", "UI/UX", "Figma", "Software", "Sales"],
@@ -31,7 +31,7 @@ const projects = [
   },
   {
     title: "EchoScope",
-    description: "Real-time sentiment analysis and visualization for conversations.",
+    description: "Use AI to uncover sentiment, bias, and diversity in YouTube comments",
     gif: "/static/echoscope_vid.mp4",
     link: "https://echoscope.vercel.app/",
     github: "https://github.com/farooqqureshii/echoscope",
@@ -40,7 +40,7 @@ const projects = [
   },
   {
     title: "Analyzing and predicting housing prices in London",
-    description: "A data science project using ML to predict housing prices.",
+    description: "Smarter housing price predictions with machine learning",
     gif: "/static/london_vid.mp4",
     link: "https://farooq.craft.me/write-up",
     technologies: ["Pandas", "Matplotlib", "Scikit-learn", "SHAP", "LightGBM"],
@@ -48,7 +48,7 @@ const projects = [
   },
   {
     title: "NLP for Google Calendar",
-    description: "Conversational AI for Google Calendar using NLP.",
+    description: "Conversational AI for Google Calendar using NLP",
     gif: "/static/nlp_vid.mp4",
     technologies: ["LangChain", "Rasa", "Typescript", "OAuth"],
     type: "video"
@@ -70,7 +70,7 @@ const projects = [
         <div class="group relative flex flex-col items-start rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg overflow-hidden transition-colors duration-300">
           <div class="media-section w-full overflow-visible relative">
             {project.type === "video" ? (
-              <video autoplay muted loop playsinline class="media-grow w-full aspect-[4/3] object-cover h-48 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 ease-in-out group-hover:h-80 group-focus-within:h-80 z-10">
+              <video autoplay muted loop playsinline class="media-grow w-full aspect-[4/3] object-cover h-48 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 ease-in-out group-hover:h-80 group-focus-within:h-80 z-10" style="touch-action: manipulation;">
                 <source src={project.gif} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
