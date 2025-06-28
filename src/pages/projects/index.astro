@@ -5,77 +5,139 @@ import Layout from "../../layouts/Layout.astro";
 const projects = [
   {
     title: "Code Compass",
-    description: "Next.js, TypeScript, Tailwind, Groq Llama 3, GitHub REST API",
-    image: "/static/code-compass.svg",
+    description: "A tool for exploring codebases visually and semantically.",
+    gif: "/static/codecompass_vid.mp4",
     link: "https://trycodecompass.vercel.app/",
-    type: "image"
+    github: "https://github.com/farooqqureshii/code-compass",
+    technologies: ["Next.js", "TypeScript", "Tailwind", "Groq Llama 3", "GitHub REST API"],
+    type: "video"
   },
   {
-    title: "EchoScope",
-    description: "TypeScript, Node, TensorFlow, Sentiment Analysis",
-    image: "/static/echoscope_image.png",
-    link: "https://echoscope.vercel.app/",
-    type: "image"
-  },
-  {
-    title: "Analyzing and predicting housing prices in London",
-    description: "Pandas, Matplotlib, Scikit-learn, SHAP, LightGBM ",
-    image: "/static/data_vizual_img.png",
-    link: "https://farooq.craft.me/write-up",
+    title: "Substack Case Study",
+    description: "Product/strategy case study for Substack growth.",
+    image: "/static/Marketing_Spaces.png",
+    link: "/writing/substack/",
+    figma: "https://www.figma.com/design/xo2LM1oobkjEsaIASej3v1/Substack-%7C-Product---Design?node-id=1-4&p=f",
+    technologies: ["PM", "Strategy", "UI/UX", "Marketing"],
     type: "image"
   },
   {
     title: "uOttaHack | Director",
-    description: "PM, UI/UX, Figma, Software, Sales",
+    description: "Led Ottawa's largest hackathon as Director.",
     image: "/static/uottahack.jpg",
     link: "https://www.uottahack.ca/",
+    technologies: ["PM", "UI/UX", "Figma", "Software", "Sales"],
     type: "image"
+  },
+  {
+    title: "EchoScope",
+    description: "Real-time sentiment analysis and visualization for conversations.",
+    gif: "/static/echoscope_vid.mp4",
+    link: "https://echoscope.vercel.app/",
+    github: "https://github.com/farooqqureshii/echoscope",
+    technologies: ["TypeScript", "Node", "TensorFlow", "Sentiment Analysis"],
+    type: "video"
+  },
+  {
+    title: "Analyzing and predicting housing prices in London",
+    description: "A data science project using ML to predict housing prices.",
+    gif: "/static/london_vid.mp4",
+    link: "https://farooq.craft.me/write-up",
+    technologies: ["Pandas", "Matplotlib", "Scikit-learn", "SHAP", "LightGBM"],
+    type: "video"
   },
   {
     title: "NLP for Google Calendar",
-    description: "LangChain, Rasa, Typescript, OAuth",
-    image: "/static/blog-placeholder.png",
-    type: "video",
-    video: "/static/nlp for gcal mvp.mp4"
+    description: "Conversational AI for Google Calendar using NLP.",
+    gif: "/static/nlp_vid.mp4",
+    technologies: ["LangChain", "Rasa", "Typescript", "OAuth"],
+    type: "video"
   },
   {
-    title: "Substack Case Study",
-    description: "PM, Strategy, UI/UX, Marketing",
-    image: "/static/Marketing_Spaces.png",
-    link: "/writing/substack/",
-    type: "image"
+    title: "Notion2Todoist",
+    description: "Syncing Tasks from Notion to Todoist",
+    gif: "/static/notion api video.mp4",
+    technologies: ["REST API", "Bash", "Scripting", "Python"],
+    type: "video"
   }
-
 ];
 ---
 
 <Layout title="Projects / Farooq Qureshi" description={SITE_DESCRIPTION}>
   <main>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 gap-8">
       {projects.map((project) => (
-        <div class="flex flex-col items-start">
-          <a
-            href={project.link}
-            target="_blank"
-            class="block w-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-700 transition-colors hover:border-zinc-900 dark:hover:border-zinc-100 mb-4"
-          >
+        <div class="group relative flex flex-col items-start rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg overflow-hidden transition-colors duration-300">
+          <div class="media-section w-full overflow-visible relative">
             {project.type === "video" ? (
-              <video autoplay muted loop playsinline class="w-full aspect-[4/3] object-cover h-40 bg-zinc-100 dark:bg-zinc-900">
-                <source src={project.video} type="video/mp4" />
+              <video autoplay muted loop playsinline class="media-grow w-full aspect-[4/3] object-cover h-48 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 ease-in-out group-hover:h-80 group-focus-within:h-80 z-10">
+                <source src={project.gif} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+            ) : project.type === "youtube" ? (
+              <div class="media-grow w-full aspect-[16/9] h-48 bg-zinc-100 dark:bg-zinc-900 overflow-hidden transition-all duration-300 ease-in-out group-hover:h-80 group-focus-within:h-80 z-10 flex items-center justify-center">
+                <iframe
+                  title={project.title}
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  class="w-[120%] h-[120%] min-w-full min-h-full object-cover rounded-xl -ml-[10%] -mt-[10%]"
+                  style="object-fit: cover;"
+                ></iframe>
+              </div>
             ) : (
               <img
                 src={project.image}
                 alt={project.title}
-                class="w-full aspect-[4/3] object-cover h-40 bg-zinc-100 dark:bg-zinc-900"
+                class="media-grow w-full aspect-[4/3] object-cover h-48 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 ease-in-out group-hover:h-80 group-focus-within:h-80 z-10"
               />
             )}
-          </a>
-          <div class="font-medium text-base mb-1">{project.title}</div>
-          <div class="text-zinc-500 text-sm leading-snug">{project.description}</div>
+          </div>
+          <div class="p-5 w-full flex flex-col flex-1">
+            <div class="font-bold text-xl mb-2 text-zinc-900 dark:text-zinc-100">{project.title}</div>
+            <div class="text-zinc-600 dark:text-zinc-400 text-base leading-snug mb-2">{project.description}</div>
+            {project.technologies && (
+              <div class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 tracking-wide whitespace-pre-line">{project.technologies.join(", ")}</div>
+            )}
+            <div class="flex gap-3 mt-auto">
+              {project.github && (
+                <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors text-lg flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.465-1.11-1.465-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.339-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.338 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .267.18.578.688.48C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2Z"/></svg>
+                </a>
+              )}
+              {project.link && (
+                <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label="External Link" class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors text-lg flex items-center gap-1">
+                  <span class="inline-block align-middle text-xl">↗</span>
+                </a>
+              )}
+            </div>
+          </div>
         </div>
       ))}
     </div>
   </main>
-</Layout> 
+</Layout>
+<style>
+@media (max-width: 640px) {
+  .media-section > img, .media-section > video {
+    height: 32vw !important;
+    min-height: 120px;
+    max-height: 180px;
+    transition: height 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .group:hover .media-grow, .group:focus-within .media-grow {
+    height: 48vw !important;
+    max-height: 320px;
+  }
+  .group .p-5 {
+    padding: 1.25rem 0.75rem;
+  }
+}
+.media-section {
+  overflow: visible;
+}
+.media-grow {
+  will-change: height;
+  z-index: 10;
+}
+</style> 
