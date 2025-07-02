@@ -28,4 +28,5 @@ Waiting in line for books is annoying, but I think it’s a much more long-term 
 The only issue that I sometime encounter that really deters me is when the library does not have a book that I’d like to read. However, most systems have a way to request, and I can personally attest that I’ve done so and gotten said book into my hands in under 5 months. A very quick process, if you think about what is involved in it. 
 
 Tip 3: Set aside a dedicated time to read. 
+
 This one is much easier said than done, but my tip here is to try to not make it before bed. I used to do this but found it was much easier to go from studying to sleeping as opposed to studying to reading. It’s instead I found it a a much better idea to read when you’re having a meal, or at a specific time when you’re taking a break from some work. This way you’re not feeling like it’s the last thing to do in the day.
