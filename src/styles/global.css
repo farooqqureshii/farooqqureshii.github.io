@@ -24,12 +24,61 @@
   }
   /* Custom text selection styles */
   ::selection {
-    @apply bg-yellow-200/70 text-black dark:bg-yellow-500/30 dark:text-white;
+    background: #e0f2fe;
+    color: #18181b;
   }
-  
+  html.dark ::selection {
+    background: rgba(12, 74, 110, 0.7);
+    color: #e4e4e7;
+  }
   /* Ensure links remain visible when selected */
   a::selection {
-    @apply bg-yellow-200/70 text-black dark:bg-yellow-500/30 dark:text-white;
+    background: #e0f2fe;
+    color: #18181b;
+  }
+  html.dark a::selection {
+    background: rgba(12, 74, 110, 0.7);
+    color: #e4e4e7;
+  }
+
+  /* Global link styles - applies to ALL links */
+  a {
+    color: #6a7282;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+  html.dark a {
+    color: #a3adc2;
+  }
+  a:hover {
+    color: #000;
+  }
+  html.dark a:hover {
+    color: #fff;
+  }
+
+  .writing-date {
+    color: #6a7282;
+    font-weight: 400;
+  }
+  html.dark .writing-date {
+    color: #a3adc2;
+  }
+
+  .footer-muted {
+    color: #6a7282;
+  }
+  html.dark .footer-muted {
+    color: #a3adc2;
+  }
+
+  .footer-line-color, .footer-line-color *, .footer-line-color a, .footer-line-color a:visited, .footer-line-color svg {
+    color: #71717a !important;
+    fill: #71717a !important;
+  }
+  html.dark .footer-line-color, html.dark .footer-line-color *, html.dark .footer-line-color a, html.dark .footer-line-color a:visited, html.dark .footer-line-color svg {
+    color: #71717a !important;
+    fill: #71717a !important;
   }
 }
 
@@ -64,11 +113,6 @@
     }
     blockquote {
       @apply my-4 border-l-2 pl-4;
-    }
-    a {
-      color: #3b82f6;
-      text-decoration: underline;
-      transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
     }
     table {
       @apply my-4 w-full table-auto border-collapse text-sm;
