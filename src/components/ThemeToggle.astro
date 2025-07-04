@@ -1,38 +1,36 @@
 <button
   id="theme-toggle"
-  class="inline-flex items-center p-1 transition-transform duration-300 ease-in-out hover:scale-110"
+  class="inline-flex items-center p-1 transition-transform duration-300 ease-in-out hover:scale-105"
   aria-label="Toggle theme"
 >
   <span class="sr-only">Toggle theme</span>
   <span
     id="theme-circle"
-    class="block size-3 rounded-full transition-all duration-700 shadow-md bg-zinc-300 dark:bg-zinc-700"
-    style="box-shadow: 0 0 0 0 rgba(0,0,0,0.2);"
+    class="block size-3 rounded-full transition-colors duration-200"
+    style="background: #18181b; transition: background 0.18s, opacity 0.18s;"
   ></span>
+  <style>
+    html.dark #theme-circle {
+      background: #e4e4e7 !important;
+    }
+  </style>
 </button>
 
 <script>
   const setListener = () => {
     const button = document.getElementById("theme-toggle");
     const circle = document.getElementById("theme-circle");
-
     button?.addEventListener("click", () => {
-      // Minimal: quick scale up and back
       if (circle) {
-        circle.animate([
-          { transform: 'scale(1)' },
-          { transform: 'scale(1.15)' },
-          { transform: 'scale(1)' }
-        ], {
-          duration: 220,
-          easing: 'ease-in-out'
-        });
+        circle.style.opacity = '0.5';
+        setTimeout(() => {
+          circle.style.opacity = '1';
+        }, 180);
       }
       document.documentElement.classList.toggle("dark");
     });
   };
 
   setListener();
-
   document.addEventListener("astro:after-swap", setListener);
 </script>
