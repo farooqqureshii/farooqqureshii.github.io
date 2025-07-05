@@ -48,7 +48,7 @@
     text-decoration: none;
   }
   html.dark a {
-    color: #a3adc2;
+    color: #b3b3b3;
   }
   a:hover {
     color: #000;
@@ -62,7 +62,7 @@
     font-weight: 400;
   }
   html.dark .writing-date {
-    color: #a3adc2;
+    color: #b3b3b3;
   }
 
   .footer-muted {
@@ -79,6 +79,15 @@
   html.dark .footer-line-color, html.dark .footer-line-color *, html.dark .footer-line-color a, html.dark .footer-line-color a:visited, html.dark .footer-line-color svg {
     color: #71717a !important;
     fill: #71717a !important;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 2rem 0;
+  }
+  html.dark hr {
+    border-top: 1px solid #33353a44;
   }
 }
 
