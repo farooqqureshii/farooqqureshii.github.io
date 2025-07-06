@@ -1,36 +1,25 @@
 <button
   id="theme-toggle"
-  class="inline-flex items-center justify-center w-6 h-6 transition-colors duration-200 ease-in-out hover:opacity-80"
+  class="theme-toggle-animate flex items-center justify-center w-6 h-6 transition-colors duration-200 ease-in-out hover:opacity-80"
   aria-label="Toggle theme"
+  type="button"
 >
   <span class="sr-only">Toggle theme</span>
   
-  <!-- Thin circle for both modes -->
+  <!-- Simple line that rotates around its center -->
   <span
-    id="theme-circle"
-    class="block w-4 h-4 border border-current rounded-full transition-all duration-300 ease-in-out"
-    style="border-width: 1.5px; color: #18181b;"
+    id="theme-line"
+    class="block w-4 h-0.5 bg-current transition-transform duration-300 ease-in-out"
+    style="color: #18181b; transform-origin: center center;"
   ></span>
   
   <style>
-    html.dark #theme-circle {
+    html.dark #theme-line {
       color: #e4e4e7 !important;
+      transform: rotate(90deg);
     }
-    
-    #theme-circle.fading {
-      animation: fade 0.3s ease-in-out;
-    }
-    
-    @keyframes fade {
-      0% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.5;
-      }
-      100% {
-        opacity: 1;
-      }
+    html:not(.dark) #theme-line {
+      transform: rotate(0deg);
     }
   </style>
 </button>
@@ -38,22 +27,10 @@
 <script>
   const setListener = () => {
     const button = document.getElementById("theme-toggle");
-    const circle = document.getElementById("theme-circle");
-    
     button?.addEventListener("click", () => {
-      // Add fade animation
-      circle?.classList.add("fading");
-      
-      // Toggle theme
       document.documentElement.classList.toggle("dark");
-      
-      // Remove fade class after animation completes
-      setTimeout(() => {
-        circle?.classList.remove("fading");
-      }, 300);
     });
   };
-
   setListener();
   document.addEventListener("astro:after-swap", setListener);
 </script>
