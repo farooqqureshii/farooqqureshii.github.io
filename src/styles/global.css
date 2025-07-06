@@ -24,20 +24,20 @@
   }
   /* Custom text selection styles */
   ::selection {
-    background: #e0f2fe;
+    background: #fef7e0;
     color: #18181b;
   }
   html.dark ::selection {
-    background: rgba(12, 74, 110, 0.7);
+    background: rgba(217, 119, 6, 0.25);
     color: #e4e4e7;
   }
   /* Ensure links remain visible when selected */
   a::selection {
-    background: #e0f2fe;
+    background: #fef7e0;
     color: #18181b;
   }
   html.dark a::selection {
-    background: rgba(12, 74, 110, 0.7);
+    background: rgba(217, 119, 6, 0.25);
     color: #e4e4e7;
   }
 
