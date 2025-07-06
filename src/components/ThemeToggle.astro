@@ -1,16 +1,16 @@
 <button
   id="theme-toggle"
-  class="inline-flex items-center p-1 transition-transform duration-300 ease-in-out hover:scale-105"
+  class="inline-flex items-center p-1 transition-colors duration-200 ease-in-out hover:opacity-80"
   aria-label="Toggle theme"
 >
   <span class="sr-only">Toggle theme</span>
   <span
-    id="theme-circle"
-    class="block size-3 rounded-full transition-colors duration-200"
-    style="background: #18181b; transition: background 0.18s, opacity 0.18s;"
+    id="theme-line"
+    class="block w-4 h-0.5 transition-colors duration-300 ease-in-out"
+    style="background: #18181b;"
   ></span>
   <style>
-    html.dark #theme-circle {
+    html.dark #theme-line {
       background: #e4e4e7 !important;
     }
   </style>
@@ -19,14 +19,7 @@
 <script>
   const setListener = () => {
     const button = document.getElementById("theme-toggle");
-    const circle = document.getElementById("theme-circle");
     button?.addEventListener("click", () => {
-      if (circle) {
-        circle.style.opacity = '0.5';
-        setTimeout(() => {
-          circle.style.opacity = '1';
-        }, 180);
-      }
       document.documentElement.classList.toggle("dark");
     });
   };

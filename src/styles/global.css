@@ -43,26 +43,67 @@
 
   /* Global link styles - applies to ALL links */
   a {
-    color: #6a7282;
-    transition: color 0.2s;
+    color: #3b82f6; /* Nice minimalist blue */
     text-decoration: none;
   }
   html.dark a {
-    color: #b3b3b3;
+    color: #60a5fa; /* Lighter blue for dark mode */
   }
   a:hover {
-    color: #000;
+    color: #000; /* Change to body text color on hover */
   }
   html.dark a:hover {
-    color: #fff;
+    color: #fff; /* Change to body text color on hover in dark mode */
+  }
+
+  /* Navbar links - inherit body text color */
+  header nav a {
+    color: #000 !important;
+  }
+  html.dark header nav a {
+    color: #fff !important;
+  }
+  header nav a:hover {
+    color: #000 !important;
+  }
+  html.dark header nav a:hover {
+    color: #fff !important;
+  }
+
+  /* Writing page links - inherit body text color */
+  main ul a {
+    color: #000 !important;
+  }
+  html.dark main ul a {
+    color: #fff !important;
+  }
+  main ul a:hover {
+    color: #000 !important;
+  }
+  html.dark main ul a:hover {
+    color: #fff !important;
+  }
+
+  /* Resources page links - use blue color */
+  main ul a[href^="http"] {
+    color: #3b82f6 !important;
+  }
+  html.dark main ul a[href^="http"] {
+    color: #60a5fa !important;
+  }
+  main ul a[href^="http"]:hover {
+    color: #000 !important;
+  }
+  html.dark main ul a[href^="http"]:hover {
+    color: #fff !important;
   }
 
   .writing-date {
-    color: #6a7282;
+    color: #000;
     font-weight: 400;
   }
   html.dark .writing-date {
-    color: #b3b3b3;
+    color: #fff;
   }
 
   .footer-muted {
