@@ -1,5 +1,5 @@
 ---
-title: "Fall 2024 Course Review at uOttawa"
+title: "Fall 2024 Course Review"
 description: "A detailed review of my first semester courses at the University of Ottawa"
 date: "Dec 31 2024"
 draft: false
