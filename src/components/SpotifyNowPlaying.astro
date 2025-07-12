@@ -9,7 +9,7 @@
       <span id="now-playing-label"></span>
       <div class="overflow-hidden max-w-[200px]">
         <a id="now-playing-link" href="#" target="_blank" rel="noopener noreferrer">
-          <span id="now-playing" class="marquee-text">Loading...</span>
+          <span id="now-playing" class="italic">Loading...</span>
         </a>
       </div>
     </div>
@@ -33,26 +33,9 @@
   0%, 100% { height: 30%; }
   50% { height: 100%; }
 }
-.marquee-text {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee 15s linear infinite;
-}
-@keyframes marquee {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-.marquee-paused {
-  animation-play-state: paused !important;
-}
 .bars-static .bar {
   animation: none !important;
   opacity: 0.4;
-}
-.no-marquee {
-  animation: none !important;
-  transform: none !important;
-  white-space: normal !important;
 }
 </style>
 
@@ -87,7 +70,6 @@
           a.href = data.songUrl || '#';
           a.style.pointerEvents = data.songUrl ? 'auto' : 'none';
           bars.classList.remove('bars-static');
-          span.classList.remove('marquee-paused', 'no-marquee');
         } else {
           console.log('Not currently playing anything');
           label.textContent = '';
@@ -95,8 +77,6 @@
           a.href = '#';
           a.style.pointerEvents = 'none';
           bars.classList.add('bars-static');
-          span.classList.add('no-marquee');
-          span.classList.remove('marquee-paused');
         }
       } else {
         console.error('Could not find required DOM elements');
