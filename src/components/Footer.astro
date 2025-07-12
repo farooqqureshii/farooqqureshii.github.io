@@ -5,17 +5,17 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 
 <footer class="mt-0 footer-animate">
   <hr class="border-t border-t-zinc-200 dark:border-t-zinc-700 mb-4 w-full" />
-  <div class="flex justify-between text-xs footer-line-color">
+  <div class="flex justify-between items-start text-xs footer-line-color">
     <div class="flex flex-col gap-1">
       <span>crafted with care by farooq</span>
-      <div class="flex items-center gap-1">
-        <div class="flip-clock-container">
-          <span id="calgary-time" class="flip-clock opacity-0 transition-opacity duration-300">--:--</span>
-        </div>
-        <span>| calgary</span>
-      </div>
+      <SpotifyNowPlaying />
     </div>
-    <SpotifyNowPlaying />
+    <div class="flex items-center gap-1">
+      <div class="flip-clock-container">
+        <span id="calgary-time" class="flip-clock opacity-0 transition-opacity duration-300">--:--</span>
+      </div>
+      <span>in calgary</span>
+    </div>
   </div>
 
   <style>
