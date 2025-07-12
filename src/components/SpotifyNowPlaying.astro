@@ -5,13 +5,10 @@
       <div class="bar bar2"></div>
       <div class="bar bar3"></div>
     </div>
-    <div class="flex items-center gap-1">
-      <span id="now-playing-label"></span>
-      <div class="overflow-hidden w-full">
-        <a id="now-playing-link" href="#" target="_blank" rel="noopener noreferrer">
-          <span id="now-playing" class="italic">Loading...</span>
-        </a>
-      </div>
+    <div class="overflow-hidden w-full">
+      <a id="now-playing-link" href="#" target="_blank" rel="noopener noreferrer">
+        <span class="italic" id="now-playing-full"><!-- will be filled by script --></span>
+      </a>
     </div>
   </div>
 </div>
@@ -57,23 +54,21 @@
       
       const span = document.getElementById('now-playing');
       const link = document.getElementById('now-playing-link');
-      const label = document.getElementById('now-playing-label');
+      const full = document.getElementById('now-playing-full');
       const bars = document.getElementById('now-playing-bars');
       
-      if (span && link && label && bars) {
+      if (span && link && full && bars) {
         const a = link as HTMLAnchorElement;
         
         if (data.isPlaying) {
           console.log('Song is playing:', data.title, 'by', data.artist);
-          label.textContent = 'listening to:';
-          span.textContent = `${data.title} — ${data.artist}`;
+          full.textContent = `listening to: ${data.title} — ${data.artist}`;
           a.href = data.songUrl || '#';
           a.style.pointerEvents = data.songUrl ? 'auto' : 'none';
           bars.classList.remove('bars-static');
         } else {
           console.log('Not currently playing anything');
-          label.textContent = '';
-          span.textContent = 'not listening';
+          full.textContent = 'not listening';
           a.href = '#';
           a.style.pointerEvents = 'none';
           bars.classList.add('bars-static');
@@ -83,8 +78,8 @@
       }
     } catch (error) {
       console.error('Error fetching Spotify data:', error);
-      const span = document.getElementById('now-playing');
-      if (span) span.textContent = 'Error loading track';
+      const full = document.getElementById('now-playing-full');
+      if (full) full.textContent = 'Error loading track';
     }
   }
 
