@@ -52,12 +52,11 @@
       const data = await res.json();
       console.log('Spotify data received:', data);
       
-      const span = document.getElementById('now-playing');
       const link = document.getElementById('now-playing-link');
       const full = document.getElementById('now-playing-full');
       const bars = document.getElementById('now-playing-bars');
       
-      if (span && link && full && bars) {
+      if (link && full && bars) {
         const a = link as HTMLAnchorElement;
         
         if (data.isPlaying) {
