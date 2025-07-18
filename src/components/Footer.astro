@@ -6,74 +6,67 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 <footer class="mt-0 footer-animate">
   <hr class="border-t border-t-zinc-200 dark:border-t-zinc-700 mb-4 w-full" />
   <div class="flex flex-col gap-1 text-xs footer-line-color w-full">
-    <div class="flex justify-between items-start w-full">
-      <span>crafted with care by farooq</span>
-      <div class="flex items-center gap-1">
-        <div class="flip-clock-container">
-          <span id="calgary-time" class="flip-clock opacity-0 transition-opacity duration-300">--:--</span>
-        </div>
+    <div class="flex justify-between items-center w-full">
+      <span>with care, by farooq</span>
+      <span class="flex items-center gap-1">
+        <span id="calgary-time" class="opacity-0 transition-opacity duration-300">--:--</span>
         <span>in calgary</span>
+      </span>
+    </div>
+    <div style="margin-top:0.25rem;">
+      <div id="quote-rotator" style="cursor:pointer; display:inline;">
+        <span id="quote-text"></span>
       </div>
     </div>
-    <SpotifyNowPlaying />
+    <!-- <SpotifyNowPlaying /> -->
   </div>
 
-  <style>
-    .flip-clock-container {
-      perspective: 100px;
-      display: inline-block;
-    }
-    
-    .flip-clock {
-      display: inline-block;
-      transition: transform 0.3s ease-out;
-    }
-    
-    .flip-clock.flip {
-      animation: flipAnimation 0.3s ease-out;
-    }
-    
-    @keyframes flipAnimation {
-      0% {
-        transform: rotateX(0deg);
-      }
-      50% {
-        transform: rotateX(90deg);
-      }
-      100% {
-        transform: rotateX(0deg);
-      }
-    }
-  </style>
-
   <script>
-    let previousTime = '';
-    
+    // Calgary time script
     function updateCalgaryTime() {
       const calgaryTime = new Date().toLocaleTimeString('en-CA', {
         timeZone: 'America/Edmonton',
         hour: '2-digit',
         minute: '2-digit',
+        second: '2-digit',
         hour12: false
       });
-
       const el = document.getElementById('calgary-time');
       if (el) {
-        // Check if time actually changed
-        if (previousTime && previousTime !== calgaryTime) {
-          el.classList.add('flip');
-          setTimeout(() => {
-            el.classList.remove('flip');
-          }, 300);
-        }
-        
         el.textContent = calgaryTime;
         el.classList.remove('opacity-0');
-        previousTime = calgaryTime;
       }
     }
-
     updateCalgaryTime();
-    setInterval(updateCalgaryTime, 60000);
+    setInterval(updateCalgaryTime, 1000);
+
+    // Quote rotator script
+    const quotes = [
+      { text: "The map is not the territory.", author: "Alfred Korzybski" },
+      { text: "Not everything that counts can be counted, and not everything that can be counted counts.", author: "William Bruce Cameron" },
+      { text: "We’re all just walking each other home.", author: "Ram Dass" },
+      { text: "And you? When will you begin that long journey into yourself?", author: "Rumi" },
+      { text: "One must imagine Sisyphus happy.", author: "Albert Camus" },
+      { text: "Don’t use seven words when four will do.", author: "Rusty Ryan, Oceans Eleven" },
+      { text: "A stitch in time saves nine.", author: "Proverb" },
+    ];
+    let lastIndex = -1;
+    function showRandomQuote() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * quotes.length);
+      } while (idx === lastIndex && quotes.length > 1);
+      lastIndex = idx;
+      const q = quotes[idx];
+      const quoteTextEl = document.getElementById('quote-text');
+      if (quoteTextEl) {
+        quoteTextEl.innerHTML = `“${q.text}” — <i>${q.author}</i><span style='margin-left:1em; font-size:0.85em; color:#888; user-select:none;'>view another</span>`;
+      }
+    }
+    const quoteRotator = document.getElementById('quote-rotator');
+    if (quoteRotator) {
+      quoteRotator.onclick = showRandomQuote;
+      showRandomQuote();
+    }
   </script>
 </footer>
