@@ -6,14 +6,12 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
 import { SITE_URL } from "./src/consts";
 
-import react from "@astrojs/react";
-
 // https://astro.build/config
 export default defineConfig({
   site: process.env.NODE_ENV === 'production' 
     ? 'https://farooqqureshi.com'  // Production domain
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
-  integrations: [mdx(), sitemap(), tailwind(), react()],
+  integrations: [mdx(), sitemap(), tailwind()],
   output: 'server',
   adapter: vercel(),
   markdown: {

@@ -6,7 +6,7 @@ const projects = [
   {
     title: "okbutpitchit",
     description: "Code to Pitch-Ready slides, in an Instant",
-    gif: "/static/okbutpitchit_vid.mp4",
+    gif: "/static/okbutpitchit_vid.webm",
     link: "https://okbutpitchit.vercel.app/",
     github: "https://github.com/farooqqureshii/okbutpitchit",
     technologies: ["Next.js", "React", "Tailwind", "Node", "Llama 3"],
@@ -24,7 +24,7 @@ const projects = [
   {
     title: "Code Compass",
     description: "Understand any GitHub repo and find beginner-friendly issues, fast",
-    gif: "/static/codecompass_vid.mp4",
+    gif: "/static/codecompass_vid.webm",
     link: "https://trycodecompass.vercel.app/",
     github: "https://github.com/farooqqureshii/code-compass",
     technologies: ["Next.js", "TypeScript", "Tailwind", "Groq Llama 3", "GitHub REST API"],
@@ -41,7 +41,7 @@ const projects = [
   {
     title: "EchoScope",
     description: "Use AI to uncover sentiment, bias, and diversity in YouTube comments",
-    gif: "/static/echoscope_vid.mp4",
+    gif: "/static/echoscope_vid.webm",
     link: "https://echoscope.vercel.app/",
     github: "https://github.com/farooqqureshii/echoscope",
     technologies: ["TypeScript", "Node", "TensorFlow", "Sentiment Analysis"],
@@ -50,7 +50,7 @@ const projects = [
   {
     title: "Analyzing and predicting housing prices in London",
     description: "Smarter housing price predictions with machine learning",
-    gif: "/static/london_vid.mp4",
+    gif: "/static/london_vid.webm",
     link: "https://farooq.craft.me/write-up",
     technologies: ["Pandas", "Matplotlib", "Scikit-learn", "SHAP", "LightGBM"],
     type: "video"
@@ -58,14 +58,14 @@ const projects = [
   {
     title: "NLP for Google Calendar",
     description: "Conversational AI for Google Calendar using NLP",
-    gif: "/static/nlp_vid.mp4",
+    gif: "/static/nlp_vid.webm",
     technologies: ["LangChain", "Rasa", "Typescript", "OAuth"],
     type: "video"
   },
   {
     title: "Notion2Todoist",
     description: "Syncing Tasks from Notion to Todoist",
-    gif: "/static/notion api video.mp4",
+    gif: "/static/notion api video.webm",
     technologies: ["REST API", "Bash", "Scripting", "Python"],
     type: "video"
   }
@@ -79,8 +79,14 @@ const projects = [
         <div class="group relative flex flex-col items-start rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg overflow-hidden transition-colors duration-300">
           <div class="media-section w-full overflow-visible relative">
             {project.type === "video" ? (
-              <video autoplay muted loop playsinline class="media-grow w-full aspect-[4/3] object-cover h-48 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 ease-in-out group-hover:h-80 group-focus-within:h-80 z-10" style="touch-action: manipulation;">
-                <source src={project.gif} type="video/mp4" />
+              <video 
+                data-src={project.gif}
+                muted 
+                loop 
+                playsinline 
+                class="media-grow w-full aspect-[4/3] object-cover h-48 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 ease-in-out group-hover:h-80 group-focus-within:h-80 z-10 lazy-video" 
+                style="touch-action: manipulation;"
+              >
                 Your browser does not support the video tag.
               </video>
             ) : project.type === "youtube" ? (
@@ -149,4 +155,33 @@ const projects = [
   will-change: height;
   z-index: 10;
 }
-</style> 
+</style>
+
+<script>
+  // Lazy load videos when they come into view
+  const lazyVideos = document.querySelectorAll('.lazy-video');
+  
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const video = entry.target;
+        if (video instanceof HTMLVideoElement) {
+          const src = video.getAttribute('data-src');
+          
+          if (src && !video.src) {
+            video.src = src;
+            video.autoplay = true;
+            videoObserver.unobserve(video);
+          }
+        }
+      }
+    });
+  }, {
+    rootMargin: '50px 0px', // Start loading 50px before video comes into view
+    threshold: 0.1
+  });
+
+  lazyVideos.forEach(video => {
+    videoObserver.observe(video);
+  });
+</script> 

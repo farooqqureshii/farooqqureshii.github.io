@@ -28,6 +28,11 @@
   const setListener = () => {
     const button = document.getElementById("theme-toggle");
     button?.addEventListener("click", () => {
+      // Play sound effect
+      const audio = new Audio("/static/sound.mp3");
+      audio.volume = 0.3; // Set volume to 30% to keep it subtle
+      audio.play().catch(e => console.log("Audio play failed:", e)); // Handle cases where audio might fail
+      
       document.documentElement.classList.toggle("dark");
     });
   };
