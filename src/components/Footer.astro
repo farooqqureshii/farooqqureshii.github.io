@@ -44,10 +44,10 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
     const quotes = [
       { text: "The map is not the territory.", author: "Alfred Korzybski" },
       { text: "Not everything that counts can be counted, and not everything that can be counted counts.", author: "William Bruce Cameron" },
-      { text: "We’re all just walking each other home.", author: "Ram Dass" },
+      { text: "We're all just walking each other home.", author: "Ram Dass" },
       { text: "And you? When will you begin that long journey into yourself?", author: "Rumi" },
       { text: "One must imagine Sisyphus happy.", author: "Albert Camus" },
-      { text: "Don’t use seven words when four will do.", author: "Rusty Ryan, Oceans Eleven" },
+      { text: "Don't use seven words when four will do.", author: "Rusty Ryan, Oceans Eleven" },
       { text: "A stitch in time saves nine.", author: "Proverb" },
     ];
     let lastIndex = -1;
@@ -60,7 +60,7 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
       const q = quotes[idx];
       const quoteTextEl = document.getElementById('quote-text');
       if (quoteTextEl) {
-        quoteTextEl.innerHTML = `“${q.text}” — <i>${q.author}</i><span style='margin-left:1em; font-size:0.85em; color:#888; user-select:none;'>view another</span>`;
+        quoteTextEl.innerHTML = `"${q.text}" — <i>${q.author}</i><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-left:0.5em; display:inline; vertical-align:middle;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>`;
       }
     }
     const quoteRotator = document.getElementById('quote-rotator');
