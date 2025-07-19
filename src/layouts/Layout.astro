@@ -87,19 +87,36 @@ const {
     if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
       theme = localStorage.getItem("theme");
     } else {
-      theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+      // Default to light theme instead of system preference for consistency
+      theme = "light";
     }
 
-    document.documentElement.classList[theme ? "add" : "remove"](theme);
+    // Apply the theme
+    const html = document.documentElement;
+    
+    // Remove all theme classes first
+    html.classList.remove("dark", "flexoki");
+    
+    // Add the appropriate theme class
+    if (theme === "dark") {
+      html.classList.add("dark");
+    } else if (theme === "flexoki") {
+      html.classList.add("flexoki");
+    }
+    // If theme is "light" or anything else, no class is added (default light theme)
 
     if (typeof localStorage !== "undefined") {
       const observer = new MutationObserver(() => {
-        const isDark = document.documentElement.classList.contains("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
+        const isDark = html.classList.contains("dark");
+        const isFlexoki = html.classList.contains("flexoki");
+        
+        let currentTheme = "light";
+        if (isDark) currentTheme = "dark";
+        else if (isFlexoki) currentTheme = "flexoki";
+        
+        localStorage.setItem("theme", currentTheme);
       });
-      observer.observe(document.documentElement, {
+      observer.observe(html, {
         attributes: true,
         attributeFilter: ["class"],
       });

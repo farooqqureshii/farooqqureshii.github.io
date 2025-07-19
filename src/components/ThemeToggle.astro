@@ -6,20 +6,29 @@
 >
   <span class="sr-only">Toggle theme</span>
   
-  <!-- Simple line that rotates around its center -->
-  <span
-    id="theme-line"
-    class="block w-4 h-0.5 bg-current transition-transform duration-300 ease-in-out"
-    style="color: #18181b; transform-origin: center center;"
-  ></span>
+  <!-- Simple dot -->
+  <div class="relative w-4 h-4">
+    <span
+      id="theme-dot"
+      class="absolute w-2 h-2 rounded-full transition-colors duration-300 ease-in-out"
+      style="background-color: #24837B; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+    ></span>
+  </div>
   
   <style>
-    html.dark #theme-line {
-      color: #e4e4e7 !important;
-      transform: rotate(90deg);
+    /* Light theme: cyan dot */
+    html:not(.dark):not(.flexoki) #theme-dot {
+      background-color: #24837B !important; /* Flexoki cyan */
     }
-    html:not(.dark) #theme-line {
-      transform: rotate(0deg);
+    
+    /* Flexoki theme: dark dot */
+    html.flexoki #theme-dot {
+      background-color: #100F0F !important;
+    }
+    
+    /* Dark theme: light dot */
+    html.dark:not(.flexoki) #theme-dot {
+      background-color: #e4e4e7 !important;
     }
   </style>
 </button>
@@ -27,13 +36,28 @@
 <script>
   const setListener = () => {
     const button = document.getElementById("theme-toggle");
+    const dot = document.getElementById("theme-dot");
+    
     button?.addEventListener("click", () => {
       // Play sound effect
       const audio = new Audio("/static/sound.mp3");
-      audio.volume = 0.3; // Set volume to 30% to keep it subtle
-      audio.play().catch(e => console.log("Audio play failed:", e)); // Handle cases where audio might fail
+      audio.volume = 0.3;
+      audio.play().catch(e => console.log("Audio play failed:", e));
       
-      document.documentElement.classList.toggle("dark");
+      // Toggle themes
+      const html = document.documentElement;
+      
+      if (!html.classList.contains("dark") && !html.classList.contains("flexoki")) {
+        // From light to flexoki
+        html.classList.add("flexoki");
+      } else if (html.classList.contains("flexoki")) {
+        // From flexoki to dark
+        html.classList.remove("flexoki");
+        html.classList.add("dark");
+      } else if (html.classList.contains("dark")) {
+        // From dark back to light
+        html.classList.remove("dark");
+      }
     });
   };
   setListener();

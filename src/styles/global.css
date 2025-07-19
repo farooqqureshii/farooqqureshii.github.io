@@ -27,6 +27,13 @@
     font-weight: var(--shiki-dark-font-weight) !important;
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
+
+  /* Flexoki theme styles */
+  html.flexoki {
+    background-color: #FFFCF0;
+    color: #100F0F;
+  }
+
   /* Custom text selection styles */
   ::selection {
     background: #ffeedd;
@@ -35,6 +42,10 @@
   html.dark ::selection {
     background: rgba(255, 183, 133, 0.18);
     color: #e4e4e7;
+  }
+  html.flexoki ::selection {
+    background: #D0A215;
+    color: #100F0F;
   }
   /* Ensure links remain visible when selected */
   a::selection {
@@ -45,6 +56,10 @@
     background: rgba(255, 183, 133, 0.18);
     color: #e4e4e7;
   }
+  html.flexoki a::selection {
+    background: #D0A215;
+    color: #100F0F;
+  }
 
   /* Global link styles - applies to ALL links */
   a {
@@ -54,11 +69,17 @@
   html.dark a {
     color: #60a5fa; /* Lighter blue for dark mode */
   }
+  html.flexoki a {
+    color: #24837B; /* Flexoki cyan */
+  }
   a:hover {
     color: #000; /* Change to body text color on hover */
   }
   html.dark a:hover {
     color: #fff; /* Change to body text color on hover in dark mode */
+  }
+  html.flexoki a:hover {
+    color: #100F0F; /* Flexoki black */
   }
 
   /* Navbar links - inherit body text color */
@@ -68,11 +89,17 @@
   html.dark header nav a {
     color: #fff !important;
   }
+  html.flexoki header nav a {
+    color: #100F0F !important;
+  }
   header nav a:hover {
     color: #000 !important;
   }
   html.dark header nav a:hover {
     color: #fff !important;
+  }
+  html.flexoki header nav a:hover {
+    color: #100F0F !important;
   }
 
   /* Writing page links - inherit body text color */
@@ -82,11 +109,17 @@
   html.dark main ul a {
     color: #fff !important;
   }
+  html.flexoki main ul a {
+    color: #100F0F !important;
+  }
   main ul a:hover {
     color: #000 !important;
   }
   html.dark main ul a:hover {
     color: #fff !important;
+  }
+  html.flexoki main ul a:hover {
+    color: #100F0F !important;
   }
 
   /* Resources page links - use blue color */
@@ -96,11 +129,17 @@
   html.dark main ul a[href^="http"] {
     color: #60a5fa !important;
   }
+  html.flexoki main ul a[href^="http"] {
+    color: #24837B !important;
+  }
   main ul a[href^="http"]:hover {
     color: #000 !important;
   }
   html.dark main ul a[href^="http"]:hover {
     color: #fff !important;
+  }
+  html.flexoki main ul a[href^="http"]:hover {
+    color: #100F0F !important;
   }
 
   .writing-date {
@@ -110,12 +149,18 @@
   html.dark .writing-date {
     color: #fff;
   }
+  html.flexoki .writing-date {
+    color: #100F0F;
+  }
 
   .footer-muted {
     color: #6a7282;
   }
   html.dark .footer-muted {
     color: #a3adc2;
+  }
+  html.flexoki .footer-muted {
+    color: #6F6E69;
   }
 
   .footer-line-color, .footer-line-color *, .footer-line-color a, .footer-line-color a:visited, .footer-line-color svg {
@@ -126,6 +171,10 @@
     color: #71717a !important;
     fill: #71717a !important;
   }
+  html.flexoki .footer-line-color, html.flexoki .footer-line-color *, html.flexoki .footer-line-color a, html.flexoki .footer-line-color a:visited, html.flexoki .footer-line-color svg {
+    color: #6F6E69 !important;
+    fill: #6F6E69 !important;
+  }
 
   hr {
     border: none;
@@ -134,6 +183,61 @@
   }
   html.dark hr {
     border-top: 1px solid #33353a44;
+  }
+  html.flexoki hr {
+    border-top: 1px solid #CECDC3;
+  }
+
+  /* Additional Flexoki accent colors for more variety */
+  html.flexoki .accent-red {
+    color: #AF3029;
+  }
+  html.flexoki .accent-orange {
+    color: #BC5215;
+  }
+  html.flexoki .accent-yellow {
+    color: #AD8301;
+  }
+  html.flexoki .accent-green {
+    color: #66800B;
+  }
+  html.flexoki .accent-cyan {
+    color: #24837B;
+  }
+  html.flexoki .accent-blue {
+    color: #205EA6;
+  }
+  html.flexoki .accent-purple {
+    color: #5E409D;
+  }
+  html.flexoki .accent-magenta {
+    color: #A02F6F;
+  }
+
+  /* Flexoki background accents */
+  html.flexoki .bg-accent-red {
+    background-color: #AF3029;
+  }
+  html.flexoki .bg-accent-orange {
+    background-color: #BC5215;
+  }
+  html.flexoki .bg-accent-yellow {
+    background-color: #AD8301;
+  }
+  html.flexoki .bg-accent-green {
+    background-color: #66800B;
+  }
+  html.flexoki .bg-accent-cyan {
+    background-color: #24837B;
+  }
+  html.flexoki .bg-accent-blue {
+    background-color: #205EA6;
+  }
+  html.flexoki .bg-accent-purple {
+    background-color: #5E409D;
+  }
+  html.flexoki .bg-accent-magenta {
+    background-color: #A02F6F;
   }
 }
 
@@ -190,6 +294,137 @@
     mark {
       @apply dark:bg-yellow-500/50 dark:text-white;
     }
+  }
+
+  /* Flexoki theme specific styles */
+  html.flexoki article h1,
+  html.flexoki article h2,
+  html.flexoki article h3,
+  html.flexoki article h4,
+  html.flexoki article h5,
+  html.flexoki article h6 {
+    color: #100F0F;
+  }
+
+  /* Flexoki code styling */
+  html.flexoki article :not(pre) > code {
+    background-color: #E6E4D9;
+    border-color: #CECDC3;
+    color: #100F0F;
+  }
+
+  /* Flexoki pre styling */
+  html.flexoki article pre:has(code) {
+    background-color: #F2F0E5;
+    border-color: #CECDC3;
+  }
+
+  /* Flexoki image and video borders */
+  html.flexoki article img,
+  html.flexoki article video {
+    border-color: #CECDC3;
+  }
+
+  /* Flexoki table styling */
+  html.flexoki article table th {
+    border-color: #CECDC3;
+    color: #100F0F;
+  }
+
+  html.flexoki article table td {
+    background-color: #F2F0E5;
+    border-color: #CECDC3;
+    color: #100F0F;
+  }
+
+  /* Flexoki keyboard styling */
+  html.flexoki article kbd {
+    background-color: #E6E4D9;
+    border-color: #CECDC3;
+    color: #100F0F;
+  }
+
+  /* Flexoki mark styling */
+  html.flexoki article mark {
+    background-color: #D0A215;
+    color: #100F0F;
+  }
+
+  /* Flexoki blockquote styling */
+  html.flexoki article blockquote {
+    border-left-color: #24837B;
+    color: #100F0F; /* Main text color instead of muted grey */
+  }
+
+  /* Flexoki project cards styling */
+  html.flexoki .group {
+    border-color: #CECDC3 !important;
+    background-color: #FFFCF0 !important;
+  }
+
+  html.flexoki .group .font-bold {
+    color: #100F0F !important;
+  }
+
+  html.flexoki .group .text-zinc-600 {
+    color: #6F6E69 !important;
+  }
+
+  html.flexoki .group .text-zinc-500 {
+    color: #6F6E69 !important; /* Duller grey - more visible than original but not cyan */
+  }
+
+  html.flexoki .group .bg-zinc-100 {
+    background-color: #F2F0E5 !important;
+  }
+
+  html.flexoki .group a {
+    color: #6F6E69 !important; /* Same duller grey for icons */
+  }
+
+  html.flexoki .group a:hover {
+    color: #100F0F !important;
+  }
+
+  /* Flexoki navbar styling */
+  html.flexoki header nav a {
+    color: #5E409D !important; /* Flexoki purple - avoiding blue/link confusion */
+  }
+
+  html.flexoki header nav a:hover {
+    color: #100F0F !important;
+  }
+
+  /* Flexoki footer styling */
+  html.flexoki footer a {
+    color: #BC5215 !important; /* Flexoki orange */
+  }
+
+  html.flexoki footer a:hover {
+    color: #100F0F !important;
+  }
+
+  html.flexoki .footer-line-color, 
+  html.flexoki .footer-line-color *, 
+  html.flexoki .footer-line-color a, 
+  html.flexoki .footer-line-color a:visited, 
+  html.flexoki .footer-line-color svg {
+    color: #BC5215 !important; /* Flexoki orange */
+    fill: #BC5215 !important;
+  }
+
+  html.flexoki .footer-line-color a:hover {
+    color: #100F0F !important;
+  }
+
+  /* Flexoki quote blocks - make them consistent with other text */
+  html.flexoki blockquote {
+    border-left-color: #24837B;
+    color: #100F0F; /* Main text color instead of muted grey */
+  }
+
+  html.flexoki blockquote p {
+    color: #100F0F !important; /* Main text color instead of muted grey */
   }
 }
 
