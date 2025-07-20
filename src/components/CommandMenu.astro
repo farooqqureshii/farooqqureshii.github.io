@@ -229,13 +229,13 @@
           breadcrumbText.innerHTML = '';
         } else if (pathParts.length === 1) {
           // For top-level pages like /writing, /projects, show the full path
-          breadcrumbText.innerHTML = ' / <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
+          breadcrumbText.innerHTML = ' / <span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
         } else {
           // For nested pages like /misc/pencils, show the full path
           let breadcrumbHTML = ' / ';
           pathParts.forEach((part, index) => {
             const currentPath = '/' + pathParts.slice(0, index + 1).join('/');
-            breadcrumbHTML += '<span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
+            breadcrumbHTML += '<span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
             if (index < pathParts.length - 1) {
               breadcrumbHTML += ' / ';
             }
