@@ -24,7 +24,7 @@
       </div>
       
       <!-- Search input -->
-      <div class="flex items-center border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 p-4">
+      <div class="hidden sm:flex items-center border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 p-4">
         <svg class="w-4 h-4 text-zinc-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
@@ -64,7 +64,7 @@
     const breadcrumbText = document.getElementById('breadcrumb-text');
     const breadcrumbDomain = document.getElementById('breadcrumb-domain');
     
-    if (!menu || !backdrop || !container || !input || !navResults || !breadcrumbText || !breadcrumbDomain) return;
+    if (!menu || !backdrop || !container || !navResults || !breadcrumbText || !breadcrumbDomain) return;
 
     // Navigation items organized by sections
     const navItems = [
@@ -358,7 +358,9 @@
         container?.classList.remove('scale-95', 'opacity-0');
         backdrop?.classList.add('bg-black/20');
       }, 10);
-      input?.focus();
+      if (input) {
+        input.focus();
+      }
       renderItems();
     }
 
@@ -370,11 +372,11 @@
         menu?.classList.add('hidden');
         if (input) {
           input.value = '';
-          // Reset filtered items to show all items
-          filteredItems = [...allItems];
-          selectedIndex = 0;
-          renderItems();
         }
+        // Reset filtered items to show all items
+        filteredItems = [...allItems];
+        selectedIndex = 0;
+        renderItems();
       }, 150);
     }
 
@@ -484,12 +486,14 @@
       e.stopPropagation();
     });
     
-    input?.addEventListener('input', (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      if (target) {
-        filterItems(target.value);
-      }
-    });
+    if (input) {
+      input.addEventListener('input', (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        if (target) {
+          filterItems(target.value);
+        }
+      });
+    }
 
     // Add click handler for domain
     breadcrumbDomain?.addEventListener('click', () => {
