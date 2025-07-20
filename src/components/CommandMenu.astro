@@ -172,8 +172,31 @@
     const randomBook = books[Math.floor(Math.random() * books.length)];
     const randomProject = projects[Math.floor(Math.random() * projects.length)];
 
+    // Get current theme
+    function getCurrentTheme() {
+      if (document.documentElement.classList.contains('dark')) {
+        return 'dark';
+      } else if (document.documentElement.classList.contains('flexoki')) {
+        return 'flexoki';
+      } else {
+        return 'light';
+      }
+    }
+
+    // Get theme toggle text based on current theme
+    function getThemeToggleText() {
+      const currentTheme = getCurrentTheme();
+      if (currentTheme === 'dark') {
+        return 'Toggle Light Mode';
+      } else if (currentTheme === 'flexoki') {
+        return 'Toggle Light Mode';
+      } else {
+        return 'Toggle Dark Mode';
+      }
+    }
+
     const otherItems = [
-      { title: 'Toggle Theme', url: '#', description: 'Switch themes', section: 'other', action: 'toggle-theme', shortcut: 'T' },
+      { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'other', action: 'toggle-theme', shortcut: 'T' },
       { title: `Book I've Read: ${randomBook.title} by ${randomBook.author}`, url: '/misc/books', description: 'View all books I\'ve read', section: 'other', shortcut: 'B' },
       { title: `Random Project: ${randomProject.title}`, url: randomProject.url, description: randomProject.description, section: 'other', shortcut: 'R' }
     ];
@@ -319,6 +342,12 @@
       selectedIndex = 0;
       if (input) {
         input.value = '';
+      }
+      
+      // Update theme toggle text
+      const themeToggleItem = filteredItems.find(item => item.action === 'toggle-theme');
+      if (themeToggleItem) {
+        themeToggleItem.title = getThemeToggleText();
       }
       
       // Update breadcrumb
