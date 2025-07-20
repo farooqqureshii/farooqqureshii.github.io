@@ -6,47 +6,30 @@
 >
   <span class="sr-only">Toggle theme</span>
   
-  <!-- Rotating line -->
-  <div class="relative w-4 h-4">
-    <span
-      id="theme-line"
-      class="absolute w-4 h-0.5 transition-all duration-300 ease-in-out"
-      style="background-color: #24837B; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg);"
-    ></span>
-  </div>
-  
-  <style>
-    /* Light theme: flexoki colors */
-    html:not(.dark):not(.flexoki) #theme-line {
-      background-color: #24837B !important;
-    }
-    
-    /* Flexoki theme: black line */
-    html.flexoki #theme-line {
-      background-color: #000000 !important;
-    }
-    
-    /* Dark theme: white line */
-    html.dark:not(.flexoki) #theme-line {
-      background-color: #ffffff !important;
-    }
-  </style>
+  <!-- Colored circle -->
+  <div
+    id="theme-circle"
+    class="w-3 h-3 rounded-full transition-all duration-300 ease-in-out"
+    style="background-color: #24837B;"
+  ></div>
 </button>
 
 <script>
   const setListener = () => {
     const button = document.getElementById("theme-toggle");
-    let rot = 0; // rotation counter
+    const circle = document.getElementById("theme-circle");
     
-    const rotateThis = (element: HTMLElement, nR: number) => {
-      let aR;
-      aR = rot % 360;
-      if (aR < 0) { aR += 360; }
-      if (aR < 180 && (nR > (aR + 180))) { rot -= 360; }
-      if (aR >= 180 && (nR <= (aR - 180))) { rot += 360; }
-      rot += (nR - aR);
-      element.style.transform = `translate(-50%, -50%) rotate(${rot}deg)`;
-    };
+    if (!circle) return;
+    
+    // Set initial state
+    const html = document.documentElement;
+    if (html.classList.contains("dark")) {
+      circle.style.backgroundColor = "#F4D03F"; // Bright yellow sun
+    } else if (html.classList.contains("flexoki")) {
+      // circle.style.backgroundColor = "#205EA6"; // Flexoki blue - commented out
+    } else {
+      circle.style.backgroundColor = "#34495E"; // Dark blue-gray night
+    }
     
     button?.addEventListener("click", () => {
       // Play sound effect
@@ -58,34 +41,18 @@
       const html = document.documentElement;
       
       if (!html.classList.contains("dark") && !html.classList.contains("flexoki")) {
-        // From light to flexoki
-        html.classList.add("flexoki");
+        // From light to dark (skipping flexoki for now)
+        html.classList.add("dark");
+        circle.style.backgroundColor = "#F4D03F"; // Bright yellow sun
       } else if (html.classList.contains("flexoki")) {
         // From flexoki to dark
         html.classList.remove("flexoki");
         html.classList.add("dark");
+        circle.style.backgroundColor = "#F4D03F"; // Bright yellow sun
       } else if (html.classList.contains("dark")) {
         // From dark back to light
         html.classList.remove("dark");
-      }
-      
-      // Rotate the line to specific positions
-      const line = document.getElementById("theme-line");
-      if (line) {
-        let targetRotation = 0;
-        
-        if (!html.classList.contains("dark") && !html.classList.contains("flexoki")) {
-          // Light theme - horizontal
-          targetRotation = 0;
-        } else if (html.classList.contains("flexoki")) {
-          // Flexoki theme - angled
-          targetRotation = 45;
-        } else if (html.classList.contains("dark")) {
-          // Dark theme - vertical
-          targetRotation = 90;
-        }
-        
-        rotateThis(line, targetRotation);
+        circle.style.backgroundColor = "#34495E"; // Dark blue-gray night
       }
     });
   };
