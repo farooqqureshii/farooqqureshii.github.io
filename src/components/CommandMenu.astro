@@ -1,0 +1,473 @@
+---
+// Command menu component
+---
+
+<div id="command-menu" class="fixed inset-0 z-50 hidden">
+  <!-- Backdrop -->
+  <div 
+    id="command-backdrop" 
+    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-150 ease-out"
+  ></div>
+  
+  <!-- Menu container -->
+  <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+    <div 
+      id="command-container"
+      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-150 ease-out scale-95 opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+    >
+      <!-- Breadcrumb -->
+      <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
+        <div class="text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 flex items-center gap-1">
+          <span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" id="breadcrumb-domain">farooqqureshi.com</span>
+          <span id="breadcrumb-text"></span>
+        </div>
+      </div>
+      
+      <!-- Search input -->
+      <div class="flex items-center border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 p-4">
+        <svg class="w-4 h-4 text-zinc-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input
+          id="command-input"
+          type="text"
+          placeholder="Search or navigate..."
+          class="flex-1 bg-transparent outline-none text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx placeholder-zinc-500 dark:placeholder-zinc-400 flexoki:placeholder-flexoki-tx-2"
+          autocomplete="off"
+        />
+        <div class="flex items-center gap-2">
+          <kbd class="hidden sm:inline-flex items-center px-2 py-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-zinc-100 dark:bg-zinc-800 flexoki:bg-flexoki-ui rounded border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
+            ESC
+          </kbd>
+        </div>
+      </div>
+      
+      <!-- Results container -->
+      <div id="command-results" class="max-h-96 sm:max-h-96 max-h-64 overflow-y-auto">
+        <div id="nav-results" class="p-2">
+          <!-- All items will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const menu = document.getElementById('command-menu');
+    const backdrop = document.getElementById('command-backdrop');
+    const container = document.getElementById('command-container');
+    const input = document.getElementById('command-input') as HTMLInputElement;
+    const navResults = document.getElementById('nav-results');
+    const breadcrumbText = document.getElementById('breadcrumb-text');
+    const breadcrumbDomain = document.getElementById('breadcrumb-domain');
+    
+    if (!menu || !backdrop || !container || !input || !navResults || !breadcrumbText || !breadcrumbDomain) return;
+
+    // Navigation items organized by sections
+    const navItems = [
+      { title: 'Home', url: '/', description: 'Go home', section: 'navigation', shortcut: 'H' },
+      { title: 'Projects', url: '/projects', description: 'View my projects', section: 'navigation', shortcut: 'P' },
+      { title: 'Writing', url: '/writing', description: 'Read my writing', section: 'navigation', shortcut: 'W' },
+      { title: 'Artifacts', url: '/artifacts', description: 'Browse internet gems', section: 'navigation', shortcut: 'A' },
+      { title: 'Misc', url: '/misc', description: 'Miscellaneous pages', section: 'navigation', shortcut: 'M' }
+    ];
+
+    const linkItems = [
+      { title: 'Email', url: 'mailto:farooq.qureshi@outlook.com', description: 'Send me an email', section: 'links', shortcut: 'E' },
+      { title: 'GitHub', url: 'https://github.com/farooqqureshii', description: 'My GitHub profile', section: 'links', shortcut: 'G' },
+      { title: 'LinkedIn', url: 'https://linkedin.com/in/farooqq', description: 'My LinkedIn profile', section: 'links', shortcut: 'L' },
+      { title: 'Curius', url: 'https://curius.app/farooq-qureshi', description: 'What I\'m finding interesting', section: 'links', shortcut: 'C' },
+      { title: 'Say Hi', url: 'https://tally.so/r/mOqNR8', description: 'Send me a message', section: 'links', shortcut: 'S' }
+    ];
+
+    // Books data
+    const books = [
+      { title: 'Everything I Never Told You', author: 'Celeste Ng' },
+      { title: 'Belzhar', author: 'Meg Wolitzer' },
+      { title: 'Animal Farm', author: 'George Orwell' },
+      { title: '1984', author: 'George Orwell' },
+      { title: 'Brave New World', author: 'Aldous Huxley' },
+      { title: 'Bluets', author: 'Maggie Nelson' },
+      { title: 'Sapiens', author: 'Yuval Noah Harari' },
+      { title: 'Homo Deus', author: 'Yuval Noah Harari' },
+      { title: 'Skin in the Game', author: 'Nassim Nicholas Taleb' },
+      { title: 'Dopamine Nation', author: 'Anna Lembke' },
+      { title: 'All the Light We Cannot See', author: 'Anthony Doerr' },
+      { title: 'The Alchemist', author: 'Paulo Coelho' },
+      { title: 'South of the Border, West of the Sun', author: 'Haruki Murakami' },
+      { title: 'Klara and the Sun', author: 'Kazuo Ishiguro' },
+      { title: 'Wit', author: 'Margaret Edson' },
+      { title: 'The Subject Was Roses', author: 'Frank D. Gilroy' },
+      { title: 'Outliers', author: 'Malcolm Gladwell' },
+      { title: 'Homegoing', author: 'Yaa Gyasi' },
+      { title: 'Speedboat', author: 'Renata Adler' },
+      { title: 'The Folded Clock', author: 'Heidi Julavits' },
+      { title: 'We the Animals', author: 'Justin Torres' },
+      { title: 'So Sad Today', author: 'Melissa Broder' },
+      { title: 'Milkman', author: 'Anna Burns' },
+      { title: 'Weather', author: 'Jenny Offill' },
+      { title: 'The Sad Part Was', author: 'Prabda Yoon' },
+      { title: 'Call Me Zebra', author: 'Azareen Van der Vliet Oloomi' },
+      { title: 'Native Speaker', author: 'Chang-rae Lee' },
+      { title: 'Your Utopia', author: 'Bora Chung' },
+      { title: 'Temporary', author: 'Hilary Leichter' },
+      { title: 'The Employees', author: 'Olga Ravn' },
+      { title: 'Drinking Coffee Elsewhere', author: 'ZZ Packer' },
+      { title: 'No One Is Talking About This', author: 'Patricia Lockwood' },
+      { title: 'The Year of Magical Thinking', author: 'Joan Didion' },
+      { title: 'If You Leave Me', author: 'Crystal Hana Kim' },
+      { title: 'How Much of These Hills Is Gold', author: 'C Pam Zhang' },
+      { title: 'The Loneliness of the Long Distance Runner', author: 'Alan Sillitoe' },
+      { title: 'Can\'t and Won\'t', author: 'Lydia Davis' },
+      { title: 'A Heartbreaking Work of Staggering Genius', author: 'Dave Eggers' },
+      { title: 'Celestial Bodies', author: 'Jokha Alharthi' },
+      { title: 'Go Home!', author: 'Edited by Rowan Hisayo Buchanan' },
+      { title: 'Interpreter of Maladies', author: 'Jhumpa Lahiri' },
+      { title: 'The Emperor of All Maladies', author: 'Siddhartha Mukherjee' },
+      { title: 'The Boat', author: 'Nam Le' },
+      { title: 'The Ones Who Walk Away from Omelas', author: 'Ursula K. Le Guin' },
+      { title: 'The Dispossessed', author: 'Ursula K. Le Guin' },
+      { title: 'The Left Hand of Darkness', author: 'Ursula K. Le Guin' },
+      { title: 'Frankenstein', author: 'Mary Shelley' },
+      { title: 'In Search of Lost Time', author: 'Marcel Proust' },
+      { title: 'The Trial', author: 'Franz Kafka' },
+      { title: 'To the Lighthouse', author: 'Virginia Woolf' },
+      { title: 'The Crucible', author: 'Arthur Miller' },
+      { title: 'The Double Helix', author: 'James D. Watson' },
+      { title: 'Dune', author: 'Frank Herbert' },
+      { title: 'The Electric Kool-Aid Acid Test', author: 'Tom Wolfe' },
+      { title: 'Danube', author: 'Claudio Magris' },
+      { title: 'The Road to Oxiana', author: 'Robert Byron' },
+      { title: 'And the Band Played On', author: 'Randy Shilts' },
+      { title: 'Postwar', author: 'Tony Judt' },
+      { title: 'The Catcher in the Rye', author: 'J.D. Salinger' },
+      { title: 'Middlemarch', author: 'George Eliot' },
+      { title: 'The Sun Also Rises', author: 'Ernest Hemingway' },
+      { title: 'Midnight\'s Children', author: 'Salman Rushdie' },
+      { title: 'The Plague', author: 'Albert Camus' },
+      { title: 'The Man Without Qualities', author: 'Robert Musil' },
+      { title: 'The Tale of Genji', author: 'Murasaki Shikibu' },
+      { title: 'In Cold Blood', author: 'Truman Capote' },
+      { title: 'Man\'s Search for Meaning', author: 'Viktor E. Frankl' },
+      { title: 'Homage to Catalonia', author: 'George Orwell' },
+      { title: 'I Know Why the Caged Bird Sings', author: 'Maya Angelou' },
+      { title: 'All the President\'s Men', author: 'Bob Woodward & Carl Bernstein' },
+      { title: 'The Warmth of Other Suns', author: 'Isabel Wilkerson' }
+    ];
+
+    // Projects data
+    const projects = [
+      { title: 'okbutpitchit', url: 'https://okbutpitchit.vercel.app/', description: 'Code to Pitch-Ready slides, in an Instant' },
+      { title: 'Substack Case Study', url: '/writing/substack/', description: 'Product/strategy case study for Substack growth' },
+      { title: 'Code Compass', url: 'https://trycodecompass.vercel.app/', description: 'Understand any GitHub repo and find beginner-friendly issues, fast' },
+      { title: 'uOttaHack | Director', url: 'https://www.uottahack.ca/', description: 'Leading the team behind Ottawa\'s largest tech event' },
+      { title: 'EchoScope', url: 'https://echoscope.vercel.app/', description: 'Use AI to uncover sentiment, bias, and diversity in YouTube comments' },
+      { title: 'Analyzing and predicting housing prices in London', url: 'https://farooq.craft.me/write-up', description: 'Smarter housing price predictions with machine learning' }
+    ];
+
+    // Generate random book and project
+    const randomBook = books[Math.floor(Math.random() * books.length)];
+    const randomProject = projects[Math.floor(Math.random() * projects.length)];
+
+    const otherItems = [
+      { title: 'Toggle Theme', url: '#', description: 'Switch themes', section: 'other', action: 'toggle-theme', shortcut: 'T' },
+      { title: `Book I've Read: ${randomBook.title} by ${randomBook.author}`, url: '/misc/books', description: 'View all books I\'ve read', section: 'other', shortcut: 'B' },
+      { title: `Random Project: ${randomProject.title}`, url: randomProject.url, description: randomProject.description, section: 'other', shortcut: 'R' }
+    ];
+
+    // Define the item type to include optional action property
+    type MenuItem = {
+      title: string;
+      url: string;
+      description: string;
+      section: string;
+      shortcut: string;
+      action?: string;
+    };
+
+    const allItems: MenuItem[] = [...otherItems, ...navItems, ...linkItems];
+    let selectedIndex = 0;
+    let filteredItems: MenuItem[] = [...allItems];
+
+    // Update breadcrumb based on current path
+    function updateBreadcrumb() {
+      if (!breadcrumbText) return;
+      
+      const path = window.location.pathname;
+      if (path === '/') {
+        breadcrumbText.innerHTML = '';
+      } else {
+        // Remove leading slash and split path
+        const pathParts = path.slice(1).split('/').filter(part => part.length > 0);
+        if (pathParts.length === 0) {
+          breadcrumbText.innerHTML = '';
+        } else if (pathParts.length === 1) {
+          // For top-level pages like /writing, /projects, show the full path
+          breadcrumbText.innerHTML = ' / <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
+        } else {
+          // For nested pages like /misc/pencils, show the full path
+          let breadcrumbHTML = ' / ';
+          pathParts.forEach((part, index) => {
+            const currentPath = '/' + pathParts.slice(0, index + 1).join('/');
+            breadcrumbHTML += '<span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
+            if (index < pathParts.length - 1) {
+              breadcrumbHTML += ' / ';
+            }
+          });
+          breadcrumbText.innerHTML = breadcrumbHTML;
+        }
+      }
+      
+      // Add click handlers to breadcrumb parts
+      const breadcrumbParts = breadcrumbText.querySelectorAll('[data-path]');
+      breadcrumbParts.forEach(part => {
+        part.addEventListener('click', (e) => {
+          e.preventDefault();
+          const path = (part as HTMLElement).getAttribute('data-path');
+          if (path) {
+            window.location.href = path;
+          }
+        });
+      });
+    }
+
+    // Initialize navigation items
+    function renderItems() {
+      if (!navResults) return;
+      
+      navResults.innerHTML = '';
+      
+      // Group items by section
+      const groupedItems = filteredItems.reduce((acc, item) => {
+        if (!acc[item.section]) {
+          acc[item.section] = [];
+        }
+        acc[item.section].push(item);
+        return acc;
+      }, {} as Record<string, MenuItem[]>);
+      
+      // Render each section
+      Object.entries(groupedItems).forEach(([section, items]) => {
+        // Section header
+        const sectionHeader = document.createElement('div');
+        sectionHeader.className = 'text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 px-3 py-2 capitalize';
+        sectionHeader.textContent = section;
+        navResults.appendChild(sectionHeader);
+        
+        // Section items
+        items.forEach((item, index) => {
+          const globalIndex = filteredItems.indexOf(item);
+          const div = document.createElement('div');
+          div.className = `flex items-center px-3 py-2 rounded cursor-pointer transition-colors ${
+            globalIndex === selectedIndex 
+              ? 'bg-zinc-100 dark:bg-zinc-800 flexoki:bg-flexoki-ui' 
+              : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 flexoki:hover:bg-flexoki-ui/50'
+          }`;
+          
+          div.innerHTML = `
+            <div class="flex-1">
+              <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx">${item.title}</div>
+              <div class="text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2">${item.description}</div>
+            </div>
+            <div class="flex items-center gap-2">
+              ${item.shortcut ? `<kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-zinc-100 dark:bg-zinc-800 flexoki:bg-flexoki-ui rounded border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">⇧${item.shortcut}</kbd>` : ''}
+              <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          `;
+          
+          div.addEventListener('click', () => {
+            if (item.action === 'toggle-theme') {
+              // Trigger theme toggle
+              const themeToggle = document.getElementById('theme-toggle');
+              if (themeToggle) {
+                themeToggle.click();
+              }
+              closeMenu();
+            } else {
+              window.location.href = item.url;
+            }
+          });
+          
+          navResults.appendChild(div);
+        });
+      });
+    }
+
+    // Filter items based on search
+    function filterItems(query: string) {
+      if (!query.trim()) {
+        filteredItems = [...allItems];
+      } else {
+        filteredItems = allItems.filter(item => 
+          item.title.toLowerCase().includes(query.toLowerCase()) ||
+          item.description.toLowerCase().includes(query.toLowerCase())
+        );
+      }
+      selectedIndex = 0;
+      renderItems();
+    }
+
+    // Open command menu
+    function openMenu() {
+      // Reset state when opening
+      filteredItems = [...allItems];
+      selectedIndex = 0;
+      if (input) {
+        input.value = '';
+      }
+      
+      // Update breadcrumb
+      updateBreadcrumb();
+      
+      menu?.classList.remove('hidden');
+      setTimeout(() => {
+        container?.classList.remove('scale-95', 'opacity-0');
+        backdrop?.classList.add('bg-black/20');
+      }, 10);
+      input?.focus();
+      renderItems();
+    }
+
+    // Close command menu
+    function closeMenu() {
+      container?.classList.add('scale-95', 'opacity-0');
+      backdrop?.classList.remove('bg-black/20');
+      setTimeout(() => {
+        menu?.classList.add('hidden');
+        if (input) {
+          input.value = '';
+          // Reset filtered items to show all items
+          filteredItems = [...allItems];
+          selectedIndex = 0;
+          renderItems();
+        }
+      }, 150);
+    }
+
+    // Keyboard navigation
+    function handleKeydown(e: KeyboardEvent) {
+      if (!menu?.classList.contains('hidden')) {
+        const items = filteredItems;
+        
+        // Check for shortcuts first (Shift + key)
+        if (e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          const pressedKey = e.key.toUpperCase();
+          const shortcutItem = items.find(item => item.shortcut === pressedKey);
+          if (shortcutItem) {
+            e.preventDefault();
+            if (shortcutItem.action === 'toggle-theme') {
+              const themeToggle = document.getElementById('theme-toggle');
+              if (themeToggle) {
+                themeToggle.click();
+              }
+              closeMenu();
+            } else {
+              window.location.href = shortcutItem.url;
+            }
+            return;
+          }
+        }
+        
+        switch (e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            selectedIndex = (selectedIndex + 1) % items.length;
+            renderItems();
+            scrollToSelected();
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            selectedIndex = selectedIndex === 0 ? items.length - 1 : selectedIndex - 1;
+            renderItems();
+            scrollToSelected();
+            break;
+          case 'Enter':
+            e.preventDefault();
+            if (items[selectedIndex]) {
+              const item = items[selectedIndex];
+              if (item.action === 'toggle-theme') {
+                // Trigger theme toggle
+                const themeToggle = document.getElementById('theme-toggle');
+                if (themeToggle) {
+                  themeToggle.click();
+                }
+                closeMenu();
+              } else {
+                window.location.href = item.url;
+              }
+            }
+            break;
+          case 'Escape':
+            e.preventDefault();
+            closeMenu();
+            break;
+        }
+      }
+    }
+
+    // Scroll to keep selected item visible
+    function scrollToSelected() {
+      if (!navResults) return;
+      
+      // Find all clickable items in the results
+      const items = navResults.querySelectorAll('div[class*="cursor-pointer"]');
+      
+      if (items.length > 0 && selectedIndex < items.length) {
+        const selectedElement = items[selectedIndex];
+        if (selectedElement) {
+          selectedElement.scrollIntoView({
+            block: 'nearest',
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      // Only enable keyboard shortcuts on desktop
+      if (window.innerWidth > 768) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          openMenu();
+        }
+        handleKeydown(e);
+      }
+    });
+
+    // Command menu button
+    const commandButton = document.getElementById('command-menu-button');
+    commandButton?.addEventListener('click', () => {
+      openMenu();
+    });
+
+
+
+    backdrop?.addEventListener('click', closeMenu);
+    
+    // Prevent clicks inside the menu container from closing the menu
+    container?.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+    
+    input?.addEventListener('input', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      if (target) {
+        filterItems(target.value);
+      }
+    });
+
+    // Add click handler for domain
+    breadcrumbDomain?.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+
+    // Initial render
+    renderItems();
+  });
+</script> 

@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import CommandMenu from "../components/CommandMenu.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 
@@ -76,6 +77,7 @@ const {
       <slot />
       </div>
       <Footer />
+      <CommandMenu />
     </div>
   </body>
 </html>
