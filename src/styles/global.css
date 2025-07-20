@@ -36,12 +36,12 @@
 
   /* Custom text selection styles */
   ::selection {
-    background: #ffeedd;
-    color: #18181b;
+    background: #e5e7eb;
+    color: #000;
   }
   html.dark ::selection {
-    background: rgba(255, 183, 133, 0.18);
-    color: #e4e4e7;
+    background: #374151;
+    color: #fff;
   }
   html.flexoki ::selection {
     background: #D0A215;
@@ -49,12 +49,12 @@
   }
   /* Ensure links remain visible when selected */
   a::selection {
-    background: #ffeedd;
-    color: #18181b;
+    background: #e5e7eb;
+    color: #000;
   }
   html.dark a::selection {
-    background: rgba(255, 183, 133, 0.18);
-    color: #e4e4e7;
+    background: #374151;
+    color: #fff;
   }
   html.flexoki a::selection {
     background: #D0A215;
@@ -63,7 +63,7 @@
 
   /* Global link styles - applies to ALL links */
   a {
-    color: #3b82f6; /* Nice minimalist blue */
+    color: #2563eb; /* Nice blue */
     text-decoration: none;
   }
   html.dark a {
@@ -80,6 +80,47 @@
   }
   html.flexoki a:hover {
     color: #100F0F; /* Flexoki black */
+  }
+
+  /* External links (blue ones) become italic on hover */
+  a[href^="http"]:hover,
+  a[href^="mailto:"]:hover {
+    font-style: italic;
+    color: #2563eb !important; /* Keep blue color */
+  }
+  html.dark a[href^="http"]:hover,
+  html.dark a[href^="mailto:"]:hover {
+    color: #60a5fa !important; /* Keep blue color in dark mode */
+  }
+
+  /* Exclude misc pages from color change but keep italic */
+  main ul a[href^="http"]:hover,
+  main ul a[href^="mailto:"]:hover,
+  main ul a[rel="noopener"]:hover {
+    color: #2563eb !important;
+  }
+  html.dark main ul a[href^="http"]:hover,
+  html.dark main ul a[href^="mailto"]:hover,
+  html.dark main ul a[rel="noopener"]:hover {
+    color: #60a5fa !important;
+  }
+
+  /* Exclude project page icons from blue color */
+  main .group a {
+    color: inherit !important;
+    font-style: normal !important;
+  }
+  main .group a:hover {
+    color: inherit !important;
+    font-style: normal !important;
+  }
+  html.dark main .group a {
+    color: inherit !important;
+    font-style: normal !important;
+  }
+  html.dark main .group a:hover {
+    color: inherit !important;
+    font-style: normal !important;
   }
 
   /* Navbar links - inherit body text color */
@@ -124,7 +165,7 @@
 
   /* Resources page links - use blue color */
   main ul a[href^="http"] {
-    color: #3b82f6 !important;
+    color: #2563eb !important;
   }
   html.dark main ul a[href^="http"] {
     color: #60a5fa !important;
@@ -132,15 +173,7 @@
   html.flexoki main ul a[href^="http"] {
     color: #24837B !important;
   }
-  main ul a[href^="http"]:hover {
-    color: #000 !important;
-  }
-  html.dark main ul a[href^="http"]:hover {
-    color: #fff !important;
-  }
-  html.flexoki main ul a[href^="http"]:hover {
-    color: #100F0F !important;
-  }
+
 
   .writing-date {
     color: #000;
