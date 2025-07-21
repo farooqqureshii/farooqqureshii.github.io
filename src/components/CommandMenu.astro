@@ -13,7 +13,7 @@
   <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-150 ease-out scale-95 opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-200 ease-out translate-y-[-100%] opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
       <!-- Breadcrumb -->
       <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
@@ -229,13 +229,13 @@
           breadcrumbText.innerHTML = '';
         } else if (pathParts.length === 1) {
           // For top-level pages like /writing, /projects, show the full path
-          breadcrumbText.innerHTML = ' / <span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
+          breadcrumbText.innerHTML = ' / <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
         } else {
           // For nested pages like /misc/pencils, show the full path
           let breadcrumbHTML = ' / ';
           pathParts.forEach((part, index) => {
             const currentPath = '/' + pathParts.slice(0, index + 1).join('/');
-            breadcrumbHTML += '<span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
+            breadcrumbHTML += '<span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
             if (index < pathParts.length - 1) {
               breadcrumbHTML += ' / ';
             }
@@ -355,7 +355,7 @@
       
       menu?.classList.remove('hidden');
       setTimeout(() => {
-        container?.classList.remove('scale-95', 'opacity-0');
+        container?.classList.remove('translate-y-[-100%]', 'opacity-0');
         backdrop?.classList.add('bg-black/20');
       }, 10);
       if (input) {
@@ -366,7 +366,7 @@
 
     // Close command menu
     function closeMenu() {
-      container?.classList.add('scale-95', 'opacity-0');
+      container?.classList.add('translate-y-[100%]', 'opacity-0');
       backdrop?.classList.remove('bg-black/20');
       setTimeout(() => {
         menu?.classList.add('hidden');
@@ -377,7 +377,10 @@
         filteredItems = [...allItems];
         selectedIndex = 0;
         renderItems();
-      }, 150);
+        // Reset position for next open
+        container?.classList.remove('translate-y-[100%]');
+        container?.classList.add('translate-y-[-100%]');
+      }, 200);
     }
 
     // Keyboard navigation
