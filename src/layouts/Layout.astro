@@ -16,7 +16,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const {
   title,
-  description,
+  description = "Hi I'm Farooq. Welcome to my corner of the web.",
   image = "/static/blog-placeholder.png",
   className,
 } = Astro.props;
