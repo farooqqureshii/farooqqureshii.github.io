@@ -49,6 +49,31 @@
           <!-- All items will be populated by JavaScript -->
         </div>
       </div>
+      <!-- Mobile onboarding overlay -->
+      <div id="mobile-cmd-onboard" class="sm:hidden fixed inset-0 flex items-center justify-center bg-black/60 z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-xl shadow-lg p-6 flex flex-col items-center gap-4 max-w-xs mx-auto border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
+          <svg id="onboard-arrow" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="mb-2">
+            <path id="onboard-arrow-path" d="M8 16L24 32L40 16" />
+          </svg>
+          <div class="text-center text-base font-medium text-zinc-800 dark:text-zinc-100 flexoki:text-flexoki-tx">visit on desktop for more fun!</div>
+          <button id="onboard-dismiss" class="mt-2 px-3 py-1 rounded bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flexoki:bg-flexoki-tx flexoki:text-flexoki-bg text-sm font-semibold shadow hover:bg-zinc-700 dark:hover:bg-zinc-200 flexoki:hover:bg-flexoki-tx-2 transition-colors">Got it</button>
+        </div>
+      </div>
+      <!-- Mobile onboarding nudge -->
+      <div
+        id="mobile-cmd-nudge"
+        class="sm:hidden fixed left-1/2 top-6 z-50 flex flex-col items-center pointer-events-none"
+        style="transform: translateX(-50%);"
+      >
+        <svg id="nudge-arrow" width="48" height="32" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mb-1">
+          <path id="nudge-arrow-path" d="M8 24 Q24 8 40 24" />
+          <path d="M36 20 L40 24 L36 28" />
+        </svg>
+        <div class="bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-full shadow px-3 py-1 text-xs font-medium text-zinc-800 dark:text-zinc-100 flexoki:text-flexoki-tx flex items-center gap-2 pointer-events-auto">
+          visit on desktop for more fun!
+          <button id="nudge-dismiss" class="ml-2 px-2 py-0.5 rounded bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flexoki:bg-flexoki-tx flexoki:text-flexoki-bg text-xs font-semibold shadow hover:bg-zinc-700 dark:hover:bg-zinc-200 flexoki:hover:bg-flexoki-tx-2 transition-colors">Got it</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -56,6 +81,7 @@
 
 
 <script>
+  let origOpenMenu: () => void;
   document.addEventListener('DOMContentLoaded', function() {
     const menu = document.getElementById('command-menu');
     const backdrop = document.getElementById('command-backdrop');
@@ -78,8 +104,8 @@
 
     const linkItems = [
       { title: 'Email', url: 'mailto:farooq.qureshi@outlook.com', description: 'Send me an email', section: 'links', shortcut: 'E' },
-      { title: 'GitHub', url: 'https://github.com/farooqqureshii', description: 'My GitHub profile', section: 'links', shortcut: 'G' },
-      { title: 'LinkedIn', url: 'https://linkedin.com/in/farooqq', description: 'My LinkedIn profile', section: 'links', shortcut: 'L' },
+      { title: 'GitHub', url: 'https://github.com/farooqqureshii', description: 'Projects and more', section: 'links', shortcut: 'G' },
+      { title: 'LinkedIn', url: 'https://linkedin.com/in/farooqq', description: 'Work & experience', section: 'links', shortcut: 'L' },
       { title: 'Curius', url: 'https://curius.app/farooq-qureshi', description: 'What I\'m finding interesting', section: 'links', shortcut: 'C' },
       { title: 'Say Hi', url: 'https://tally.so/r/mOqNR8', description: 'Send me a message', section: 'links', shortcut: 'S' }
     ];
@@ -336,8 +362,7 @@
       renderItems();
     }
 
-    // Open command menu
-    function openMenu() {
+    let openMenu = function openMenuImpl() {
       // Reset state when opening
       filteredItems = [...allItems];
       selectedIndex = 0;
@@ -363,7 +388,7 @@
         input.focus();
       }
       renderItems();
-    }
+    };
 
     // Close command menu
     function closeMenu() {
@@ -506,5 +531,79 @@
 
     // Initial render
     renderItems();
+
+    // Mobile onboarding overlay logic
+    const mobileOnboard = document.getElementById('mobile-cmd-onboard');
+    const onboardArrowPath = document.getElementById('onboard-arrow-path');
+    const onboardDismiss = document.getElementById('onboard-dismiss');
+    let onboardShown = false;
+    function showMobileOnboard() {
+      if (!mobileOnboard || !onboardArrowPath || !onboardDismiss) return;
+      if (window.innerWidth >= 640) return; // Only on mobile
+      if (localStorage.getItem('cmdMobileOnboardDismissed')) return;
+      mobileOnboard.style.opacity = '1';
+      mobileOnboard.style.pointerEvents = 'auto';
+      // Animate arrow
+      const pathElem = onboardArrowPath as unknown as SVGPathElement;
+      const length = pathElem.getTotalLength();
+      pathElem.style.strokeDasharray = length.toString();
+      pathElem.style.strokeDashoffset = length.toString();
+      pathElem.getBoundingClientRect(); // force reflow
+      pathElem.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(0.33,1,0.68,1)';
+      pathElem.style.strokeDashoffset = '0';
+      onboardShown = true;
+    }
+    function hideMobileOnboard() {
+      if (!mobileOnboard) return;
+      mobileOnboard.style.opacity = '0';
+      mobileOnboard.style.pointerEvents = 'none';
+      localStorage.setItem('cmdMobileOnboardDismissed', '1');
+      onboardShown = false;
+    }
+    if (onboardDismiss) {
+      onboardDismiss.addEventListener('click', hideMobileOnboard);
+    }
+
+    // Mobile onboarding nudge logic
+    const mobileNudge = document.getElementById('mobile-cmd-nudge');
+    const nudgeArrowPath = document.getElementById('nudge-arrow-path');
+    const nudgeDismiss = document.getElementById('nudge-dismiss');
+    let nudgeShown = false;
+    function showMobileNudge() {
+      if (!mobileNudge || !nudgeArrowPath || !nudgeDismiss) return;
+      if (window.innerWidth >= 640) return; // Only on mobile
+      if (localStorage.getItem('cmdMobileNudgeDismissed')) return;
+      mobileNudge.style.display = 'flex';
+      // Animate arrow
+      const pathElem = nudgeArrowPath as unknown as SVGPathElement;
+      const length = pathElem.getTotalLength();
+      pathElem.style.strokeDasharray = length.toString();
+      pathElem.style.strokeDashoffset = length.toString();
+      pathElem.getBoundingClientRect(); // force reflow
+      pathElem.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(0.33,1,0.68,1)';
+      pathElem.style.strokeDashoffset = '0';
+      nudgeShown = true;
+    }
+    function hideMobileNudge() {
+      if (!mobileNudge) return;
+      mobileNudge.style.display = 'none';
+      localStorage.setItem('cmdMobileNudgeDismissed', '1');
+      nudgeShown = false;
+    }
+    if (nudgeDismiss) {
+      nudgeDismiss.addEventListener('click', hideMobileNudge);
+    }
+
+    // Only declare origOpenMenu once, before both onboarding wrappers
+    origOpenMenu = openMenu;
+    openMenu = function() {
+      origOpenMenu();
+      if (!onboardShown) setTimeout(showMobileOnboard, 350);
+      if (!nudgeShown) setTimeout(showMobileNudge, 350);
+    };
   });
 </script> 
+
+<style>
+#mobile-cmd-nudge { display: none; }
+</style> 
