@@ -231,13 +231,13 @@
           breadcrumbText.innerHTML = '';
         } else if (pathParts.length === 1) {
           // For top-level pages like /writing, /projects, show the full path
-          breadcrumbText.innerHTML = ' / <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
+          breadcrumbText.innerHTML = ' / <span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
         } else {
           // For nested pages like /misc/pencils, show the full path
           let breadcrumbHTML = ' / ';
           pathParts.forEach((part, index) => {
             const currentPath = '/' + pathParts.slice(0, index + 1).join('/');
-            breadcrumbHTML += '<span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
+            breadcrumbHTML += '<span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
             if (index < pathParts.length - 1) {
               breadcrumbHTML += ' / ';
             }
@@ -467,7 +467,10 @@
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       // Only enable keyboard shortcuts on desktop
       if (window.innerWidth > 768) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        // Change: Open menu on plain 'k' key (no modifiers, not in input/textarea)
+        const activeElement = document.activeElement;
+        const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || (activeElement as HTMLElement).isContentEditable);
+        if (!e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey && e.key === 'k' && !isInput) {
           e.preventDefault();
           openMenu();
         }
