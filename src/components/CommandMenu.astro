@@ -467,10 +467,10 @@
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       // Only enable keyboard shortcuts on desktop
       if (window.innerWidth > 768) {
-        // Change: Open menu on plain 'k' key (no modifiers, not in input/textarea)
+        // Change: Open menu on plain '/' key (no modifiers, not in input/textarea)
         const activeElement = document.activeElement;
         const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || (activeElement as HTMLElement).isContentEditable);
-        if (!e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey && e.key === 'k' && !isInput) {
+        if (!e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey && e.key === '/' && !isInput) {
           e.preventDefault();
           openMenu();
         }
