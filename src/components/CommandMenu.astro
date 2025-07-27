@@ -197,8 +197,19 @@
       }
     }
 
+    // Get font toggle text based on current font
+    function getFontToggleText() {
+      const html = document.documentElement;
+      if (html.classList.contains('serif-font')) {
+        return 'Toggle Sans-Serif Font';
+      } else {
+        return 'Toggle Serif Font';
+      }
+    }
+
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'other', action: 'toggle-theme', shortcut: 'T' },
+      { title: getFontToggleText(), url: '#', description: 'Switch between serif and sans-serif fonts', section: 'other', action: 'toggle-font', shortcut: 'F' },
       { title: `Book I've Read: ${randomBook.title} by ${randomBook.author}`, url: '/misc/books', description: 'View all books I\'ve read', section: 'other', shortcut: 'B' },
       { title: `Random Project: ${randomProject.title}`, url: randomProject.url, description: randomProject.description, section: 'other', shortcut: 'R' }
     ];
@@ -313,6 +324,17 @@
                 themeToggle.click();
               }
               closeMenu();
+            } else if (item.action === 'toggle-font') {
+              // Toggle font
+              const html = document.documentElement;
+              if (html.classList.contains('serif-font')) {
+                html.classList.remove('serif-font');
+                localStorage.setItem('font-preference', 'sans-serif');
+              } else {
+                html.classList.add('serif-font');
+                localStorage.setItem('font-preference', 'serif');
+              }
+              closeMenu();
             } else {
               window.location.href = item.url;
             }
@@ -349,6 +371,12 @@
       const themeToggleItem = filteredItems.find(item => item.action === 'toggle-theme');
       if (themeToggleItem) {
         themeToggleItem.title = getThemeToggleText();
+      }
+      
+      // Update font toggle text
+      const fontToggleItem = filteredItems.find(item => item.action === 'toggle-font');
+      if (fontToggleItem) {
+        fontToggleItem.title = getFontToggleText();
       }
       
       // Update breadcrumb
@@ -401,6 +429,17 @@
                 themeToggle.click();
               }
               closeMenu();
+            } else if (shortcutItem.action === 'toggle-font') {
+              // Toggle font
+              const html = document.documentElement;
+              if (html.classList.contains('serif-font')) {
+                html.classList.remove('serif-font');
+                localStorage.setItem('font-preference', 'sans-serif');
+              } else {
+                html.classList.add('serif-font');
+                localStorage.setItem('font-preference', 'serif');
+              }
+              closeMenu();
             } else {
               window.location.href = shortcutItem.url;
             }
@@ -423,13 +462,24 @@
             break;
           case 'Enter':
             e.preventDefault();
-            if (items[selectedIndex]) {
+                        if (items[selectedIndex]) {
               const item = items[selectedIndex];
               if (item.action === 'toggle-theme') {
                 // Trigger theme toggle
                 const themeToggle = document.getElementById('theme-toggle');
                 if (themeToggle) {
                   themeToggle.click();
+                }
+                closeMenu();
+              } else if (item.action === 'toggle-font') {
+                // Toggle font
+                const html = document.documentElement;
+                if (html.classList.contains('serif-font')) {
+                  html.classList.remove('serif-font');
+                  localStorage.setItem('font-preference', 'sans-serif');
+                } else {
+                  html.classList.add('serif-font');
+                  localStorage.setItem('font-preference', 'serif');
                 }
                 closeMenu();
               } else {
@@ -506,6 +556,12 @@
     breadcrumbDomain?.addEventListener('click', () => {
       window.location.href = '/';
     });
+
+    // Initialize font preference
+    const savedFontPreference = localStorage.getItem('font-preference');
+    if (savedFontPreference === 'serif') {
+      document.documentElement.classList.add('serif-font');
+    }
 
     // Initial render
     renderItems();
