@@ -36,11 +36,11 @@
 
   /* Custom text selection styles */
   ::selection {
-    background: #e5e7eb;
+    background: #aec2bb;
     color: #000;
   }
   html.dark ::selection {
-    background: #374151;
+    background: #536969;
     color: #fff;
   }
   html.flexoki ::selection {
@@ -49,11 +49,11 @@
   }
   /* Ensure links remain visible when selected */
   a::selection {
-    background: #e5e7eb;
+    background: #aec2bb;
     color: #000;
   }
   html.dark a::selection {
-    background: #374151;
+    background: #536969;
     color: #fff;
   }
   html.flexoki a::selection {
@@ -93,11 +93,25 @@
     color: #60a5fa !important; /* Keep blue color in dark mode */
   }
 
+
+
   /* Exclude misc pages from color change but keep italic */
   main ul a[href^="http"]:hover,
   main ul a[href^="mailto:"]:hover,
   main ul a[rel="noopener"]:hover {
     color: #2563eb !important;
+  }
+
+  /* Specific styling for the read link on homepage */
+  .read-link:hover {
+    font-style: italic;
+    color: #2563eb !important; /* Keep blue color */
+  }
+  html.dark .read-link:hover {
+    color: #60a5fa !important; /* Keep blue color in dark mode */
+  }
+  html.flexoki .read-link:hover {
+    color: #24837B !important; /* Keep Flexoki cyan color */
   }
   html.dark main ul a[href^="http"]:hover,
   html.dark main ul a[href^="mailto"]:hover,
