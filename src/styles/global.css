@@ -1,4 +1,4 @@
-@import url('https://api.fontshare.com/v2/css?f[]=gambarino@400,500,600&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=karma@400,500,600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -12,7 +12,7 @@
   
   /* Serif font class */
   html.serif-font, html.serif-font body, html.serif-font h1, html.serif-font h2, html.serif-font h3, html.serif-font h4, html.serif-font h5, html.serif-font h6, html.serif-font header nav, html.serif-font footer, html.serif-font p, html.serif-font li, html.serif-font ul, html.serif-font ol, html.serif-font span, html.serif-font div {
-    font-family: "Gambarino", Georgia, "Times New Roman", Times, serif;
+    font-family: "Erode", Georgia, "Times New Roman", Times, serif;
     font-weight: 400;
   }
   
