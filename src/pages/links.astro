@@ -1,0 +1,285 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farooq Qureshi | Links</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: white;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        body::selection,
+        *::selection {
+            background: #e3f2fd !important;
+            color: #333 !important;
+        }
+        
+        body::-moz-selection,
+        *::-moz-selection {
+            background: #e3f2fd !important;
+            color: #333 !important;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .name {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .text-content {
+            flex: 1;
+        }
+        
+        .welcome {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .description {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .description a {
+            text-decoration: underline;
+            color: #333;
+        }
+        
+        .highlight {
+            background: #ffd700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .profile-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 8px;
+            margin-top: 40px;
+            object-fit: cover;
+            transform: rotate(-3deg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 3px solid white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .profile-image:hover {
+            transform: rotate(-3deg) scale(1.05) translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .profile-image.flipped {
+            transform: rotate(3deg);
+        }
+        
+        .profile-image.flipped:hover {
+            transform: rotate(3deg) scale(1.05) translateY(-5px);
+        }
+        
+        .desktop-only {
+            display: block;
+        }
+        
+        .mobile-only {
+            display: none;
+        }
+        
+        .links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 400px;
+            margin-top: 8px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 14px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.2s ease;
+            font-size: 15px;
+            min-height: 65px;
+        }
+        
+        .link:first-child {
+            grid-column: 1 / 3;
+        }
+        
+        .link:nth-child(2) {
+            grid-column: 3 / 4;
+        }
+        
+        .link:nth-child(3) {
+            grid-column: 1 / 2;
+        }
+        
+        .link:nth-child(4) {
+            grid-column: 2 / 3;
+        }
+        
+        .link:nth-child(5) {
+            grid-column: 3 / 4;
+        }
+        
+        .link:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.6s both; }
+        .link:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.7s both; }
+        .link:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.8s both; }
+        .link:nth-child(4) { animation: fadeInUp 0.8s ease-out 0.9s both; }
+        .link:nth-child(5) { animation: fadeInUp 0.8s ease-out 1.0s both; }
+        
+        .link:hover {
+            background: #f8f9fa;
+            border-color: #333;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 70px;
+            }
+            
+            .main-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .profile-image {
+                width: 150px;
+                height: 150px;
+                margin-top: 30px;
+                align-self: auto;
+            }
+            
+            .desktop-only {
+                display: none;
+            }
+            
+            .mobile-only {
+                display: block;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .links {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                max-width: 400px;
+            }
+            
+            .link {
+                padding: 12px 20px;
+                min-height: auto;
+            }
+            
+            .link:first-child,
+            .link:nth-child(2),
+            .link:nth-child(3),
+            .link:nth-child(4),
+            .link:nth-child(5) {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="name"><a href="/links" style="text-decoration: none; color: inherit;">Farooq Qureshi</a></div>
+            <img src="/static/156860872.jpeg" alt="Farooq Qureshi" class="profile-image mobile-only" onclick="this.classList.toggle('flipped')">
+        </div>
+        
+        <div class="main-content">
+            <div class="text-content">
+                <div class="welcome">Hello!</div>
+                <div class="description">
+                    I'm a 2nd year Electrical Engineering student at the University of Ottawa, searching for a Summer 2026 internship, I'm looking for any opportunities related to <span class="highlight" style="white-space: nowrap;">product/project</span>, <span class="highlight">growth</span> or <span class="highlight">strategy</span>!
+                </div>
+                <div class="description">
+                    I'm currently leading a <span class="highlight">cross-functional</span> team at <a href="https://uottahack.ca" target="_blank" rel="noopener">uOttaHack</a> across design, development and operations.
+                </div>
+                <div class="description" style="margin-bottom: 8px;">
+                    Please feel free to see more of me and reach out below!
+                </div>
+            </div>
+            
+            <img src="/static/156860872.jpeg" alt="Farooq Qureshi" class="profile-image desktop-only" onclick="this.classList.toggle('flipped')">
+        </div>
+        
+        <div class="links">
+            <a href="https://linkedin.com/in/farooqqureshii" target="_blank" rel="noopener" class="link">LinkedIn</a>
+            <a href="/" class="link">Website</a>
+            <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="link">GitHub</a>
+            <a href="mailto:farooq@farooqqureshii.com" class="link">Email</a>
+            <a href="/resume.pdf" target="_blank" rel="noopener" class="link">Resume</a>
+        </div>
+    </div>
+</body>
+</html> 
