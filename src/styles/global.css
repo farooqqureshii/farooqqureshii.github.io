@@ -14,6 +14,26 @@
     transition: color 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
   }
   
+  /* Optimize theme transitions for mobile devices */
+  @media (max-width: 768px) {
+    *:not(button):not([role="button"]):not(.no-theme-transition) {
+      transition: color 0.1s ease-out, background-color 0.1s ease-out, border-color 0.1s ease-out;
+      /* Enable hardware acceleration for smoother transitions on mobile */
+      will-change: color, background-color, border-color;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+    
+    html {
+      transition: all 0.1s ease-out;
+    }
+    
+    /* Optimize theme toggle animation for mobile */
+    #toggle-line {
+      transition: transform 0.15s ease-in-out !important;
+    }
+  }
+  
   html, body, h1, h2, h3, h4, h5, h6, header nav, footer, p, li, ul, ol, span, div {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
@@ -657,6 +677,20 @@
     animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
   }
   
+  /* Optimize animations for mobile devices */
+  @media (max-width: 768px) {
+    .animate-in,
+    .animate-in-delay-1,
+    .animate-in-delay-2,
+    .animate-in-delay-3,
+    .animate-in-delay-4,
+    .animate-in-delay-5 {
+      animation-duration: 0.5s !important;
+      will-change: transform, opacity;
+      transform: translateZ(0);
+    }
+  }
+  
   /* Header specific animations */
   .header-animate {
     animation: slideInFromTop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -731,6 +765,19 @@
   .content-stagger > *:nth-child(3) { animation-delay: 0.4s; }
   .content-stagger > *:nth-child(4) { animation-delay: 0.5s; }
   .content-stagger > *:nth-child(5) { animation-delay: 0.6s; }
+  
+  /* Optimize content stagger for mobile */
+  @media (max-width: 768px) {
+    .content-stagger > * {
+      animation-duration: 0.4s !important;
+    }
+    
+    .content-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+    .content-stagger > *:nth-child(2) { animation-delay: 0.15s; }
+    .content-stagger > *:nth-child(3) { animation-delay: 0.2s; }
+    .content-stagger > *:nth-child(4) { animation-delay: 0.25s; }
+    .content-stagger > *:nth-child(5) { animation-delay: 0.3s; }
+  }
   
 
   
