@@ -15,9 +15,10 @@ import Layout from "../layouts/Layout.astro";
         I study Electrical Engineering at <a href="https://uottawa.ca" target="_blank">The University of Ottawa</a>. I'm also the Director for <a href="https://uOttaHack.ca" target="_blank">uOttaHack</a>, where I lead the team behind Ottawa's largest technology event.
       </p>
       <p class="mb-3">
-        In my free time I teach competitive debating and public speaking, and also love to <a href="/misc/books" class="read-link">read</a>.
+        In my free time I teach competitive debating and public speaking, and also love to <a href="/misc/books" class="read-link">read</a>. See some links below.
       </p>
     </div>
+    
     <div class="text-base flex flex-row items-center gap-4">
       <a href="mailto:farooq.qureshi@outlook.com" class="mb-3 inline-block">
         <span style="white-space:nowrap;">
@@ -50,5 +51,208 @@ import Layout from "../layouts/Layout.astro";
         </span>
       </a>
     </div>
+    
+    <!-- Guestbook Section -->
+    <div class="mt-6">
+      <div class="guestbook-trigger no-link-hover" id="guestbook-trigger">
+        <span class="guestbook-text">Leave a message in my guestbook.</span>
+        <svg class="guestbook-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 6L6 9L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div id="guestbook-container" class="guestbook-content border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 rounded-md overflow-hidden">
+        <input
+          id="guestbook-input"
+          type="text"
+          placeholder="Message"
+          class="px-3 py-1.5 text-sm bg-transparent text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx placeholder-zinc-500 dark:placeholder-zinc-400 flexoki:placeholder-flexoki-tx-2 focus:outline-none flex-1"
+        />
+        <div
+          id="guestbook-submit-btn"
+          class="px-4 py-1.5 text-sm text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 transition-all duration-200 no-theme-transition"
+        >
+          Send
+        </div>
+      </div>
+    </div>
   </main>
 </Layout>
+
+
+<style>
+  .guestbook-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    user-select: none;
+    margin-bottom: 12px;
+  }
+
+  .guestbook-text {
+    font-size: 0.875rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Arrow direction - points down by default, up when expanded */
+  .guestbook-arrow {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform: rotate(0deg) !important;
+  }
+
+  /* Arrow points up when guestbook is expanded */
+  .guestbook-trigger.guestbook-expanded .guestbook-arrow {
+    transform: rotate(180deg) !important;
+  }
+
+  #guestbook-container.guestbook-content {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    transform: translateY(-10px) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    margin-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Expanded state */
+  #guestbook-container.guestbook-content.guestbook-expanded {
+    max-height: 60px !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    margin-top: 8px !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Guestbook toggle functionality
+    const guestbookTrigger = document.getElementById('guestbook-trigger');
+    const guestbookContainer = document.getElementById('guestbook-container');
+    
+    console.log('Guestbook trigger:', guestbookTrigger);
+    console.log('Guestbook container:', guestbookContainer);
+    
+    if (guestbookTrigger && guestbookContainer) {
+      console.log('Found guestbook elements, adding click listener');
+      
+      guestbookTrigger.addEventListener('mouseleave', function() {
+        this.style.opacity = '1';
+      });
+      
+      guestbookTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Guestbook click detected!');
+        
+        // Force a reflow to ensure the animation works
+        guestbookContainer.offsetHeight;
+        
+        guestbookContainer.classList.toggle('guestbook-expanded');
+        guestbookTrigger.classList.toggle('guestbook-expanded');
+        console.log('Expanded class:', guestbookContainer.classList.contains('guestbook-expanded'));
+        
+        // Focus the input when expanded
+        if (guestbookContainer.classList.contains('guestbook-expanded')) {
+          setTimeout(() => {
+            const input = document.getElementById('guestbook-input');
+            if (input) input.focus();
+          }, 200);
+        }
+      });
+    } else {
+      console.error('Could not find guestbook elements');
+    }
+
+    // Guestbook functionality
+    const guestbookInput = document.getElementById('guestbook-input') as HTMLInputElement;
+    const guestbookSubmitBtn = document.getElementById('guestbook-submit-btn') as HTMLButtonElement;
+    
+    async function handleGuestbookSubmission(message: string) {
+      // Store original values
+      const originalPlaceholder = guestbookInput.placeholder;
+      const originalValue = guestbookInput.value;
+      
+      // Disable input and button
+      guestbookInput.disabled = true;
+      guestbookSubmitBtn.disabled = true;
+      
+      try {
+        const response = await fetch('/api/guestbook', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        });
+        
+        if (response.ok) {
+          // Fade out send button smoothly
+          guestbookSubmitBtn.style.transition = 'opacity 0.3s ease-out';
+          guestbookSubmitBtn.style.opacity = '0';
+          
+          // Simple success feedback
+          guestbookInput.value = '';
+          guestbookInput.placeholder = 'Sent!';
+          
+          // Reset after 2 seconds
+          setTimeout(() => {
+            guestbookInput.placeholder = originalPlaceholder;
+            guestbookInput.disabled = false;
+            guestbookSubmitBtn.disabled = false;
+            
+            // Fade send button back in
+            guestbookSubmitBtn.style.opacity = '1';
+            guestbookInput.focus();
+          }, 2000);
+        } else {
+          throw new Error('Failed to send message');
+        }
+      } catch (error) {
+        // Show error briefly
+        guestbookInput.placeholder = 'Failed to send';
+        guestbookInput.value = originalValue;
+        
+        setTimeout(() => {
+          guestbookInput.placeholder = originalPlaceholder;
+          guestbookInput.disabled = false;
+          guestbookSubmitBtn.disabled = false;
+        }, 2000);
+      }
+    }
+    
+    // Function to update Send button state
+    function updateSendButton() {
+      const message = guestbookInput?.value.trim();
+      if (message && message.length > 0) {
+        guestbookSubmitBtn!.classList.remove('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2');
+        guestbookSubmitBtn!.classList.add('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer', 'transition-all', 'duration-200');
+      } else {
+        guestbookSubmitBtn!.classList.remove('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer');
+        guestbookSubmitBtn!.classList.add('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2', 'transition-all', 'duration-200');
+      }
+    }
+    
+    // Event listeners
+    guestbookSubmitBtn?.addEventListener('click', () => {
+      const message = guestbookInput?.value.trim();
+      if (message && message.length > 0) {
+        handleGuestbookSubmission(message);
+      }
+    });
+    
+    guestbookInput?.addEventListener('input', updateSendButton);
+    
+    guestbookInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const message = guestbookInput.value.trim();
+        if (message && message.length > 0) {
+          handleGuestbookSubmission(message);
+        }
+      }
+    });
+  });
+</script>

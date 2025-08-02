@@ -25,5 +25,115 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
         </li>
       ))}
     </ul>
+
+    <!-- Inline Email Subscription -->
+    <div class="mt-8">
+      <p class="text-sm mb-3">Subscribe to my writing.</p>
+      <div id="subscription-container" class="flex items-center border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 rounded-md overflow-hidden transition-all duration-500 ease-out">
+        <input
+          id="email-input"
+          type="email"
+          placeholder="Email"
+          class="px-3 py-1.5 text-sm bg-transparent text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx placeholder-zinc-500 dark:placeholder-zinc-400 flexoki:placeholder-flexoki-tx-2 focus:outline-none flex-1"
+        />
+        <div
+          id="email-submit-btn"
+          class="px-4 py-1.5 text-sm text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 transition-all duration-200 no-theme-transition"
+        >
+          Send
+        </div>
+      </div>
+    </div>
   </main>
-</Layout> 
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const emailInput = document.getElementById('email-input') as HTMLInputElement;
+    const emailSubmitBtn = document.getElementById('email-submit-btn') as HTMLButtonElement;
+    
+    async function handleSubscription(email: string) {
+      // Store original values
+      const originalPlaceholder = emailInput.placeholder;
+      const originalValue = emailInput.value;
+      
+      // Disable input and button
+      emailInput.disabled = true;
+      emailSubmitBtn.disabled = true;
+      
+      try {
+        const response = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
+        
+        if (response.ok) {
+          // Fade out send button smoothly
+          emailSubmitBtn.style.transition = 'opacity 0.3s ease-out';
+          emailSubmitBtn.style.opacity = '0';
+          
+          // Simple success feedback
+          emailInput.value = '';
+          emailInput.placeholder = 'Subscribed!';
+          
+          // Reset after 2 seconds
+          setTimeout(() => {
+            emailInput.placeholder = originalPlaceholder;
+            emailInput.disabled = false;
+            emailSubmitBtn.disabled = false;
+            
+            // Fade send button back in
+            emailSubmitBtn.style.opacity = '1';
+            emailInput.focus();
+          }, 2000);
+        } else {
+          throw new Error('Subscription failed');
+        }
+      } catch (error) {
+        // Show error briefly
+        emailInput.placeholder = 'Failed to subscribe';
+        emailInput.value = originalValue;
+        
+        setTimeout(() => {
+          emailInput.placeholder = originalPlaceholder;
+          emailInput.disabled = false;
+          emailSubmitBtn.disabled = false;
+        }, 2000);
+      }
+    }
+    
+    // Function to update Send button state
+    function updateSendButton() {
+      const email = emailInput?.value.trim();
+      if (email && email.includes('@')) {
+        emailSubmitBtn!.classList.remove('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2');
+        emailSubmitBtn!.classList.add('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer', 'transition-all', 'duration-200');
+      } else {
+        emailSubmitBtn!.classList.remove('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer');
+        emailSubmitBtn!.classList.add('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2', 'transition-all', 'duration-200');
+      }
+    }
+    
+    // Event listeners
+    emailSubmitBtn?.addEventListener('click', () => {
+      const email = emailInput?.value.trim();
+      if (email && email.includes('@')) {
+        handleSubscription(email);
+      }
+    });
+    
+    emailInput?.addEventListener('input', updateSendButton);
+    
+    emailInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const email = emailInput.value.trim();
+        if (email && email.includes('@')) {
+          handleSubscription(email);
+        }
+      }
+    });
+  });
+</script> 
