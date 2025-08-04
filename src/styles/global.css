@@ -10,7 +10,7 @@
   }
   
   /* Apply theme transitions to most elements, but exclude buttons and interactive elements */
-  *:not(button):not([role="button"]):not(.no-theme-transition) {
+  *:not(button):not([role="button"]):not(.no-theme-transition):not(#command-menu):not(#command-menu *) {
     transition: none;
   }
   

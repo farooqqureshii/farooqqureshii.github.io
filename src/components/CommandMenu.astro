@@ -6,14 +6,14 @@
   <!-- Backdrop -->
   <div 
     id="command-backdrop" 
-    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-150 ease-out"
+    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-200 ease-out opacity-0"
   ></div>
   
   <!-- Menu container -->
   <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-200 ease-out translate-y-[-100%] opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-300 ease-out translate-y-[-100%] opacity-0 scale-95 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
       <!-- Breadcrumb -->
       <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
@@ -384,8 +384,8 @@
       
       menu?.classList.remove('hidden');
       setTimeout(() => {
-        container?.classList.remove('translate-y-[-100%]', 'opacity-0');
-        backdrop?.classList.add('bg-black/20');
+        container?.classList.remove('translate-y-[-100%]', 'opacity-0', 'scale-95');
+        backdrop?.classList.remove('opacity-0');
       }, 10);
       if (input) {
         input.focus();
@@ -395,8 +395,8 @@
 
     // Close command menu
     function closeMenu() {
-      container?.classList.add('translate-y-[100%]', 'opacity-0');
-      backdrop?.classList.remove('bg-black/20');
+      container?.classList.add('translate-y-[100%]', 'opacity-0', 'scale-95');
+      backdrop?.classList.add('opacity-0');
       setTimeout(() => {
         menu?.classList.add('hidden');
         if (input) {
@@ -408,8 +408,9 @@
         renderItems();
         // Reset position for next open
         container?.classList.remove('translate-y-[100%]');
-        container?.classList.add('translate-y-[-100%]');
-      }, 200);
+        container?.classList.add('translate-y-[-100%]', 'opacity-0', 'scale-95');
+        backdrop?.classList.add('opacity-0');
+      }, 300);
     }
 
     // Keyboard navigation
