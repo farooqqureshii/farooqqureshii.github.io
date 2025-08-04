@@ -67,6 +67,16 @@ const {
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    
+    <!-- Preload theme to prevent flash -->
+    <script is:inline>
+      if (
+        localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
   <body
     class="font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"

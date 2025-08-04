@@ -6,32 +6,12 @@
 
 @layer base {
   html {
-    transition: all 0.2s ease-out;
+    transition: none;
   }
   
   /* Apply theme transitions to most elements, but exclude buttons and interactive elements */
   *:not(button):not([role="button"]):not(.no-theme-transition) {
-    transition: color 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
-  }
-  
-  /* Optimize theme transitions for mobile devices */
-  @media (max-width: 768px) {
-    *:not(button):not([role="button"]):not(.no-theme-transition) {
-      transition: color 0.1s ease-out, background-color 0.1s ease-out, border-color 0.1s ease-out;
-      /* Enable hardware acceleration for smoother transitions on mobile */
-      will-change: color, background-color, border-color;
-      transform: translateZ(0);
-      backface-visibility: hidden;
-    }
-    
-    html {
-      transition: all 0.1s ease-out;
-    }
-    
-    /* Optimize theme toggle animation for mobile */
-    #toggle-line {
-      transition: transform 0.15s ease-in-out !important;
-    }
+    transition: none;
   }
   
   html, body, h1, h2, h3, h4, h5, h6, header nav, footer, p, li, ul, ol, span, div {
@@ -176,140 +156,6 @@
   }
   html.dark main .group a:hover {
     color: inherit !important;
-    font-style: normal !important;
-  }
-
-  /* Guestbook trigger - prevent color changes on hover */
-  .guestbook-trigger,
-  .guestbook-trigger:hover,
-  .guestbook-trigger:focus,
-  .guestbook-trigger:active,
-  .guestbook-trigger *,
-  .guestbook-trigger:hover *,
-  .guestbook-trigger:focus *,
-  .guestbook-trigger:active * {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  /* More specific targeting for guestbook text */
-  .guestbook-trigger .guestbook-text,
-  .guestbook-trigger:hover .guestbook-text,
-  .guestbook-trigger:focus .guestbook-text,
-  .guestbook-trigger:active .guestbook-text,
-  .guestbook-trigger .guestbook-arrow,
-  .guestbook-trigger:hover .guestbook-arrow,
-  .guestbook-trigger:focus .guestbook-arrow,
-  .guestbook-trigger:active .guestbook-arrow {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  /* Override any link-like behavior */
-  .guestbook-trigger[class*="no-link-hover"],
-  .guestbook-trigger[class*="no-link-hover"]:hover,
-  .guestbook-trigger[class*="no-link-hover"]:focus,
-  .guestbook-trigger[class*="no-link-hover"]:active,
-  .guestbook-trigger[class*="no-link-hover"] *,
-  .guestbook-trigger[class*="no-link-hover"]:hover *,
-  .guestbook-trigger[class*="no-link-hover"]:focus *,
-  .guestbook-trigger[class*="no-link-hover"]:active * {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  html.dark .guestbook-trigger,
-  html.dark .guestbook-trigger:hover,
-  html.dark .guestbook-trigger:focus,
-  html.dark .guestbook-trigger:active,
-  html.dark .guestbook-trigger *,
-  html.dark .guestbook-trigger:hover *,
-  html.dark .guestbook-trigger:focus *,
-  html.dark .guestbook-trigger:active * {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  html.dark .guestbook-trigger .guestbook-text,
-  html.dark .guestbook-trigger:hover .guestbook-text,
-  html.dark .guestbook-trigger:focus .guestbook-text,
-  html.dark .guestbook-trigger:active .guestbook-text,
-  html.dark .guestbook-trigger .guestbook-arrow,
-  html.dark .guestbook-trigger:hover .guestbook-arrow,
-  html.dark .guestbook-trigger:focus .guestbook-arrow,
-  html.dark .guestbook-trigger:active .guestbook-arrow {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  html.flexoki .guestbook-trigger,
-  html.flexoki .guestbook-trigger:hover,
-  html.flexoki .guestbook-trigger:focus,
-  html.flexoki .guestbook-trigger:active,
-  html.flexoki .guestbook-trigger *,
-  html.flexoki .guestbook-trigger:hover *,
-  html.flexoki .guestbook-trigger:focus *,
-  html.flexoki .guestbook-trigger:active * {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  html.flexoki .guestbook-trigger .guestbook-text,
-  html.flexoki .guestbook-trigger:hover .guestbook-text,
-  html.flexoki .guestbook-trigger:focus .guestbook-text,
-  html.flexoki .guestbook-trigger:active .guestbook-text,
-  html.flexoki .guestbook-trigger .guestbook-arrow,
-  html.flexoki .guestbook-trigger:hover .guestbook-arrow,
-  html.flexoki .guestbook-trigger:focus .guestbook-arrow,
-  html.flexoki .guestbook-trigger:active .guestbook-arrow {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  /* Override any main content area styles that might affect guestbook */
-  main .guestbook-trigger,
-  main .guestbook-trigger:hover,
-  main .guestbook-trigger:focus,
-  main .guestbook-trigger:active,
-  main .guestbook-trigger *,
-  main .guestbook-trigger:hover *,
-  main .guestbook-trigger:focus *,
-  main .guestbook-trigger:active * {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  html.dark main .guestbook-trigger,
-  html.dark main .guestbook-trigger:hover,
-  html.dark main .guestbook-trigger:focus,
-  html.dark main .guestbook-trigger:active,
-  html.dark main .guestbook-trigger *,
-  html.dark main .guestbook-trigger:hover *,
-  html.dark main .guestbook-trigger:focus *,
-  html.dark main .guestbook-trigger:active * {
-    color: inherit !important;
-    text-decoration: none !important;
-    font-style: normal !important;
-  }
-  
-  html.flexoki main .guestbook-trigger,
-  html.flexoki main .guestbook-trigger:hover,
-  html.flexoki main .guestbook-trigger:focus,
-  html.flexoki main .guestbook-trigger:active,
-  html.flexoki main .guestbook-trigger *,
-  html.flexoki main .guestbook-trigger:hover *,
-  html.flexoki main .guestbook-trigger:focus *,
-  html.flexoki main .guestbook-trigger:active * {
-    color: inherit !important;
-    text-decoration: none !important;
     font-style: normal !important;
   }
 
@@ -677,20 +523,6 @@
     animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
   }
   
-  /* Optimize animations for mobile devices */
-  @media (max-width: 768px) {
-    .animate-in,
-    .animate-in-delay-1,
-    .animate-in-delay-2,
-    .animate-in-delay-3,
-    .animate-in-delay-4,
-    .animate-in-delay-5 {
-      animation-duration: 0.5s !important;
-      will-change: transform, opacity;
-      transform: translateZ(0);
-    }
-  }
-  
   /* Header specific animations */
   .header-animate {
     animation: slideInFromTop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -766,19 +598,6 @@
   .content-stagger > *:nth-child(4) { animation-delay: 0.5s; }
   .content-stagger > *:nth-child(5) { animation-delay: 0.6s; }
   
-  /* Optimize content stagger for mobile */
-  @media (max-width: 768px) {
-    .content-stagger > * {
-      animation-duration: 0.4s !important;
-    }
-    
-    .content-stagger > *:nth-child(1) { animation-delay: 0.1s; }
-    .content-stagger > *:nth-child(2) { animation-delay: 0.15s; }
-    .content-stagger > *:nth-child(3) { animation-delay: 0.2s; }
-    .content-stagger > *:nth-child(4) { animation-delay: 0.25s; }
-    .content-stagger > *:nth-child(5) { animation-delay: 0.3s; }
-  }
-  
 
   
   /* Legacy slide-in for backward compatibility */
@@ -794,67 +613,6 @@
   .slide-in:nth-child(3) {
     animation-delay: 0.3s;
   }
-}
-
-/* Command menu animations */
-@keyframes commandMenuOpen {
-  from {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes commandMenuClose {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-}
-
-@keyframes commandBackdropOpen {
-  from {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-  }
-  to {
-    opacity: 1;
-    backdrop-filter: blur(8px);
-  }
-}
-
-@keyframes commandBackdropClose {
-  from {
-    opacity: 1;
-    backdrop-filter: blur(8px);
-  }
-  to {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-  }
-}
-
-.command-menu-open {
-  animation: commandMenuOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.command-menu-close {
-  animation: commandMenuClose 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.command-backdrop-open {
-  animation: commandBackdropOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.command-backdrop-close {
-  animation: commandBackdropClose 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Keyframe animations */
@@ -917,3 +675,12 @@ a > span.inline-block {
   position: relative;
   top: -2px;
 }
+
+/* Custom diagonal arrow for external links */
+.external-arrow {
+  display: inline-block;
+  margin-left: 3px;
+  vertical-align: middle;
+}
+
+

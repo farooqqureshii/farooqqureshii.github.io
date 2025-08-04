@@ -29,7 +29,7 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
     <!-- Inline Email Subscription -->
     <div class="mt-8">
       <p class="text-sm mb-3">Subscribe to my writing.</p>
-      <div id="subscription-container" class="flex items-center border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 rounded-md overflow-hidden transition-all duration-500 ease-out">
+      <div id="subscription-container" class="flex items-center border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 rounded-md overflow-hidden">
         <input
           id="email-input"
           type="email"
@@ -38,7 +38,7 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
         />
         <div
           id="email-submit-btn"
-          class="px-4 py-1.5 text-sm text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 transition-all duration-200 no-theme-transition"
+          class="px-4 py-1.5 text-sm text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 no-theme-transition"
         >
           Send
         </div>
@@ -110,10 +110,10 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
       const email = emailInput?.value.trim();
       if (email && email.includes('@')) {
         emailSubmitBtn!.classList.remove('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2');
-        emailSubmitBtn!.classList.add('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer', 'transition-all', 'duration-200');
+        emailSubmitBtn!.classList.add('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer');
       } else {
         emailSubmitBtn!.classList.remove('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer');
-        emailSubmitBtn!.classList.add('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2', 'transition-all', 'duration-200');
+        emailSubmitBtn!.classList.add('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2');
       }
     }
     

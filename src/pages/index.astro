@@ -8,71 +8,37 @@ import Layout from "../layouts/Layout.astro";
   description={SITE_DESCRIPTION}
   className="flex h-svh max-w-lg flex-col justify-center"
 >
-  <main class="space-y-4">
+  <main class="space-y-4 no-theme-transition">
     <div class="w-full text-base">
-      <p class="mb-3">Hi, I'm Farooq.</p>
+      <p class="mb-3">Hey, I'm Farooq.</p>
       <p class="mb-3">
         I study Electrical Engineering at <a href="https://uottawa.ca" target="_blank">The University of Ottawa</a>. I'm also the Director for <a href="https://uOttaHack.ca" target="_blank">uOttaHack</a>, where I lead the team behind Ottawa's largest technology event.
       </p>
       <p class="mb-3">
-        In my free time I teach competitive debating and public speaking, and also love to <a href="/misc/books" class="read-link">read</a>. See some links below.
+        In my free time I teach competitive debating and public speaking, and also love to <a href="/misc/books" class="read-link">read</a>.
       </p>
     </div>
     
-    <div class="text-base flex flex-row items-center gap-4">
-      <a href="mailto:farooq.qureshi@outlook.com" class="mb-3 inline-block">
-        <span style="white-space:nowrap;">
-          <svg width="12" height="12" viewBox="0 0 12 12" style="display:inline;vertical-align:baseline;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          email
-        </span>
-      </a>
-      <a href="https://github.com/farooqqureshii" target="_blank" class="mb-3 inline-block">
-        <span style="white-space:nowrap;">
-          <svg width="12" height="12" viewBox="0 0 12 12" style="display:inline;vertical-align:baseline;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          github
-        </span>
-      </a>
-      <a href="https://linkedin.com/in/farooqq" target="_blank" class="mb-3 inline-block">
-        <span style="white-space:nowrap;">
-          <svg width="12" height="12" viewBox="0 0 12 12" style="display:inline;vertical-align:baseline;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          linkedin
-        </span>
-      </a>
-      <a href="https://curius.app/farooq-qureshi" target="_blank" class="mb-3 inline-block">
-        <span style="white-space:nowrap;">
-          <svg width="12" height="12" viewBox="0 0 12 12" style="display:inline;vertical-align:baseline;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          curius
-        </span>
-      </a>
-      <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank" class="mb-3 inline-block">
-        <span style="white-space:nowrap;">
-          <svg width="12" height="12" viewBox="0 0 12 12" style="display:inline;vertical-align:baseline;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          resume
-        </span>
-      </a>
-    </div>
-    
-    <!-- Guestbook Section -->
+    <!-- Interactive Section -->
     <div class="mt-6">
-      <div class="guestbook-trigger no-link-hover" id="guestbook-trigger">
-        <span class="guestbook-text">Leave a message in my guestbook.</span>
-        <svg class="guestbook-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 6L6 9L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div id="guestbook-container" class="guestbook-content border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 rounded-md overflow-hidden">
-        <input
-          id="guestbook-input"
-          type="text"
-          placeholder="Message"
-          class="px-3 py-1.5 text-sm bg-transparent text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx placeholder-zinc-500 dark:placeholder-zinc-400 flexoki:placeholder-flexoki-tx-2 focus:outline-none flex-1"
-        />
-        <div
-          id="guestbook-submit-btn"
-          class="px-4 py-1.5 text-sm text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 transition-all duration-200 no-theme-transition"
-        >
-          Send
-        </div>
+      
+      <!-- Links Section -->
+      <div class="text-base">
+        <a href="mailto:farooq.qureshi@outlook.com" class="mr-2">
+          Email
+        </a>
+        <a href="https://github.com/farooqqureshii" target="_blank" class="mr-2">
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/farooqq" target="_blank" class="mr-2">
+          LinkedIn
+        </a>
+        <a href="https://curius.app/farooq-qureshi" target="_blank" class="mr-2">
+          Curius
+        </a>
+        <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank">
+          Résumé
+        </a>
       </div>
     </div>
   </main>
@@ -80,6 +46,140 @@ import Layout from "../layouts/Layout.astro";
 
 
 <style>
+  /* Toggle Styles */
+  .toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .toggle-btn {
+    position: relative;
+    width: 120px;
+    height: 32px;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+  }
+  
+  html.dark .toggle-btn {
+    background: #374151;
+    border-color: #4b5563;
+  }
+  
+  html.flexoki .toggle-btn {
+    background: #F2F0E5;
+    border-color: #CECDC3;
+  }
+  
+  .toggle-slider {
+    position: absolute;
+    left: 2px;
+    width: 28px;
+    height: 28px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  html.dark .toggle-slider {
+    background: #6b7280;
+  }
+  
+  html.flexoki .toggle-slider {
+    background: #FFFCF0;
+  }
+  
+  .toggle-btn.active .toggle-slider {
+    transform: translateX(88px);
+  }
+  
+  .toggle-label {
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-label-left {
+    color: #6b7280;
+  }
+  
+  .toggle-label-right {
+    color: #6b7280;
+  }
+  
+  .toggle-btn.active .toggle-label-left {
+    color: #374151;
+  }
+  
+  .toggle-btn:not(.active) .toggle-label-right {
+    color: #374151;
+  }
+  
+  html.dark .toggle-label-left,
+  html.dark .toggle-label-right {
+    color: #9ca3af;
+  }
+  
+  html.dark .toggle-btn.active .toggle-label-left {
+    color: #f3f4f6;
+  }
+  
+  html.dark .toggle-btn:not(.active) .toggle-label-right {
+    color: #f3f4f6;
+  }
+  
+  html.flexoki .toggle-label-left,
+  html.flexoki .toggle-label-right {
+    color: #6F6E69;
+  }
+  
+  html.flexoki .toggle-btn.active .toggle-label-left {
+    color: #100F0F;
+  }
+  
+  html.flexoki .toggle-btn:not(.active) .toggle-label-right {
+    color: #100F0F;
+  }
+  
+  /* Social Links */
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    color: #2563eb;
+  }
+  
+  html.dark .social-link {
+    color: #60a5fa;
+  }
+  
+  html.flexoki .social-link {
+    color: #24837B;
+  }
+  
+  .social-link:hover {
+    transform: skew(-10deg);
+  }
+  
+
+  
+
+  
+
+  
   .guestbook-trigger {
     display: flex;
     align-items: center;
@@ -87,19 +187,16 @@ import Layout from "../layouts/Layout.astro";
     cursor: pointer;
     padding: 0;
     border-radius: 6px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     user-select: none;
     margin-bottom: 12px;
   }
 
   .guestbook-text {
-    font-size: 0.875rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    font-size: 1rem;
   }
 
   /* Arrow direction - points down by default, up when expanded */
   .guestbook-arrow {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     transform: rotate(0deg) !important;
   }
 
@@ -113,10 +210,14 @@ import Layout from "../layouts/Layout.astro";
     opacity: 0 !important;
     overflow: hidden !important;
     transform: translateY(-10px) !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     margin-top: 0 !important;
     display: flex !important;
     align-items: center !important;
+  }
+  
+  /* Separate transition class - instant transitions */
+  #guestbook-container.guestbook-content.guestbook-animating {
+    transition: none !important;
   }
 
   /* Expanded state */
@@ -126,6 +227,75 @@ import Layout from "../layouts/Layout.astro";
     transform: translateY(0) !important;
     margin-top: 8px !important;
   }
+
+  /* Prevent theme transitions on guestbook elements */
+  #guestbook-container,
+  #guestbook-container * {
+    transition: none !important;
+  }
+  
+  /* Keep only the dropdown animation, not theme transitions */
+  #guestbook-container.guestbook-content {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* Override any global theme transitions for guestbook */
+  #guestbook-container,
+  #guestbook-container *,
+  #guestbook-input,
+  #guestbook-submit-btn {
+    transition: color 0s !important;
+    transition: background-color 0s !important;
+    transition: border-color 0s !important;
+  }
+  
+  /* Force instant theme switching for guestbook */
+  #guestbook-container {
+    border-color: var(--border-color) !important;
+  }
+  
+  #guestbook-input {
+    color: var(--text-color) !important;
+    background-color: transparent !important;
+  }
+  
+  #guestbook-input::placeholder {
+    color: var(--placeholder-color) !important;
+  }
+  
+  #guestbook-submit-btn {
+    color: var(--button-color) !important;
+  }
+  
+  /* CSS custom properties for instant theme switching */
+  :root {
+    --border-color: #e5e7eb;
+    --text-color: #18181b;
+    --placeholder-color: #71717a;
+    --button-color: #71717a;
+  }
+  
+  html.dark {
+    --border-color: #3f3f46;
+    --text-color: #fafafa;
+    --placeholder-color: #a1a1aa;
+    --button-color: #a1a1aa;
+  }
+  
+  html.flexoki {
+    --border-color: #CECDC3;
+    --text-color: #100F0F;
+    --placeholder-color: #6F6E69;
+    --button-color: #6F6E69;
+  }
+  
+  .animationComplete {
+    animation-name: complete;
+    animation-delay: 0.3s;
+    animation-duration: 1.0s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: backwards;
+  }
 </style>
 
 <script>
@@ -134,37 +304,32 @@ import Layout from "../layouts/Layout.astro";
     const guestbookTrigger = document.getElementById('guestbook-trigger');
     const guestbookContainer = document.getElementById('guestbook-container');
     
-    console.log('Guestbook trigger:', guestbookTrigger);
-    console.log('Guestbook container:', guestbookContainer);
-    
     if (guestbookTrigger && guestbookContainer) {
-      console.log('Found guestbook elements, adding click listener');
-      
-      guestbookTrigger.addEventListener('mouseleave', function() {
-        this.style.opacity = '1';
-      });
-      
       guestbookTrigger.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('Guestbook click detected!');
+        
+        // Add transition class before animation
+        guestbookContainer.classList.add('guestbook-animating');
         
         // Force a reflow to ensure the animation works
         guestbookContainer.offsetHeight;
         
         guestbookContainer.classList.toggle('guestbook-expanded');
         guestbookTrigger.classList.toggle('guestbook-expanded');
-        console.log('Expanded class:', guestbookContainer.classList.contains('guestbook-expanded'));
         
         // Focus the input when expanded
         if (guestbookContainer.classList.contains('guestbook-expanded')) {
-          setTimeout(() => {
-            const input = document.getElementById('guestbook-input');
-            if (input) input.focus();
-          }, 200);
+          const input = document.getElementById('guestbook-input');
+          if (input) input.focus();
         }
       });
-    } else {
-      console.error('Could not find guestbook elements');
+      
+      // Remove transition class when animation completes
+      guestbookContainer.addEventListener('transitionend', function(e) {
+        if (e.target === guestbookContainer) {
+          guestbookContainer.classList.remove('guestbook-animating');
+        }
+      });
     }
 
     // Guestbook functionality
@@ -229,10 +394,10 @@ import Layout from "../layouts/Layout.astro";
       const message = guestbookInput?.value.trim();
       if (message && message.length > 0) {
         guestbookSubmitBtn!.classList.remove('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2');
-        guestbookSubmitBtn!.classList.add('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer', 'transition-all', 'duration-200');
+        guestbookSubmitBtn!.classList.add('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer');
       } else {
         guestbookSubmitBtn!.classList.remove('text-zinc-900', 'dark:text-zinc-100', 'flexoki:text-flexoki-tx', 'hover:text-zinc-700', 'dark:hover:text-zinc-300', 'flexoki:hover:text-flexoki-tx-2', 'cursor-pointer');
-        guestbookSubmitBtn!.classList.add('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2', 'transition-all', 'duration-200');
+        guestbookSubmitBtn!.classList.add('text-zinc-500', 'dark:text-zinc-400', 'flexoki:text-flexoki-tx-2');
       }
     }
     
