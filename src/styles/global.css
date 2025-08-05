@@ -495,6 +495,98 @@
   html.flexoki blockquote p {
     color: #100F0F !important; /* Main text color instead of muted grey */
   }
+
+  /* Footnote styling */
+  article .footnotes,
+  .footnotes {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+    color: #000;
+  }
+
+  html.dark article .footnotes,
+  html.dark .footnotes {
+    border-top-color: #33353a44;
+    color: #fff;
+  }
+
+  html.flexoki article .footnotes,
+  html.flexoki .footnotes {
+    border-top-color: #E6B17A;
+    color: #100F0F;
+  }
+
+  article .footnotes::before,
+  .footnotes::before {
+    content: "";
+    display: block;
+    height: 1px;
+    background: #e5e7eb;
+    margin-bottom: 1rem;
+  }
+
+  html.dark article .footnotes::before,
+  html.dark .footnotes::before {
+    background: #33353a44;
+  }
+
+  html.flexoki article .footnotes::before,
+  html.flexoki .footnotes::before {
+    background: #E6B17A;
+  }
+
+  /* Hide the "Footnotes" title */
+  article .footnotes h2,
+  .footnotes h2 {
+    display: none;
+  }
+
+  article .footnotes ol,
+  .footnotes ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+
+  article .footnotes li,
+  .footnotes li {
+    margin-bottom: 0.5rem;
+    padding-left: 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  article .footnotes li::before,
+  .footnotes li::before {
+    content: "";
+  }
+
+  article .footnotes a,
+  .footnotes a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  article .footnotes a:hover,
+  .footnotes a:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  /* Fix footnote reference links to use body text color instead of link color */
+  article sup a,
+  sup a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  article sup a:hover,
+  sup a:hover {
+    color: inherit !important;
+    text-decoration: underline !important;
+  }
 }
 
 @layer utilities {
