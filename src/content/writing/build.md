@@ -7,7 +7,7 @@ draft: false
 
 As I was deciding what to write about next, I was thinking a lot about what makes a hackathon project great. I then dug a little deeper into how exactly someone could build a great project, and the role a hackathon places in shaping that. It made for something I'm pretty happy with.
 
-Hackathons are a very tough thing to define. In many instances, I sort of refrain from using the word in casual contexts. The one time I didn't, the person confidently agreed with me when they said "Oh hacking? I hear cybersecurity is big in Ottawa". [^1]
+Hackathons are a very tough thing to define. In many instances, I sort of refrain from using the word in casual contexts. The one time I didn't, the person confidently agreed with me when they said "Oh hacking? I hear cybersecurity is big in Ottawa". <a href="#fn1" id="fnref1">[1]</a>
 
 All jokes aside, it is quite hard to define. Saying it is a tech conference sells the event short, since - it excludes all the building. Even if you were to factor in all the workshops and speakers, you still wouldn't really call it a tech conference, since the common association to those isn't really "fun". You also wouldn't call it a student meetup, since that sells itself short in terms of the scale and the real world impact of many of the projects at the event.
 
@@ -15,15 +15,15 @@ The best way I've found to describe a hackathon is an event to inspire people to
 
 But the word building get's thrown a lot without really being explained. So what exactly are you supposed to build? Here is my best crack at it.
 
-The first thing I'd point out is that, for all intensive purposes, it doesn't really matter what you build. An unfortunate, but real, reality of hackathons - is that most people do not end up submitting a project. This is not the fault of the person. The time crunch of a hackathon, the no sleep, and the overall challenges that come with building something in that timeframe make coming up with a final product a tall ask. That is why, if you are able to submit something at the end of the 36 hours or so, that's the real win that weekend.
+The first thing I'd point out is that, for all intents and purposes, it doesn't really matter what you build. An unfortunate, but real, reality of hackathons - is that most people do not end up submitting a project. This is not the fault of the person. The time crunch of a hackathon, the no sleep, and the overall challenges that come with building something in that timeframe make coming up with a final product a tall ask. That is why, if you are able to submit something at the end of the 36 hours or so, that's the real win that weekend.
 
-However, if you're looking for some more clarity on what to create, I find great hackathon projects generally fall into one of two buckets. The first are projects that are extremely technically proficient. The second are projects that solve a real problem people have. Let's start by noticing the obvious, which is that if you're able to create something that is in both these buckets you are almost guaranteed some type of recognition. This doesn't translate well to the real world. When you are selling a product, it oftentimes does not matter how technically great it is. [^2]
+However, if you're looking for some more clarity on what to create, I find great hackathon projects generally fall into one of two buckets. The first are projects that are extremely technically proficient. The second are projects that solve a real problem people have. Let's start by noticing the obvious, which is that if you're able to create something that is in both these buckets you are almost guaranteed some type of recognition. This doesn't translate well to the real world. When you are selling a product, it oftentimes does not matter how technically great it is. <a href="#fn2" id="fnref2">[2]</a>
 
 Many people find themselves in the first camp. I'm not quite sure why this is, but I have a couple of possible explanations. The first is that CS/SWE education places a unknowingly terrible pressure on the technicalities of software. This is important to a certain extent, but relevant to a hackathon - many people find themselves so caught up in what technologies, frameworks, packages to use that by the time the stack is created, you have less time to actually build anything. The second, is that there is this idea that the judges are likely to be more impressed if your project is really technically impressive. It's hard to say whether this is true in a general sense. One thing that cannot be ignored, though, is that no matter how experienced the judges are, they are still human. Everyone likes seeing a well designed app, something that really brings out joy, something that has a nice demo to it. In other words: great technical chops can't excuse a bad product, a great product can (sometimes) excuse bad technical chops.
 
 So does this mean you shouldn't try to make your project technically great? Of course not. There is obviously a place for choosing the right tools for the job. But only to the extent that you can explain your choices. That's what is really important. If you can say with succinct clarity why you chose to do something the way you did, that tends to be good enough most of the time. Judges like to see the link between what you wanted to accomplish, and how you decided what to use to do that.
 
-Less people find themselves in the second camp, projects that solve a real problem people have. This is a very hard thing to do. For starters, it's hard to really think about problems that people have. It's better if the problem you are solving is a problem that you yourself have, since that abstracts the thinking part away quite a bit (you are your own user). Thinking about a problem that other people might have is hard if you don't talk to a lot of people about their problems (and in this context, you don't really have all the time in the world) Either way, it's not exactly easy to think of a problem to solve with the clock ticking behind you. That's why some people come into hackathons with a project idea in mind, and tailor it to fit a company track or challenge.
+Less people find themselves in the second camp, projects that solve a real problem people have. This is a very hard thing to do. For starters, it's hard to really think about problems that people have. It's better if the problem you are solving is a problem that you yourself have, since that abstracts the thinking part away quite a bit (you are your own user). Thinking about a problem that other people might have is hard if you don't talk to a lot of people about their problems (and in this context, you don't really have all the time in the world). Also, it's not exactly easy to think of a problem to solve with the clock ticking behind you. That's why some people come into hackathons with a project idea in mind, and tailor it to fit a company track or challenge.
 
 It's important to remember that in most instances the problem you are solving is more important than your solution to it. If you can find a problem that doesn't have a solution to it - then no matter how lame your solution is, someone is likely to see value in it since it's better than nothing. As well, if you find a problem where the existing solution is not so great, any marginal improvement is likely to incite a reaction positive enough you would get some great results out of it. The marginal improvement doesn't really have to be all that impressive either. I recently saw a great product on Twitter which is effectively a WYSIWYG markdown editor packaged in a nice UI with live-sharing features. Not really a technical leap by any means, but the UX was just so great, along solving an actual problem people had - that it got a ton of recognition.
 
@@ -37,51 +37,80 @@ One of the ways we do this at uOttaHack through community events. We run tons of
 
 The second way we do this is an overall mindset shift. A big focus at uOttaHack is placed on the hacker. So much of what we do is to get hackers, the first time ones, the best possible experience learning more about their aspirations and interests in technology. If we can do this through creating an environment free of pressure and expectations, and replace with it fun and engaging events that make them want to come back and learn more - that's a great success.
 
-[^1]: This happens to be true, but that's besides the point.
+<div class="notes-separator"></div>
 
-[^2]: Insofar as the technical drawbacks of your product are not revealed to your user. It would obviously be unrealistic to excuse a 5 minute loading time for a website for the sake of "technical chops" not mattering. Most of the time though, products get sold to non-technical audiences and so you may not be interacting with someone who understands it deeply. It is even more important then to be able to separate the solution from the things you did to craft it.
+Notes
+
+<div class="notes-section">
+<p id="fn1">[1] This happens to be true, but that's besides the point. <a href="#fnref1" class="footnote-back"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></a></p>
+
+<p id="fn2">[2] Insofar as the technical drawbacks of your product are not revealed to your user. It would obviously be unrealistic to excuse a 5 minute loading time for a website for the sake of "technical chops" not mattering. Most of the time though, products get sold to non-technical audiences and so you may not be interacting with someone who understands it deeply. It is even more important then to be able to separate the solution from the things you did to craft it. <a href="#fnref2" class="footnote-back"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></a></p>
+</div>
 
 <style>
-/* Hide the "Footnotes" title */
-.footnotes h2 {
-  display: none !important;
-}
 
-/* Remove the extra line before footnotes */
-.footnotes::before {
-  display: none !important;
-}
-
-/* Make footnotes compact - single line with number and text */
-.footnotes ol {
-  list-style: none !important;
-  padding-left: 0 !important;
-  margin: 0 !important;
-  counter-reset: list-item !important;
-}
-
-.footnotes li {
-  margin-bottom: 0.5rem !important;
-  padding-left: 0 !important;
+article sup a {
+  position: static !important;
   font-size: inherit !important;
-  line-height: 1.4 !important;
-  display: block !important;
-}
-
-.footnotes li::before {
-  content: counter(list-item) ". " !important;
-  font-weight: normal !important;
-  counter-increment: list-item !important;
-}
-
-/* Fix footnote reference color */
-sup a {
+  line-height: inherit !important;
+  vertical-align: baseline !important;
   color: inherit !important;
   text-decoration: none !important;
 }
 
-sup a:hover {
+article sup a:before {
+  content: "[" !important;
+}
+
+article sup a:after {
+  content: "]" !important;
+}
+
+/* Style footnote reference links in text */
+a[href^="#fn"] {
   color: inherit !important;
-  text-decoration: underline !important;
+  text-decoration: none !important;
+}
+
+/* Notes separator line */
+.notes-separator {
+  border-top: 1px solid #e5e7eb !important;
+  margin: 2rem 0 1rem 0 !important;
+}
+
+html.dark .notes-separator {
+  border-top-color: #374151 !important;
+}
+
+html.flexoki .notes-separator {
+  border-top-color: #CECDC3 !important;
+}
+
+/* Notes section styling */
+.notes-section {
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+  margin-top: 1rem !important;
+}
+
+.footnote-back {
+  text-decoration: none !important;
+  margin-left: 0.25rem !important;
+  display: inline-block !important;
+  color: inherit !important;
+}
+
+.footnote-back svg {
+  display: inline !important;
+  vertical-align: middle !important;
+  stroke: #000000 !important;
+}
+
+html.dark .footnote-back svg {
+  stroke: #ffffff !important;
+}
+
+html.flexoki .footnote-back svg {
+  stroke: #100F0F !important;
 }
 </style> 
