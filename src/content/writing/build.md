@@ -7,7 +7,7 @@ draft: false
 
 As I was deciding what to write about next, I was thinking a lot about what makes a hackathon project great. I then dug a little deeper into how exactly someone could build a great project, and the role a hackathon places in shaping that. It made for something I'm pretty happy with.
 
-Hackathons are a very tough thing to define. In many instances, I sort of refrain from using the word in casual contexts. The one time I didn'timage.png, the person confidently agreed with me when they said "Oh hacking? I hear cybersecurity is big in Ottawa". [^1]
+Hackathons are a very tough thing to define. In many instances, I sort of refrain from using the word in casual contexts. The one time I didn't, the person confidently agreed with me when they said "Oh hacking? I hear cybersecurity is big in Ottawa". [^1]
 
 All jokes aside, it is quite hard to define. Saying it is a tech conference sells the event short, since - it excludes all the building. Even if you were to factor in all the workshops and speakers, you still wouldn't really call it a tech conference, since the common association to those isn't really "fun". You also wouldn't call it a student meetup, since that sells itself short in terms of the scale and the real world impact of many of the projects at the event.
 
