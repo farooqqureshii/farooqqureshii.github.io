@@ -15,7 +15,7 @@
   }
   
   html, body, h1, h2, h3, h4, h5, h6, header nav, footer, p, li, ul, ol, span, div {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 400;
   }
   
