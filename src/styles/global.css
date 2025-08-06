@@ -1,4 +1,4 @@
-@import url('https://api.fontshare.com/v2/css?f[]=karma@400,500,600&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,7 +15,7 @@
   }
   
   html, body, h1, h2, h3, h4, h5, h6, header nav, footer, p, li, ul, ol, span, div {
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Switzer", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 400;
   }
   
@@ -28,6 +28,17 @@
   /* Keep breadcrumb in monospace even in serif mode */
   html.serif-font #command-menu .font-mono {
     font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  /* Ensure command menu text has normal weight in serif mode */
+  html.serif-font #command-menu,
+  html.serif-font #command-menu * {
+    font-weight: 400 !important;
+  }
+  
+  /* Override any font-medium classes specifically in command menu */
+  html.serif-font #command-menu [class*="font-medium"] {
+    font-weight: 400 !important;
   }
   /* Remove font-weight overrides for headings */
   @font-face {
