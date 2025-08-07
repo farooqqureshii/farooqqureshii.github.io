@@ -13,7 +13,7 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         <span>in Calgary, </span>
         <span id="calgary-temp" class="opacity-0 transition-opacity duration-300">22°</span>
         <span> with </span>
-        <span id="calgary-weather" class="opacity-0 transition-opacity duration-300">partly cloudy skies</span>
+        <span id="calgary-weather" class="opacity-0 transition-opacity duration-300">partly cloudy skies.</span>
       </span>
     </div>
     <div style="margin-top:0.25rem; min-height:1.5rem;">
@@ -57,25 +57,25 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         
         // Weather code to description mapping
         const weatherCodes = {
-          0: 'clear skies',
-          1: 'mostly clear skies',
-          2: 'partly cloudy skies',
-          3: 'overcast skies',
-          45: 'fog',
-          48: 'freezing fog',
-          51: 'light drizzle',
-          53: 'drizzle',
-          55: 'heavy drizzle',
-          61: 'light rain',
-          63: 'rain',
-          65: 'heavy rain',
-          71: 'light snow',
-          73: 'snow',
-          75: 'heavy snow',
-          95: 'thunderstorms'
+          0: 'clear skies.',
+          1: 'mostly clear skies.',
+          2: 'partly cloudy skies.',
+          3: 'overcast skies.',
+          45: 'fog.',
+          48: 'freezing fog.',
+          51: 'light drizzle.',
+          53: 'drizzle.',
+          55: 'heavy drizzle.',
+          61: 'light rain.',
+          63: 'rain.',
+          65: 'heavy rain.',
+          71: 'light snow.',
+          73: 'snow.',
+          75: 'heavy snow.',
+          95: 'thunderstorms.'
         };
         
-        const weatherDesc = weatherCodes[data.current_weather.weathercode as keyof typeof weatherCodes] || 'partly cloudy skies';
+        const weatherDesc = weatherCodes[data.current_weather.weathercode as keyof typeof weatherCodes] || 'partly cloudy skies.';
         
         if (tempEl) {
           tempEl.textContent = `${temp}°`;
@@ -94,7 +94,7 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
           tempEl.classList.remove('opacity-0');
         }
         if (weatherEl) {
-          weatherEl.textContent = 'partly cloudy skies';
+          weatherEl.textContent = 'partly cloudy skies.';
           weatherEl.classList.remove('opacity-0');
         }
       }
