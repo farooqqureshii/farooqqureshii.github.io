@@ -69,28 +69,28 @@
 
   /* Custom text selection styles */
   ::selection {
-    background: #aec2bb;
+    background: #e4e4e7;
     color: #000;
   }
   html.dark ::selection {
-    background: #536969;
+    background: #3f3f46;
     color: #fff;
   }
   html.flexoki ::selection {
-    background: #D0A215;
+    background: #E6E4D9;
     color: #100F0F;
   }
   /* Ensure links remain visible when selected */
   a::selection {
-    background: #aec2bb;
+    background: #e4e4e7;
     color: #000;
   }
   html.dark a::selection {
-    background: #536969;
+    background: #3f3f46;
     color: #fff;
   }
   html.flexoki a::selection {
-    background: #D0A215;
+    background: #E6E4D9;
     color: #100F0F;
   }
 
