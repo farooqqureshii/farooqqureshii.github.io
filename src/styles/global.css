@@ -692,7 +692,7 @@
   
   /* Content stagger animations */
   .content-stagger > * {
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: fadeInScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   
   .content-stagger > *:nth-child(1) { animation-delay: 0.2s; }
