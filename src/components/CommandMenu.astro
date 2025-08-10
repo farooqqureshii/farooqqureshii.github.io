@@ -208,6 +208,11 @@
       }
     }
 
+    // Get link color toggle text based on current scheme
+    function getLinkColorToggleText() {
+      return 'Change Link Color';
+    }
+
     // All individual pages (no shortcuts needed)
     const pages = [
       // Writing articles
@@ -233,7 +238,8 @@
 
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'customization', action: 'toggle-theme', shortcut: 'T' },
-      { title: getFontToggleText(), url: '#', description: 'Switch between serif and sans-serif fonts', section: 'customization', action: 'toggle-font', shortcut: 'F' }
+      { title: getFontToggleText(), url: '#', description: 'Switch between serif and sans-serif fonts', section: 'customization', action: 'toggle-font', shortcut: 'F' },
+      { title: getLinkColorToggleText(), url: '#', description: 'Cycle through link color schemes', section: 'customization', action: 'toggle-link-color', shortcut: 'C' }
     ];
 
     // Define the item type to include optional action property
@@ -357,6 +363,22 @@
                 localStorage.setItem('font-preference', 'serif');
               }
               closeMenu();
+            } else if (item.action === 'toggle-link-color') {
+              // Toggle link color scheme
+              const html = document.documentElement;
+              const schemes = ['link-scheme-1', 'link-scheme-2', 'link-scheme-3', 'link-scheme-4'];
+              const currentScheme = schemes.find(scheme => html.classList.contains(scheme)) || 'link-scheme-1';
+              const currentIndex = schemes.indexOf(currentScheme);
+              const nextIndex = (currentIndex + 1) % schemes.length;
+              
+              // Remove all scheme classes
+              schemes.forEach(scheme => html.classList.remove(scheme));
+              // Add the next scheme class
+              html.classList.add(schemes[nextIndex]);
+              
+              // Save preference
+              localStorage.setItem('link-color-preference', schemes[nextIndex]);
+              closeMenu();
             } else {
               window.location.href = item.url;
             }
@@ -399,6 +421,12 @@
       const fontToggleItem = filteredItems.find(item => item.action === 'toggle-font');
       if (fontToggleItem) {
         fontToggleItem.title = getFontToggleText();
+      }
+      
+      // Update link color toggle text
+      const linkColorToggleItem = filteredItems.find(item => item.action === 'toggle-link-color');
+      if (linkColorToggleItem) {
+        linkColorToggleItem.title = getLinkColorToggleText();
       }
       
       // Update breadcrumb
@@ -463,6 +491,22 @@
                 localStorage.setItem('font-preference', 'serif');
               }
               closeMenu();
+            } else if (shortcutItem.action === 'toggle-link-color') {
+              // Toggle link color scheme
+              const html = document.documentElement;
+              const schemes = ['link-scheme-1', 'link-scheme-2', 'link-scheme-3', 'link-scheme-4'];
+              const currentScheme = schemes.find(scheme => html.classList.contains(scheme)) || 'link-scheme-1';
+              const currentIndex = schemes.indexOf(currentScheme);
+              const nextIndex = (currentIndex + 1) % schemes.length;
+              
+              // Remove all scheme classes
+              schemes.forEach(scheme => html.classList.remove(scheme));
+              // Add the next scheme class
+              html.classList.add(schemes[nextIndex]);
+              
+              // Save preference
+              localStorage.setItem('link-color-preference', schemes[nextIndex]);
+              closeMenu();
             } else {
               window.location.href = shortcutItem.url;
             }
@@ -504,6 +548,22 @@
                   html.classList.add('serif-font');
                   localStorage.setItem('font-preference', 'serif');
                 }
+                closeMenu();
+              } else if (item.action === 'toggle-link-color') {
+                // Toggle link color scheme
+                const html = document.documentElement;
+                const schemes = ['link-scheme-1', 'link-scheme-2', 'link-scheme-3', 'link-scheme-4'];
+                const currentScheme = schemes.find(scheme => html.classList.contains(scheme)) || 'link-scheme-1';
+                const currentIndex = schemes.indexOf(currentScheme);
+                const nextIndex = (currentIndex + 1) % schemes.length;
+                
+                // Remove all scheme classes
+                schemes.forEach(scheme => html.classList.remove(scheme));
+                // Add the next scheme class
+                html.classList.add(schemes[nextIndex]);
+                
+                // Save preference
+                localStorage.setItem('link-color-preference', schemes[nextIndex]);
                 closeMenu();
               } else {
                 window.location.href = item.url;
@@ -584,6 +644,15 @@
     const savedFontPreference = localStorage.getItem('font-preference');
     if (savedFontPreference === 'serif') {
       document.documentElement.classList.add('serif-font');
+    }
+
+    // Initialize link color preference
+    const savedLinkColorPreference = localStorage.getItem('link-color-preference');
+    if (savedLinkColorPreference) {
+      document.documentElement.classList.add(savedLinkColorPreference);
+    } else {
+      // Default to blue (scheme 1)
+      document.documentElement.classList.add('link-scheme-1');
     }
 
     // Initial render

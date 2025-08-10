@@ -96,11 +96,11 @@
 
   /* Global link styles - applies to ALL links */
   a {
-    color: #2563eb; /* Nice blue */
+    color: #2563eb; /* Nice blue - default */
     text-decoration: none;
   }
   html.dark a {
-    color: #60a5fa; /* Lighter blue for dark mode */
+    color: #60a5fa; /* Lighter blue for dark mode - default */
   }
   html.flexoki a {
     color: #24837B; /* Flexoki cyan */
@@ -115,15 +115,42 @@
     color: #100F0F; /* Flexoki black */
   }
 
-  /* External links (blue ones) become italic on hover */
+  /* Link color scheme 1: Blue (default) */
+  html.link-scheme-1 a {
+    color: #2563eb;
+  }
+  html.dark.link-scheme-1 a {
+    color: #60a5fa;
+  }
+
+  /* Link color scheme 2: Green */
+  html.link-scheme-2 a {
+    color: #059669;
+  }
+  html.dark.link-scheme-2 a {
+    color: #34d399;
+  }
+
+  /* Link color scheme 3: Purple */
+  html.link-scheme-3 a {
+    color: #7c3aed;
+  }
+  html.dark.link-scheme-3 a {
+    color: #a78bfa;
+  }
+
+  /* Link color scheme 4: Orange */
+  html.link-scheme-4 a {
+    color: #ea580c;
+  }
+  html.dark.link-scheme-4 a {
+    color: #fb923c;
+  }
+
+  /* External links become italic on hover and keep their color scheme */
   a[href^="http"]:hover,
   a[href^="mailto:"]:hover {
     font-style: italic;
-    color: #2563eb !important; /* Keep blue color */
-  }
-  html.dark a[href^="http"]:hover,
-  html.dark a[href^="mailto:"]:hover {
-    color: #60a5fa !important; /* Keep blue color in dark mode */
   }
 
 
@@ -132,24 +159,12 @@
   main ul a[href^="http"]:hover,
   main ul a[href^="mailto:"]:hover,
   main ul a[rel="noopener"]:hover {
-    color: #2563eb !important;
+    font-style: italic;
   }
 
   /* Specific styling for the read link on homepage */
   .read-link:hover {
     font-style: italic;
-    color: #2563eb !important; /* Keep blue color */
-  }
-  html.dark .read-link:hover {
-    color: #60a5fa !important; /* Keep blue color in dark mode */
-  }
-  html.flexoki .read-link:hover {
-    color: #24837B !important; /* Keep Flexoki cyan color */
-  }
-  html.dark main ul a[href^="http"]:hover,
-  html.dark main ul a[href^="mailto"]:hover,
-  html.dark main ul a[rel="noopener"]:hover {
-    color: #60a5fa !important;
   }
 
   /* Exclude project page icons from blue color */
@@ -210,7 +225,13 @@
     color: #100F0F !important;
   }
 
-  /* Resources page links - use blue color */
+  /* Resources page links - use current color scheme */
+  main ul a[href^="http"] {
+    color: inherit !important;
+  }
+
+  /* Override the black color for resources page links to use link colors */
+  /* Use the same color scheme as regular links */
   main ul a[href^="http"] {
     color: #2563eb !important;
   }
@@ -219,6 +240,38 @@
   }
   html.flexoki main ul a[href^="http"] {
     color: #24837B !important;
+  }
+  
+  /* Link color scheme 1: Blue (default) */
+  html.link-scheme-1 main ul a[href^="http"] {
+    color: #2563eb !important;
+  }
+  html.dark.link-scheme-1 main ul a[href^="http"] {
+    color: #60a5fa !important;
+  }
+
+  /* Link color scheme 2: Green */
+  html.link-scheme-2 main ul a[href^="http"] {
+    color: #059669 !important;
+  }
+  html.dark.link-scheme-2 main ul a[href^="http"] {
+    color: #34d399 !important;
+  }
+
+  /* Link color scheme 3: Purple */
+  html.link-scheme-3 main ul a[href^="http"] {
+    color: #7c3aed !important;
+  }
+  html.dark.link-scheme-3 main ul a[href^="http"] {
+    color: #a78bfa !important;
+  }
+
+  /* Link color scheme 4: Orange */
+  html.link-scheme-4 main ul a[href^="http"] {
+    color: #ea580c !important;
+  }
+  html.dark.link-scheme-4 main ul a[href^="http"] {
+    color: #fb923c !important;
   }
 
 
