@@ -9,6 +9,31 @@
     transition: none;
   }
   
+  /* Graph paper background pattern */
+  body {
+    background-image: 
+      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 0;
+  }
+  
+  html.dark body {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 0;
+  }
+  
+  html.flexoki body {
+    background-image: 
+      linear-gradient(rgba(16, 15, 15, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16, 15, 15, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 0;
+  }
+  
   /* Apply theme transitions to most elements, but exclude buttons and interactive elements */
   *:not(button):not([role="button"]):not(.no-theme-transition):not(#command-menu):not(#command-menu *) {
     transition: none;
