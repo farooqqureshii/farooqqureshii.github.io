@@ -3,31 +3,36 @@ import { EMAIL } from "../consts";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<header class="mb-6 mt-4 flex items-center justify-between header-animate">
-  <nav class="flex items-center gap-4">
-    <a href="/" class="nav-item-animate">Home</a>
-    <a href="/projects" class="nav-item-animate">Projects</a>
-    <a href="/writing" class="nav-item-animate">Writing</a>
-    <a href="/artifacts" class="nav-item-animate">Artifacts</a>
-    <a href="/other" class="nav-item-animate">Other</a>
-  </nav>
-  <div class="flex items-center gap-2">
-    <div
-      id="command-menu-button"
-      class="relative cursor-pointer text-black dark:text-white flexoki:text-flexoki-tx -mt-0.5 command-menu-animate"
-      title="Open command menu (Ctrl+K / Cmd+K)"
-    >
-      <span class="text-xs hidden sm:inline text-black dark:text-white flexoki:text-flexoki-tx">
-        ctrl + k
-      </span>
-      <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12h20"></path>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-      </svg>
+<header class="mb-12 mt-4">
+  <div class="flex items-center justify-between mb-4">
+    <div class="text-lg">
+      <a href="/">Farooq Qureshi</a>
     </div>
-    <div class="theme-toggle-animate">
-    <ThemeToggle />
+    <div class="flex items-center gap-2">
+      <div
+        id="command-menu-button"
+        class="relative cursor-pointer text-black dark:text-white flexoki:text-flexoki-tx -mt-0.5"
+        title="Open command menu (Ctrl+K / Cmd+K)"
+      >
+        <span class="text-xs hidden sm:inline text-black dark:text-white flexoki:text-flexoki-tx">
+          ctrl + k
+        </span>
+        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12h20"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </div>
+      <div>
+      <ThemeToggle />
+      </div>
     </div>
   </div>
+  <nav class="flex items-center gap-4">
+    <a href="/">Home</a>
+    <a href="/projects">Projects</a>
+    <a href="/writing">Writing</a>
+    <a href="/artifacts">Artifacts</a>
+    <a href="/other">Other</a>
+  </nav>
 </header>

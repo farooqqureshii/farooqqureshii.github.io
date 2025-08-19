@@ -1,0 +1,29 @@
+---
+// TimeDisplay component
+---
+
+<div class="flex flex-col gap-0.5 text-xs footer-line-color">
+  <div class="flex items-center gap-2">
+    <span id="current-time"><!-- will be filled by script --></span>
+  </div>
+</div>
+
+<script>
+  function updateTime() {
+    const timeElement = document.getElementById('current-time');
+    if (timeElement) {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+      timeElement.textContent = timeString;
+    }
+  }
+
+  // Update time immediately and then every second
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>

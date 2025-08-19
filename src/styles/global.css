@@ -9,29 +9,17 @@
     transition: none;
   }
   
-  /* Graph paper background pattern */
+  /* Clean, minimal background */
   body {
-    background-image: 
-      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 0;
+    background-color: #ffffff;
   }
   
   html.dark body {
-    background-image: 
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 0;
+    background-color: #0a0a0a;
   }
   
   html.flexoki body {
-    background-image: 
-      linear-gradient(rgba(16, 15, 15, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(16, 15, 15, 0.02) 1px, transparent 1px);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 0;
+    background-color: #FFFCF0;
   }
   
   /* Apply theme transitions to most elements, but exclude buttons and interactive elements */
@@ -178,8 +166,6 @@
     font-style: italic;
   }
 
-
-
   /* Exclude misc pages from color change but keep italic */
   main ul a[href^="http"]:hover,
   main ul a[href^="mailto:"]:hover,
@@ -208,6 +194,26 @@
   html.dark main .group a:hover {
     color: inherit !important;
     font-style: normal !important;
+  }
+
+  /* Header title - inherit body text color (black/white) */
+  header .text-lg a {
+    color: #000 !important;
+  }
+  html.dark header .text-lg a {
+    color: #fff !important;
+  }
+  html.flexoki header .text-lg a {
+    color: #100F0F !important;
+  }
+  header .text-lg a:hover {
+    color: #000 !important;
+  }
+  html.dark header .text-lg a:hover {
+    color: #fff !important;
+  }
+  html.flexoki header .text-lg a:hover {
+    color: #100F0F !important;
   }
 
   /* Navbar links - inherit body text color */
@@ -298,7 +304,6 @@
   html.dark.link-scheme-4 main ul a[href^="http"] {
     color: #fb923c !important;
   }
-
 
   .writing-date {
     color: #000;
@@ -679,56 +684,6 @@
 }
 
 @layer utilities {
-  /* Enhanced page load animations */
-  .animate-in {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  
-  .animate-in-delay-1 {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-  }
-  
-  .animate-in-delay-2 {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-  }
-  
-  .animate-in-delay-3 {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
-  }
-  
-  .animate-in-delay-4 {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
-  }
-  
-  .animate-in-delay-5 {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
-  }
-  
-  /* Header specific animations */
-  .header-animate {
-    animation: slideInFromTop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  
-  .nav-item-animate {
-    animation: fadeInScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  
-  .nav-item-animate:nth-child(1) { animation-delay: 0.1s; }
-  .nav-item-animate:nth-child(2) { animation-delay: 0.15s; }
-  .nav-item-animate:nth-child(3) { animation-delay: 0.2s; }
-  .nav-item-animate:nth-child(4) { animation-delay: 0.25s; }
-  .nav-item-animate:nth-child(5) { animation-delay: 0.3s; }
-  
-  /* Theme toggle specific animation */
-  .theme-toggle-animate {
-    animation: fadeInScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
-  }
-  
-  /* Command menu button specific animation */
-  .command-menu-animate {
-    animation: fadeInScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
-  }
-  
   /* Custom scrollbar for command menu */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
@@ -763,94 +718,10 @@
     background: var(--flexoki-ui-4);
   }
   
-  /* Footer specific animations */
-  .footer-animate {
-    animation: slideInFromBottom 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
-  }
-  
-  /* Content stagger animations */
-  .content-stagger > * {
-    animation: fadeInScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  
-  .content-stagger > *:nth-child(1) { animation-delay: 0.2s; }
-  .content-stagger > *:nth-child(2) { animation-delay: 0.3s; }
-  .content-stagger > *:nth-child(3) { animation-delay: 0.4s; }
-  .content-stagger > *:nth-child(4) { animation-delay: 0.5s; }
-  .content-stagger > *:nth-child(5) { animation-delay: 0.6s; }
-  
 
-  
-  /* Legacy slide-in for backward compatibility */
-  .slide-in {
-    animation: slideIn 0.7s cubic-bezier(0.33,1,0.68,1) both;
-  }
-  .slide-in:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .slide-in:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  .slide-in:nth-child(3) {
-    animation-delay: 0.3s;
-  }
 }
 
-/* Keyframe animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes slideInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInFromBottom {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-32px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 
 a > span.inline-block {
   position: relative;
