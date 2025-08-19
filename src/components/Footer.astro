@@ -1,9 +1,6 @@
 ---
 // component import
 import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
-
-// Check if we're on the /other page
-const isOtherPage = Astro.url.pathname.startsWith('/other');
 ---
 
 <footer class="mt-12 footer-animate">
@@ -16,13 +13,11 @@ const isOtherPage = Astro.url.pathname.startsWith('/other');
         <span>.</span>
       </span>
     </div>
-    {isOtherPage && (
-      <div style="margin-top:0.25rem; min-height:1.5rem;">
-        <div id="quote-rotator" style="cursor:pointer; display:inline;">
-          <span id="quote-text"></span>
-        </div>
+    <div style="margin-top:0.25rem; min-height:1.5rem;" class="opacity-0 translate-y-2 transition-all duration-500 ease-out" id="quote-container">
+      <div id="quote-rotator" style="cursor:pointer; display:inline;">
+        <span id="quote-text"></span>
       </div>
-    )}
+    </div>
     <!-- <SpotifyNowPlaying /> -->
   </div>
 
@@ -45,9 +40,8 @@ const isOtherPage = Astro.url.pathname.startsWith('/other');
     updateCalgaryTime();
     setInterval(updateCalgaryTime, 1000);
 
-    // Quote rotator script - only run on /other page
-    if (window.location.pathname.startsWith('/other')) {
-      const quotes = [
+    // Quote rotator script
+    const quotes = [
       { text: "The map is not the territory.", author: "Alfred Korzybski" },
       { text: "Not everything that counts can be counted, and not everything that can be counted counts.", author: "William Bruce Cameron" },
       { text: "We're all just walking each other home.", author: "Ram Dass" },
@@ -70,7 +64,7 @@ const isOtherPage = Astro.url.pathname.startsWith('/other');
     let lastIndex = -1;
     let isTyping = false;
 
-    async function typeText(element: HTMLElement, text: string, speed = 50) {
+    async function typeText(element: HTMLElement, text: string, speed = 20) {
       element.innerHTML = '';
       for (let i = 0; i < text.length; i++) {
         element.innerHTML += text[i];
@@ -88,18 +82,22 @@ const isOtherPage = Astro.url.pathname.startsWith('/other');
       lastIndex = idx;
       const q = quotes[idx];
       const quoteTextEl = document.getElementById('quote-text');
+      const quoteContainer = document.getElementById('quote-container');
       
-      if (quoteTextEl) {
+      if (quoteTextEl && quoteContainer) {
         isTyping = true;
         
+        // Slide in the quote container
+        quoteContainer.classList.remove('opacity-0', 'translate-y-2');
+        
         // Type the quote first
-        await typeText(quoteTextEl, `"${q.text}" — `, 30);
+        await typeText(quoteTextEl, `"${q.text}" — `, 15);
         
         // Type the author in italics
         const authorText = q.author;
         for (let i = 0; i < authorText.length; i++) {
           quoteTextEl.innerHTML += authorText[i];
-          await new Promise(resolve => setTimeout(resolve, 20));
+          await new Promise(resolve => setTimeout(resolve, 10));
         }
         // Wrap the author in italics after typing
         const currentText = quoteTextEl.innerHTML;
@@ -119,11 +117,10 @@ const isOtherPage = Astro.url.pathname.startsWith('/other');
     const quoteRotator = document.getElementById('quote-rotator');
     if (quoteRotator) {
       quoteRotator.onclick = showRandomQuote;
-      // Wait a bit for the page to load, then start the animation
+      // Start the quote animation quickly after page load
       setTimeout(() => {
         showRandomQuote();
-      }, 500);
-    }
+      }, 100); // Much faster delay for snappier feel
     }
   </script>
 </footer>

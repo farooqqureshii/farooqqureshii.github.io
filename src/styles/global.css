@@ -197,22 +197,28 @@
   }
 
   /* Header title - inherit body text color (black/white) */
-  header .text-lg a {
+  header .text-lg a,
+  header .header-title {
     color: #000 !important;
   }
-  html.dark header .text-lg a {
+  html.dark header .text-lg a,
+  html.dark header .header-title {
     color: #fff !important;
   }
-  html.flexoki header .text-lg a {
+  html.flexoki header .text-lg a,
+  html.flexoki header .header-title {
     color: #100F0F !important;
   }
-  header .text-lg a:hover {
+  header .text-lg a:hover,
+  header .header-title:hover {
     color: #000 !important;
   }
-  html.dark header .text-lg a:hover {
+  html.dark header .text-lg a:hover,
+  html.dark header .header-title:hover {
     color: #fff !important;
   }
-  html.flexoki header .text-lg a:hover {
+  html.flexoki header .text-lg a:hover,
+  html.flexoki header .header-title:hover {
     color: #100F0F !important;
   }
 
