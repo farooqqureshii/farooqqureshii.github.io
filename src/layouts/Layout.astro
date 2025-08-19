@@ -83,8 +83,10 @@ const {
   >
     <div class={cn("max-w-xl mx-auto p-4", className)}>
       <Header />
-      <slot />
-      <Footer />
+      <div class="fade-in">
+        <slot />
+        <Footer />
+      </div>
       <CommandMenu />
     </div>
   </body>

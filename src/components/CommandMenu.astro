@@ -6,23 +6,22 @@
   <!-- Backdrop -->
   <div 
     id="command-backdrop" 
-    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-150 ease-out opacity-0"
+    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-75 ease-out opacity-0"
   ></div>
   
   <!-- Menu container -->
   <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-200 ease-out translate-y-[-100%] opacity-0 scale-95 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-75 ease-out opacity-0 scale-95 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
-      <!-- Breadcrumb -->
-      <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
-        <div class="text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 flex items-center gap-1">
-          <span class="font-mono select-none">/</span>
-          <span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" id="breadcrumb-domain">farooqqureshi.com</span>
-          <span id="breadcrumb-text"></span>
+              <!-- Breadcrumb -->
+        <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
+          <div class="text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 flex items-center gap-1">
+            <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" id="breadcrumb-domain">farooqqureshi.com</span>
+            <span id="breadcrumb-text"></span>
+          </div>
         </div>
-      </div>
       
       <!-- Search input -->
       <div class="hidden sm:flex items-center border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 p-4">
@@ -271,13 +270,13 @@
           breadcrumbText.innerHTML = '';
         } else if (pathParts.length === 1) {
           // For top-level pages like /writing, /projects, show the full path
-          breadcrumbText.innerHTML = ' / <span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
+          breadcrumbText.innerHTML = ' / <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
         } else {
           // For nested pages like /misc/pencils, show the full path
           let breadcrumbHTML = ' / ';
           pathParts.forEach((part, index) => {
             const currentPath = '/' + pathParts.slice(0, index + 1).join('/');
-            breadcrumbHTML += '<span class="font-mono cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
+            breadcrumbHTML += '<span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
             if (index < pathParts.length - 1) {
               breadcrumbHTML += ' / ';
             }
@@ -318,7 +317,7 @@
       Object.entries(groupedItems).forEach(([section, items]) => {
         // Section header
         const sectionHeader = document.createElement('div');
-        sectionHeader.className = 'text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 px-3 py-2 capitalize';
+        sectionHeader.className = 'text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 px-3 py-2 capitalize';
         sectionHeader.textContent = section;
         navResults.appendChild(sectionHeader);
         
@@ -334,8 +333,7 @@
           
           div.innerHTML = `
             <div class="flex-1">
-              <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx">${item.title}</div>
-              <div class="text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2">${item.description}</div>
+              <div class="text-sm text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx">${item.title}</div>
             </div>
             <div class="flex items-center gap-2">
               ${item.shortcut ? `<kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-zinc-100 dark:bg-zinc-800 flexoki:bg-flexoki-ui rounded border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">⇧${item.shortcut}</kbd>` : ''}
@@ -435,7 +433,7 @@
       
       menu?.classList.remove('hidden');
       setTimeout(() => {
-        container?.classList.remove('translate-y-[-100%]', 'opacity-0', 'scale-95');
+        container?.classList.remove('opacity-0', 'scale-95');
         backdrop?.classList.remove('opacity-0');
       }, 10);
       if (input) {
@@ -446,7 +444,7 @@
 
     // Close command menu
     function closeMenu() {
-      container?.classList.add('translate-y-[100%]', 'opacity-0', 'scale-95');
+      container?.classList.add('opacity-0', 'scale-95');
       backdrop?.classList.add('opacity-0');
       setTimeout(() => {
         menu?.classList.add('hidden');
@@ -458,10 +456,9 @@
         selectedIndex = 0;
         renderItems();
         // Reset position for next open
-        container?.classList.remove('translate-y-[100%]');
-        container?.classList.add('translate-y-[-100%]', 'opacity-0', 'scale-95');
+        container?.classList.add('opacity-0', 'scale-95');
         backdrop?.classList.add('opacity-0');
-      }, 200);
+      }, 75);
     }
 
     // Keyboard navigation
@@ -606,6 +603,7 @@
         const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || (activeElement as HTMLElement).isContentEditable);
         if ((e.ctrlKey || e.metaKey) && e.key === 'k' && !isInput) {
           e.preventDefault();
+          console.log('Ctrl+K pressed, opening menu');
           openMenu();
         }
         handleKeydown(e);
