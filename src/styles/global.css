@@ -690,15 +690,33 @@
 }
 
 @layer utilities {
-  /* Fast and snappy slide-in animation for body and footer content */
+  /* Enhanced slide-in animation for body and footer content */
   .fade-in {
-    animation: slideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: slideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 
   @keyframes slideIn {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mobile-specific enhancements for better visibility */
+  @media (max-width: 768px) {
+    .fade-in {
+      animation: slideInMobile 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+  }
+
+  @keyframes slideInMobile {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
     }
     to {
       opacity: 1;
