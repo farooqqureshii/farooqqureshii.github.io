@@ -8,12 +8,48 @@
     id="command-backdrop" 
     class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-75 ease-out opacity-0"
   ></div>
+
+<style>
+  #command-container {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  #command-container.animate-in {
+    animation: slideInFromTop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  
+  #command-container.animate-out {
+    animation: slideOutToBottom 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  
+  @keyframes slideInFromTop {
+    0% {
+      opacity: 0;
+      transform: translateY(-80px) scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @keyframes slideOutToBottom {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(80px) scale(0.85);
+    }
+  }
+</style>
   
   <!-- Menu container -->
   <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transition-all duration-75 ease-out opacity-0 scale-95 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform opacity-0 translate-y-8 scale-85 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
               <!-- Breadcrumb -->
         <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
@@ -433,7 +469,8 @@
       
       menu?.classList.remove('hidden');
       setTimeout(() => {
-        container?.classList.remove('opacity-0', 'scale-95');
+        container?.classList.remove('opacity-0', 'translate-y-8', 'scale-85');
+        container?.classList.add('animate-in');
         backdrop?.classList.remove('opacity-0');
       }, 10);
       if (input) {
@@ -444,7 +481,8 @@
 
     // Close command menu
     function closeMenu() {
-      container?.classList.add('opacity-0', 'scale-95');
+      container?.classList.remove('animate-in');
+      container?.classList.add('animate-out');
       backdrop?.classList.add('opacity-0');
       setTimeout(() => {
         menu?.classList.add('hidden');
@@ -456,9 +494,10 @@
         selectedIndex = 0;
         renderItems();
         // Reset position for next open
-        container?.classList.add('opacity-0', 'scale-95');
+        container?.classList.remove('animate-out');
+        container?.classList.add('opacity-0', 'translate-y-8', 'scale-85');
         backdrop?.classList.add('opacity-0');
-      }, 75);
+      }, 250);
     }
 
     // Keyboard navigation
