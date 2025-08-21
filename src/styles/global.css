@@ -146,10 +146,10 @@
 
   /* Link color scheme 1: Soft Blue (default) */
   html.link-scheme-1 a {
-    color: #6366f1;
+    color: #2563eb;
   }
   html.dark.link-scheme-1 a {
-    color: #a5b4fc;
+    color: #93c5fd;
   }
 
   /* Link color scheme 2: Muted Red */
@@ -297,10 +297,10 @@
   
   /* Link color scheme 1: Soft Blue (default) */
   html.link-scheme-1 main ul a[href^="http"] {
-    color: #6366f1 !important;
+    color: #2563eb !important;
   }
   html.dark.link-scheme-1 main ul a[href^="http"] {
-    color: #a5b4fc !important;
+    color: #93c5fd !important;
   }
 
   /* Link color scheme 2: Muted Red */
