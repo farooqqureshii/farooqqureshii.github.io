@@ -144,33 +144,33 @@
     color: #100F0F; /* Flexoki black */
   }
 
-  /* Link color scheme 1: Blue (default) */
+  /* Link color scheme 1: Soft Blue (default) */
   html.link-scheme-1 a {
-    color: #2563eb;
+    color: #6366f1;
   }
   html.dark.link-scheme-1 a {
-    color: #60a5fa;
+    color: #a5b4fc;
   }
 
-  /* Link color scheme 2: Green */
+  /* Link color scheme 2: Muted Red */
   html.link-scheme-2 a {
-    color: #059669;
+    color: #dc2626;
   }
   html.dark.link-scheme-2 a {
-    color: #34d399;
+    color: #f87171;
   }
 
-  /* Link color scheme 3: Purple */
+  /* Link color scheme 3: Gentle Green */
   html.link-scheme-3 a {
-    color: #7c3aed;
+    color: #16a34a;
   }
   html.dark.link-scheme-3 a {
-    color: #a78bfa;
+    color: #4ade80;
   }
 
-  /* Link color scheme 4: Orange */
+  /* Link color scheme 4: Warm Brown */
   html.link-scheme-4 a {
-    color: #ea580c;
+    color: #a3540a;
   }
   html.dark.link-scheme-4 a {
     color: #fb923c;
@@ -295,33 +295,33 @@
     color: #24837B !important;
   }
   
-  /* Link color scheme 1: Blue (default) */
+  /* Link color scheme 1: Soft Blue (default) */
   html.link-scheme-1 main ul a[href^="http"] {
-    color: #2563eb !important;
+    color: #6366f1 !important;
   }
   html.dark.link-scheme-1 main ul a[href^="http"] {
-    color: #60a5fa !important;
+    color: #a5b4fc !important;
   }
 
-  /* Link color scheme 2: Green */
+  /* Link color scheme 2: Muted Red */
   html.link-scheme-2 main ul a[href^="http"] {
-    color: #059669 !important;
+    color: #dc2626 !important;
   }
   html.dark.link-scheme-2 main ul a[href^="http"] {
-    color: #34d399 !important;
+    color: #f87171 !important;
   }
 
-  /* Link color scheme 3: Purple */
+  /* Link color scheme 3: Gentle Green */
   html.link-scheme-3 main ul a[href^="http"] {
-    color: #7c3aed !important;
+    color: #16a34a !important;
   }
   html.dark.link-scheme-3 main ul a[href^="http"] {
-    color: #a78bfa !important;
+    color: #4ade80 !important;
   }
 
-  /* Link color scheme 4: Orange */
+  /* Link color scheme 4: Warm Brown */
   html.link-scheme-4 main ul a[href^="http"] {
-    color: #ea580c !important;
+    color: #a3540a !important;
   }
   html.dark.link-scheme-4 main ul a[href^="http"] {
     color: #fb923c !important;
