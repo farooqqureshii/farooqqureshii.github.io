@@ -232,14 +232,9 @@
       }
     }
 
-    // Get font toggle text based on current font
+    // Get font toggle text
     function getFontToggleText() {
-      const html = document.documentElement;
-      if (html.classList.contains('serif-font')) {
-        return 'Toggle Sans-Serif Font';
-      } else {
-        return 'Toggle Serif Font';
-      }
+      return 'Invert Font';
     }
 
     // Get link color toggle text based on current scheme
@@ -273,7 +268,7 @@
 
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'customization', action: 'toggle-theme', shortcut: 'T' },
-      { title: getFontToggleText(), url: '#', description: 'Switch between serif and sans-serif fonts', section: 'customization', action: 'toggle-font', shortcut: 'F' },
+      { title: getFontToggleText(), url: '#', description: 'Invert title and body fonts', section: 'customization', action: 'toggle-font', shortcut: 'F' },
       { title: getLinkColorToggleText(), url: '#', description: 'Cycle through link color schemes', section: 'customization', action: 'toggle-link-color', shortcut: 'C' }
     ];
 
@@ -387,14 +382,14 @@
               }
               closeMenu();
             } else if (item.action === 'toggle-font') {
-              // Toggle font
+              // Toggle font inversion
               const html = document.documentElement;
-              if (html.classList.contains('serif-font')) {
-                html.classList.remove('serif-font');
-                localStorage.setItem('font-preference', 'sans-serif');
+              if (html.classList.contains('inverted-font')) {
+                html.classList.remove('inverted-font');
+                localStorage.setItem('font-preference', 'normal');
               } else {
-                html.classList.add('serif-font');
-                localStorage.setItem('font-preference', 'serif');
+                html.classList.add('inverted-font');
+                localStorage.setItem('font-preference', 'inverted');
               }
               closeMenu();
             } else if (item.action === 'toggle-link-color') {
@@ -517,14 +512,14 @@
               }
               closeMenu();
             } else if (shortcutItem.action === 'toggle-font') {
-              // Toggle font
+              // Toggle font inversion
               const html = document.documentElement;
-              if (html.classList.contains('serif-font')) {
-                html.classList.remove('serif-font');
-                localStorage.setItem('font-preference', 'sans-serif');
+              if (html.classList.contains('inverted-font')) {
+                html.classList.remove('inverted-font');
+                localStorage.setItem('font-preference', 'normal');
               } else {
-                html.classList.add('serif-font');
-                localStorage.setItem('font-preference', 'serif');
+                html.classList.add('inverted-font');
+                localStorage.setItem('font-preference', 'inverted');
               }
               closeMenu();
             } else if (shortcutItem.action === 'toggle-link-color') {
@@ -575,14 +570,14 @@
                 }
                 closeMenu();
               } else if (item.action === 'toggle-font') {
-                // Toggle font
+                // Toggle font inversion
                 const html = document.documentElement;
-                if (html.classList.contains('serif-font')) {
-                  html.classList.remove('serif-font');
-                  localStorage.setItem('font-preference', 'sans-serif');
+                if (html.classList.contains('inverted-font')) {
+                  html.classList.remove('inverted-font');
+                  localStorage.setItem('font-preference', 'normal');
                 } else {
-                  html.classList.add('serif-font');
-                  localStorage.setItem('font-preference', 'serif');
+                  html.classList.add('inverted-font');
+                  localStorage.setItem('font-preference', 'inverted');
                 }
                 closeMenu();
               } else if (item.action === 'toggle-link-color') {
@@ -679,8 +674,8 @@
 
     // Initialize font preference
     const savedFontPreference = localStorage.getItem('font-preference');
-    if (savedFontPreference === 'serif') {
-      document.documentElement.classList.add('serif-font');
+    if (savedFontPreference === 'inverted') {
+      document.documentElement.classList.add('inverted-font');
     }
 
     // Initialize link color preference

@@ -1,4 +1,4 @@
-@import url('https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap');
+
 
 @tailwind base;
 @tailwind components;
@@ -27,30 +27,44 @@
     transition: none;
   }
   
+  /* Default: Sans-serif for everything */
   html, body, h1, h2, h3, h4, h5, h6, header nav, footer, p, li, ul, ol, span, div {
     font-family: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 400;
   }
   
-  /* Serif font class */
-  html.serif-font, html.serif-font body, html.serif-font h1, html.serif-font h2, html.serif-font h3, html.serif-font h4, html.serif-font h5, html.serif-font h6, html.serif-font header nav, html.serif-font footer, html.serif-font p, html.serif-font li, html.serif-font ul, html.serif-font ol, html.serif-font span, html.serif-font div {
-    font-family: "Erode", Georgia, "Times New Roman", Times, serif;
+  /* Title uses serif by default */
+  .header-title {
+    font-family: Georgia, "Times New Roman", Times, serif !important;
+    font-weight: 400 !important;
+    font-size: 1.1rem !important;
+  }
+  
+  /* Inverted font mode: Title uses sans-serif, rest uses serif */
+  html.inverted-font .header-title {
+    font-family: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 1.1rem !important;
+  }
+  
+  html.inverted-font, html.inverted-font body, html.inverted-font h1, html.inverted-font h2, html.inverted-font h3, html.inverted-font h4, html.inverted-font h5, html.inverted-font h6, html.inverted-font header nav, html.inverted-font footer, html.inverted-font p, html.inverted-font li, html.inverted-font ul, html.inverted-font ol, html.inverted-font span, html.inverted-font div {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-weight: 400;
   }
   
-  /* Keep breadcrumb in monospace even in serif mode */
-  html.serif-font #command-menu .font-mono {
+  /* Keep breadcrumb in monospace even in inverted font mode */
+  html.inverted-font #command-menu .font-mono {
     font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
   }
 
-  /* Ensure command menu text has normal weight in serif mode */
-  html.serif-font #command-menu,
-  html.serif-font #command-menu * {
+  /* Ensure command menu text has normal weight in inverted font mode */
+  html.inverted-font #command-menu,
+  html.inverted-font #command-menu * {
     font-weight: 400 !important;
   }
   
   /* Override any font-medium classes specifically in command menu */
-  html.serif-font #command-menu [class*="font-medium"] {
+  html.inverted-font #command-menu [class*="font-medium"] {
     font-weight: 400 !important;
   }
   /* Remove font-weight overrides for headings */
