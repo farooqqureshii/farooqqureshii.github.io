@@ -1,12 +1,13 @@
 ---
 import { SITE_DESCRIPTION } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
+import LiveAgeCounter from "../../components/LiveAgeCounter.astro";
 ---
 <Layout title="Artifacts | Farooq Q." description={SITE_DESCRIPTION}>
   <main>
     <div class="text-base space-y-2">
       <p>
-        I've spent a lot of time on the internet over the past 18 years, here are some things I come back to often.
+        I've spent a lot of time on the internet over the past <LiveAgeCounter /> years, here are some things I come back to often.
       </p>
       
       <p>

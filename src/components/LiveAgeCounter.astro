@@ -1,0 +1,37 @@
+---
+// Live age counter component
+---
+
+<span id="live-age" class="tabular-nums">18</span>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ageElement = document.getElementById('live-age');
+    if (!ageElement) return;
+
+    // Birth date: December 18, 2006, midnight in Karachi (PKT/UTC+5)
+    const birthDate = new Date('2006-12-18T00:00:00+05:00');
+
+    function updateAge() {
+      const now = new Date();
+      const ageMs = now.getTime() - birthDate.getTime();
+      const ageYears = ageMs / (1000 * 60 * 60 * 24 * 365.25); // Account for leap years
+      
+      // Display with 8 decimal places for smooth animation
+      ageElement.textContent = ageYears.toFixed(8);
+    }
+
+    // Update immediately
+    updateAge();
+    
+    // Update every 10ms for smooth animation
+    setInterval(updateAge, 10);
+  });
+</script>
+
+<style>
+  #live-age {
+    font-feature-settings: "tnum";
+    letter-spacing: -0.025em;
+  }
+</style>
