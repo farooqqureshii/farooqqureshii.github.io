@@ -90,18 +90,28 @@ const projects = [
 ---
 
 <Layout title="Projects | Farooq Q." description={SITE_DESCRIPTION}>
+  <!-- Critical resource hints for blazing fast loading -->
+  <link slot="head" rel="preload" href="/static/uoee.rocks-1755366145491.webm" as="video" type="video/webm" fetchpriority="high" />
+  <link slot="head" rel="preload" href="/static/okbutpitchit_vid.webm" as="video" type="video/webm" fetchpriority="high" />
+  
+  <!-- Prefetch next videos for instant scroll -->
+  <link slot="head" rel="prefetch" href="/static/Marketing_Spaces.png" as="image" />
+  <link slot="head" rel="prefetch" href="/static/voltus.webm" as="video" type="video/webm" />
   <main>
     <div class="grid grid-cols-1 gap-12">
-      {projects.map((project) => (
+      {projects.map((project, index) => (
         <div class="flex flex-col items-start">
           <div class="media-section w-full overflow-visible relative mb-4">
             {project.type === "video" ? (
               <video 
-                data-src={project.gif}
+                src={index < 2 ? project.gif : undefined}
+                data-src={index < 2 ? undefined : project.gif}
                 muted 
                 loop 
                 playsinline 
-                class="w-full aspect-[4/3] object-cover h-80 bg-zinc-100 dark:bg-zinc-900 lazy-video" 
+                autoplay={index < 2}
+                preload={index < 2 ? "metadata" : "none"}
+                class={`w-full aspect-[4/3] object-cover h-80 bg-zinc-100 dark:bg-zinc-900 ${index < 2 ? 'priority-video' : 'lazy-video'}`}
                 style="touch-action: manipulation;"
               >
                 Your browser does not support the video tag.
@@ -121,6 +131,8 @@ const projects = [
               <img
                 src={project.image}
                 alt={project.title}
+                loading={index < 2 ? "eager" : "lazy"}
+                fetchpriority={index < 2 ? "high" : "low"}
                 class="w-full aspect-[4/3] object-cover h-80 bg-zinc-100 dark:bg-zinc-900"
               />
             )}
@@ -156,6 +168,17 @@ const projects = [
   </main>
 </Layout>
 <style>
+/* Critical styles for immediate render */
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.gap-12 { gap: 3rem; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-start { align-items: flex-start; }
+.w-full { width: 100%; }
+.object-cover { object-fit: cover; }
+.h-80 { height: 20rem; }
+
 @media (max-width: 640px) {
   .media-section > img, .media-section > video {
     height: 48vw !important;
@@ -165,6 +188,12 @@ const projects = [
 }
 .media-section {
   overflow: visible;
+}
+
+/* Optimize video rendering */
+.priority-video {
+  will-change: auto;
+  transform: translateZ(0);
 }
 </style>
 
@@ -182,17 +211,21 @@ const projects = [
           if (src && !video.src) {
             video.src = src;
             video.autoplay = true;
+            video.load(); // Force immediate load
             videoObserver.unobserve(video);
           }
         }
       }
     });
   }, {
-    rootMargin: '50px 0px', // Start loading 50px before video comes into view
-    threshold: 0.1
+    rootMargin: '200px 0px', // Start loading 200px before video comes into view for instant playback
+    threshold: 0
   });
 
   lazyVideos.forEach(video => {
-    videoObserver.observe(video);
+    // Only observe videos that aren't priority-loaded
+    if (video.classList.contains('lazy-video')) {
+      videoObserver.observe(video);
+    }
   });
 </script> 
