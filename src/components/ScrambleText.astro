@@ -1,0 +1,107 @@
+---
+interface Props {
+  text: string;
+  className?: string;
+  href?: string;
+}
+
+const { text, className = "", href } = Astro.props;
+---
+
+{href ? (
+  <a href={href} class={`scramble-text ${className}`} data-text={text}>
+    {text}
+  </a>
+) : (
+  <span class={`scramble-text ${className}`} data-text={text}>
+    {text}
+  </span>
+)}
+
+<style>
+  .scramble-text {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<script>
+  class ScrambleText {
+    private element: HTMLElement;
+    private originalText: string;
+    private isHovering: boolean = false;
+    private isAnimating: boolean = false;
+    private scrambleChars: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    constructor(element: HTMLElement) {
+      this.element = element;
+      this.originalText = element.getAttribute('data-text') || element.textContent || '';
+      this.bindEvents();
+    }
+
+    private bindEvents(): void {
+      this.element.addEventListener('mouseenter', () => this.startScrambleLoop());
+      this.element.addEventListener('mouseleave', () => this.stopScrambleLoop());
+    }
+
+    private startScrambleLoop(): void {
+      this.isHovering = true;
+      if (!this.isAnimating) {
+        this.scrambleLoop();
+      }
+    }
+
+    private stopScrambleLoop(): void {
+      this.isHovering = false;
+      // Don't interrupt current animation, just prevent new ones
+    }
+
+    private scrambleLoop(): void {
+      if (!this.isHovering) return;
+      
+      this.isAnimating = true;
+      const speed = 50; // Faster update interval for smoother animation
+
+      const interval = setInterval(() => {
+        if (!this.isHovering) {
+          clearInterval(interval);
+          this.element.textContent = this.originalText;
+          this.isAnimating = false;
+          return;
+        }
+
+        let scrambledText = '';
+
+        for (let i = 0; i < this.originalText.length; i++) {
+          if (this.originalText[i] === ' ') {
+            scrambledText += ' ';
+          } else {
+            // Always show random character
+            scrambledText += this.scrambleChars[Math.floor(Math.random() * this.scrambleChars.length)];
+          }
+        }
+
+        this.element.textContent = scrambledText;
+      }, speed);
+    }
+  }
+
+  // Initialize scramble text elements
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrambleElements = document.querySelectorAll('.scramble-text');
+    scrambleElements.forEach(element => {
+      new ScrambleText(element as HTMLElement);
+    });
+  });
+
+  // Handle dynamic content (for SPA-like navigation)
+  document.addEventListener('astro:page-load', () => {
+    const scrambleElements = document.querySelectorAll('.scramble-text');
+    scrambleElements.forEach(element => {
+      new ScrambleText(element as HTMLElement);
+    });
+  });
+</script>
