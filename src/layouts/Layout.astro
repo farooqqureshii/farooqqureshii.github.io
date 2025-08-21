@@ -30,7 +30,7 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Font preloads -->
+    <!-- Critical resource preloads -->
     <link
       rel="preload"
       href="/fonts/geist-variable.woff2"
@@ -45,6 +45,12 @@ const {
       type="font/woff2"
       crossorigin
     />
+    
+    <!-- DNS prefetch for external domains -->
+    <link rel="dns-prefetch" href="//api.fontshare.com" />
+    
+    <!-- Preconnect to critical external origins -->
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -68,6 +74,17 @@ const {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
     
+    <!-- Critical CSS for immediate render -->
+    <style>
+      /* Prevent layout shift with base styles */
+      body { 
+        font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        line-height: 1.5;
+        margin: 0;
+      }
+      .fade-in { opacity: 0; }
+    </style>
+    
     <!-- Preload theme to prevent flash -->
     <script is:inline>
       if (
@@ -75,6 +92,14 @@ const {
         (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
       ) {
         document.documentElement.classList.add('dark');
+      }
+      
+      // Performance monitoring (dev only)
+      if (typeof performance !== 'undefined' && localStorage.getItem('dev-mode') === 'true') {
+        window.addEventListener('load', () => {
+          const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+          console.log(`🚀 Page loaded in ${loadTime}ms`);
+        });
       }
     </script>
   </head>

@@ -12,8 +12,18 @@ export default defineConfig({
     ? 'https://farooqqureshi.com'  // Production domain
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
   integrations: [mdx(), sitemap(), tailwind()],
-  output: 'server',
+  output: 'hybrid',
   adapter: vercel(),
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport'
+  },
+  compressHTML: true,
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp'
+    }
+  },
   markdown: {
     shikiConfig: {
       themes: {
