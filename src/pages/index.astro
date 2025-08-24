@@ -1,28 +1,60 @@
 ---
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
-import Layout from "../layouts/Layout.astro";
+import IndexLayout from "../layouts/IndexLayout.astro";
 ---
 
-<Layout
+<IndexLayout
   title="Farooq Qureshi"
   description={SITE_DESCRIPTION}
 >
-  <main class="space-y-4">
-    <div class="w-full text-base">
-      <p class="mb-3">Hi, I'm Farooq.</p>
-      <p class="mb-3">
-        I study <a href="https://www.uoee.rocks/" target="_blank">Electrical Engineering</a> at <a href="https://uottawa.ca" target="_blank">The University of Ottawa</a>, and lead the team behind <a href="https://uOttaHack.ca" target="_blank">uOttaHack</a>.
-      </p>
-      <p class="mb-3">
-        In my free time I teach competitive debating and <a href="/other/books" class="read-link">read</a>.
-      </p>
-      <p class="mb-3">
-        More about me can be found <a href="/other/about" class="read-link">here</a>.
-      </p>
-    </div>
-    
-    <div class="text-base">
-      <p>Feel free to say <a href="mailto:farooq.qureshi@outlook.com">hello</a>, see my <a href="https://github.com/farooqqureshii" target="_blank">code</a>, browse my <a href="https://curius.app/farooq-qureshi" target="_blank">interests</a>, or view my <a href="https://linkedin.com/in/farooqq" target="_blank">experience</a>. Here's my <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank">résumé</a> too.</p>
-    </div>
+  <main class="space-y-8">
+    <!-- Main navigation -->
+    <nav class="flex flex-col gap-1.5 main-nav">
+      <a href="/about">About</a>
+      <a href="/projects">Projects</a>
+      <a href="/writing">Writing</a>
+      <a href="/artifacts">Artifacts</a>
+      <a href="/other">Other</a>
+    </nav>
+
+    <!-- Social links -->
+    <nav class="flex flex-col gap-1.5 main-nav social-links">
+      <a href="https://github.com/farooqqureshii" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/farooqq" target="_blank">LinkedIn</a>
+      <a href="https://curius.app/farooq-qureshi" target="_blank">Curius</a>
+      <a href="mailto:farooq.qureshi@outlook.com">Email</a>
+      <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank">Résumé</a>
+    </nav>
   </main>
-</Layout>
+  </main>
+
+<style>
+  /* Override italic hover effect for social links */
+  .social-links a:hover {
+    font-style: normal !important;
+  }
+</style>
+  </main>
+
+<style>
+  /* Main page navigation links - match navbar styling */
+  .main-nav a {
+    color: #000 !important;
+  }
+  html.dark .main-nav a {
+    color: #fff !important;
+  }
+  html.flexoki .main-nav a {
+    color: #100F0F !important;
+  }
+  .main-nav a:hover {
+    color: #000 !important;
+  }
+  html.dark .main-nav a:hover {
+    color: #fff !important;
+  }
+  html.flexoki .main-nav a:hover {
+    color: #100F0F !important;
+  }
+</style>
+</IndexLayout>
