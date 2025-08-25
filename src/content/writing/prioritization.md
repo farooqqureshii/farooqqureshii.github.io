@@ -21,7 +21,7 @@ You can beat this issue by this next approach, which is to prioritize what gets 
 
 The only place this approach fails is when it comes to tasks that move slowly - because of something out of your control. It's important to use this mindset sparingly, because things are not always was they appear <a href="#fn1" id="fnref1">[1]</a>. This aside, it is a possibility that something that moves slowly, and is important - is completely out of your control. In this case my reaction would be to not worry about it and move on to the next thing that can get done quickly. Time fixes most of these issues, and the difference between waiting 1 day while worrying about it versus 1 day while working on something else is huge. Onto the last approach though, which fixes all these issues. 
 
-The last approach one that is hard to beat. And you may not be satisfied with this answer because it's very anti-climatic. The best way to prioritize is to focus on what helps your vision. This seems like a terrible answer - because it sounds like a cop-out. On paper, it is isn't really an approach - because it relies entirely on their being a good vision. If the vision is good, then the tasks that move it will be clear and useful. If the vision is bad, the opposite will happen. 
+The last approach one that is hard to beat. And you may not be satisfied with this answer because it's very anti-climatic. The best way to prioritize is to focus on what helps your vision. This seems like a terrible answer - because it sounds like a cop-out. On paper, it is isn't really an approach - because it relies entirely on there being a good vision. If the vision is good, then the tasks that move it will be clear and useful. If the vision is bad, the opposite will happen. 
 
 Here's a quote to help exemplify what I'm talking about. It's from Doug Leone, the former Managing Partner at Sequoia Capital.
 
@@ -35,7 +35,7 @@ It's often the case that this "vision" is not grounded in pure metrics as it may
  All this isn't to say that the metrics aren't important - or that the metrics aren't what ultimately are the things to work towards. Of course, if you are running a company - you need to make money to keep going. But this really isn't a worry if you are <a href="https://www.ycombinator.com/library/4D-yc-s-essential-startup-advice">making something people want</a>. And that's not really a worry if you create an environment where it's easy to make something people want.
 
 
-So hopefully it's obvious by now, that whatever end goal you are working towards - it's start's with the environment and culture that you create. <a href="https://en.wikipedia.org/wiki/The_Score_Takes_Care_of_Itself">The outputs will handle themselves</a> if you are able to create a space where people can strive to do their best work. That's the real vision, and when you focus on prioritizing what help this, things work themselves out. And if you don't, well - you might be going home. 
+So hopefully it's obvious by now, that whatever end goal you are working towards - it start's with the environment and culture that you create. <a href="https://en.wikipedia.org/wiki/The_Score_Takes_Care_of_Itself">The outputs will handle themselves</a> if you are able to create a space where people can strive to do their best work. That's the real vision, and when you focus on prioritizing what help this, things work themselves out. And if you don't, well - you might be going home. 
 
 <div class="notes-separator"></div>
 
