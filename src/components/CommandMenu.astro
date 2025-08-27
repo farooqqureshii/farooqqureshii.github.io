@@ -49,7 +49,7 @@
   <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-white dark:bg-zinc-900 flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform opacity-0 translate-y-8 scale-85 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-[#f5f1eb] dark:bg-[#2a2a2a] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform opacity-0 translate-y-8 scale-85 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
               <!-- Breadcrumb -->
         <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
@@ -72,7 +72,7 @@
           autocomplete="off"
         />
         <div class="flex items-center gap-2">
-          <kbd class="hidden sm:inline-flex items-center px-2 py-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-zinc-100 dark:bg-zinc-800 flexoki:bg-flexoki-ui rounded border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
+          <kbd class="hidden sm:inline-flex items-center px-2 py-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#e8e0d8] dark:bg-[#3a3a3a] flexoki:bg-flexoki-ui rounded border border-[#d4c9c0] dark:border-[#4a4a4a] flexoki:border-flexoki-ui-3">
             ESC
           </kbd>
         </div>
@@ -357,8 +357,8 @@
           const div = document.createElement('div');
           div.className = `flex items-center px-3 py-2 rounded cursor-pointer transition-colors no-theme-transition ${
             globalIndex === selectedIndex 
-              ? 'bg-zinc-100/70 dark:bg-zinc-700/70 flexoki:bg-flexoki-ui/70' 
-              : 'hover:bg-zinc-100/60 dark:hover:bg-zinc-700/60 flexoki:hover:bg-flexoki-ui/60'
+              ? 'bg-[#e8e0d8]/70 dark:bg-[#3a3a3a]/70 flexoki:bg-flexoki-ui/70' 
+              : 'hover:bg-[#e8e0d8]/60 dark:hover:bg-[#3a3a3a]/60 flexoki:hover:bg-flexoki-ui/60'
           }`;
           
           div.innerHTML = `
@@ -366,7 +366,7 @@
               <div class="text-sm text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx">${item.title}</div>
             </div>
             <div class="flex items-center gap-2">
-              ${item.shortcut ? `<kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-zinc-100 dark:bg-zinc-800 flexoki:bg-flexoki-ui rounded border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">⇧${item.shortcut}</kbd>` : ''}
+              ${item.shortcut ? `<kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#e8e0d8] dark:bg-[#3a3a3a] flexoki:bg-flexoki-ui rounded border border-[#d4c9c0] dark:border-[#4a4a4a] flexoki:border-flexoki-ui-3">⇧${item.shortcut}</kbd>` : ''}
               <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
               </svg>
