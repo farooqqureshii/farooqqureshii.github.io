@@ -7,9 +7,9 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
   <div class="flex flex-col gap-1 text-xs footer-line-color w-full">
     <div class="flex justify-start items-center w-full">
       <span class="flex items-center">
-        <span>In Calgary, where it's currently</span>
+        <span>In Ottawa, where it's currently</span>
         <span class="w-1"></span>
-        <span id="calgary-time" class="opacity-0 transition-opacity duration-300">--:--</span>
+        <span id="ottawa-time" class="opacity-0 transition-opacity duration-300">--:--</span>
         <span>.</span>
       </span>
     </div>
@@ -22,23 +22,23 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
   </div>
 
   <script>
-    // Calgary time script
-    function updateCalgaryTime() {
-      const calgaryTime = new Date().toLocaleTimeString('en-CA', {
-        timeZone: 'America/Edmonton',
+    // Ottawa time script
+    function updateOttawaTime() {
+      const ottawaTime = new Date().toLocaleTimeString('en-CA', {
+        timeZone: 'America/Toronto',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
         hour12: false
       });
-      const el = document.getElementById('calgary-time');
+      const el = document.getElementById('ottawa-time');
       if (el) {
-        el.textContent = calgaryTime;
+        el.textContent = ottawaTime;
         el.classList.remove('opacity-0');
       }
     }
-    updateCalgaryTime();
-    setInterval(updateCalgaryTime, 1000);
+    updateOttawaTime();
+    setInterval(updateOttawaTime, 1000);
 
     // Quote rotator script
     const quotes = [
