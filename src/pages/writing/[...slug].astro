@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { formatDate } from "../../lib/utils";
+import { formatDate, getWordCount, getReadingTime } from "../../lib/utils";
 
 export const prerender = true;
 
@@ -26,6 +26,11 @@ if (!post.data) {
 
 const { title, date, description } = post.data;
 const { Content } = await post.render();
+
+// Get the raw content for word count calculation
+const rawContent = post.body;
+const wordCount = getWordCount(rawContent);
+const readingTime = getReadingTime(wordCount);
 ---
 
 <Layout title={title} description={description}>
@@ -34,7 +39,7 @@ const { Content } = await post.render();
       {title}
     </p>
     <p class="mb-1">
-      {formatDate(date)}
+      {formatDate(date)} | {wordCount} words, {readingTime} minute read
     </p>
     <article>
       <Content />
