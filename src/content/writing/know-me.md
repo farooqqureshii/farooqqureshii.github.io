@@ -1,7 +1,7 @@
 ---
 title: "To Know Me"
 description: "A stream of consciousness on personal websites, authenticity, and the beauty of interpretation."
-date: "Sep 2025"
+date: "Sep 3 2025"
 draft: false
 ---
 
