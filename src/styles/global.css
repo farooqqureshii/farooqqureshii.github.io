@@ -11,11 +11,11 @@
   
   /* Clean, minimal background */
   body {
-    background-color: #f5f1eb !important; /* More obvious beige */
+    background-color: #F2F0EF !important; /* Warm off-white */
   }
   
   html.dark body {
-    background-color:rgb(36, 36, 36) !important; /* Dark grey - clearly not black */
+    background-color:rgb(34, 34, 34) !important; /* Much softer, warmer dark */
   }
   
   html.flexoki body {
@@ -98,7 +98,7 @@
 
   /* Custom text selection styles */
   ::selection {
-    background: #d4c9c0;
+    background: #D4D1CE;
     color: #000;
   }
   html.dark ::selection {
@@ -111,7 +111,7 @@
   }
   /* Ensure links remain visible when selected */
   a::selection {
-    background: #d4c9c0;
+    background: #D4D1CE;
     color: #000;
   }
   html.dark a::selection {
@@ -144,36 +144,36 @@
     color: #100F0F; /* Flexoki black */
   }
 
-  /* Link color scheme 1: Soft Blue (default) */
+  /* Link color scheme 1: Gentle Blue (default) */
   html.link-scheme-1 a {
-    color: #1d4ed8;
+    color: #4a6cf7;
   }
   html.dark.link-scheme-1 a {
-    color: #7dd3fc;
+    color: #8bb3ff;
   }
 
-  /* Link color scheme 2: Muted Red */
+  /* Link color scheme 2: Gentle Red */
   html.link-scheme-2 a {
-    color: #b91c1c;
+    color: #b45309;
   }
   html.dark.link-scheme-2 a {
-    color: #fca5a5;
+    color: #fbbf24;
   }
 
   /* Link color scheme 3: Gentle Green */
   html.link-scheme-3 a {
-    color: #15803d;
+    color: #059669;
   }
   html.dark.link-scheme-3 a {
-    color: #86efac;
+    color: #6ee7b7;
   }
 
-  /* Link color scheme 4: Warm Brown */
+  /* Link color scheme 4: Gentle Purple */
   html.link-scheme-4 a {
-    color: #92400e;
+    color: #8b5cf6;
   }
   html.dark.link-scheme-4 a {
-    color: #fdba74;
+    color: #c4b5fd;
   }
 
   /* External links become italic on hover and keep their color scheme */
@@ -295,36 +295,36 @@
     color: #24837B !important;
   }
   
-  /* Link color scheme 1: Soft Blue (default) */
+  /* Link color scheme 1: Gentle Blue (default) */
   html.link-scheme-1 main ul a[href^="http"] {
-    color: #2563eb !important;
+    color: #4a6cf7 !important;
   }
   html.dark.link-scheme-1 main ul a[href^="http"] {
-    color: #7dd3fc !important;
+    color: #8bb3ff !important;
   }
 
-  /* Link color scheme 2: Muted Red */
+  /* Link color scheme 2: Gentle Red */
   html.link-scheme-2 main ul a[href^="http"] {
-    color: #dc2626 !important;
+    color: #b45309 !important;
   }
   html.dark.link-scheme-2 main ul a[href^="http"] {
-    color: #fca5a5 !important;
+    color: #fbbf24 !important;
   }
 
   /* Link color scheme 3: Gentle Green */
   html.link-scheme-3 main ul a[href^="http"] {
-    color: #16a34a !important;
+    color: #059669 !important;
   }
   html.dark.link-scheme-3 main ul a[href^="http"] {
-    color: #86efac !important;
+    color: #6ee7b7 !important;
   }
 
-  /* Link color scheme 4: Warm Brown */
+  /* Link color scheme 4: Gentle Purple */
   html.link-scheme-4 main ul a[href^="http"] {
-    color: #a3540a !important;
+    color: #8b5cf6 !important;
   }
   html.dark.link-scheme-4 main ul a[href^="http"] {
-    color: #fdba74 !important;
+    color: #c4b5fd !important;
   }
 
   .writing-date {

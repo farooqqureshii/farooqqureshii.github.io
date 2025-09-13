@@ -1,15 +1,151 @@
 ---
 import { SITE_DESCRIPTION } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
+
+const images = [
+  {
+    src: "https://i.postimg.cc/FsH2bVvz/Jeff-Wall-A-Sudden-Gust-of-Wind-after-Hokusai-1993.jpg",
+    alt: "A sudden Gust of Wind (after Hokusai), Jeff Wall, 1993"
+  },
+  {
+    src: "https://i.postimg.cc/RhXNnLBK/chi.jpg",
+    alt: "Grant Park (2009)"
+  },
+  {
+    src: "https://i.postimg.cc/TwQRk24X/61-EL0a-PYY4-L.jpg",
+    alt: ""
+  },
+  {
+    src: "https://i.postimg.cc/y8xvXw8x/9m0di0m3taua1.jpg",
+    alt: ""
+  },
+  {
+    src: "https://i.postimg.cc/sDGrWJsz/paris.jpg",
+    alt: "Paris (2016)"
+  },
+  {
+    src: "https://i.postimg.cc/13p1C58Y/power.jpg",
+    alt: "The Met (2014)"
+  },
+  {
+    src: "https://i.postimg.cc/g0mFfFRc/church.png",
+    alt: "Sydney (2008)"
+  },
+  {
+    src: "https://i.postimg.cc/J0y9b1wx/bike.jpg",
+    alt: "Buenos Aires (2009)"
+  },
+  {
+    src: "https://i.postimg.cc/9MkkXv47/PIA00563-Viking1-First-Color-Image-19760721.jpg",
+    alt: "First colour image from Viking Lander 1, 1976"
+  },
+  {
+    src: "https://i.postimg.cc/fTYMFvFK/Times-Most-Influental-Images-20.jpg",
+    alt: "Dalí Atomicus, 1948"
+  },
+  {
+    src: "https://i.postimg.cc/50HVm5L8/Times-Most-Influental-Images-26-23.jpg",
+    alt: "Milk Drop Coronet, 1957"
+  },
+  {
+    src: "https://i.postimg.cc/nLjRR3SV/tumblr-m4j9qyu-Dn-Y1qcl8ymo1-r1-1280.jpg",
+    alt: "Gilbert Garcin, Work In Progress, 1999"
+  },
+  {
+    src: "https://i.postimg.cc/W3cn9TJS/FKl8lz-HXs-As-OHFx.jpg",
+    alt: "Jan Saudek, Train Passing"
+  },
+  {
+    src: "https://i.postimg.cc/VsGtvzLT/jmu4fst8yrjc1.jpg",
+    alt: "The Last Photo of the Barbary Lion, Marcel Flandrin, 1925"
+  },
+  {
+    src: "https://i.postimg.cc/zGn3CN8q/Yibin-II-Counting-Receipts-Sichuan-Province-2007.jpg",
+    alt: "Yibin II (Counting Receipts), Sichuan Province, 2007, Nadav Kander"
+  },
+  {
+    src: "https://i.postimg.cc/htqtPYx6/fan-ho-approaching-shadow-1024x768.webp",
+    alt: "Fan Ho, Approaching Shadow"
+  },
+  {
+    src: "https://i.postimg.cc/CKhrGb9J/RA-08-0709.webp",
+    alt: "Longmont, Colorado, ca. 1980, Robert Adams"
+  },
+  {
+    src: "https://i.postimg.cc/TP1q20z8/par65507-overlay.jpg",
+    alt: "Josef Koudelka, Exiles, 1987 (France)"
+  },
+  {
+    src: "https://i.postimg.cc/VLztL4t7/STILL-LIFE1.jpg",
+    alt: "Don McCullin, Still Life, England 1979"
+  }
+];
 ---
 
 <Layout title="Images | Farooq Q." description={SITE_DESCRIPTION}>
   <main>
-    <p class="mb-6">Some images I find interesting.</p>
-    <div class="grid grid-cols-3 gap-4">
-      <img src="https://i.imgur.com/L9bRizz.png" alt="Tom Jones album cover" class="w-full" />
-      <img src="https://i.postimg.cc/T2tFXjSz/Ghost-Town-Owen.jpg" alt="Ghost Town Owen album cover" class="w-full" />
-      <img src="https://i.postimg.cc/y8xvXw8x/9m0di0m3taua1.jpg" alt="Netflix DVD mailer" class="w-full object-cover aspect-square" />
+    <div class="flex flex-col space-y-4">
+      <!-- Navigation -->
+      <div class="flex items-center space-x-4">
+        <div class="flex space-x-1">
+          <button id="prevBtn" class="cursor-pointer">Back</button>
+          <span>|</span>
+          <button id="nextBtn" class="cursor-pointer">Next</button>
+        </div>
+        <span id="imageCounter">1/{images.length} photos</span>
+      </div>
+      
+      <!-- Image container -->
+      <div class="w-full max-w-md">
+        <img 
+          id="currentImage" 
+          src={images[0].src} 
+          alt={images[0].alt} 
+          class="w-full h-auto shadow-sm" 
+        />
+      </div>
+      
+      <!-- Description -->
+      <div class="w-full max-w-md">
+        <p id="imageDescription" class="text-sm">{images[0].alt}</p>
+      </div>
     </div>
   </main>
+
+  <script define:vars={{ images }}>
+    let currentIndex = 0;
+    const currentImage = document.getElementById('currentImage');
+    const imageCounter = document.getElementById('imageCounter');
+    const imageDescription = document.getElementById('imageDescription');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateImage() {
+      if (currentImage && imageCounter && imageDescription) {
+        currentImage.src = images[currentIndex].src;
+        currentImage.alt = images[currentIndex].alt;
+        imageCounter.textContent = `${currentIndex + 1}/${images.length} photos`;
+        imageDescription.textContent = images[currentIndex].alt;
+      }
+    }
+
+    function showPrev() {
+      currentIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+      updateImage();
+    }
+
+    function showNext() {
+      currentIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+      updateImage();
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', showPrev);
+    if (nextBtn) nextBtn.addEventListener('click', showNext);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    });
+  </script>
 </Layout> 
