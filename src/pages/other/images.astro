@@ -78,7 +78,19 @@ const images = [
   {
     src: "https://i.postimg.cc/VLztL4t7/STILL-LIFE1.jpg",
     alt: "Don McCullin, Still Life, England 1979"
-  }
+  },
+  {
+    src: "https://i.postimg.cc/Rhfrmwkf/01.jpg",
+    alt: "Push, Pete Turner, 1970"
+  },
+  {
+    src: "https://i.postimg.cc/KvywL3S3/91-102-2-cropped.jpg", 
+    alt: "Paul Strand, Wall Street, New York, 1915"
+  }, 
+  { 
+    src: "https://i.postimg.cc/6pHGnZPm/image.png", 
+    alt: "Newspaper boys, Frans Stoppelman, 1976"
+  }, 
 ];
 ---
 
@@ -92,7 +104,7 @@ const images = [
           <span>|</span>
           <button id="nextBtn" class="cursor-pointer">Next</button>
         </div>
-        <span id="imageCounter">1/{images.length} photos</span>
+        <span id="imageCounter">1/{images.length} </span>
       </div>
       
       <!-- Image container -->
@@ -120,32 +132,64 @@ const images = [
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
+    // Preload images for instant navigation
+    const imageCache = new Map();
+    const preloadImages = () => {
+      images.forEach((img, index) => {
+        const imgElement = new Image();
+        imgElement.src = img.src;
+        imageCache.set(index, imgElement);
+      });
+    };
+
+    // Optimized update function with minimal DOM manipulation
     function updateImage() {
-      if (currentImage && imageCounter && imageDescription) {
-        currentImage.src = images[currentIndex].src;
-        currentImage.alt = images[currentIndex].alt;
-        imageCounter.textContent = `${currentIndex + 1}/${images.length} photos`;
-        imageDescription.textContent = images[currentIndex].alt;
-      }
+      if (!currentImage || !imageCounter || !imageDescription) return;
+      
+      const img = images[currentIndex];
+      const cachedImg = imageCache.get(currentIndex);
+      
+      // Use cached image if available, otherwise fallback to src
+      currentImage.src = cachedImg?.src || img.src;
+      currentImage.alt = img.alt;
+      
+      // Batch DOM updates
+      requestAnimationFrame(() => {
+        imageCounter.textContent = `${currentIndex + 1}/${images.length}`;
+        imageDescription.textContent = img.alt;
+      });
     }
 
-    function showPrev() {
-      currentIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+    // Debounced navigation to prevent rapid clicking issues
+    let isNavigating = false;
+    function navigate(direction) {
+      if (isNavigating) return;
+      isNavigating = true;
+      
+      currentIndex = direction === 'prev' 
+        ? (currentIndex > 0 ? currentIndex - 1 : images.length - 1)
+        : (currentIndex < images.length - 1 ? currentIndex + 1 : 0);
+      
       updateImage();
+      
+      // Reset navigation lock after a short delay
+      setTimeout(() => { isNavigating = false; }, 100);
     }
 
-    function showNext() {
-      currentIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
-      updateImage();
-    }
+    function showPrev() { navigate('prev'); }
+    function showNext() { navigate('next'); }
 
-    if (prevBtn) prevBtn.addEventListener('click', showPrev);
-    if (nextBtn) nextBtn.addEventListener('click', showNext);
+    // Event listeners with passive option for better performance
+    if (prevBtn) prevBtn.addEventListener('click', showPrev, { passive: true });
+    if (nextBtn) nextBtn.addEventListener('click', showNext, { passive: true });
 
-    // Keyboard navigation
+    // Optimized keyboard navigation
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') showPrev();
-      if (e.key === 'ArrowRight') showNext();
-    });
+      if (e.key === 'ArrowLeft') { e.preventDefault(); showPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); showNext(); }
+    }, { passive: false });
+
+    // Start preloading images immediately
+    preloadImages();
   </script>
 </Layout> 

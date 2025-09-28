@@ -349,12 +349,12 @@
   }
 
   .footer-line-color, .footer-line-color *, .footer-line-color a, .footer-line-color a:visited, .footer-line-color svg {
-    color: #71717a !important;
-    fill: #71717a !important;
+    color: #52525b !important;
+    fill: #52525b !important;
   }
   html.dark .footer-line-color, html.dark .footer-line-color *, html.dark .footer-line-color a, html.dark .footer-line-color a:visited, html.dark .footer-line-color svg {
-    color: #71717a !important;
-    fill: #71717a !important;
+    color: #a1a1aa !important;
+    fill: #a1a1aa !important;
   }
   html.flexoki .footer-line-color, html.flexoki .footer-line-color *, html.flexoki .footer-line-color a, html.flexoki .footer-line-color a:visited, html.flexoki .footer-line-color svg {
     color: #6F6E69 !important;
