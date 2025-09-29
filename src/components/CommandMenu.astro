@@ -12,6 +12,9 @@
 <style>
   #command-container {
     transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   
   #command-container.animate-in {
@@ -49,7 +52,7 @@
   <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-[#F2F0EF] dark:bg-[#222222] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform opacity-0 translate-y-8 scale-85 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-[#F2F0EF] dark:bg-[#222222] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transform-gpu opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
               <!-- Breadcrumb -->
         <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
@@ -462,7 +465,7 @@
       
       menu?.classList.remove('hidden');
       setTimeout(() => {
-        container?.classList.remove('opacity-0', 'translate-y-8', 'scale-85');
+        container?.classList.remove('opacity-0');
         container?.classList.add('animate-in');
         backdrop?.classList.remove('opacity-0');
       }, 10);
@@ -488,7 +491,7 @@
       renderItems();
       // Reset position for next open
       container?.classList.remove('animate-out');
-      container?.classList.add('opacity-0', 'translate-y-8', 'scale-85');
+      container?.classList.add('opacity-0');
       backdrop?.classList.add('opacity-0');
     }, 100);
     }
