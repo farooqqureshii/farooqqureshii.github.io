@@ -31,6 +31,12 @@ const { Content } = await post.render();
 const rawContent = post.body;
 const wordCount = getWordCount(rawContent);
 const readingTime = getReadingTime(wordCount);
+
+// Get all posts for navigation
+const allPosts = await getCollection("writing");
+const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const currentIndex = sortedPosts.findIndex(p => p.slug === post.slug);
+const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 ---
 
 <Layout title={title} description={description}>
@@ -44,5 +50,21 @@ const readingTime = getReadingTime(wordCount);
     <article>
       <Content />
     </article>
+    
+    <!-- Navigation -->
+    <div class="mt-8">
+      <div class="flex justify-between items-center">
+        <a href="/writing" class="text-black dark:text-white no-underline hover:no-underline focus:no-underline flex items-center" style="text-decoration: none !important; color: inherit !important; font-size: 0.875rem !important;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          All Writing
+        </a>
+        {nextPost && (
+          <a href={`/writing/${nextPost.slug}`} class="text-black dark:text-white no-underline hover:no-underline focus:no-underline flex items-center" style="text-decoration: none !important; color: inherit !important; font-size: 0.875rem !important;">
+            Next: {nextPost.data.title}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        )}
+      </div>
+    </div>
   </main>
 </Layout> 
