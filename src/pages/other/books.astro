@@ -89,7 +89,7 @@ const books = [
     <ul class="book-list">
       {books.slice(0, 3).map((book) => (
         <li class="book-item" data-book={JSON.stringify(book)}>
-          <em>{book.title}</em>, {book.author}
+          <span class="book-trigger"><em>{book.title}</em>, {book.author}</span>
         </li>
       ))}
     </ul>
@@ -99,7 +99,7 @@ const books = [
     <ul class="book-list">
       {books.slice(3).map((book) => (
         <li class="book-item" data-book={JSON.stringify(book)}>
-          <em>{book.title}</em>, {book.author}
+          <span class="book-trigger"><em>{book.title}</em>, {book.author}</span>
         </li>
       ))}
     </ul>
@@ -108,12 +108,16 @@ const books = [
   <style is:global>
     .book-item {
       position: relative;
-      cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .book-item:hover {
       color: inherit;
+    }
+
+    .book-trigger {
+      display: inline-block;
+      cursor: pointer;
     }
 
     .book-tooltip {
@@ -220,6 +224,8 @@ const books = [
         
         const bookData = JSON.parse(dataBook);
         let tooltip = null;
+        const trigger = item.querySelector('.book-trigger');
+        if (!trigger) return;
         
         function showTooltip() {
           if (!tooltip) {
@@ -284,15 +290,14 @@ const books = [
           }
         }
         
-        // Desktop hover events
-        item.addEventListener('mouseenter', showTooltip);
+        // Desktop hover events (narrowed to trigger)
+        trigger.addEventListener('mouseenter', showTooltip);
         item.addEventListener('mouseleave', hideTooltip);
         
-        // Mobile touch events
-        item.addEventListener('touchstart', function(e) {
-          e.preventDefault();
+        // Mobile touch events (narrowed to trigger, no preventDefault to allow scroll)
+        trigger.addEventListener('touchstart', function(e) {
           showTooltip();
-        });
+        }, { passive: true });
         
         // Hide tooltip when touching elsewhere
         document.addEventListener('touchstart', function(e) {
