@@ -109,9 +109,10 @@
     // Navigation items organized by sections
     const navItems = [
       { title: 'Home', url: '/', description: 'Go home', section: 'navigation', shortcut: 'H' },
+      { title: 'About', url: '/other/about', description: 'About me', section: 'navigation', shortcut: 'A' },
       { title: 'Projects', url: '/projects', description: 'View my projects', section: 'navigation', shortcut: 'P' },
       { title: 'Writing', url: '/writing', description: 'Read my writing', section: 'navigation', shortcut: 'W' },
-      { title: 'Artifacts', url: '/artifacts', description: 'Browse internet gems', section: 'navigation', shortcut: 'A' },
+      { title: 'Artifacts', url: '/artifacts', description: 'Browse internet gems', section: 'navigation', shortcut: 'B' },
       { title: 'Other', url: '/other', description: 'Other pages', section: 'navigation', shortcut: 'O' }
     ];
 
@@ -244,28 +245,6 @@
       return 'Change Link Color';
     }
 
-    // All individual pages (no shortcuts needed)
-    const pages = [
-      // Writing articles
-      { title: 'Writing is Hard', url: '/writing/writing-is-hard', description: 'On the challenges of writing well', section: 'pages' },
-      { title: 'Choosing What to Study', url: '/writing/choosing-what-to-study', description: 'On picking your degree and avoiding common pitfalls', section: 'pages' },
-      { title: 'What to Build', url: '/writing/build', description: 'On hackathon projects, and how to inspire', section: 'pages' },
-      { title: 'Beliefs', url: '/writing/beliefs', description: 'Things I believe', section: 'pages' },
-      { title: 'W25', url: '/writing/w25', description: 'Winter 2025', section: 'pages' },
-      { title: '7', url: '/writing/7', description: 'Seventh article', section: 'pages' },
-      { title: 'F25', url: '/writing/f25', description: 'Fall 2025', section: 'pages' },
-      { title: 'Latin', url: '/writing/latin', description: 'On Latin', section: 'pages' },
-      { title: 'Reading', url: '/writing/reading', description: 'On reading', section: 'pages' },
-      { title: 'Read More', url: '/writing/readmore', description: 'Read more articles', section: 'pages' },
-      { title: 'Substack', url: '/writing/substack', description: 'Substack case study', section: 'pages' },
-      // Subpages
-      { title: 'About', url: '/other/about', description: 'About me', section: 'pages' },
-      { title: 'Books', url: '/other/books', description: 'Books I\'ve read', section: 'pages' },
-      { title: 'Courses', url: '/other/courses', description: 'Courses I\'ve taken', section: 'pages' },
-      { title: 'Music', url: '/other/music', description: 'Music I listen to', section: 'pages' },
-      { title: 'Pencils', url: '/other/pencils', description: 'Pencil collection', section: 'pages' },
-      { title: 'Resources', url: '/other/resources', description: 'Useful resources', section: 'pages' }
-    ];
 
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'customization', action: 'toggle-theme', shortcut: 'T' },
@@ -283,7 +262,7 @@
       action?: string;
     };
 
-    const allItems: MenuItem[] = [...otherItems, ...navItems, ...linkItems, ...pages];
+    const allItems: MenuItem[] = [...otherItems, ...navItems, ...linkItems];
     let selectedIndex = 0;
     let filteredItems: MenuItem[] = [...allItems];
 
