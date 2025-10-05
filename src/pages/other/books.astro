@@ -82,7 +82,7 @@ const books = [
 
 <Layout title="Books | Farooq Q." description="Books I've read with ratings and thoughts">
   <main class="prose prose-sm md:prose-base lg:prose-lg prose-invert max-w-none">
-    <p>Books I've read in no particular order. Hover for more.</p>
+    <p>Books I've read. Hover for more.</p>
     <br>
     
     <h2 class="text-lg mb-2">October 2025</h2>
@@ -97,7 +97,7 @@ const books = [
     
     <h2 class="text-lg mb-2">All Books</h2>
     <ul class="book-list">
-      {books.map((book) => (
+      {books.slice(3).map((book) => (
         <li class="book-item" data-book={JSON.stringify(book)}>
           <em>{book.title}</em>, {book.author}
         </li>
@@ -168,6 +168,8 @@ const books = [
       border-radius: 8px;
       flex-shrink: 0;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      will-change: transform;
+      transform: translateZ(0);
     }
 
     .book-rating {
@@ -197,7 +199,18 @@ const books = [
     }
   </style>
 
-  <script>
+  <script define:vars={{ books }}>
+    // Preload all book images immediately for instant display
+    const preloadImages = () => {
+      books.forEach(book => {
+        const img = new Image();
+        img.src = book.image;
+      });
+    };
+    
+    // Start preloading as soon as possible
+    preloadImages();
+    
     document.addEventListener('DOMContentLoaded', function() {
       const bookItems = document.querySelectorAll('.book-item');
       
@@ -206,7 +219,7 @@ const books = [
         if (!dataBook) return;
         
         const bookData = JSON.parse(dataBook);
-        let tooltip: HTMLElement | null = null;
+        let tooltip = null;
         
         function showTooltip() {
           if (!tooltip) {
@@ -219,13 +232,17 @@ const books = [
               `<span class="star ${i < bookData.rating ? '' : 'empty'}">★</span>`
             ).join('');
             
+            // Preload image for instant display
+            const img = new Image();
+            img.src = bookData.image;
+            
             tooltip.innerHTML = `
               <div class="tooltip-content">
                 <div class="tooltip-text">
                   <div class="book-rating">${stars}</div>
                   <div class="book-description">${bookData.description}</div>
                 </div>
-                <img src="${bookData.image}" alt="${bookData.title}" class="tooltip-image" loading="eager" decoding="async" onerror="this.style.display='none'">
+                <img src="${bookData.image}" alt="${bookData.title}" class="tooltip-image" loading="eager" decoding="sync" onerror="this.style.display='none'">
               </div>
             `;
             
@@ -279,7 +296,7 @@ const books = [
         
         // Hide tooltip when touching elsewhere
         document.addEventListener('touchstart', function(e) {
-          if (e.target && !item.contains(e.target as Node)) {
+          if (e.target && !item.contains(e.target)) {
             hideTooltip();
           }
         });
