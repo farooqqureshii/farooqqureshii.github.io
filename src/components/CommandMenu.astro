@@ -250,7 +250,7 @@
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'customization', action: 'toggle-theme', shortcut: 'T' },
       { title: getLinkColorToggleText(), url: '#', description: 'Cycle through link color schemes', section: 'customization', action: 'toggle-link-color', shortcut: 'C' },
-      { title: getBackgroundToggleText(), url: '#', description: 'Cycle dotted / grid / waves', section: 'customization', action: 'toggle-background', shortcut: 'S' }
+      { title: getBackgroundToggleText(), url: '#', description: 'Cycle none / dotted / grid', section: 'customization', action: 'toggle-background', shortcut: 'S' }
     ];
 
     // Define the item type to include optional action property
@@ -382,16 +382,17 @@
               localStorage.setItem('link-color-preference', schemes[nextIndex]);
               closeMenu();
             } else if (item.action === 'toggle-background') {
-              // Toggle page background pattern without intermediate removal flicker
+              // Toggle page background pattern through none -> dotted -> grid -> none
               const html = document.documentElement;
-              const patterns = ['bg-dotted', 'bg-grid', 'bg-waves'];
-              const currentPattern = patterns.find(p => html.classList.contains(p)) || 'bg-dotted';
+              const patterns = ['', 'bg-dotted', 'bg-grid'];
+              const classes = ['bg-dotted', 'bg-grid', 'bg-waves']; // ensure old waves removed if present
+              const currentPattern = classes.find(p => html.classList.contains(p)) || '';
               const currentIndex = patterns.indexOf(currentPattern);
               const nextPattern = patterns[(currentIndex + 1) % patterns.length];
-              // Add next first
-              html.classList.add(nextPattern);
-              // Then remove all others
-              patterns.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
+              // Add next first (if not empty)
+              if (nextPattern) html.classList.add(nextPattern);
+              // Then remove all known pattern classes except next
+              classes.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
               localStorage.setItem('background-pattern', nextPattern);
               closeMenu();
             } else {
@@ -513,14 +514,15 @@
               localStorage.setItem('link-color-preference', schemes[nextIndex]);
               closeMenu();
             } else if (shortcutItem.action === 'toggle-background') {
-              // Toggle page background pattern without intermediate removal flicker
+              // Toggle page background pattern through none -> dotted -> grid -> none
               const html = document.documentElement;
-              const patterns = ['bg-dotted', 'bg-grid', 'bg-waves'];
-              const currentPattern = patterns.find(p => html.classList.contains(p)) || 'bg-dotted';
+              const patterns = ['', 'bg-dotted', 'bg-grid'];
+              const classes = ['bg-dotted', 'bg-grid', 'bg-waves'];
+              const currentPattern = classes.find(p => html.classList.contains(p)) || '';
               const currentIndex = patterns.indexOf(currentPattern);
               const nextPattern = patterns[(currentIndex + 1) % patterns.length];
-              html.classList.add(nextPattern);
-              patterns.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
+              if (nextPattern) html.classList.add(nextPattern);
+              classes.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
               localStorage.setItem('background-pattern', nextPattern);
               closeMenu();
             } else {
@@ -574,14 +576,15 @@
                 localStorage.setItem('link-color-preference', schemes[nextIndex]);
                 closeMenu();
               } else if (item.action === 'toggle-background') {
-                // Toggle page background pattern without intermediate removal flicker
+                // Toggle page background pattern through none -> dotted -> grid -> none
                 const html = document.documentElement;
-                const patterns = ['bg-dotted', 'bg-grid', 'bg-waves'];
-                const currentPattern = patterns.find(p => html.classList.contains(p)) || 'bg-dotted';
+                const patterns = ['', 'bg-dotted', 'bg-grid'];
+                const classes = ['bg-dotted', 'bg-grid', 'bg-waves'];
+                const currentPattern = classes.find(p => html.classList.contains(p)) || '';
                 const currentIndex = patterns.indexOf(currentPattern);
                 const nextPattern = patterns[(currentIndex + 1) % patterns.length];
-                html.classList.add(nextPattern);
-                patterns.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
+                if (nextPattern) html.classList.add(nextPattern);
+                classes.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
                 localStorage.setItem('background-pattern', nextPattern);
                 closeMenu();
               } else {
@@ -662,13 +665,13 @@
 
     // Removed font preference initialization
 
-    // Initialize background pattern preference
+    // Initialize background pattern preference (default: none)
     const savedBackground = localStorage.getItem('background-pattern');
     if (savedBackground) {
-      document.documentElement.classList.add(savedBackground);
-    } else {
-      // Default background is dotted
-      document.documentElement.classList.add('bg-dotted');
+      if (savedBackground) {
+        document.documentElement.classList.remove('bg-waves');
+        if (savedBackground) document.documentElement.classList.add(savedBackground);
+      }
     }
 
     // Initialize link color preference
