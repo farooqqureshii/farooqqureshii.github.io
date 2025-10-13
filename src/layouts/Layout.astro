@@ -51,6 +51,9 @@ const {
     
     <!-- Preconnect to critical external origins -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -78,7 +81,7 @@ const {
     <style>
       /* Prevent layout shift with base styles */
       body { 
-        font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        font-family: 'STIX Two Text', Georgia, "Times New Roman", Times, serif;
         line-height: 1.5;
         margin: 0;
       }
@@ -104,7 +107,7 @@ const {
     </script>
   </head>
   <body
-    class="font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"
+    class="text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"
   >
     <div class={cn("max-w-xl mx-auto p-4", className)}>
       <Header />

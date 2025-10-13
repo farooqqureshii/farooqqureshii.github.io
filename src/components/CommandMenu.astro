@@ -235,21 +235,22 @@
       }
     }
 
-    // Get font toggle text
-    function getFontToggleText() {
-      return 'Invert Font';
-    }
+    // Removed font toggle
 
     // Get link color toggle text based on current scheme
     function getLinkColorToggleText() {
       return 'Change Link Color';
     }
 
+    function getBackgroundToggleText() {
+      return 'Change Background';
+    }
+
 
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'customization', action: 'toggle-theme', shortcut: 'T' },
-      { title: getFontToggleText(), url: '#', description: 'Invert title and body fonts', section: 'customization', action: 'toggle-font', shortcut: 'F' },
-      { title: getLinkColorToggleText(), url: '#', description: 'Cycle through link color schemes', section: 'customization', action: 'toggle-link-color', shortcut: 'C' }
+      { title: getLinkColorToggleText(), url: '#', description: 'Cycle through link color schemes', section: 'customization', action: 'toggle-link-color', shortcut: 'C' },
+      { title: getBackgroundToggleText(), url: '#', description: 'Cycle dotted / grid / waves', section: 'customization', action: 'toggle-background', shortcut: 'S' }
     ];
 
     // Define the item type to include optional action property
@@ -362,15 +363,7 @@
               }
               closeMenu();
             } else if (item.action === 'toggle-font') {
-              // Toggle font inversion
-              const html = document.documentElement;
-              if (html.classList.contains('inverted-font')) {
-                html.classList.remove('inverted-font');
-                localStorage.setItem('font-preference', 'normal');
-              } else {
-                html.classList.add('inverted-font');
-                localStorage.setItem('font-preference', 'inverted');
-              }
+              // No-op: font toggle removed
               closeMenu();
             } else if (item.action === 'toggle-link-color') {
               // Toggle link color scheme
@@ -387,6 +380,19 @@
               
               // Save preference
               localStorage.setItem('link-color-preference', schemes[nextIndex]);
+              closeMenu();
+            } else if (item.action === 'toggle-background') {
+              // Toggle page background pattern without intermediate removal flicker
+              const html = document.documentElement;
+              const patterns = ['bg-dotted', 'bg-grid', 'bg-waves'];
+              const currentPattern = patterns.find(p => html.classList.contains(p)) || 'bg-dotted';
+              const currentIndex = patterns.indexOf(currentPattern);
+              const nextPattern = patterns[(currentIndex + 1) % patterns.length];
+              // Add next first
+              html.classList.add(nextPattern);
+              // Then remove all others
+              patterns.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
+              localStorage.setItem('background-pattern', nextPattern);
               closeMenu();
             } else {
               window.location.href = item.url;
@@ -426,11 +432,7 @@
         themeToggleItem.title = getThemeToggleText();
       }
       
-      // Update font toggle text
-      const fontToggleItem = filteredItems.find(item => item.action === 'toggle-font');
-      if (fontToggleItem) {
-        fontToggleItem.title = getFontToggleText();
-      }
+      // Font toggle removed
       
       // Update link color toggle text
       const linkColorToggleItem = filteredItems.find(item => item.action === 'toggle-link-color');
@@ -492,15 +494,7 @@
               }
               closeMenu();
             } else if (shortcutItem.action === 'toggle-font') {
-              // Toggle font inversion
-              const html = document.documentElement;
-              if (html.classList.contains('inverted-font')) {
-                html.classList.remove('inverted-font');
-                localStorage.setItem('font-preference', 'normal');
-              } else {
-                html.classList.add('inverted-font');
-                localStorage.setItem('font-preference', 'inverted');
-              }
+              // No-op: font toggle removed
               closeMenu();
             } else if (shortcutItem.action === 'toggle-link-color') {
               // Toggle link color scheme
@@ -517,6 +511,17 @@
               
               // Save preference
               localStorage.setItem('link-color-preference', schemes[nextIndex]);
+              closeMenu();
+            } else if (shortcutItem.action === 'toggle-background') {
+              // Toggle page background pattern without intermediate removal flicker
+              const html = document.documentElement;
+              const patterns = ['bg-dotted', 'bg-grid', 'bg-waves'];
+              const currentPattern = patterns.find(p => html.classList.contains(p)) || 'bg-dotted';
+              const currentIndex = patterns.indexOf(currentPattern);
+              const nextPattern = patterns[(currentIndex + 1) % patterns.length];
+              html.classList.add(nextPattern);
+              patterns.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
+              localStorage.setItem('background-pattern', nextPattern);
               closeMenu();
             } else {
               window.location.href = shortcutItem.url;
@@ -550,15 +555,7 @@
                 }
                 closeMenu();
               } else if (item.action === 'toggle-font') {
-                // Toggle font inversion
-                const html = document.documentElement;
-                if (html.classList.contains('inverted-font')) {
-                  html.classList.remove('inverted-font');
-                  localStorage.setItem('font-preference', 'normal');
-                } else {
-                  html.classList.add('inverted-font');
-                  localStorage.setItem('font-preference', 'inverted');
-                }
+                // No-op: font toggle removed
                 closeMenu();
               } else if (item.action === 'toggle-link-color') {
                 // Toggle link color scheme
@@ -575,6 +572,17 @@
                 
                 // Save preference
                 localStorage.setItem('link-color-preference', schemes[nextIndex]);
+                closeMenu();
+              } else if (item.action === 'toggle-background') {
+                // Toggle page background pattern without intermediate removal flicker
+                const html = document.documentElement;
+                const patterns = ['bg-dotted', 'bg-grid', 'bg-waves'];
+                const currentPattern = patterns.find(p => html.classList.contains(p)) || 'bg-dotted';
+                const currentIndex = patterns.indexOf(currentPattern);
+                const nextPattern = patterns[(currentIndex + 1) % patterns.length];
+                html.classList.add(nextPattern);
+                patterns.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
+                localStorage.setItem('background-pattern', nextPattern);
                 closeMenu();
               } else {
                 window.location.href = item.url;
@@ -652,10 +660,15 @@
       window.location.href = '/';
     });
 
-    // Initialize font preference
-    const savedFontPreference = localStorage.getItem('font-preference');
-    if (savedFontPreference === 'inverted') {
-      document.documentElement.classList.add('inverted-font');
+    // Removed font preference initialization
+
+    // Initialize background pattern preference
+    const savedBackground = localStorage.getItem('background-pattern');
+    if (savedBackground) {
+      document.documentElement.classList.add(savedBackground);
+    } else {
+      // Default background is dotted
+      document.documentElement.classList.add('bg-dotted');
     }
 
     // Initialize link color preference
