@@ -70,15 +70,15 @@
     transition: none;
   }
   
-  /* Default: STIX Two Text serif for everything */
+  /* Default: Georgia serif for everything */
   html, body, h1, h2, h3, h4, h5, h6, header nav, footer, p, li, ul, ol, span, div {
-    font-family: 'STIX Two Text', Georgia, "Times New Roman", Times, serif;
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-weight: 400;
   }
   
   /* Title uses site serif */
   .header-title {
-    font-family: 'STIX Two Text', Georgia, "Times New Roman", Times, serif !important;
+    font-family: Georgia, "Times New Roman", Times, serif !important;
     font-weight: 400 !important;
     font-size: 1.1rem !important;
   }
