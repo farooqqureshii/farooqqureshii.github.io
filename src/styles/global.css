@@ -70,17 +70,29 @@
     transition: none;
   }
   
-  /* Default: Georgia serif for everything */
-  html, body, h1, h2, h3, h4, h5, h6, header nav, footer, p, li, ul, ol, span, div {
-    font-family: Georgia, "Times New Roman", Times, serif;
+  /* Default: Geist for everything except title, footer, and Ctrl+K */
+  html, body, h1, h2, h3, h4, h5, h6, header nav, p, li, ul, ol, span, div {
+    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 400;
   }
   
-  /* Title uses site serif */
+  /* Title uses site serif (preserved) */
   .header-title {
     font-family: Georgia, "Times New Roman", Times, serif !important;
     font-weight: 400 !important;
     font-size: 1.1rem !important;
+  }
+  
+  /* Footer uses serif (preserved) */
+  footer, footer *, footer div, footer span, footer p, footer a {
+    font-family: Georgia, "Times New Roman", Times, serif !important;
+    font-weight: 400 !important;
+  }
+  
+  /* Ctrl+K text uses Geist */
+  #command-menu-button, #command-menu-button *, #command-menu-button span {
+    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-weight: 400 !important;
   }
   
   /* Removed inverted font mode */
