@@ -30,29 +30,14 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Critical resource preloads -->
-    <link
-      rel="preload"
-      href="/fonts/geist-variable.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/geist-mono-variable.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    
     <!-- DNS prefetch for external domains -->
     <link rel="dns-prefetch" href="//api.fontshare.com" />
     
     <!-- Preconnect to critical external origins -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fontshare: Switzer -->
+    <link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet">
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -80,7 +65,7 @@ const {
     <style>
       /* Prevent layout shift with base styles */
       body { 
-        font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         line-height: 1.5;
         margin: 0;
       }

@@ -30,30 +30,14 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Critical resource preloads -->
-    <link
-      rel="preload"
-      href="/fonts/geist-variable.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/geist-mono-variable.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    
     <!-- DNS prefetch for external domains -->
     <link rel="dns-prefetch" href="//api.fontshare.com" />
     
     <!-- Preconnect to critical external origins -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Fontshare: Switzer -->
+    <link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet">
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -81,7 +65,7 @@ const {
     <style>
       /* Prevent layout shift with base styles */
       body { 
-        font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         line-height: 1.5;
         margin: 0;
       }
@@ -109,10 +93,10 @@ const {
   <body
     class="text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"
   >
-    <div class={cn("max-w-xl mx-auto p-4", className)}>
+    <div class={cn("max-w-xl mx-auto p-4 min-h-screen flex flex-col justify-center", className)}>
       <!-- Top header with name on left, controls on right -->
-      <header class="mb-12 mt-4">
-        <div class="flex items-center justify-between mb-4">
+      <header class="mb-12">
+        <div class="flex items-center justify-between">
           <div>
             <a href="/" class="header-title">Farooq Qureshi</a>
           </div>
@@ -140,7 +124,9 @@ const {
       
       <div class="fade-in">
         <slot />
-        <Footer />
+        <div class="mt-8">
+          <Footer />
+        </div>
       </div>
       <CommandMenu />
     </div>
