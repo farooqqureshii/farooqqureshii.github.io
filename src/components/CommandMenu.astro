@@ -18,33 +18,40 @@
   }
   
   #command-container.animate-in {
-    animation: fadeInScale 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: slideInFromTop 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
   #command-container.animate-out {
-    animation: fadeOutScale 0.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: slideOutToBottom 0.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  @keyframes fadeInScale {
+  @keyframes slideInFromTop {
     0% {
       opacity: 0;
-      transform: scale(0.9);
+      transform: translateY(-20px);
     }
     100% {
       opacity: 1;
-      transform: scale(1);
+      transform: translateY(0);
     }
   }
   
-  @keyframes fadeOutScale {
+  @keyframes slideOutToBottom {
     0% {
       opacity: 1;
-      transform: scale(1);
+      transform: translateY(0);
     }
     100% {
       opacity: 0;
-      transform: scale(0.95);
+      transform: translateY(20px);
     }
+  }
+  
+  /* Better font for keyboard shortcuts in command menu */
+  #command-menu kbd {
+    font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Consolas", "Courier New", monospace !important;
+    font-variant-ligatures: none;
+    letter-spacing: 0.025em;
   }
 </style>
   
@@ -109,7 +116,7 @@
     // Navigation items organized by sections
     const navItems = [
       { title: 'Home', url: '/', description: 'Go home', section: 'navigation', shortcut: 'H' },
-      { title: 'About', url: '/other/about', description: 'About me', section: 'navigation', shortcut: 'A' },
+      { title: 'About', url: '/about', description: 'About me', section: 'navigation', shortcut: 'A' },
       { title: 'Projects', url: '/projects', description: 'View my projects', section: 'navigation', shortcut: 'P' },
       { title: 'Writing', url: '/writing', description: 'Read my writing', section: 'navigation', shortcut: 'W' },
       { title: 'Artifacts', url: '/artifacts', description: 'Browse internet gems', section: 'navigation', shortcut: 'B' },
@@ -347,10 +354,7 @@
               <div class="text-sm text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx">${item.title}</div>
             </div>
             <div class="flex items-center gap-2">
-              ${item.shortcut ? `<kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#d1d3d5] dark:bg-[#2a2a2a] flexoki:bg-flexoki-ui rounded border border-[#C4C6C8] dark:border-[#404040] flexoki:border-flexoki-ui-3">⇧${item.shortcut}</kbd>` : ''}
-              <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
+              ${item.shortcut ? `<div class="hidden sm:flex items-center gap-1"><kbd class="inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#d1d3d5] dark:bg-[#2a2a2a] flexoki:bg-flexoki-ui rounded border border-[#C4C6C8] dark:border-[#404040] flexoki:border-flexoki-ui-3">shift</kbd><span class="text-xs text-zinc-400 dark:text-zinc-500 flexoki:text-flexoki-tx-2">+</span><kbd class="inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#d1d3d5] dark:bg-[#2a2a2a] flexoki:bg-flexoki-ui rounded border border-[#C4C6C8] dark:border-[#404040] flexoki:border-flexoki-ui-3">${item.shortcut}</kbd></div>` : ''}
             </div>
           `;
           
