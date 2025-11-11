@@ -39,7 +39,7 @@ const currentIndex = sortedPosts.findIndex(p => p.slug === post.slug);
 const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 ---
 
-<Layout title={title} description={description}>
+<Layout title={`${title} | FQ`} description={description}>
   <main>
     <p class="mb-5 text-lg">
       {title}
