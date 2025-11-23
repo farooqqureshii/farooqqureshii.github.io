@@ -1,56 +1,426 @@
 ---
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import IndexLayout from "../layouts/IndexLayout.astro";
+
+// Hard-coded current book - update manually when needed
+const currentBook = {
+  title: "Homegoing",
+  author: "Yaa Gyasi",
+  rating: 5,
+  description: "Epic family saga spanning generations. Incredible storytelling.",
+  image: "https://covers.openlibrary.org/b/isbn/9781101947135-M.jpg"
+};
+
+// Books array for reference (not used, but kept for tooltip functionality)
+const books = [
+  { title: "For Whom the Bell Tolls", author: "Ernest Hemingway", rating: 5, description: "Hemingway's masterpiece about love, war, and sacrifice. The prose is spare but devastatingly powerful.", image: "https://covers.openlibrary.org/b/isbn/9780684803357-M.jpg" },
+  { title: "The Memory Police", author: "Yoko Ogawa", rating: 0, description: "In progress", image: "https://covers.openlibrary.org/b/isbn/9781101870600-M.jpg" },
+  { title: "The Man in the High Castle", author: "Philip K. Dick", rating: 0, description: "In progress", image: "https://i.postimg.cc/DZZMhL55/9780544916081-large.webp" },
+  { title: "Everything I Never Told You", author: "Celeste Ng", rating: 4, description: "Beautiful exploration of family dynamics and the weight of unspoken expectations.", image: "https://covers.openlibrary.org/b/isbn/9780143127550-M.jpg" },
+  { title: "Belzhar", author: "Meg Wolitzer", rating: 3, description: "Interesting take on trauma and healing through writing.", image: "https://i.postimg.cc/5NtVsQ8n/71b-J88svh-HL-UF894-1000-QL80.jpg" },
+  { title: "Animal Farm", author: "George Orwell", rating: 5, description: "Timeless allegory about power and corruption. Still relevant today.", image: "https://covers.openlibrary.org/b/isbn/9780451526342-M.jpg" },
+  { title: "1984", author: "George Orwell", rating: 5, description: "Chilling dystopian masterpiece that feels more prescient with each passing year.", image: "https://covers.openlibrary.org/b/isbn/9780451524935-M.jpg" },
+  { title: "Brave New World", author: "Aldous Huxley", rating: 4, description: "Fascinating contrast to 1984 - control through pleasure rather than pain.", image: "https://covers.openlibrary.org/b/isbn/9780060850524-M.jpg" },
+  { title: "Bluets", author: "Maggie Nelson", rating: 4, description: "Poetic meditation on color, love, and loss. Beautifully written.", image: "https://covers.openlibrary.org/b/isbn/9781933517407-M.jpg" },
+  { title: "Sapiens", author: "Yuval Noah Harari", rating: 5, description: "Mind-bending overview of human history. Changed how I think about civilization.", image: "https://covers.openlibrary.org/b/isbn/9780062316097-M.jpg" },
+  { title: "Homo Deus", author: "Yuval Noah Harari", rating: 4, description: "Thought-provoking look at humanity's future. Some predictions feel eerily accurate.", image: "https://covers.openlibrary.org/b/isbn/9780062464316-M.jpg" },
+  { title: "Skin in the Game", author: "Nassim Nicholas Taleb", rating: 4, description: "Taleb's insights on risk and responsibility. Challenging but rewarding.", image: "https://images-na.ssl-images-amazon.com/images/P/042528462X.01.L.jpg" },
+  { title: "Dopamine Nation", author: "Anna Lembke", rating: 4, description: "Eye-opening look at addiction in the digital age. Very relevant.", image: "https://i.postimg.cc/C143Nw5M/91lc-Jzq-YNt-L.jpg" },
+  { title: "All the Light We Cannot See", author: "Anthony Doerr", rating: 5, description: "Stunning prose and heartbreaking story. One of my favorites.", image: "https://covers.openlibrary.org/b/isbn/9781476746586-M.jpg" },
+  { title: "The Alchemist", author: "Paulo Coelho", rating: 3, description: "Simple but profound fable about following your dreams.", image: "https://covers.openlibrary.org/b/isbn/9780061122415-M.jpg" },
+  { title: "South of the Border, West of the Sun", author: "Haruki Murakami", rating: 4, description: "Classic Murakami atmosphere and themes of nostalgia and longing.", image: "https://covers.openlibrary.org/b/isbn/9780679775430-M.jpg" },
+  { title: "Klara and the Sun", author: "Kazuo Ishiguro", rating: 4, description: "Beautiful AI perspective on human nature. Ishiguro's subtle genius.", image: "https://covers.openlibrary.org/b/isbn/9780593318171-M.jpg" },
+  { title: "Wit", author: "Margaret Edson", rating: 4, description: "Powerful play about mortality, academia, and what really matters.", image: "https://i.postimg.cc/B6NzFN7L/71-Tz-IBx-Uza-L-AC-UL600-SR600-600.jpg" },
+  { title: "The Subject Was Roses", author: "Frank D. Gilroy", rating: 3, description: "Intense family drama with complex characters.", image: "https://i.postimg.cc/cJ0TcwnH/7629990.jpg" },
+  { title: "Outliers", author: "Malcolm Gladwell", rating: 4, description: "Fascinating look at success patterns. The 10,000 hour rule is compelling.", image: "https://covers.openlibrary.org/b/isbn/9780316017923-M.jpg" },
+  { title: "Homegoing", author: "Yaa Gyasi", rating: 5, description: "Epic family saga spanning generations. Incredible storytelling.", image: "https://covers.openlibrary.org/b/isbn/9781101947135-M.jpg" },
+  { title: "Speedboat", author: "Renata Adler", rating: 3, description: "Experimental and fragmented, but captures something essential about modern life.", image: "https://i.postimg.cc/h46k1ZPv/71-Cy-DJ-Ph-BL-UF894-1000-QL80.jpg" },
+  { title: "The Folded Clock", author: "Heidi Julavits", rating: 3, description: "Diary-style reflections on time, creativity, and daily life.", image: "https://i.postimg.cc/vTVSKMH5/22716391.jpg" },
+  { title: "We the Animals", author: "Justin Torres", rating: 4, description: "Raw and beautiful coming-of-age story. Short but powerful.", image: "https://covers.openlibrary.org/b/isbn/9780547576725-M.jpg" },
+  { title: "So Sad Today", author: "Melissa Broder", rating: 3, description: "Honest and darkly funny essays about mental health and modern life.", image: "https://i.postimg.cc/FK6pXq6G/91u-GS-f6-WML-UF1000-1000-QL80.jpg" },
+  { title: "Milkman", author: "Anna Burns", rating: 4, description: "Unique voice and perspective on the Troubles. Challenging but rewarding.", image: "https://i.postimg.cc/yNDhjjNV/91-P67-FPmyv-L.jpg" },
+  { title: "Weather", author: "Jenny Offill", rating: 3, description: "Fragmented but insightful look at climate anxiety and modern life.", image: "https://covers.openlibrary.org/b/isbn/9780385351102-M.jpg" },
+  { title: "The Sad Part Was", author: "Prabda Yoon", rating: 3, description: "Quirky and experimental short stories from Thailand.", image: "https://images-na.ssl-images-amazon.com/images/P/1782274561.01.L.jpg" },
+  { title: "Call Me Zebra", author: "Azareen Van der Vliet Oloomi", rating: 3, description: "Wild and experimental novel about exile and literature.", image: "https://i.postimg.cc/k5R8K5jg/81a-P-HE-Dk-L-UF1000-1000-QL80.jpg" },
+  { title: "Native Speaker", author: "Chang-rae Lee", rating: 4, description: "Complex exploration of identity and assimilation in America.", image: "https://covers.openlibrary.org/b/isbn/9781573225311-M.jpg" },
+  { title: "Your Utopia", author: "Bora Chung", rating: 4, description: "Surreal and thought-provoking short stories about technology and society.", image: "https://i.postimg.cc/SNZzP93N/815-RGd-9-S7-L.jpg" },
+  { title: "Temporary", author: "Hilary Leichter", rating: 3, description: "Absurd and funny exploration of modern work culture.", image: "https://i.postimg.cc/L59nC4TF/81-KT-CRk-I6-L.jpg" },
+  { title: "The Employees", author: "Olga Ravn", rating: 4, description: "Strange and beautiful sci-fi about work, consciousness, and what makes us human.", image: "https://i.postimg.cc/2Ss3p7w3/The-Employees-cover.jpg" },
+  { title: "Drinking Coffee Elsewhere", author: "ZZ Packer", rating: 4, description: "Sharp and insightful short stories about race, class, and identity.", image: "https://covers.openlibrary.org/b/isbn/9781573222341-M.jpg" },
+  { title: "No One Is Talking About This", author: "Patricia Lockwood", rating: 4, description: "Brilliant capture of internet culture and its effects on consciousness.", image: "https://covers.openlibrary.org/b/isbn/9780593189580-M.jpg" },
+  { title: "The Year of Magical Thinking", author: "Joan Didion", rating: 5, description: "Devastating and beautiful meditation on grief and loss.", image: "https://covers.openlibrary.org/b/isbn/9781400043149-M.jpg" },
+  { title: "If You Leave Me", author: "Crystal Hana Kim", rating: 4, description: "Epic family saga set during the Korean War. Beautiful and heartbreaking.", image: "https://i.postimg.cc/tRBTRj5S/34858106.jpg" },
+  { title: "How Much of These Hills Is Gold", author: "C Pam Zhang", rating: 4, description: "Lyrical and haunting reimagining of the American West.", image: "https://covers.openlibrary.org/b/isbn/9780525537205-M.jpg" },
+  { title: "The Loneliness of the Long Distance Runner", author: "Alan Sillitoe", rating: 3, description: "Classic working-class British literature. Raw and authentic.", image: "https://covers.openlibrary.org/b/isbn/9780679734529-M.jpg" },
+  { title: "Can't and Won't", author: "Lydia Davis", rating: 4, description: "Master of the very short story. Each piece is perfectly crafted.", image: "https://images-na.ssl-images-amazon.com/images/P/0374534098.01.L.jpg" },
+  { title: "A Heartbreaking Work of Staggering Genius", author: "Dave Eggers", rating: 4, description: "Raw and honest memoir about family, loss, and growing up too fast.", image: "https://covers.openlibrary.org/b/isbn/9780375725784-M.jpg" },
+  { title: "Celestial Bodies", author: "Jokha Alharthi", rating: 4, description: "First Arabic novel to win the Man Booker International Prize. Beautiful and complex.", image: "https://i.postimg.cc/m20Th2F8/71-Pqu-PDCt-SL.jpg" },
+  { title: "Go Home!", author: "Edited by Rowan Hisayo Buchanan", rating: 3, description: "Diverse collection of stories about home and belonging.", image: "https://i.postimg.cc/KjChKJ4r/34381317.jpg" },
+  { title: "Interpreter of Maladies", author: "Jhumpa Lahiri", rating: 5, description: "Perfect short stories about the immigrant experience. Lahiri's prose is exquisite.", image: "https://covers.openlibrary.org/b/isbn/9780395927205-M.jpg" },
+  { title: "The Emperor of All Maladies", author: "Siddhartha Mukherjee", rating: 5, description: "Fascinating biography of cancer. Reads like a novel despite being deeply scientific.", image: "https://covers.openlibrary.org/b/isbn/9781439170915-M.jpg" },
+  { title: "The Boat", author: "Nam Le", rating: 4, description: "Powerful short stories that span the globe. Each one is a world unto itself.", image: "https://covers.openlibrary.org/b/isbn/9780307268082-M.jpg" },
+  { title: "The Ones Who Walk Away from Omelas", author: "Ursula K. Le Guin", rating: 5, description: "Perfect short story that poses the ultimate moral question.", image: "https://i.postimg.cc/qBW76GPK/The-Ones-Who-Walk-Away-From-Omelas.jpg" },
+  { title: "The Dispossessed", author: "Ursula K. Le Guin", rating: 5, description: "Brilliant exploration of anarchism and utopia. Le Guin at her best.", image: "https://images-na.ssl-images-amazon.com/images/P/0061054887.01.L.jpg" },
+  { title: "The Left Hand of Darkness", author: "Ursula K. Le Guin", rating: 5, description: "Revolutionary sci-fi that explores gender and society. Timeless classic.", image: "https://covers.openlibrary.org/b/isbn/9780441478125-M.jpg" },
+  { title: "Frankenstein", author: "Mary Shelley", rating: 4, description: "The original sci-fi novel. Still powerful and relevant after 200 years.", image: "https://covers.openlibrary.org/b/isbn/9780486282114-M.jpg" },
+  { title: "In Search of Lost Time", author: "Marcel Proust", rating: 3, description: "The ultimate literary challenge. Beautiful but requires serious commitment.", image: "https://covers.openlibrary.org/b/isbn/9780142437964-M.jpg" },
+  { title: "The Trial", author: "Franz Kafka", rating: 4, description: "Kafkaesque nightmare that captures the absurdity of bureaucracy and power.", image: "https://i.postimg.cc/W44VHFRJ/9780805209990.jpg" },
+  { title: "To the Lighthouse", author: "Virginia Woolf", rating: 4, description: "Stream of consciousness masterpiece. Challenging but rewarding.", image: "https://covers.openlibrary.org/b/isbn/9780156907392-M.jpg" },
+  { title: "The Crucible", author: "Arthur Miller", rating: 4, description: "Powerful allegory about McCarthyism and mass hysteria.", image: "https://covers.openlibrary.org/b/isbn/9780142437339-M.jpg" },
+  { title: "The Double Helix", author: "James D. Watson", rating: 3, description: "Fascinating insider account of the discovery of DNA structure.", image: "https://covers.openlibrary.org/b/isbn/9780743216302-M.jpg" },
+  { title: "Dune", author: "Frank Herbert", rating: 5, description: "Epic sci-fi masterpiece. Complex world-building and political intrigue.", image: "https://covers.openlibrary.org/b/isbn/9780441013593-M.jpg" },
+  { title: "The Electric Kool-Aid Acid Test", author: "Tom Wolfe", rating: 4, description: "Wild ride through the 60s counterculture. Gonzo journalism at its finest.", image: "https://covers.openlibrary.org/b/isbn/9780312427597-M.jpg" },
+  { title: "Danube", author: "Claudio Magris", rating: 3, description: "Literary travelogue along the Danube. Rich in history and culture.", image: "https://images-na.ssl-images-amazon.com/images/P/0374526338.01.L.jpg" },
+  { title: "The Road to Oxiana", author: "Robert Byron", rating: 4, description: "Classic travel writing from the 1930s. Still fresh and engaging.", image: "https://i.postimg.cc/Mp92V6cq/71j-T6-Tt-Za-L-UF894-1000-QL80.jpg" },
+  { title: "And the Band Played On", author: "Randy Shilts", rating: 5, description: "Devastating account of the AIDS crisis. Essential reading for understanding recent history.", image: "https://covers.openlibrary.org/b/isbn/9780312374631-M.jpg" },
+  { title: "Postwar", author: "Tony Judt", rating: 5, description: "Comprehensive history of Europe after WWII. Masterful synthesis.", image: "https://i.postimg.cc/jqPpvQwY/81nm4-WNQXq-L.jpg" },
+  { title: "The Catcher in the Rye", author: "J.D. Salinger", rating: 4, description: "Classic coming-of-age story. Holden's voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780316769174-M.jpg" },
+  { title: "Middlemarch", author: "George Eliot", rating: 4, description: "Victorian masterpiece about provincial life. Eliot's psychological insight is remarkable.", image: "https://covers.openlibrary.org/b/isbn/9780141439549-M.jpg" },
+  { title: "The Sun Also Rises", author: "Ernest Hemingway", rating: 4, description: "Hemingway's spare prose at its best. Captures the lost generation perfectly.", image: "https://covers.openlibrary.org/b/isbn/9780743297332-M.jpg" },
+  { title: "Midnight's Children", author: "Salman Rushdie", rating: 5, description: "Magical realism meets Indian history. Rushdie's imagination is boundless.", image: "https://covers.openlibrary.org/b/isbn/9780812976533-M.jpg" },
+  { title: "The Plague", author: "Albert Camus", rating: 4, description: "Existentialist masterpiece that feels eerily relevant to our times.", image: "https://covers.openlibrary.org/b/isbn/9780679720218-M.jpg" },
+  { title: "The Man Without Qualities", author: "Robert Musil", rating: 3, description: "Massive modernist novel. Challenging but worth the effort.", image: "https://i.postimg.cc/sxr0bqBN/818-Vu6f-P4d-L-UF894-1000-QL80.jpg" },
+  { title: "The Tale of Genji", author: "Murasaki Shikibu", rating: 3, description: "The world's first novel. Beautiful but requires patience.", image: "https://covers.openlibrary.org/b/isbn/9780143039495-M.jpg" },
+  { title: "In Cold Blood", author: "Truman Capote", rating: 4, description: "Pioneer of true crime writing. Capote's prose is masterful.", image: "https://covers.openlibrary.org/b/isbn/9780679745587-M.jpg" },
+  { title: "Man's Search for Meaning", author: "Viktor E. Frankl", rating: 5, description: "Profound meditation on suffering and meaning. Life-changing read.", image: "https://covers.openlibrary.org/b/isbn/9780807014295-M.jpg" },
+  { title: "Homage to Catalonia", author: "George Orwell", rating: 4, description: "Orwell's personal account of the Spanish Civil War. Honest and insightful.", image: "https://covers.openlibrary.org/b/isbn/9780156421171-M.jpg" },
+  { title: "I Know Why the Caged Bird Sings", author: "Maya Angelou", rating: 5, description: "Powerful memoir about resilience and finding your voice.", image: "https://covers.openlibrary.org/b/isbn/9780345514400-M.jpg" },
+  { title: "All the President's Men", author: "Bob Woodward & Carl Bernstein", rating: 4, description: "Thrilling account of investigative journalism that changed America.", image: "https://covers.openlibrary.org/b/isbn/9781476770512-M.jpg" },
+  { title: "The Warmth of Other Suns", author: "Isabel Wilkerson", rating: 5, description: "Masterful history of the Great Migration. Essential American history.", image: "https://i.postimg.cc/MpTrkyG4/71-Atl-Bx-cx-L-UF894-1000-QL80.jpg" }
+];
 ---
 
 <IndexLayout
   title="Farooq Qureshi"
   description={SITE_DESCRIPTION}
 >
-  <main class="flex flex-col gap-6">
-    <!-- Main navigation - first row -->
-    <nav class="flex flex-row gap-4 main-nav">
+  <main class="flex flex-col gap-4">
+    <p>
+      Hi! I study Electrical Engineering at the University of Ottawa. 
+      <span id="spotify-prefix">I'm currently</span> 
+      <span id="spotify-listening-text"></span>
+      <span id="spotify-content">...</span> and am currently reading 
+      <span class="book-item" data-book={JSON.stringify(currentBook)}>
+        <span class="book-trigger"><em>{currentBook.title}</em> by {currentBook.author}</span>
+      </span>.
+    </p>
+    
+    <p style="text-align: center;">*  *  *</p>
+    
+    <div id="expanded-content">
+      <p>
+        You can <a href="/about">find out more about me</a> and <a href="/projects">view my projects</a>. I also <a href="/writing">write</a>, <a href="/artifacts">keep a track of things I find interesting</a>, and <a href="/other">more</a>.
+      </p>
+      <br>
+      <p>
+        Please feel free to <a href="mailto:farooq.qureshi@outlook.com">say hi</a>, <a href="https://github.com/farooqqureshii" target="_blank">see my code</a>, <a href="https://curius.app/farooq-qureshi" target="_blank">browse my interests</a>, or <a href="https://linkedin.com/in/farooqq" target="_blank">view my experience</a>. Here's my <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank">résumé</a>.
+      </p>
+    </div>
+    
+    <div id="collapsed-content" class="hidden">
+      <nav class="flex flex-col gap-2">
+        <div class="flex flex-row gap-4 flex-wrap">
       <a href="/about">About</a>
       <a href="/projects">Projects</a>
       <a href="/writing">Writing</a>
       <a href="/artifacts">Artifacts</a>
       <a href="/other">Other</a>
-    </nav>
-
-    <!-- Social links - second row -->
-    <nav class="flex flex-row gap-4 main-nav social-links">
+        </div>
+        <div class="flex flex-row gap-4 flex-wrap">
       <a href="mailto:farooq.qureshi@outlook.com">Email</a>
       <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank">Résumé</a>
       <a href="https://linkedin.com/in/farooqq" target="_blank">LinkedIn</a>
       <a href="https://github.com/farooqqureshii" target="_blank">GitHub</a>
       <a href="https://curius.app/farooq-qureshi" target="_blank">Curius</a>
+        </div>
     </nav>
+    </div>
+    
+    <p>
+      You can view the above <span id="shorter-toggle" class="shorter-link">shorter</span>, too.
+    </p>
   </main>
 
 <style>
-  /* Override italic hover effect for social links */
-  .social-links a:hover {
-    font-style: normal !important;
+  .hidden {
+    display: none;
+  }
+
+  .shorter-link {
+    cursor: pointer;
+  }
+
+</style>
+
+<style is:global>
+  /* Ensure all links in expanded content get italic on hover */
+  #expanded-content a:hover {
+    font-style: italic !important;
+  }
+  .book-item {
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .book-item:hover {
+    color: inherit;
+  }
+
+  .book-trigger {
+    display: inline;
+    cursor: pointer;
+  }
+
+  .book-trigger em {
+    margin-right: 0.25em;
+  }
+
+  .book-tooltip {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px) scale(0.8);
+    background: #e5e7e9 !important;
+    color: #0a0a0a !important;
+    border: 1px solid #D4D1CE !important;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35) !important;
+    z-index: 1000;
+    width: 480px;
+    max-width: min(90vw, 560px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+  }
+
+  .dark .book-tooltip {
+    background: rgb(34, 34, 34) !important;
+    color: #e5e5e5 !important;
+    border-color: #404040 !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
   }
   
-  /* Main page navigation links - match navbar styling */
-  .main-nav a {
-    color: #000 !important;
+  .book-tooltip.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) scale(1) !important;
   }
-  html.dark .main-nav a {
-    color: #fff !important;
+
+  .tooltip-content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
   }
-  html.flexoki .main-nav a {
-    color: #100F0F !important;
+
+  .tooltip-text {
+    flex: 1;
+    min-width: 0;
   }
-  .main-nav a:hover {
-    color: #000 !important;
+
+  .tooltip-image {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    will-change: transform;
+    transform: translateZ(0);
   }
-  html.dark .main-nav a:hover {
-    color: #fff !important;
+
+  .book-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 12px;
   }
-  html.flexoki .main-nav a:hover {
-    color: #100F0F !important;
+
+  .star {
+    color: #fbbf24 !important;
+    font-size: 18px !important;
+  }
+
+  .star.empty {
+    color: #6b7280 !important;
+  }
+
+  .book-description {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: #0a0a0a !important;
+    margin: 0 !important;
+  }
+  
+  .dark .book-description {
+    color: #e5e7eb !important;
   }
 </style>
+
+<script define:vars={{ currentBook }}>
+  // Preload book image
+  const img = new Image();
+  img.src = currentBook.image;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Toggle shorter/longer view
+    const shorterToggle = document.getElementById('shorter-toggle');
+    const expandedContent = document.getElementById('expanded-content');
+    const collapsedContent = document.getElementById('collapsed-content');
+    let isCollapsed = false;
+
+    if (shorterToggle && expandedContent && collapsedContent) {
+      shorterToggle.addEventListener('click', () => {
+        isCollapsed = !isCollapsed;
+        if (isCollapsed) {
+          expandedContent.classList.add('hidden');
+          collapsedContent.classList.remove('hidden');
+          shorterToggle.textContent = 'longer';
+        } else {
+          expandedContent.classList.remove('hidden');
+          collapsedContent.classList.add('hidden');
+          shorterToggle.textContent = 'shorter';
+        }
+      });
+    }
+
+    // Spotify functionality
+    async function updateSpotifyContent() {
+      try {
+        const res = await fetch(`/api/spotify-now-playing`, {
+          cache: 'no-store',
+        });
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
+        const data = await res.json();
+        const spotifyContent = document.getElementById('spotify-content');
+        const spotifyPrefix = document.getElementById('spotify-prefix');
+        const spotifyListeningText = document.getElementById('spotify-listening-text');
+        
+        if (spotifyContent && spotifyPrefix && spotifyListeningText) {
+          if (data.isPlaying) {
+            // Currently playing
+            spotifyPrefix.textContent = "I'm currently";
+            spotifyListeningText.textContent = "listening to ";
+            if (data.songUrl) {
+              spotifyContent.innerHTML = `<a href="${data.songUrl}" target="_blank" rel="noopener noreferrer">${data.title} by ${data.artist}</a>`;
+            } else {
+              spotifyContent.textContent = `${data.title} by ${data.artist}`;
+            }
+          } else if (data.lastPlayed && data.title) {
+            // Last listened to
+            spotifyPrefix.textContent = "I last listened to";
+            spotifyListeningText.textContent = "";
+            if (data.songUrl) {
+              spotifyContent.innerHTML = `<a href="${data.songUrl}" target="_blank" rel="noopener noreferrer">${data.title} by ${data.artist}</a>`;
+            } else {
+              spotifyContent.textContent = `${data.title} by ${data.artist}`;
+            }
+          } else {
+            // No data available
+            spotifyPrefix.textContent = "I'm currently";
+            spotifyListeningText.textContent = "";
+            spotifyContent.textContent = `not listening to anything`;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching Spotify data:', error);
+        const spotifyContent = document.getElementById('spotify-content');
+        const spotifyPrefix = document.getElementById('spotify-prefix');
+        const spotifyListeningText = document.getElementById('spotify-listening-text');
+        if (spotifyContent) {
+          spotifyContent.textContent = `(error loading track)`;
+        }
+        if (spotifyPrefix) {
+          spotifyPrefix.textContent = "I'm currently";
+        }
+        if (spotifyListeningText) {
+          spotifyListeningText.textContent = "";
+        }
+      }
+    }
+    
+    // Initial load and periodic updates
+    updateSpotifyContent();
+    // Update more frequently to catch pause events
+    setInterval(updateSpotifyContent, 5000);
+
+    // Book hover tooltip functionality
+    const bookItem = document.querySelector('.book-item');
+    if (bookItem) {
+      let tooltip = null;
+      const trigger = bookItem.querySelector('.book-trigger');
+      if (trigger) {
+        function showTooltip() {
+          if (!tooltip) {
+            tooltip = document.createElement('div');
+            tooltip.className = 'book-tooltip';
+            
+            const stars = Array.from({length: 5}, (_, i) => 
+              `<span class="star ${i < currentBook.rating ? '' : 'empty'}">★</span>`
+            ).join('');
+            
+            tooltip.innerHTML = `
+              <div class="tooltip-content">
+                <div class="tooltip-text">
+                  <div class="book-rating">${stars}</div>
+                  <div class="book-description">${currentBook.description}</div>
+                </div>
+                <img src="${currentBook.image}" alt="${currentBook.title}" class="tooltip-image" loading="eager" decoding="sync" onerror="this.style.display='none'">
+              </div>
+            `;
+            
+            tooltip.style.opacity = '0';
+            tooltip.style.transform = 'translateX(-50%) translateY(-8px) scale(0.95)';
+            tooltip.style.visibility = 'hidden';
+            
+            bookItem.appendChild(tooltip);
+            tooltip.offsetHeight;
+            
+            tooltip.style.visibility = 'visible';
+            tooltip.style.transition = 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            requestAnimationFrame(() => {
+              if (tooltip) {
+                tooltip.style.opacity = '1';
+                tooltip.style.transform = 'translateX(-50%) translateY(0) scale(1)';
+              }
+            });
+          }
+        }
+        
+        function hideTooltip() {
+          if (tooltip) {
+            tooltip.style.opacity = '0';
+            tooltip.style.transform = 'translateX(-50%) translateY(-8px) scale(0.95)';
+            
+            setTimeout(() => {
+              if (tooltip) {
+                tooltip.remove();
+                tooltip = null;
+              }
+            }, 150);
+          }
+        }
+        
+        trigger.addEventListener('mouseenter', showTooltip);
+        bookItem.addEventListener('mouseleave', hideTooltip);
+        
+        trigger.addEventListener('touchstart', function(e) {
+          showTooltip();
+        }, { passive: true });
+        
+        document.addEventListener('touchstart', function(e) {
+          if (e.target && !bookItem.contains(e.target)) {
+            hideTooltip();
+          }
+        });
+      }
+    }
+  });
+</script>
 </IndexLayout>
