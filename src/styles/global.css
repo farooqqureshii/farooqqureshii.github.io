@@ -7,6 +7,7 @@
 @layer base {
   html {
     transition: none;
+    font-size: 15px; /* Slightly smaller base font size */
   }
   
   /* Clean, minimal background */

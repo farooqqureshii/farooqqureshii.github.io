@@ -99,10 +99,7 @@ const books = [
       Hi! I study Electrical Engineering at the University of Ottawa. 
       <span id="spotify-prefix">I'm currently</span> 
       <span id="spotify-listening-text"></span>
-      <span id="spotify-content">...</span> and am currently reading 
-      <span class="book-item" data-book={JSON.stringify(currentBook)}>
-        <span class="book-trigger"><em>{currentBook.title}</em> by {currentBook.author}</span>
-      </span>.
+      <span id="spotify-content">...</span> and am currently reading <span class="book-item" data-book={JSON.stringify(currentBook)}><em class="book-trigger">{currentBook.title}</em> by {currentBook.author}</span>.
     </p>
     
     <p style="text-align: center;">*  *  *</p>
@@ -169,10 +166,8 @@ const books = [
   .book-trigger {
     display: inline;
     cursor: pointer;
-  }
-
-  .book-trigger em {
-    margin-right: 0.25em;
+    font-style: italic;
+    margin-right: 0.15em;
   }
 
   .book-tooltip {
@@ -286,15 +281,14 @@ const books = [
     }
 
     // Spotify functionality
+    // Keep track of last known track to use as fallback
+    let lastKnownTrack = null;
+    
     async function updateSpotifyContent() {
       try {
         const res = await fetch(`/api/spotify-now-playing`, {
           cache: 'no-store',
         });
-        
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
         
         const data = await res.json();
         const spotifyContent = document.getElementById('spotify-content');
@@ -302,8 +296,9 @@ const books = [
         const spotifyListeningText = document.getElementById('spotify-listening-text');
         
         if (spotifyContent && spotifyPrefix && spotifyListeningText) {
-          if (data.isPlaying) {
-            // Currently playing
+          if (data.isPlaying && data.title && data.artist) {
+            // Currently playing a valid track
+            lastKnownTrack = { title: data.title, artist: data.artist, songUrl: data.songUrl };
             spotifyPrefix.textContent = "I'm currently";
             spotifyListeningText.textContent = "listening to ";
             if (data.songUrl) {
@@ -311,8 +306,9 @@ const books = [
             } else {
               spotifyContent.textContent = `${data.title} by ${data.artist}`;
             }
-          } else if (data.lastPlayed && data.title) {
+          } else if (data.lastPlayed && data.title && data.artist) {
             // Last listened to
+            lastKnownTrack = { title: data.title, artist: data.artist, songUrl: data.songUrl };
             spotifyPrefix.textContent = "I last listened to";
             spotifyListeningText.textContent = "";
             if (data.songUrl) {
@@ -320,11 +316,20 @@ const books = [
             } else {
               spotifyContent.textContent = `${data.title} by ${data.artist}`;
             }
-          } else {
-            // No data available
-            spotifyPrefix.textContent = "I'm currently";
+          } else if (lastKnownTrack) {
+            // Use cached last known track as fallback
+            spotifyPrefix.textContent = "I last listened to";
             spotifyListeningText.textContent = "";
-            spotifyContent.textContent = `not listening to anything`;
+            if (lastKnownTrack.songUrl) {
+              spotifyContent.innerHTML = `<a href="${lastKnownTrack.songUrl}" target="_blank" rel="noopener noreferrer">${lastKnownTrack.title} by ${lastKnownTrack.artist}</a>`;
+            } else {
+              spotifyContent.textContent = `${lastKnownTrack.title} by ${lastKnownTrack.artist}`;
+            }
+          } else {
+            // No data available and no cached track - show last listened (will be empty but won't show error)
+            spotifyPrefix.textContent = "I last listened to";
+            spotifyListeningText.textContent = "";
+            spotifyContent.textContent = `...`;
           }
         }
       } catch (error) {
@@ -332,14 +337,23 @@ const books = [
         const spotifyContent = document.getElementById('spotify-content');
         const spotifyPrefix = document.getElementById('spotify-prefix');
         const spotifyListeningText = document.getElementById('spotify-listening-text');
-        if (spotifyContent) {
-          spotifyContent.textContent = `(error loading track)`;
-        }
-        if (spotifyPrefix) {
-          spotifyPrefix.textContent = "I'm currently";
-        }
-        if (spotifyListeningText) {
-          spotifyListeningText.textContent = "";
+        
+        // On error, use cached last known track instead of showing error
+        if (spotifyContent && spotifyPrefix && spotifyListeningText) {
+          if (lastKnownTrack) {
+            spotifyPrefix.textContent = "I last listened to";
+            spotifyListeningText.textContent = "";
+            if (lastKnownTrack.songUrl) {
+              spotifyContent.innerHTML = `<a href="${lastKnownTrack.songUrl}" target="_blank" rel="noopener noreferrer">${lastKnownTrack.title} by ${lastKnownTrack.artist}</a>`;
+            } else {
+              spotifyContent.textContent = `${lastKnownTrack.title} by ${lastKnownTrack.artist}`;
+            }
+          } else {
+            // No cached track available - show placeholder
+            spotifyPrefix.textContent = "I last listened to";
+            spotifyListeningText.textContent = "";
+            spotifyContent.textContent = `...`;
+          }
         }
       }
     }
@@ -408,7 +422,7 @@ const books = [
         }
         
         trigger.addEventListener('mouseenter', showTooltip);
-        bookItem.addEventListener('mouseleave', hideTooltip);
+        trigger.addEventListener('mouseleave', hideTooltip);
         
         trigger.addEventListener('touchstart', function(e) {
           showTooltip();
