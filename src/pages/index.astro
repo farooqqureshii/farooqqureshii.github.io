@@ -95,47 +95,18 @@ const books = [
   description={SITE_DESCRIPTION}
 >
   <main class="flex flex-col gap-4">
-    <p>
-      Hi! I study Electrical Engineering at the University of Ottawa. 
-      <span id="spotify-prefix">I'm currently</span> 
-      <span id="spotify-listening-text"></span>
-      <span id="spotify-content">...</span> and am currently reading <span class="book-item" data-book={JSON.stringify(currentBook)}><em class="book-trigger">{currentBook.title}</em> by {currentBook.author}</span>.
-    </p>
-    
-    <p style="text-align: center;">*  *  *</p>
-    
-    <div id="expanded-content">
-      <p>
-        You can <a href="/about">find out more about me</a> and <a href="/projects">view my projects</a>. I also <a href="/writing">write</a>, <a href="/artifacts">keep a track of things I find interesting</a>, and <a href="/other">more</a>.
-      </p>
-      <br>
-      <p>
-        Please feel free to <a href="mailto:farooq.qureshi@outlook.com">say hi</a>, <a href="https://github.com/farooqqureshii" target="_blank">see my code</a>, <a href="https://curius.app/farooq-qureshi" target="_blank">browse my interests</a>, or <a href="https://linkedin.com/in/farooqq" target="_blank">view my experience</a>. Here's my <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank">résumé</a>.
-      </p>
-    </div>
-    
-    <div id="collapsed-content" class="hidden">
-      <nav class="flex flex-col gap-2">
-        <div class="flex flex-row gap-4 flex-wrap">
+    <nav class="flex flex-col gap-1 main-nav">
       <a href="/about">About</a>
       <a href="/projects">Projects</a>
       <a href="/writing">Writing</a>
       <a href="/artifacts">Artifacts</a>
       <a href="/other">Other</a>
-        </div>
-        <div class="flex flex-row gap-4 flex-wrap">
-      <a href="mailto:farooq.qureshi@outlook.com">Email</a>
+      <a href="mailto:farooq.qureshi@outlook.com" class="email-link">Email</a>
       <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank">Résumé</a>
       <a href="https://linkedin.com/in/farooqq" target="_blank">LinkedIn</a>
       <a href="https://github.com/farooqqureshii" target="_blank">GitHub</a>
       <a href="https://curius.app/farooq-qureshi" target="_blank">Curius</a>
-        </div>
     </nav>
-    </div>
-    
-    <p>
-      You can view the above <span id="shorter-toggle" class="shorter-link">shorter</span>, too.
-    </p>
   </main>
 
 <style>
@@ -143,17 +114,32 @@ const books = [
     display: none;
   }
 
-  .shorter-link {
-    cursor: pointer;
+  .main-nav a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  .main-nav a:hover {
+    color: #000 !important;
+    text-decoration: none !important;
+    font-style: normal !important;
+  }
+
+  html.dark .main-nav a {
+    color: #fff !important;
+  }
+
+  html.dark .main-nav a:hover {
+    color: #fff !important;
+  }
+
+  .main-nav .email-link {
+    margin-top: 0.5em;
   }
 
 </style>
 
 <style is:global>
-  /* Ensure all links in expanded content get italic on hover */
-  #expanded-content a:hover {
-    font-style: italic !important;
-  }
   .book-item {
     position: relative;
     transition: all 0.2s ease;
@@ -258,29 +244,9 @@ const books = [
   const img = new Image();
   img.src = currentBook.image;
 
-  document.addEventListener('DOMContentLoaded', () => {
-    // Toggle shorter/longer view
-    const shorterToggle = document.getElementById('shorter-toggle');
-    const expandedContent = document.getElementById('expanded-content');
-    const collapsedContent = document.getElementById('collapsed-content');
-    let isCollapsed = false;
-
-    if (shorterToggle && expandedContent && collapsedContent) {
-      shorterToggle.addEventListener('click', () => {
-        isCollapsed = !isCollapsed;
-        if (isCollapsed) {
-          expandedContent.classList.add('hidden');
-          collapsedContent.classList.remove('hidden');
-          shorterToggle.textContent = 'longer';
-        } else {
-          expandedContent.classList.remove('hidden');
-          collapsedContent.classList.add('hidden');
-          shorterToggle.textContent = 'shorter';
-        }
-      });
-    }
-
-    // Spotify functionality
+    document.addEventListener('DOMContentLoaded', () => {
+    // Spotify functionality - COMMENTED OUT
+    /*
     // Keep track of last known track to use as fallback
     let lastKnownTrack = null;
     
@@ -362,6 +328,7 @@ const books = [
     updateSpotifyContent();
     // Update more frequently to catch pause events
     setInterval(updateSpotifyContent, 5000);
+    */
 
     // Book hover tooltip functionality
     const bookItem = document.querySelector('.book-item');
