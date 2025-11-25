@@ -69,7 +69,7 @@ const {
         line-height: 1.5;
         margin: 0;
       }
-      .fade-in { opacity: 0; }
+      .fade-in-pending { opacity: 0; }
     </style>
     
     <!-- Preload theme to prevent flash -->
@@ -94,8 +94,10 @@ const {
     class="text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"
   >
     <div class={cn("max-w-xl mx-auto p-4", className)}>
-      <Header />
-      <div class="fade-in">
+      <div class="fade-in-pending" data-stagger="0">
+        <Header />
+      </div>
+      <div class="fade-in-pending" data-stagger="1">
         <slot />
         <Footer />
       </div>
@@ -150,4 +152,50 @@ const {
   setTheme();
 
   document.addEventListener("astro:after-swap", setTheme);
+
+  // Trigger fade-in animation on page load and transitions with stagger
+  const triggerFadeIn = () => {
+    const fadeElements = Array.from(document.querySelectorAll('.fade-in-pending')).sort((a, b) => {
+      const staggerA = parseInt(a.getAttribute('data-stagger') || '0');
+      const staggerB = parseInt(b.getAttribute('data-stagger') || '0');
+      return staggerA - staggerB;
+    });
+    
+    fadeElements.forEach((el, index) => {
+      const staggerDelay = index * 0.08; // 80ms delay for smooth staggered effect
+      setTimeout(() => {
+        el.classList.remove('fade-in-pending');
+        // Force reflow to ensure the class removal is processed
+        void el.offsetWidth;
+        el.classList.add('fade-in');
+      }, staggerDelay * 1000);
+    });
+  };
+
+  // Trigger on initial load with a small delay to ensure DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(triggerFadeIn);
+      });
+    });
+  } else {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(triggerFadeIn);
+    });
+  }
+
+  // Trigger on page transitions
+  document.addEventListener("astro:after-swap", () => {
+    // Reset elements to pending state first
+    const animatedElements = document.querySelectorAll('.fade-in');
+    animatedElements.forEach((el) => {
+      el.classList.remove('fade-in');
+      el.classList.add('fade-in-pending');
+    });
+    // Then trigger animation after a brief delay
+    requestAnimationFrame(() => {
+      requestAnimationFrame(triggerFadeIn);
+    });
+  });
 </script>

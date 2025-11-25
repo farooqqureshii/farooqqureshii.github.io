@@ -724,15 +724,15 @@
 }
 
 @layer utilities {
-  /* Quick slide-down animation for body and footer content from underneath navbar */
+  /* Smooth staggered slide-in animation from top */
   .fade-in {
-    animation: slideDown 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: slideInSmooth 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
-  @keyframes slideDown {
+  @keyframes slideInSmooth {
     0% {
       opacity: 0;
-      transform: translateY(-40px);
+      transform: translateY(-15px);
     }
     100% {
       opacity: 1;
