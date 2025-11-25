@@ -22,7 +22,7 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
   </div>
 
   <script>
-    // Ottawa time script
+    // Ottawa time script - defer to not block initial render
     function updateOttawaTime() {
       const ottawaTime = new Date().toLocaleTimeString('en-CA', {
         timeZone: 'America/Toronto',
@@ -37,8 +37,18 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         el.classList.remove('opacity-0');
       }
     }
-    updateOttawaTime();
-    setInterval(updateOttawaTime, 1000);
+    // Defer time update to not block initial render
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        updateOttawaTime();
+        setInterval(updateOttawaTime, 1000);
+      });
+    } else {
+      requestAnimationFrame(() => {
+        updateOttawaTime();
+        setInterval(updateOttawaTime, 1000);
+      });
+    }
 
     // Quote rotator script
     const quotes = [
@@ -134,10 +144,23 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
     const quoteRotator = document.getElementById('quote-rotator');
     if (quoteRotator) {
       quoteRotator.onclick = showRandomQuote;
-      // Start the quote animation quickly after page load
-      setTimeout(() => {
-        showRandomQuote();
-      }, 100); // Much faster delay for snappier feel
+      // Defer quote animation to not block initial render - load after page is interactive
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          // Use requestIdleCallback for non-critical animation, fallback to setTimeout
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => showRandomQuote(), { timeout: 500 });
+          } else {
+            setTimeout(() => showRandomQuote(), 100);
+          }
+        });
+      } else {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => showRandomQuote(), { timeout: 500 });
+        } else {
+          setTimeout(() => showRandomQuote(), 100);
+        }
+      }
     }
   </script>
 </footer>

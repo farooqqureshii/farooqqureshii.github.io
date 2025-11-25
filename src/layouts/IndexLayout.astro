@@ -36,8 +36,9 @@ const {
     <!-- Preconnect to critical external origins -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     
-    <!-- Fontshare: Switzer -->
-    <link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet">
+    <!-- Fontshare: Switzer - Load asynchronously, system fonts render immediately -->
+    <link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null;">
+    <noscript><link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet"></noscript>
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -130,7 +131,7 @@ const {
           <Footer />
         </div>
       </div>
-      <CommandMenu />
+      <CommandMenu client:load />
     </div>
   </body>
 </html>
@@ -182,7 +183,7 @@ const {
 
   document.addEventListener("astro:after-swap", setTheme);
 
-  // Trigger fade-in animation on page load and transitions with stagger
+  // Trigger fade-in animation on page load with smooth stagger
   const triggerFadeIn = () => {
     const fadeElements = Array.from(document.querySelectorAll('.fade-in-pending')).sort((a, b) => {
       const staggerA = parseInt(a.getAttribute('data-stagger') || '0');
@@ -191,30 +192,24 @@ const {
     });
     
     fadeElements.forEach((el, index) => {
-      const staggerDelay = index * 0.08; // 80ms delay for smooth staggered effect
+      const staggerDelay = index * 0.06; // 60ms delay for smooth staggered effect
       setTimeout(() => {
         el.classList.remove('fade-in-pending');
-        // Force reflow to ensure the class removal is processed
+        // Force reflow for smooth animation
         void el.offsetWidth;
         el.classList.add('fade-in');
       }, staggerDelay * 1000);
     });
   };
 
-  // Trigger on initial load with a small delay to ensure DOM is ready
+  // Trigger quickly after DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(triggerFadeIn);
-      });
-    });
+    document.addEventListener('DOMContentLoaded', triggerFadeIn);
   } else {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(triggerFadeIn);
-    });
+    requestAnimationFrame(triggerFadeIn);
   }
 
-  // Trigger on page transitions
+  // Trigger on page transitions with subtle stagger
   document.addEventListener("astro:after-swap", () => {
     // Reset elements to pending state first
     const animatedElements = document.querySelectorAll('.fade-in');
@@ -222,9 +217,7 @@ const {
       el.classList.remove('fade-in');
       el.classList.add('fade-in-pending');
     });
-    // Then trigger animation after a brief delay
-    requestAnimationFrame(() => {
-      requestAnimationFrame(triggerFadeIn);
-    });
+    // Trigger animation with stagger
+    requestAnimationFrame(triggerFadeIn);
   });
 </script>
