@@ -125,8 +125,9 @@
 
     const linkItems = [
       { title: 'Email', url: 'mailto:farooq.qureshi@outlook.com', description: 'Send me an email', section: 'links', shortcut: 'E' },
-      { title: 'GitHub', url: 'https://github.com/farooqqureshii', description: 'Projects and more', section: 'links', shortcut: 'G' },
+      { title: 'Résumé', url: 'https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing', description: 'View my résumé', section: 'links', shortcut: 'R' },
       { title: 'LinkedIn', url: 'https://linkedin.com/in/farooqq', description: 'Work & experience', section: 'links', shortcut: 'L' },
+      { title: 'GitHub', url: 'https://github.com/farooqqureshii', description: 'Projects and more', section: 'links', shortcut: 'G' },
       { title: 'Curius', url: 'https://curius.app/farooq-qureshi', description: 'What I\'m finding interesting', section: 'links', shortcut: 'C' }
     ];
 
@@ -270,7 +271,7 @@
       action?: string;
     };
 
-    const allItems: MenuItem[] = [...otherItems, ...navItems, ...linkItems];
+    const allItems: MenuItem[] = [...navItems, ...linkItems, ...otherItems];
     let selectedIndex = 0;
     let filteredItems: MenuItem[] = [...allItems];
 
@@ -331,8 +332,13 @@
         return acc;
       }, {} as Record<string, MenuItem[]>);
       
-      // Render each section
-      Object.entries(groupedItems).forEach(([section, items]) => {
+      // Define section order: customization first, then match main page
+      const sectionOrder = ['customization', 'navigation', 'links'];
+      
+      // Render each section in the specified order
+      sectionOrder.forEach((section) => {
+        const items = groupedItems[section];
+        if (!items || items.length === 0) return;
         // Section header
         const sectionHeader = document.createElement('div');
         sectionHeader.className = 'text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 px-3 py-2 capitalize';
