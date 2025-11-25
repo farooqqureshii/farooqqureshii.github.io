@@ -118,7 +118,7 @@ const images = [
     </div>
 
     <!-- Text Content -->
-    <div id="textContent" class="text-base space-y-2" style="display: none;">
+    <div id="textContent" class="text-base space-y-2 fade-in-pending" data-stagger="0" style="display: none;">
       <p>
         <a href="https://visualrambling.space/neural-network/" target="_blank">Understanding Neural Networks</a> and basically all of <a href="https://visualrambling.space/" target="_blank">visualrambling.space</a>.
       </p>
@@ -222,7 +222,7 @@ const images = [
     </div>
 
     <!-- Images Content -->
-    <div id="imagesContent" class="flex flex-col space-y-4" style="display: none;">
+    <div id="imagesContent" class="flex flex-col space-y-4 fade-in-pending" data-stagger="0" style="display: none;">
       <!-- Navigation -->
       <div class="flex items-center space-x-4 text-base">
         <div class="flex space-x-1">
@@ -265,17 +265,36 @@ const images = [
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
+    // Helper function to trigger fade-in animation
+    function triggerFadeIn(element) {
+      if (!element) return;
+      // Reset to pending state
+      element.classList.remove('fade-in');
+      element.classList.add('fade-in-pending');
+      // Force reflow
+      void element.offsetWidth;
+      // Trigger animation
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          element.classList.remove('fade-in-pending');
+          element.classList.add('fade-in');
+        });
+      });
+    }
+
     // Path switching
     function switchToText() {
       currentPath = 'text';
-      textContent.style.display = 'block';
       imagesContent.style.display = 'none';
+      textContent.style.display = 'block';
+      triggerFadeIn(textContent);
     }
     
     function switchToImages() {
       currentPath = 'images';
       textContent.style.display = 'none';
       imagesContent.style.display = 'block';
+      triggerFadeIn(imagesContent);
     }
 
     if (textPath) textPath.addEventListener('click', switchToText);
