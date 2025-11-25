@@ -10,6 +10,9 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
 
 <Layout title="Writing | FQ" description={SITE_DESCRIPTION}>
   <main>
+    <p class="mb-4">
+      Not sure where to start? Try <a href="/writing/goodness-is-all-you-need" class="hover:italic">Goodness Is All You Need</a> or <a href="/writing/choosing-what-to-study" class="hover:italic">Choosing What to Study</a>.
+    </p>
     <ul class="flex flex-col gap-1.5">
       {sortedPosts.map((post) => (
         <li>
