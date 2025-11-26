@@ -240,6 +240,9 @@ const images = [
           src={images[0].src} 
           alt={images[0].alt} 
           class="w-full h-auto shadow-sm" 
+          loading="eager"
+          decoding="async"
+          style="min-height: 200px;"
         />
       </div>
       
@@ -284,11 +287,24 @@ const images = [
     // Image navigation (from original images page)
     const imageCache = new Map();
     const preloadImages = () => {
-      images.forEach((img, index) => {
-        const imgElement = new Image();
-        imgElement.src = img.src;
-        imageCache.set(index, imgElement);
-      });
+      // Defer image preloading to not block initial render
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => {
+          images.forEach((img, index) => {
+            const imgElement = new Image();
+            imgElement.src = img.src;
+            imageCache.set(index, imgElement);
+          });
+        }, { timeout: 1000 });
+      } else {
+        setTimeout(() => {
+          images.forEach((img, index) => {
+            const imgElement = new Image();
+            imgElement.src = img.src;
+            imageCache.set(index, imgElement);
+          });
+        }, 100);
+      }
     };
 
     function updateImage() {
@@ -333,6 +349,13 @@ const images = [
       }
     }, { passive: false });
 
-    preloadImages();
+    // Defer image preloading to prevent jitter on initial load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        requestIdleCallback ? requestIdleCallback(preloadImages, { timeout: 500 }) : setTimeout(preloadImages, 100);
+      });
+    } else {
+      requestIdleCallback ? requestIdleCallback(preloadImages, { timeout: 500 }) : setTimeout(preloadImages, 100);
+    }
   </script>
 </Layout>

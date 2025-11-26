@@ -77,11 +77,23 @@
     font-weight: 400;
   }
   
+  /* Serif mode: Source Serif Pro for everything */
+  html.serif-mode, html.serif-mode body, html.serif-mode h1, html.serif-mode h2, html.serif-mode h3, html.serif-mode h4, html.serif-mode h5, html.serif-mode h6, html.serif-mode header nav, html.serif-mode p, html.serif-mode li, html.serif-mode ul, html.serif-mode ol, html.serif-mode span, html.serif-mode div {
+    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+  }
+  
   /* Title uses Switzer */
   .header-title {
     font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
     font-weight: 500 !important;
     font-size: 1rem !important;
+  }
+  
+  /* Title in serif mode */
+  html.serif-mode .header-title {
+    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif !important;
+    font-weight: 600 !important;
   }
   
   /* Footer uses Switzer */
@@ -90,10 +102,20 @@
     font-weight: 400 !important;
   }
   
+  /* Footer in serif mode */
+  html.serif-mode footer, html.serif-mode footer *, html.serif-mode footer div, html.serif-mode footer span, html.serif-mode footer p, html.serif-mode footer a {
+    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif !important;
+  }
+  
   /* Ctrl+K text uses Switzer */
   #command-menu-button, #command-menu-button *, #command-menu-button span {
     font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
     font-weight: 400 !important;
+  }
+  
+  /* Command menu in serif mode */
+  html.serif-mode #command-menu-button, html.serif-mode #command-menu-button *, html.serif-mode #command-menu-button span {
+    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif !important;
   }
   
   /* Removed inverted font mode */

@@ -254,11 +254,16 @@
       return 'Change Background';
     }
 
+    function getSerifToggleText() {
+      const serifEnabled = typeof localStorage !== 'undefined' && localStorage.getItem('serif-mode') === 'true';
+      return serifEnabled ? 'Switch to Sans Serif' : 'Switch to Serif Font';
+    }
 
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'customization', action: 'toggle-theme', shortcut: 'T' },
       { title: getLinkColorToggleText(), url: '#', description: 'Cycle through link color schemes', section: 'customization', action: 'toggle-link-color', shortcut: 'C' },
-      { title: getBackgroundToggleText(), url: '#', description: 'Cycle none / dotted / grid', section: 'customization', action: 'toggle-background', shortcut: 'S' }
+      { title: getBackgroundToggleText(), url: '#', description: 'Cycle none / dotted / grid', section: 'customization', action: 'toggle-background', shortcut: 'S' },
+      { title: getSerifToggleText(), url: '#', description: 'Toggle serif font mode', section: 'customization', action: 'toggle-serif', shortcut: 'F' }
     ];
 
     // Define the item type to include optional action property
@@ -271,7 +276,8 @@
       action?: string;
     };
 
-    const allItems: MenuItem[] = [...navItems, ...linkItems, ...otherItems];
+    // Order items to match visual display: customization first, then navigation, then links
+    const allItems: MenuItem[] = [...otherItems, ...navItems, ...linkItems];
     let selectedIndex = 0;
     let filteredItems: MenuItem[] = [...allItems];
 
@@ -405,6 +411,27 @@
               classes.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
               localStorage.setItem('background-pattern', nextPattern);
               closeMenu();
+            } else if (item.action === 'toggle-serif') {
+              // Toggle serif font mode
+              const html = document.documentElement;
+              const serifEnabled = html.classList.contains('serif-mode');
+              
+              if (serifEnabled) {
+                html.classList.remove('serif-mode');
+                localStorage.setItem('serif-mode', 'false');
+              } else {
+                html.classList.add('serif-mode');
+                localStorage.setItem('serif-mode', 'true');
+                // Load Source Serif Pro font when serif mode is enabled
+                if (!document.getElementById('source-serif-font')) {
+                  const link = document.createElement('link');
+                  link.id = 'source-serif-font';
+                  link.rel = 'stylesheet';
+                  link.href = 'https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap';
+                  document.head.appendChild(link);
+                }
+              }
+              closeMenu();
             } else {
               window.location.href = item.url;
             }
@@ -451,6 +478,12 @@
         linkColorToggleItem.title = getLinkColorToggleText();
       }
       
+      // Update serif toggle text
+      const serifToggleItem = filteredItems.find(item => item.action === 'toggle-serif');
+      if (serifToggleItem) {
+        serifToggleItem.title = getSerifToggleText();
+      }
+      
       // Update breadcrumb
       updateBreadcrumb();
       
@@ -464,6 +497,10 @@
         input.focus();
       }
       renderItems();
+      // Scroll to first item after rendering to ensure it's visible
+      setTimeout(() => {
+        scrollToSelected();
+      }, 50);
     };
 
     // Close command menu
@@ -535,6 +572,27 @@
               classes.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
               localStorage.setItem('background-pattern', nextPattern);
               closeMenu();
+            } else if (shortcutItem.action === 'toggle-serif') {
+              // Toggle serif font mode
+              const html = document.documentElement;
+              const serifEnabled = html.classList.contains('serif-mode');
+              
+              if (serifEnabled) {
+                html.classList.remove('serif-mode');
+                localStorage.setItem('serif-mode', 'false');
+              } else {
+                html.classList.add('serif-mode');
+                localStorage.setItem('serif-mode', 'true');
+                // Load Source Serif Pro font when serif mode is enabled
+                if (!document.getElementById('source-serif-font')) {
+                  const link = document.createElement('link');
+                  link.id = 'source-serif-font';
+                  link.rel = 'stylesheet';
+                  link.href = 'https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap';
+                  document.head.appendChild(link);
+                }
+              }
+              closeMenu();
             } else {
               window.location.href = shortcutItem.url;
             }
@@ -547,13 +605,17 @@
             e.preventDefault();
             selectedIndex = (selectedIndex + 1) % items.length;
             renderItems();
-            scrollToSelected();
+            requestAnimationFrame(() => {
+              scrollToSelected();
+            });
             break;
           case 'ArrowUp':
             e.preventDefault();
             selectedIndex = selectedIndex === 0 ? items.length - 1 : selectedIndex - 1;
             renderItems();
-            scrollToSelected();
+            requestAnimationFrame(() => {
+              scrollToSelected();
+            });
             break;
           case 'Enter':
             e.preventDefault();
@@ -597,6 +659,27 @@
                 classes.forEach(p => { if (p !== nextPattern) html.classList.remove(p); });
                 localStorage.setItem('background-pattern', nextPattern);
                 closeMenu();
+              } else if (item.action === 'toggle-serif') {
+                // Toggle serif font mode
+                const html = document.documentElement;
+                const serifEnabled = html.classList.contains('serif-mode');
+                
+                if (serifEnabled) {
+                  html.classList.remove('serif-mode');
+                  localStorage.setItem('serif-mode', 'false');
+                } else {
+                  html.classList.add('serif-mode');
+                  localStorage.setItem('serif-mode', 'true');
+                  // Load Lora font when serif mode is enabled
+                  if (!document.getElementById('lora-font')) {
+                    const link = document.createElement('link');
+                    link.id = 'lora-font';
+                    link.rel = 'stylesheet';
+                    link.href = 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
+                    document.head.appendChild(link);
+                  }
+                }
+                closeMenu();
               } else {
                 window.location.href = item.url;
               }
@@ -614,10 +697,10 @@
     function scrollToSelected() {
       if (!navResults) return;
       
-      // Find all clickable items in the results
-      const items = navResults.querySelectorAll('div[class*="cursor-pointer"]');
+      // Find all clickable items in the results (skip section headers)
+      const items = Array.from(navResults.querySelectorAll('div[class*="cursor-pointer"]'));
       
-      if (items.length > 0 && selectedIndex < items.length) {
+      if (items.length > 0 && selectedIndex < items.length && selectedIndex >= 0) {
         const selectedElement = items[selectedIndex];
         if (selectedElement) {
           selectedElement.scrollIntoView({
