@@ -37,7 +37,7 @@ const {
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     
     <!-- Fontshare: Switzer - Load asynchronously, system fonts render immediately -->
-    <link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null;">
+    <link rel="preload" href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet"></noscript>
 
     <!-- Canonical URL -->
@@ -128,6 +128,7 @@ const {
     // If theme is "light" or anything else, no class is added (default light theme)
 
     if (typeof localStorage !== "undefined") {
+      // Only observe theme changes on user interaction, not automatically
       const observer = new MutationObserver(() => {
         const isDark = html.classList.contains("dark");
         const isFlexoki = html.classList.contains("flexoki");
@@ -146,6 +147,11 @@ const {
   };
 
   setTheme();
-
-  document.addEventListener("astro:after-swap", setTheme);
+  
+  // Only re-run theme on navigation if needed (defer to not block)
+  if (typeof document !== 'undefined' && 'astro' in window) {
+    document.addEventListener("astro:after-swap", () => {
+      requestIdleCallback ? requestIdleCallback(setTheme) : setTimeout(setTheme, 0);
+    });
+  }
 </script>

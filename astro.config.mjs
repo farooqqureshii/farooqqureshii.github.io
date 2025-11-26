@@ -12,8 +12,7 @@ export default defineConfig({
     ? 'https://farooqqureshi.com'  // Production domain
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
   integrations: [mdx(), sitemap(), tailwind()],
-  output: 'server',
-  adapter: vercel(),
+  output: 'static',
   prefetch: {
     prefetchAll: false,
     defaultStrategy: 'hover'
