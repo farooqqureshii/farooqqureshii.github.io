@@ -45,7 +45,10 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
       {title}
     </p>
     <p class="mb-1">
-      {formatDate(date)} | {wordCount} words, {readingTime} minute read
+      {formatDate(date)}
+    </p>
+    <p class="mb-1">
+      {wordCount} words, {readingTime} minute read
     </p>
     <article>
       <Content />
