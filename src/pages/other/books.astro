@@ -4,8 +4,8 @@ import Layout from "../../layouts/Layout.astro";
 // Book data with ratings, descriptions, and images
 const books = [
   { title: "For Whom the Bell Tolls", author: "Ernest Hemingway", rating: 5, description: "Hemingway's masterpiece about love, war, and sacrifice. The prose is spare but devastatingly powerful.", image: "https://covers.openlibrary.org/b/isbn/9780684803357-M.jpg" },
-  { title: "The Memory Police", author: "Yoko Ogawa", rating: 0, description: "In progress", image: "https://covers.openlibrary.org/b/isbn/9781101870600-M.jpg" },
-  { title: "The Man in the High Castle", author: "Philip K. Dick", rating: 0, description: "In progress", image: "https://i.postimg.cc/DZZMhL55/9780544916081-large.webp" },
+  { title: "The Memory Police", author: "Yoko Ogawa", rating: 4, description: "Classic dystopian novel, predictable but engaging.", image: "https://covers.openlibrary.org/b/isbn/9781101870600-M.jpg" },
+  { title: "The Man in the High Castle", author: "Philip K. Dick", rating: 5, description: "Illuminating, thought provoking alternate history.", image: "https://i.postimg.cc/DZZMhL55/9780544916081-large.webp" },
   { title: "Everything I Never Told You", author: "Celeste Ng", rating: 4, description: "Beautiful exploration of family dynamics and the weight of unspoken expectations.", image: "https://covers.openlibrary.org/b/isbn/9780143127550-M.jpg" },
   { title: "Belzhar", author: "Meg Wolitzer", rating: 3, description: "Interesting take on trauma and healing through writing.", image: "https://i.postimg.cc/5NtVsQ8n/71b-J88svh-HL-UF894-1000-QL80.jpg" },
   { title: "Animal Farm", author: "George Orwell", rating: 5, description: "Timeless allegory about power and corruption. Still relevant today.", image: "https://covers.openlibrary.org/b/isbn/9780451526342-M.jpg" },
@@ -76,7 +76,34 @@ const books = [
   { title: "Homage to Catalonia", author: "George Orwell", rating: 4, description: "Orwell's personal account of the Spanish Civil War. Honest and insightful.", image: "https://covers.openlibrary.org/b/isbn/9780156421171-M.jpg" },
   { title: "I Know Why the Caged Bird Sings", author: "Maya Angelou", rating: 5, description: "Powerful memoir about resilience and finding your voice.", image: "https://covers.openlibrary.org/b/isbn/9780345514400-M.jpg" },
   { title: "All the President's Men", author: "Bob Woodward & Carl Bernstein", rating: 4, description: "Thrilling account of investigative journalism that changed America.", image: "https://covers.openlibrary.org/b/isbn/9781476770512-M.jpg" },
-  { title: "The Warmth of Other Suns", author: "Isabel Wilkerson", rating: 5, description: "Masterful history of the Great Migration. Essential American history.", image: "https://i.postimg.cc/MpTrkyG4/71-Atl-Bx-cx-L-UF894-1000-QL80.jpg" }
+  { title: "The Warmth of Other Suns", author: "Isabel Wilkerson", rating: 5, description: "Masterful history of the Great Migration. Essential American history.", image: "https://i.postimg.cc/MpTrkyG4/71-Atl-Bx-cx-L-UF894-1000-QL80.jpg" },
+  { title: "The Handmaid's Tale", author: "Margaret Atwood", rating: 5, description: "Dystopian masterpiece that feels more relevant with each passing year. Atwood's world-building is chilling.", image: "https://covers.openlibrary.org/b/isbn/9780385490818-M.jpg" },
+  { title: "Station Eleven", author: "Emily St. John Mandel", rating: 4, description: "Beautiful post-apocalyptic novel about art, connection, and what endures. Haunting and hopeful.", image: "https://covers.openlibrary.org/b/isbn/9780385353304-M.jpg" },
+  { title: "The Underground Railroad", author: "Colson Whitehead", rating: 5, description: "Brilliant reimagining of history. Whitehead's prose is sharp and the story is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780385542364-M.jpg" },
+  { title: "Normal People", author: "Sally Rooney", rating: 4, description: "Intimate portrait of a relationship over years. Rooney captures the complexity of connection.", image: "https://covers.openlibrary.org/b/isbn/9780571334650-M.jpg" },
+  { title: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid", rating: 4, description: "Compelling story of old Hollywood glamour and secrets. Page-turner with depth.", image: "https://covers.openlibrary.org/b/isbn/9781501139239-M.jpg" },
+  { title: "Circe", author: "Madeline Miller", rating: 4, description: "Beautiful retelling of Greek mythology from a fresh perspective. Miller brings ancient stories to life.", image: "https://covers.openlibrary.org/b/isbn/9780316556347-M.jpg" },
+  { title: "The Overstory", author: "Richard Powers", rating: 4, description: "Epic novel about trees and our connection to nature. Ambitious and beautifully written.", image: "https://covers.openlibrary.org/b/isbn/9780393356687-M.jpg" },
+  { title: "Exit West", author: "Mohsin Hamid", rating: 4, description: "Poetic and timely novel about migration and displacement. Hamid's magical realism is subtle and powerful.", image: "https://covers.openlibrary.org/b/isbn/9780241979068-M.jpg" },
+  { title: "The Goldfinch", author: "Donna Tartt", rating: 4, description: "Sweeping coming-of-age story about art, loss, and obsession. Tartt's prose is immersive.", image: "https://covers.openlibrary.org/b/isbn/9780316055437-M.jpg" },
+  { title: "The Sympathizer", author: "Viet Thanh Nguyen", rating: 5, description: "Brilliant spy novel about the Vietnam War. Sharp, darkly funny, and deeply insightful.", image: "https://covers.openlibrary.org/b/isbn/9780802123459-M.jpg" },
+  { title: "Lincoln in the Bardo", author: "George Saunders", rating: 4, description: "Experimental and moving novel about grief and loss. Saunders' unique voice shines.", image: "https://covers.openlibrary.org/b/isbn/9780812995343-M.jpg" },
+  { title: "The Sellout", author: "Paul Beatty", rating: 4, description: "Satirical masterpiece about race in America. Darkly funny and uncomfortably relevant.", image: "https://covers.openlibrary.org/b/isbn/9780374260507-M.jpg" },
+  { title: "The Brief Wondrous Life of Oscar Wao", author: "Junot Díaz", rating: 5, description: "Vibrant and heartbreaking story of a Dominican family. Díaz's voice is electric.", image: "https://covers.openlibrary.org/b/isbn/9781594483295-M.jpg" },
+  { title: "White Teeth", author: "Zadie Smith", rating: 4, description: "Multigenerational saga about immigration and identity in London. Smith's debut is ambitious and funny.", image: "https://covers.openlibrary.org/b/isbn/9780375703867-M.jpg" },
+  { title: "The Kite Runner", author: "Khaled Hosseini", rating: 4, description: "Powerful story of friendship, betrayal, and redemption set in Afghanistan. Emotionally resonant.", image: "https://covers.openlibrary.org/b/isbn/9781594480003-M.jpg" },
+  { title: "The Namesake", author: "Jhumpa Lahiri", rating: 4, description: "Beautiful novel about identity and belonging. Lahiri's exploration of the immigrant experience is masterful.", image: "https://covers.openlibrary.org/b/isbn/9780395927212-M.jpg" },
+  { title: "The Remains of the Day", author: "Kazuo Ishiguro", rating: 5, description: "Perfect novel about duty, regret, and the things left unsaid. Ishiguro's restraint is devastating.", image: "https://covers.openlibrary.org/b/isbn/9780571152230-M.jpg" },
+  { title: "Never Let Me Go", author: "Kazuo Ishiguro", rating: 5, description: "Haunting dystopian novel about memory, love, and what it means to be human. Subtle and profound.", image: "https://covers.openlibrary.org/b/isbn/9780571224142-M.jpg" },
+  { title: "The Road", author: "Cormac McCarthy", rating: 5, description: "Bleak and beautiful post-apocalyptic journey. McCarthy's prose is spare and devastating.", image: "https://covers.openlibrary.org/b/isbn/9780307387899-M.jpg" },
+  { title: "Blood Meridian", author: "Cormac McCarthy", rating: 4, description: "Brutal and brilliant western. McCarthy's vision of violence is unflinching and unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780679728757-M.jpg" },
+  { title: "Beloved", author: "Toni Morrison", rating: 5, description: "Haunting masterpiece about slavery's legacy. Morrison's prose is poetic and powerful.", image: "https://covers.openlibrary.org/b/isbn/9781400033416-M.jpg" },
+  { title: "The Color Purple", author: "Alice Walker", rating: 5, description: "Powerful epistolary novel about resilience and sisterhood. Walker's voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780151191536-M.jpg" },
+  { title: "One Hundred Years of Solitude", author: "Gabriel García Márquez", rating: 5, description: "Magical realism at its finest. Márquez creates a world that feels both fantastical and deeply human.", image: "https://covers.openlibrary.org/b/isbn/9780060883287-M.jpg" },
+  { title: "The Stranger", author: "Albert Camus", rating: 4, description: "Existentialist classic about alienation and absurdity. Camus' spare prose is deceptively simple.", image: "https://covers.openlibrary.org/b/isbn/9780679720201-M.jpg" },
+  { title: "The Great Gatsby", author: "F. Scott Fitzgerald", rating: 5, description: "Perfect American novel about the American Dream. Fitzgerald's prose is luminous and tragic.", image: "https://covers.openlibrary.org/b/isbn/9780743273565-M.jpg" },
+  { title: "Slaughterhouse-Five", author: "Kurt Vonnegut", rating: 5, description: "Anti-war masterpiece that's both funny and devastating. Vonnegut's unique voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780385333849-M.jpg" },
+  { title: "The Master and Margarita", author: "Mikhail Bulgakov", rating: 5, description: "Surreal and satirical masterpiece about good and evil. Bulgakov's imagination is boundless.", image: "https://covers.openlibrary.org/b/isbn/9780679760801-M.jpg" }
 ];
 ---
 
@@ -94,7 +121,10 @@ const books = [
             src={book.image}
             alt={book.title}
             class="book-cover"
-            loading="lazy"
+            loading={index < 12 ? "eager" : "lazy"}
+            fetchpriority={index < 8 ? "high" : "auto"}
+            decoding="async"
+            onload="this.classList.add('loaded')"
             onerror="this.style.display='none'"
           />
         </button>
@@ -130,13 +160,65 @@ const books = [
     }
 
     .book-cover-btn {
-      background: none;
+      background: #e5e5e5;
       border: none;
       padding: 0;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       border-radius: 4px;
       overflow: hidden;
+      aspect-ratio: 2 / 3;
+      position: relative;
+    }
+
+    .dark .book-cover-btn {
+      background: #2a2a2a;
+    }
+
+    .book-cover-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      animation: shimmer 2s infinite;
+    }
+
+    .dark .book-cover-btn::before {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    .book-cover-btn img.loaded {
+      opacity: 1;
+    }
+
+    .book-cover-btn img:not(.loaded) {
+      opacity: 0;
+    }
+
+    .book-cover-btn:has(img.loaded)::before {
+      display: none;
     }
 
     .book-cover-btn:hover {
@@ -150,11 +232,12 @@ const books = [
 
     .book-cover {
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
       aspect-ratio: 2 / 3;
       object-fit: cover;
       border-radius: 4px;
+      transition: opacity 0.3s ease;
     }
 
     .book-modal {
@@ -265,7 +348,7 @@ const books = [
       color: #6b7280;
       opacity: 0.4;
     }
-
+    
     .book-modal-description {
       font-size: 0.875rem;
       line-height: 1.5;
@@ -274,13 +357,23 @@ const books = [
     }
   </style>
 
-  <script define:vars={{ books }}>
-    // Preload all book images
-    books.forEach(book => {
-      const img = new Image();
-      img.src = book.image;
-    });
-
+  <script define:vars={{ books }} is:inline>
+    // Preload book images immediately
+    (function() {
+      // Preload first 12 images with high priority
+      books.slice(0, 12).forEach(book => {
+        const img = new Image();
+        img.src = book.image;
+        img.loading = 'eager';
+      });
+      
+      // Preload remaining images
+      books.slice(12).forEach(book => {
+        const img = new Image();
+        img.src = book.image;
+      });
+    })();
+    
     document.addEventListener('DOMContentLoaded', function() {
       const modal = document.getElementById('book-modal');
       const modalTitle = document.getElementById('book-modal-title');
@@ -290,12 +383,12 @@ const books = [
       const modalClose = document.querySelector('.book-modal-close');
       const modalBackdrop = document.querySelector('.book-modal-backdrop');
       const bookButtons = document.querySelectorAll('.book-cover-btn');
-
+        
       function showModal(book) {
         modalTitle.textContent = book.title;
         modalAuthor.textContent = book.author;
-        
-        // Create stars
+            
+            // Create stars
         const stars = Array.from({length: 5}, (_, i) => {
           const star = document.createElement('span');
           star.className = `star ${i < book.rating ? '' : 'empty'}`;
@@ -326,19 +419,19 @@ const books = [
 
       // Close modal on close button click
       modalClose.addEventListener('click', hideModal);
-
+        
       // Close modal on backdrop click
       modalBackdrop.addEventListener('click', function(e) {
         if (e.target === modalBackdrop) {
           hideModal();
         }
       });
-
+        
       // Close modal on Escape key
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modal.classList.contains('show')) {
           hideModal();
-        }
+          }
       });
     });
   </script>
