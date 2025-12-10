@@ -52,19 +52,6 @@ a[href^="#fn"] {
   text-decoration: none !important;
 }
 
-/* Notes separator line */
-.notes-separator {
-  border-top: 1px solid #e5e7eb !important;
-  margin: 2rem 0 1rem 0 !important;
-}
-
-html.dark .notes-separator {
-  border-top-color: #374151 !important;
-}
-
-html.flexoki .notes-separator {
-  border-top-color: #CECDC3 !important;
-}
 
 /* Notes section styling */
 .notes-section {

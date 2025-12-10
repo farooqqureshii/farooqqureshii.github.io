@@ -498,6 +498,26 @@
     blockquote {
       @apply my-4 border-l-2 pl-4;
     }
+    
+    article blockquote {
+      color: #000 !important;
+    }
+    
+    article blockquote p {
+      color: #000 !important;
+    }
+    
+    html.dark article blockquote {
+      color: #fff !important;
+    }
+    
+    html.dark article blockquote p {
+      color: #fff !important;
+    }
+    
+    html.dark article blockquote * {
+      color: #fff !important;
+    }
     table {
       @apply my-4 w-full table-auto border-collapse text-sm;
       th {
@@ -657,7 +677,7 @@
   .footnotes {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: none !important;
     font-size: 0.875rem;
     color: #000;
   }
@@ -676,21 +696,7 @@
 
   article .footnotes::before,
   .footnotes::before {
-    content: "";
-    display: block;
-    height: 1px;
-    background: #e5e7eb;
-    margin-bottom: 1rem;
-  }
-
-  html.dark article .footnotes::before,
-  html.dark .footnotes::before {
-    background: #33353a44;
-  }
-
-  html.flexoki article .footnotes::before,
-  html.flexoki .footnotes::before {
-    background: #E6B17A;
+    display: none !important;
   }
 
   /* Hide the "Footnotes" title */
@@ -796,6 +802,31 @@
     background: var(--flexoki-ui-4);
   }
   
+  /* Notes separator - replace border with *** */
+  .notes-separator {
+    border: none !important;
+    border-top: none !important;
+    background: none !important;
+    height: auto !important;
+    position: relative;
+    text-align: center;
+    margin: 2rem 0 1rem 0 !important;
+    padding: 0 !important;
+  }
+  
+  .notes-separator::before {
+    content: "***";
+    display: block;
+    color: #000;
+  }
+  
+  html.dark .notes-separator::before {
+    color: #fff;
+  }
+  
+  html.flexoki .notes-separator::before {
+    color: #100F0F;
+  }
 
 }
 
