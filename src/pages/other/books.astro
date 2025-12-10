@@ -81,230 +81,264 @@ const books = [
 ---
 
 <Layout title="Books | FQ" description="Books I've read with ratings and thoughts">
-  <main class="prose prose-sm md:prose-base lg:prose-lg prose-invert max-w-none">
-    <p>Books I've read. Hover for more.</p>
-    <br>
-    
-    <h2 class="text-lg mb-2">October 2025</h2>
-    <ul class="book-list">
-      {books.slice(0, 3).map((book) => (
-        <li class="book-item" data-book={JSON.stringify(book)}>
-          <span class="book-trigger"><em>{book.title}</em>, {book.author}</span>
-        </li>
+  <main class="max-w-none">
+    <div class="books-grid">
+      {books.map((book, index) => (
+        <button
+          class="book-cover-btn"
+          data-book={JSON.stringify(book)}
+          data-index={index}
+          aria-label={`View details for ${book.title}`}
+        >
+          <img
+            src={book.image}
+            alt={book.title}
+            class="book-cover"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          />
+        </button>
       ))}
-    </ul>
-    <br>
-    
-    <h2 class="text-lg mb-2">All Books</h2>
-    <ul class="book-list">
-      {books.slice(3).map((book) => (
-        <li class="book-item" data-book={JSON.stringify(book)}>
-          <span class="book-trigger"><em>{book.title}</em>, {book.author}</span>
-        </li>
-      ))}
-    </ul>
+    </div>
   </main>
 
+  <!-- Modal overlay -->
+  <div id="book-modal" class="book-modal" role="dialog" aria-modal="true" aria-labelledby="book-modal-title">
+    <div class="book-modal-backdrop"></div>
+    <div class="book-modal-content">
+      <button class="book-modal-close" aria-label="Close modal">×</button>
+      <h2 id="book-modal-title" class="book-modal-title"></h2>
+      <p id="book-modal-author" class="book-modal-author"></p>
+      <div class="book-modal-rating"></div>
+      <p class="book-modal-description"></p>
+    </div>
+  </div>
+
   <style is:global>
-    .book-item {
-      position: relative;
-      transition: all 0.2s ease;
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
     }
 
-    .book-item:hover {
-      color: inherit;
+    @media (max-width: 640px) {
+      .books-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
     }
 
-    .book-trigger {
-      display: inline-block;
+    .book-cover-btn {
+      background: none;
+      border: none;
+      padding: 0;
       cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border-radius: 4px;
+      overflow: hidden;
     }
 
-    .book-tooltip {
-      position: absolute;
-      top: calc(100% + 12px);
-      left: 0;
-      transform: translateY(-20px) scale(0.8);
-      background: #F2F0EF !important;
-      color: #0a0a0a !important;
-      border: 1px solid #D4D1CE !important;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35) !important;
-      z-index: 1000;
-      width: 480px;
-      max-width: min(90vw, 560px);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      pointer-events: none;
-      backdrop-filter: blur(8px);
+    .book-cover-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-    .dark .book-tooltip {
-      background: #222222 !important;
-      color: #e5e5e5 !important;
-      border-color: #404040 !important;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
-    }
-    
-    .book-tooltip.show {
-      opacity: 1 !important;
-      visibility: visible !important;
-      transform: translateY(0) scale(1) !important;
+    .book-cover-btn:active {
+      transform: translateY(-2px);
     }
 
-    .tooltip-content {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-    }
-
-    .tooltip-text {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .tooltip-image {
-      width: 100px;
-      height: 150px;
+    .book-cover {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 2 / 3;
       object-fit: cover;
-      border-radius: 8px;
-      flex-shrink: 0;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      will-change: transform;
-      transform: translateZ(0);
+      border-radius: 4px;
     }
 
-    .book-rating {
+    .book-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .book-modal.show {
       display: flex;
-      gap: 2px;
-      margin-bottom: 12px;
     }
 
-    .star {
-      color: #fbbf24 !important;
-      font-size: 18px !important;
+    .book-modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
     }
 
-    .star.empty {
-      color: #6b7280 !important;
+    .book-modal-content {
+      position: relative;
+      background: #F2F0EF;
+      color: #0a0a0a;
+      border-radius: 8px;
+      padding: 1.5rem;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      animation: modalFadeIn 0.15s ease-out;
     }
 
-    .book-description {
-      font-size: 14px !important;
-      line-height: 1.5 !important;
-      color: #0a0a0a !important;
-      margin: 0 !important;
+    .dark .book-modal-content {
+      background: #222222;
+      color: #e5e5e5;
     }
-    
-    .dark .book-description {
-      color: #e5e7eb !important;
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .book-modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      color: inherit;
+      opacity: 0.5;
+      transition: opacity 0.15s ease;
+      padding: 0.25rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .book-modal-close:hover {
+      opacity: 1;
+    }
+
+    .book-modal-title {
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+      padding-right: 2rem;
+    }
+
+    .book-modal-author {
+      font-size: 0.875rem;
+      opacity: 0.6;
+      margin-bottom: 0.75rem;
+      padding-right: 2rem;
+    }
+
+    .book-modal-rating {
+      display: flex;
+      gap: 0.125rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .book-modal-rating .star {
+      color: #fbbf24;
+      font-size: 1rem;
+    }
+
+    .book-modal-rating .star.empty {
+      color: #6b7280;
+      opacity: 0.4;
+    }
+
+    .book-modal-description {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin: 0;
+      opacity: 0.8;
     }
   </style>
 
   <script define:vars={{ books }}>
-    // Preload all book images immediately for instant display
-    const preloadImages = () => {
-      books.forEach(book => {
-        const img = new Image();
-        img.src = book.image;
-      });
-    };
-    
-    // Start preloading as soon as possible
-    preloadImages();
-    
+    // Preload all book images
+    books.forEach(book => {
+      const img = new Image();
+      img.src = book.image;
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
-      const bookItems = document.querySelectorAll('.book-item');
-      
-      bookItems.forEach(item => {
-        const dataBook = item.getAttribute('data-book');
-        if (!dataBook) return;
+      const modal = document.getElementById('book-modal');
+      const modalTitle = document.getElementById('book-modal-title');
+      const modalAuthor = document.getElementById('book-modal-author');
+      const modalRating = document.querySelector('.book-modal-rating');
+      const modalDescription = document.querySelector('.book-modal-description');
+      const modalClose = document.querySelector('.book-modal-close');
+      const modalBackdrop = document.querySelector('.book-modal-backdrop');
+      const bookButtons = document.querySelectorAll('.book-cover-btn');
+
+      function showModal(book) {
+        modalTitle.textContent = book.title;
+        modalAuthor.textContent = book.author;
         
-        const bookData = JSON.parse(dataBook);
-        let tooltip = null;
-        const trigger = item.querySelector('.book-trigger');
-        if (!trigger) return;
-        
-        function showTooltip() {
-          if (!tooltip) {
-            // Create tooltip element only when hovering
-            tooltip = document.createElement('div');
-            tooltip.className = 'book-tooltip';
-            
-            // Create stars
-            const stars = Array.from({length: 5}, (_, i) => 
-              `<span class="star ${i < bookData.rating ? '' : 'empty'}">★</span>`
-            ).join('');
-            
-            // Preload image for instant display
-            const img = new Image();
-            img.src = bookData.image;
-            
-            tooltip.innerHTML = `
-              <div class="tooltip-content">
-                <div class="tooltip-text">
-                  <div class="book-rating">${stars}</div>
-                  <div class="book-description">${bookData.description}</div>
-                </div>
-                <img src="${bookData.image}" alt="${bookData.title}" class="tooltip-image" loading="eager" decoding="sync" onerror="this.style.display='none'">
-              </div>
-            `;
-            
-            // Set initial hidden state with inline styles
-            tooltip.style.opacity = '0';
-            tooltip.style.transform = 'translateY(-8px) scale(0.95)';
-            tooltip.style.visibility = 'hidden';
-            
-            item.appendChild(tooltip);
-            
-            // Force a reflow
-            tooltip.offsetHeight;
-            
-            // Show with animation
-            tooltip.style.visibility = 'visible';
-            tooltip.style.transition = 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
-            
-            requestAnimationFrame(() => {
-              if (tooltip) {
-                tooltip.style.opacity = '1';
-                tooltip.style.transform = 'translateY(0) scale(1)';
-              }
-            });
-          }
-        }
-        
-        function hideTooltip() {
-          if (tooltip) {
-            // Animate out
-            tooltip.style.opacity = '0';
-            tooltip.style.transform = 'translateY(-8px) scale(0.95)';
-            
-            setTimeout(() => {
-              if (tooltip) {
-                tooltip.remove();
-                tooltip = null;
-              }
-            }, 150);
-          }
-        }
-        
-        // Desktop hover events (narrowed to trigger)
-        trigger.addEventListener('mouseenter', showTooltip);
-        item.addEventListener('mouseleave', hideTooltip);
-        
-        // Mobile touch events (narrowed to trigger, no preventDefault to allow scroll)
-        trigger.addEventListener('touchstart', function(e) {
-          showTooltip();
-        }, { passive: true });
-        
-        // Hide tooltip when touching elsewhere
-        document.addEventListener('touchstart', function(e) {
-          if (e.target && !item.contains(e.target)) {
-            hideTooltip();
-          }
+        // Create stars
+        const stars = Array.from({length: 5}, (_, i) => {
+          const star = document.createElement('span');
+          star.className = `star ${i < book.rating ? '' : 'empty'}`;
+          star.textContent = '★';
+          return star;
         });
+        
+        modalRating.innerHTML = '';
+        stars.forEach(star => modalRating.appendChild(star));
+        
+        modalDescription.textContent = book.description;
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function hideModal() {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+
+      // Open modal on book click
+      bookButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const bookData = JSON.parse(btn.getAttribute('data-book'));
+          showModal(bookData);
+        });
+      });
+
+      // Close modal on close button click
+      modalClose.addEventListener('click', hideModal);
+
+      // Close modal on backdrop click
+      modalBackdrop.addEventListener('click', function(e) {
+        if (e.target === modalBackdrop) {
+          hideModal();
+        }
+      });
+
+      // Close modal on Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+          hideModal();
+        }
       });
     });
   </script>
