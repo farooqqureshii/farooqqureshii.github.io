@@ -14,7 +14,7 @@ import ThemeToggle from "./ThemeToggle.astro";
         class="relative cursor-pointer text-black dark:text-white flexoki:text-flexoki-tx -mt-0.5"
         title="Open command menu (Ctrl+K / Cmd+K)"
       >
-        <span class="text-xs hidden sm:inline text-black dark:text-white flexoki:text-flexoki-tx">
+        <span id="cmd-shortcut" class="text-xs hidden sm:inline text-black dark:text-white flexoki:text-flexoki-tx">
           ctrl + k
         </span>
         <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,3 +36,15 @@ import ThemeToggle from "./ThemeToggle.astro";
     <a href="/other">Other</a>
   </nav>
 </header>
+
+<script is:inline>
+  // Detect Mac and show Cmd icon instead of Ctrl
+  if (typeof navigator !== 'undefined') {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 || 
+                  navigator.userAgent.toUpperCase().indexOf('MAC') >= 0;
+    const shortcutElement = document.getElementById('cmd-shortcut');
+    if (shortcutElement && isMac) {
+      shortcutElement.textContent = '⌘ + k';
+    }
+  }
+</script>

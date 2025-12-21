@@ -110,7 +110,7 @@ const {
               class="relative cursor-pointer text-black dark:text-white flexoki:text-flexoki-tx -mt-0.5"
               title="Open command menu (Ctrl+K / Cmd+K)"
             >
-              <span class="text-xs hidden sm:inline text-black dark:text-white flexoki:text-flexoki-tx">
+              <span id="cmd-shortcut" class="text-xs hidden sm:inline text-black dark:text-white flexoki:text-flexoki-tx">
                 ctrl + k
               </span>
               <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,11 +202,26 @@ const {
   
   initSerifMode();
   
+  // Detect Mac and show Cmd icon instead of Ctrl
+  const updateCmdShortcut = () => {
+    if (typeof navigator !== 'undefined') {
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 || 
+                    navigator.userAgent.toUpperCase().indexOf('MAC') >= 0;
+      const shortcutElement = document.getElementById('cmd-shortcut');
+      if (shortcutElement && isMac) {
+        shortcutElement.textContent = '⌘ + k';
+      }
+    }
+  };
+  
+  updateCmdShortcut();
+  
   // Only re-run theme on navigation if needed (defer to not block)
   if (typeof document !== 'undefined' && 'astro' in window) {
     document.addEventListener("astro:after-swap", () => {
       requestIdleCallback ? requestIdleCallback(setTheme) : setTimeout(setTheme, 0);
       initSerifMode();
+      updateCmdShortcut();
     });
   }
 </script>
