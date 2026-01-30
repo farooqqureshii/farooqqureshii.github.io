@@ -422,12 +422,12 @@
               } else {
                 html.classList.add('serif-mode');
                 localStorage.setItem('serif-mode', 'true');
-                // Load Source Serif Pro font when serif mode is enabled
-                if (!document.getElementById('source-serif-font')) {
+                // Load Newsreader (serif) from Fontshare when serif mode is enabled
+                if (!document.getElementById('serif-font')) {
                   const link = document.createElement('link');
-                  link.id = 'source-serif-font';
+                  link.id = 'serif-font';
                   link.rel = 'stylesheet';
-                  link.href = 'https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap';
+                  link.href = 'https://api.fontshare.com/v2/css?f[]=newsreader@200,300,400,500,600,700&display=swap';
                   document.head.appendChild(link);
                 }
               }
@@ -583,12 +583,12 @@
               } else {
                 html.classList.add('serif-mode');
                 localStorage.setItem('serif-mode', 'true');
-                // Load Source Serif Pro font when serif mode is enabled
-                if (!document.getElementById('source-serif-font')) {
+                // Load Newsreader (serif) from Fontshare when serif mode is enabled
+                if (!document.getElementById('serif-font')) {
                   const link = document.createElement('link');
-                  link.id = 'source-serif-font';
+                  link.id = 'serif-font';
                   link.rel = 'stylesheet';
-                  link.href = 'https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap';
+                  link.href = 'https://api.fontshare.com/v2/css?f[]=newsreader@200,300,400,500,600,700&display=swap';
                   document.head.appendChild(link);
                 }
               }
@@ -670,12 +670,12 @@
                 } else {
                   html.classList.add('serif-mode');
                   localStorage.setItem('serif-mode', 'true');
-                  // Load Lora font when serif mode is enabled
-                  if (!document.getElementById('lora-font')) {
+                  // Load Newsreader (serif) from Fontshare when serif mode is enabled
+                  if (!document.getElementById('serif-font')) {
                     const link = document.createElement('link');
-                    link.id = 'lora-font';
+                    link.id = 'serif-font';
                     link.rel = 'stylesheet';
-                    link.href = 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
+                    link.href = 'https://api.fontshare.com/v2/css?f[]=newsreader@200,300,400,500,600,700&display=swap';
                     document.head.appendChild(link);
                   }
                 }

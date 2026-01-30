@@ -77,9 +77,9 @@
     font-weight: 400;
   }
   
-  /* Serif mode: Source Serif Pro for everything */
+  /* Serif mode: Newsreader for everything (Fontshare – pairs with Switzer) */
   html.serif-mode, html.serif-mode body, html.serif-mode h1, html.serif-mode h2, html.serif-mode h3, html.serif-mode h4, html.serif-mode h5, html.serif-mode h6, html.serif-mode header nav, html.serif-mode p, html.serif-mode li, html.serif-mode ul, html.serif-mode ol, html.serif-mode span, html.serif-mode div {
-    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif;
+    font-family: "Newsreader", Georgia, "Times New Roman", serif;
     font-weight: 400;
   }
   
@@ -92,7 +92,7 @@
   
   /* Title in serif mode */
   html.serif-mode .header-title {
-    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif !important;
+    font-family: "Newsreader", Georgia, "Times New Roman", serif !important;
     font-weight: 600 !important;
   }
   
@@ -104,7 +104,7 @@
   
   /* Footer in serif mode */
   html.serif-mode footer, html.serif-mode footer *, html.serif-mode footer div, html.serif-mode footer span, html.serif-mode footer p, html.serif-mode footer a {
-    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif !important;
+    font-family: "Newsreader", Georgia, "Times New Roman", serif !important;
   }
   
   /* Ctrl+K text uses Switzer */
@@ -115,7 +115,7 @@
   
   /* Command menu in serif mode */
   html.serif-mode #command-menu-button, html.serif-mode #command-menu-button *, html.serif-mode #command-menu-button span {
-    font-family: "Source Serif Pro", Georgia, "Times New Roman", serif !important;
+    font-family: "Newsreader", Georgia, "Times New Roman", serif !important;
   }
   
   /* Removed inverted font mode */
