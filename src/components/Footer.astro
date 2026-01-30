@@ -3,7 +3,7 @@
 import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 ---
 
-<footer class="mt-12 footer-animate">
+<footer class="mt-12 footer-animate group">
   <div class="flex flex-col gap-1 text-xs footer-line-color w-full items-start text-left">
     <div class="flex justify-start items-center w-full gap-1.5 flex-wrap">
       <span class="footer-svg-cycler relative inline-flex items-center justify-center w-3 h-3 flex-shrink-0" aria-hidden="true">
@@ -19,8 +19,8 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         <span id="ottawa-time" class="opacity-0 transition-opacity duration-300">--:--</span>
       </span>
     </div>
-    <div style="margin-top:0.25rem; min-height:4rem;" class="opacity-0 translate-y-2 transition-all duration-500 ease-out w-full flex justify-start" id="quote-container">
-      <div id="quote-rotator" style="cursor:pointer; display:inline;">
+    <div id="quote-container" class="max-h-0 overflow-hidden opacity-0 group-hover:max-h-[12rem] group-hover:opacity-100 transition-all duration-300 ease-out w-full mt-1 text-[0.65rem]">
+      <div id="quote-rotator" class="cursor-pointer inline" title="Click for another quote">
         <span id="quote-text"></span>
       </div>
     </div>
@@ -110,19 +110,9 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
       { text: "Given much, do much more", author: "Unknown" },
     ];
     let lastIndex = -1;
-    let isTyping = false;
+    let quoteLoaded = false;
 
-    async function typeText(element: HTMLElement, text: string, speed = 20) {
-      element.innerHTML = '';
-      for (let i = 0; i < text.length; i++) {
-        element.innerHTML += text[i];
-        await new Promise(resolve => setTimeout(resolve, speed));
-      }
-    }
-
-    async function showRandomQuote() {
-      if (isTyping) return; // Prevent multiple typing animations
-      
+    function showRandomQuote() {
       let idx;
       do {
         idx = Math.floor(Math.random() * quotes.length);
@@ -130,58 +120,26 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
       lastIndex = idx;
       const q = quotes[idx];
       const quoteTextEl = document.getElementById('quote-text');
-      const quoteContainer = document.getElementById('quote-container');
-      
-      if (quoteTextEl && quoteContainer) {
-        isTyping = true;
-        
-        // Slide in the quote container
-        quoteContainer.classList.remove('opacity-0', 'translate-y-2');
-        
-        // Type the quote first
-        await typeText(quoteTextEl, `"${q.text}" — `, 15);
-        
-        // Type the author in italics
-        const authorText = q.author;
-        for (let i = 0; i < authorText.length; i++) {
-          quoteTextEl.innerHTML += authorText[i];
-          await new Promise(resolve => setTimeout(resolve, 10));
-        }
-        // Wrap the author in italics after typing
-        const currentText = quoteTextEl.innerHTML;
-        const authorStart = currentText.lastIndexOf(q.author);
-        if (authorStart !== -1) {
-          const beforeAuthor = currentText.substring(0, authorStart);
-          const afterAuthor = currentText.substring(authorStart + q.author.length);
-          quoteTextEl.innerHTML = beforeAuthor + `<i>${q.author}</i>` + afterAuthor;
-        }
-        
-        // Add the next quote icon
-        quoteTextEl.innerHTML += `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-left:0.5em; display:inline; vertical-align:middle;"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>`;
-        
-        isTyping = false;
+      if (quoteTextEl) {
+        quoteTextEl.innerHTML = `"${q.text}" — <i>${q.author}</i> <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="inline-block ml-1 align-middle" aria-hidden="true"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>`;
       }
     }
+
     const quoteRotator = document.getElementById('quote-rotator');
-    if (quoteRotator) {
-      quoteRotator.onclick = showRandomQuote;
-      // Defer quote animation to not block initial render - load after page is interactive
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          // Use requestIdleCallback for non-critical animation, fallback to setTimeout
-          if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => showRandomQuote(), { timeout: 500 });
-          } else {
-            setTimeout(() => showRandomQuote(), 100);
-          }
-        });
-      } else {
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(() => showRandomQuote(), { timeout: 500 });
-        } else {
-          setTimeout(() => showRandomQuote(), 100);
+    const quoteContainer = document.getElementById('quote-container');
+    if (quoteRotator && quoteContainer) {
+      quoteRotator.onclick = (e) => { e.preventDefault(); showRandomQuote(); };
+      // Load a quote when user first hovers the footer (so it's ready when they look)
+      const loadOnHover = () => {
+        if (!quoteLoaded) {
+          quoteLoaded = true;
+          showRandomQuote();
+          quoteContainer.removeEventListener('mouseenter', loadOnHover);
         }
-      }
+      };
+      quoteContainer.addEventListener('mouseenter', loadOnHover);
+      // Also load on footer hover so quote appears on first hover
+      document.querySelector('footer')?.addEventListener('mouseenter', loadOnHover);
     }
   </script>
 </footer>
