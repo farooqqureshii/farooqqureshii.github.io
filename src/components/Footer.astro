@@ -3,7 +3,7 @@
 import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 ---
 
-<footer class="mt-12 footer-animate group">
+<footer class="mt-12 footer-animate" id="footer-el">
   <div class="flex flex-col gap-1 text-xs footer-line-color w-full items-start text-left">
     <div class="flex justify-start items-center w-full gap-1.5 flex-wrap">
       <span class="footer-svg-cycler relative inline-flex items-center justify-center w-3 h-3 flex-shrink-0" aria-hidden="true">
@@ -18,14 +18,35 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         <span aria-hidden="true">|</span>
         <span id="ottawa-time" class="opacity-0 transition-opacity duration-300">--:--</span>
       </span>
+      <button type="button" id="footer-quote-toggle" class="inline-flex p-0.5 -m-0.5 rounded focus:outline-none focus:ring-0" aria-label="Toggle quote" title="Show or hide quote">
+        <svg id="footer-quote-arrow-down" class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        <svg id="footer-quote-arrow-up" class="w-3 h-3 hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+      </button>
     </div>
-    <div id="quote-container" class="max-h-0 overflow-hidden opacity-0 group-hover:max-h-[12rem] group-hover:opacity-100 transition-all duration-300 ease-out w-full mt-1 text-[0.65rem]">
+    <div id="quote-container" class="footer-quote-panel max-h-0 overflow-hidden opacity-0 transition-all duration-300 ease-out w-full mt-1 text-[0.65rem]">
       <div id="quote-rotator" class="cursor-pointer inline" title="Click for another quote">
         <span id="quote-text"></span>
       </div>
     </div>
     <!-- <SpotifyNowPlaying /> -->
   </div>
+
+  <style>
+    #footer-el.footer-quote-open .footer-quote-panel {
+      max-height: 12rem;
+      opacity: 1;
+    }
+    #footer-el.footer-quote-open #footer-quote-arrow-down {
+      display: none;
+    }
+    #footer-el.footer-quote-open #footer-quote-arrow-up {
+      display: block;
+    }
+    #footer-quote-toggle:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  </style>
 
   <script>
     // Footer SVG cycler - cycle through 5 SVGs every 600ms
@@ -127,19 +148,17 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 
     const quoteRotator = document.getElementById('quote-rotator');
     const quoteContainer = document.getElementById('quote-container');
-    if (quoteRotator && quoteContainer) {
-      quoteRotator.onclick = (e) => { e.preventDefault(); showRandomQuote(); };
-      // Load a quote when user first hovers the footer (so it's ready when they look)
-      const loadOnHover = () => {
-        if (!quoteLoaded) {
+    const quoteToggle = document.getElementById('footer-quote-toggle');
+    const footerEl = document.getElementById('footer-el');
+    if (quoteRotator && quoteContainer && quoteToggle && footerEl) {
+      quoteRotator.onclick = (e) => { e.preventDefault(); e.stopPropagation(); showRandomQuote(); };
+      quoteToggle.addEventListener('click', () => {
+        footerEl.classList.toggle('footer-quote-open');
+        if (footerEl.classList.contains('footer-quote-open') && !quoteLoaded) {
           quoteLoaded = true;
           showRandomQuote();
-          quoteContainer.removeEventListener('mouseenter', loadOnHover);
         }
-      };
-      quoteContainer.addEventListener('mouseenter', loadOnHover);
-      // Also load on footer hover so quote appears on first hover
-      document.querySelector('footer')?.addEventListener('mouseenter', loadOnHover);
+      });
     }
   </script>
 </footer>
