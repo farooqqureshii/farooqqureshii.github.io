@@ -3,7 +3,7 @@
 import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 ---
 
-<footer class="mt-12 footer-animate" id="footer-el">
+<footer class="mt-12 footer-animate">
   <div class="flex flex-col gap-1 text-xs footer-line-color w-full items-start text-left">
     <div class="flex justify-start items-center w-full gap-1.5 flex-wrap">
       <span class="footer-svg-cycler relative inline-flex items-center justify-center w-3 h-3 flex-shrink-0" aria-hidden="true">
@@ -18,35 +18,9 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         <span aria-hidden="true">|</span>
         <span id="ottawa-time" class="opacity-0 transition-opacity duration-300">--:--</span>
       </span>
-      <button type="button" id="footer-quote-toggle" class="inline-flex p-0.5 -m-0.5 rounded focus:outline-none focus:ring-0" aria-label="Toggle quote" title="Show or hide quote">
-        <svg id="footer-quote-arrow-down" class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-        <svg id="footer-quote-arrow-up" class="w-3 h-3 hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
-      </button>
-    </div>
-    <div id="quote-container" class="footer-quote-panel max-h-0 overflow-hidden opacity-0 transition-all duration-300 ease-out w-full mt-1 text-[0.65rem]">
-      <div id="quote-rotator" class="cursor-pointer inline" title="Click for another quote">
-        <span id="quote-text"></span>
-      </div>
     </div>
     <!-- <SpotifyNowPlaying /> -->
   </div>
-
-  <style>
-    #footer-el.footer-quote-open .footer-quote-panel {
-      max-height: 12rem;
-      opacity: 1;
-    }
-    #footer-el.footer-quote-open #footer-quote-arrow-down {
-      display: none;
-    }
-    #footer-el.footer-quote-open #footer-quote-arrow-up {
-      display: block;
-    }
-    #footer-quote-toggle:focus {
-      outline: none;
-      box-shadow: none;
-    }
-  </style>
 
   <script>
     // Footer SVG cycler - cycle through 5 SVGs every 600ms
@@ -89,75 +63,6 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
       requestAnimationFrame(() => {
         updateOttawaTime();
         setInterval(updateOttawaTime, 1000);
-      });
-    }
-
-    // Quote rotator script
-    const quotes = [
-      { text: "The map is not the territory.", author: "Alfred Korzybski" },
-      { text: "Not everything that counts can be counted, and not everything that can be counted counts.", author: "William Bruce Cameron" },
-      { text: "We're all just walking each other home.", author: "Ram Dass" },
-      { text: "And you? When will you begin that long journey into yourself?", author: "Rumi" },
-      { text: "One must imagine Sisyphus happy.", author: "Albert Camus" },
-      { text: "Don't use seven words when four will do.", author: "Rusty Ryan, Oceans Eleven" },
-      { text: "A stitch in time saves nine.", author: "Proverb" },
-      { text: "A wealth of information creates a poverty of attention.", author: "Herbert A. Simon" },
-      { text: "Simple systems don't always give simple answers.", author: "John Gall" },
-      { text: "You can't fix by analysis what you've bungled by design.", author: "Light Hill's Law" },
-      { text: "Life moves pretty fast. If you don't stop and look around once in a while, you could miss it.", author: "Ferris Bueller's Day Off" },
-      { text: "We don't see things as they are, we see them as we are.", author: "Anaïs Nin" },
-      { text: "Nature does not hurry, yet everything is accomplished.", author: "Lao Tzu" },
-      { text: "Only entropy comes easy.", author: "Anton Chekhov" },
-      { text: "Meaning is not in things but in between.", author: "The Poetics of Space, Gaston Bachelard" },
-      { text: "All that is gold does not glitter.", author: "The Fellowship of the Ring, J.R.R. Tolkien" },
-      { text: "There's no place like home.", author: "Dorothy Gale, The Wizard of Oz" },
-      { text: "Curiouser and curiouser!", author: "Alice, Alice in Wonderland" },
-      { text: "Dream Big, Start Small", author: "Unknown" },
-      { text: "Oh, but my darling, what if you fly?", author: "Erin Hanson" },
-      { text: "Joy is what happens to us when we allow ourselves to recognize how good things really are.", author: "M. Kristin Rawlings" },
-      { text: "Why make life difficult when it's so easy to live effortlessly?", author: "David Zinczenko" },
-      { text: "A way of thinking that has value isn’t necessarily the way to do it.", author: "Leonardo da Vinci" },
-      { text: "Wherever you go, go with all your heart.", author: "Confucius" },
-      { text: "I am not the same, having seen the moon, than when I was the moon.", author: "G.K. Chesterton" },
-      { text: "Get rid of anything that isn't essential to your truth, and you will see the truth clearly.", author: "David Lynch" },
-      { text: "Be excellent to each other.", author: "The Hitchhiker's Guide to the Galaxy" },
-      { text: "I am certain of nothing but the holiness of the heart's affections and the truth of the heart's yearnings.", author: "John Keats" },
-      { text: "It's a funny thing. Life gets so busy. You've got to play to stay close.", author: "Andrew D. Holder" },
-      { text: "First learn the rules, then break them.", author: "Dada" },
-      { text: "Sometimes you win, sometimes you learn.", author: "John Maxwell" },
-      { text: "Don't judge each day by the harvest you reap but by the seeds you plant.", author: "Robert Louis Stevenson" },
-      { text: "The biggest problem in the universe is nobody helps each other.", author: "Shmi Skywalker, The Phantom Menace" },
-      { text: "Happiness only real when shared.", author: "Christopher McCandless" },
-      { text: "Given much, do much more", author: "Unknown" },
-    ];
-    let lastIndex = -1;
-    let quoteLoaded = false;
-
-    function showRandomQuote() {
-      let idx;
-      do {
-        idx = Math.floor(Math.random() * quotes.length);
-      } while (idx === lastIndex && quotes.length > 1);
-      lastIndex = idx;
-      const q = quotes[idx];
-      const quoteTextEl = document.getElementById('quote-text');
-      if (quoteTextEl) {
-        quoteTextEl.innerHTML = `"${q.text}" — <i>${q.author}</i> <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="inline-block ml-1 align-middle" aria-hidden="true"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>`;
-      }
-    }
-
-    const quoteRotator = document.getElementById('quote-rotator');
-    const quoteContainer = document.getElementById('quote-container');
-    const quoteToggle = document.getElementById('footer-quote-toggle');
-    const footerEl = document.getElementById('footer-el');
-    if (quoteRotator && quoteContainer && quoteToggle && footerEl) {
-      quoteRotator.onclick = (e) => { e.preventDefault(); e.stopPropagation(); showRandomQuote(); };
-      quoteToggle.addEventListener('click', () => {
-        footerEl.classList.toggle('footer-quote-open');
-        if (footerEl.classList.contains('footer-quote-open') && !quoteLoaded) {
-          quoteLoaded = true;
-          showRandomQuote();
-        }
       });
     }
   </script>

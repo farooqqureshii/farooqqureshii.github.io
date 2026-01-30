@@ -53,6 +53,17 @@
     font-variant-ligatures: none;
     letter-spacing: 0.025em;
   }
+  
+  /* Monospace font for breadcrumb - same as keyboard shortcuts */
+  #command-breadcrumb,
+  #command-breadcrumb *,
+  #command-breadcrumb span,
+  #breadcrumb-domain,
+  #breadcrumb-text {
+    font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Consolas", "Courier New", monospace !important;
+    font-variant-ligatures: none;
+    letter-spacing: 0.025em;
+  }
 </style>
   
   <!-- Menu container -->
@@ -64,7 +75,7 @@
               <!-- Breadcrumb -->
         <div id="command-breadcrumb" class="px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3">
           <div class="text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 flex items-center gap-1">
-            <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" id="breadcrumb-domain">farooqqureshi.com</span>
+            <span class="cursor-pointer underline" id="breadcrumb-domain">/f-q.xyz</span>
             <span id="breadcrumb-text"></span>
           </div>
         </div>
@@ -93,6 +104,12 @@
         <div id="nav-results" class="p-2">
           <!-- All items will be populated by JavaScript -->
         </div>
+      </div>
+      
+      <!-- Quote footer -->
+      <div id="command-quote-footer" class="px-4 py-3 border-t border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2">
+        <div id="command-quote-text" class="cursor-pointer italic inline"></div>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="inline-block ml-1 align-middle" aria-hidden="true"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
       </div>
     </div>
   </div>
@@ -259,6 +276,45 @@
       return serifEnabled ? 'Switch to Sans Serif Font' : 'Switch to Serif Font';
     }
 
+    // Quotes array
+    const quotes = [
+      { text: "The map is not the territory.", author: "Alfred Korzybski" },
+      { text: "Not everything that counts can be counted, and not everything that can be counted counts.", author: "William Bruce Cameron" },
+      { text: "We're all just walking each other home.", author: "Ram Dass" },
+      { text: "And you? When will you begin that long journey into yourself?", author: "Rumi" },
+      { text: "One must imagine Sisyphus happy.", author: "Albert Camus" },
+      { text: "Don't use seven words when four will do.", author: "Rusty Ryan, Oceans Eleven" },
+      { text: "A stitch in time saves nine.", author: "Proverb" },
+      { text: "A wealth of information creates a poverty of attention.", author: "Herbert A. Simon" },
+      { text: "Simple systems don't always give simple answers.", author: "John Gall" },
+      { text: "You can't fix by analysis what you've bungled by design.", author: "Light Hill's Law" },
+      { text: "Life moves pretty fast. If you don't stop and look around once in a while, you could miss it.", author: "Ferris Bueller's Day Off" },
+      { text: "We don't see things as they are, we see them as we are.", author: "Anaïs Nin" },
+      { text: "Nature does not hurry, yet everything is accomplished.", author: "Lao Tzu" },
+      { text: "Only entropy comes easy.", author: "Anton Chekhov" },
+      { text: "Meaning is not in things but in between.", author: "The Poetics of Space, Gaston Bachelard" },
+      { text: "All that is gold does not glitter.", author: "The Fellowship of the Ring, J.R.R. Tolkien" },
+      { text: "There's no place like home.", author: "Dorothy Gale, The Wizard of Oz" },
+      { text: "Curiouser and curiouser!", author: "Alice, Alice in Wonderland" },
+      { text: "Dream Big, Start Small", author: "Unknown" },
+      { text: "Oh, but my darling, what if you fly?", author: "Erin Hanson" },
+      { text: "Joy is what happens to us when we allow ourselves to recognize how good things really are.", author: "M. Kristin Rawlings" },
+      { text: "Why make life difficult when it's so easy to live effortlessly?", author: "David Zinczenko" },
+      { text: "A way of thinking that has value isn't necessarily the way to do it.", author: "Leonardo da Vinci" },
+      { text: "Wherever you go, go with all your heart.", author: "Confucius" },
+      { text: "I am not the same, having seen the moon, than when I was the moon.", author: "G.K. Chesterton" },
+      { text: "Get rid of anything that isn't essential to your truth, and you will see the truth clearly.", author: "David Lynch" },
+      { text: "Be excellent to each other.", author: "The Hitchhiker's Guide to the Galaxy" },
+      { text: "I am certain of nothing but the holiness of the heart's affections and the truth of the heart's yearnings.", author: "John Keats" },
+      { text: "It's a funny thing. Life gets so busy. You've got to play to stay close.", author: "Andrew D. Holder" },
+      { text: "First learn the rules, then break them.", author: "Dada" },
+      { text: "Sometimes you win, sometimes you learn.", author: "John Maxwell" },
+      { text: "Don't judge each day by the harvest you reap but by the seeds you plant.", author: "Robert Louis Stevenson" },
+      { text: "The biggest problem in the universe is nobody helps each other.", author: "Shmi Skywalker, The Phantom Menace" },
+      { text: "Happiness only real when shared.", author: "Christopher McCandless" },
+      { text: "Given much, do much more", author: "Unknown" },
+    ];
+
     const otherItems = [
       { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'customization', action: 'toggle-theme', shortcut: 'T' },
       { title: getLinkColorToggleText(), url: '#', description: 'Cycle through link color schemes', section: 'customization', action: 'toggle-link-color', shortcut: 'C' },
@@ -295,19 +351,27 @@
           breadcrumbText.innerHTML = '';
         } else if (pathParts.length === 1) {
           // For top-level pages like /writing, /projects, show the full path
-          breadcrumbText.innerHTML = ' / <span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="/' + pathParts[0] + '">' + pathParts[0] + '</span>';
+          breadcrumbText.innerHTML = ' / <span class="cursor-pointer underline" data-path="/' + pathParts[0] + '" style="font-family: \'SF Mono\', \'Monaco\', \'Inconsolata\', \'Roboto Mono\', \'Consolas\', \'Courier New\', monospace !important; font-variant-ligatures: none; letter-spacing: 0.025em;">' + pathParts[0] + '</span>';
         } else {
           // For nested pages like /misc/pencils, show the full path
           let breadcrumbHTML = ' / ';
           pathParts.forEach((part, index) => {
             const currentPath = '/' + pathParts.slice(0, index + 1).join('/');
-            breadcrumbHTML += '<span class="cursor-pointer underline hover:text-zinc-700 dark:hover:text-zinc-200 flexoki:hover:text-flexoki-tx transition-colors" data-path="' + currentPath + '">' + part + '</span>';
+            breadcrumbHTML += '<span class="cursor-pointer underline" data-path="' + currentPath + '" style="font-family: \'SF Mono\', \'Monaco\', \'Inconsolata\', \'Roboto Mono\', \'Consolas\', \'Courier New\', monospace !important; font-variant-ligatures: none; letter-spacing: 0.025em;">' + part + '</span>';
             if (index < pathParts.length - 1) {
               breadcrumbHTML += ' / ';
             }
           });
           breadcrumbText.innerHTML = breadcrumbHTML;
         }
+      }
+      
+      // Add click handler to breadcrumb domain
+      if (breadcrumbDomain) {
+        breadcrumbDomain.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.href = '/';
+        });
       }
       
       // Add click handlers to breadcrumb parts
@@ -456,6 +520,21 @@
       renderItems();
     }
 
+    // Quote functionality
+    let lastQuoteIndex = -1;
+    function showRandomQuote() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * quotes.length);
+      } while (idx === lastQuoteIndex && quotes.length > 1);
+      lastQuoteIndex = idx;
+      const q = quotes[idx];
+      const quoteTextEl = document.getElementById('command-quote-text');
+      if (quoteTextEl) {
+        quoteTextEl.innerHTML = `"${q.text}" — <i>${q.author}</i>`;
+      }
+    }
+
     let openMenu = function openMenuImpl() {
       // Reset state when opening
       filteredItems = [...allItems];
@@ -482,6 +561,17 @@
       const serifToggleItem = filteredItems.find(item => item.action === 'toggle-serif');
       if (serifToggleItem) {
         serifToggleItem.title = getSerifToggleText();
+      }
+      
+      // Show a random quote
+      showRandomQuote();
+      
+      // Add click handler to quote footer
+      const quoteFooter = document.getElementById('command-quote-footer');
+      const quoteText = document.getElementById('command-quote-text');
+      if (quoteFooter && quoteText) {
+        quoteFooter.onclick = () => showRandomQuote();
+        quoteText.title = 'Click for another quote';
       }
       
       // Update breadcrumb
