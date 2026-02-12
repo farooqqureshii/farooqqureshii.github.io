@@ -1,35 +1,167 @@
 ---
 import Layout from "../../layouts/Layout.astro";
----
-<Layout title="Music | FQ" description="Miscellaneous pages by Farooq Qureshi">
-  <main>
-    <iframe 
-      style="border-radius:12px" 
-      src="https://open.spotify.com/embed/playlist/0B5uPSTKRDHAMGn9fmPemi?utm_source=generator&theme=0" 
-      width="100%" 
-      height="200" 
-      allowfullscreen="" 
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-      loading="lazy">
-    </iframe>
-    <iframe 
-      style="border-radius:12px" 
-      src="https://open.spotify.com/embed/playlist/5C5VMC8PkkevF4EJApZVXH?utm_source=generator&theme=0"
-      width="100%" 
-      height="200" 
-      allowfullscreen="" 
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-      loading="lazy">
-    </iframe>
-    <iframe 
-      style="border-radius:12px" 
-      src="https://open.spotify.com/embed/playlist/1Zvo68iXZRlcO4k77PZpJN?utm_source=generator&theme=0" 
-      width="100%" 
-      height="200" 
-      allowfullscreen="" 
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-      loading="lazy">
-    </iframe>
-  </main>
-</Layout> 
+import { getPlaylistTracks } from "../../lib/spotify";
 
+const PLAYLISTS = [
+  { id: "0B5uPSTKRDHAMGn9fmPemi" },
+  { id: "5C5VMC8PkkevF4EJApZVXH" },
+  { id: "1Zvo68iXZRlcO4k77PZpJN" },
+];
+
+interface TrackWithPlaylist {
+  id: string;
+  name: string;
+  artists: string;
+  albumImage: string;
+  albumName: string;
+  trackUrl: string;
+  playlistId: string;
+}
+
+let tracks: TrackWithPlaylist[] = [];
+
+try {
+  // Fetch each playlist separately, then interleave for variety
+  const byPlaylist: TrackWithPlaylist[][] = [];
+  const seenIds = new Set<string>();
+
+  for (const playlist of PLAYLISTS) {
+    const playlistTracks = await getPlaylistTracks(playlist.id);
+    const converted: TrackWithPlaylist[] = [];
+    for (const t of playlistTracks) {
+      if (seenIds.has(t.id)) continue;
+      seenIds.add(t.id);
+      const artistNames = t.artists?.map((a) => a.name).join(", ") ?? "";
+      const image = t.album?.images?.[0]?.url ?? t.album?.images?.[1]?.url ?? "";
+      converted.push({
+        id: t.id,
+        name: t.name,
+        artists: artistNames,
+        albumImage: image,
+        albumName: t.album?.name ?? "",
+        trackUrl: `https://open.spotify.com/track/${t.id}?context=spotify:playlist:${playlist.id}`,
+        playlistId: playlist.id,
+      });
+    }
+    byPlaylist.push(converted);
+  }
+
+  const allTracks = byPlaylist.flat();
+  const shuffled = [...allTracks].sort(() => Math.random() - 0.5);
+  tracks = shuffled.slice(0, 150);
+} catch (err) {
+  console.error("Failed to fetch Spotify playlists:", err);
+  tracks = [];
+}
+---
+
+<Layout title="Music | FQ" description="Music I'm listening to — Farooq Qureshi">
+  <main class="max-w-none">
+    {tracks.length > 0 ? (
+      <div class="music-grid">
+        {tracks.map((track, index) => (
+          <a
+            href={track.trackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={index % 10 === 0 ? "music-cover-link music-cover-featured" : "music-cover-link"}
+            title={`${track.name} — ${track.artists}`}
+            aria-label={`Open ${track.name} in Spotify`}
+          >
+            <img
+              src={track.albumImage}
+              alt={track.albumName}
+              class="music-cover-img"
+              loading={index < 6 ? "eager" : "lazy"}
+            fetchpriority={index < 4 ? "high" : "low"}
+              decoding="async"
+            />
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="rounded-lg border border-zinc-200 dark:border-zinc-700 p-8 text-center text-zinc-500 dark:text-zinc-400 text-sm mt-8">
+        <p>Playlists couldn't be loaded. Check that Spotify API credentials are set.</p>
+      </div>
+    )}
+  </main>
+</Layout>
+
+<style is:global>
+  .music-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: minmax(0, auto);
+    grid-auto-flow: dense;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .music-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+
+    .music-cover-featured {
+      grid-column: span 1 !important;
+      grid-row: span 1 !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .music-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .music-cover-link {
+    content-visibility: auto;
+    display: block;
+    padding: 0;
+    border: none;
+    background: #e5e5e5;
+    overflow: hidden;
+    aspect-ratio: 1;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+  }
+
+  .music-cover-link:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.25);
+  }
+
+  .music-cover-featured:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.3);
+  }
+
+  html.dark .music-cover-link {
+    background: #2a2a2a;
+  }
+
+  html.dark .music-cover-link:hover {
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
+  }
+
+  .music-cover-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  .music-cover-featured {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .music-cover-img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+</style>

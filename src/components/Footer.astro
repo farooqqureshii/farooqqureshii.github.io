@@ -13,11 +13,10 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         <svg class="footer-cycler-svg absolute top-0 left-0 w-3 h-3 opacity-0 transition-opacity duration-300" data-index="3" xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="none" viewBox="0 0 256 256"><path d="M 152 70.059 L 201.539 20.519 L 235.48 54.461 L 185.941 104 L 256 104 L 256 152 L 185.941 152 L 235.48 201.539 L 201.539 235.48 L 152 185.941 L 152 256 L 104 256 L 104 185.941 L 54.46 235.48 L 20.52 201.539 L 70.059 152 L 0 152 L 0 104 L 70.059 104 L 20.519 54.46 L 54.461 20.52 L 104 70.059 L 104 0 L 152 0 Z" fill="rgb(84, 84, 84)"></path></svg>
         <svg class="footer-cycler-svg absolute top-0 left-0 w-3 h-3 opacity-0 transition-opacity duration-300" data-index="4" xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="none" viewBox="0 0 256 256"><path d="M 128 128 C 128 198.692 70.692 256 0 256 C 0 185.308 57.308 128 128 128 Z M 128 128 C 198.692 128 256 185.308 256 256 C 185.308 256 128 198.692 128 128 Z M 0 0 C 70.692 0 128 57.308 128 128 C 57.308 128 0 70.692 0 0 Z M 256 0 C 256 70.692 198.692 128 128 128 C 128 57.308 185.308 0 256 0 Z" fill="rgb(84, 84, 84)"></path></svg>
       </span>
-      <span class="flex items-center gap-1.5">
-        <span>Ottawa, ON</span>
-        <span aria-hidden="true">|</span>
-        <span id="ottawa-time" class="opacity-0 transition-opacity duration-300">--:--</span>
-      </span>
+      <span>Ottawa, ON</span>
+    </div>
+    <div id="ottawa-weather" class="opacity-0 transition-opacity duration-300">
+      <span id="ottawa-time">--:--</span>, <span id="ottawa-temp">--°C</span>.
     </div>
     <!-- <SpotifyNowPlaying /> -->
   </div>
@@ -38,7 +37,6 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
       }, 600);
     })();
 
-    // Ottawa time script - defer to not block initial render
     function updateOttawaTime() {
       const ottawaTime = new Date().toLocaleTimeString('en-CA', {
         timeZone: 'America/Toronto',
@@ -47,23 +45,32 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         second: '2-digit',
         hour12: false
       });
-      const el = document.getElementById('ottawa-time');
-      if (el) {
-        el.textContent = ottawaTime;
-        el.classList.remove('opacity-0');
+      const timeEl = document.getElementById('ottawa-time');
+      if (timeEl) timeEl.textContent = ottawaTime;
+      const weatherBlock = document.getElementById('ottawa-weather');
+      if (weatherBlock) weatherBlock.classList.remove('opacity-0');
+    }
+    async function updateOttawaWeather() {
+      try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=45.4215&longitude=-75.6972&current=temperature_2m&timezone=America/Toronto');
+        const data = await res.json();
+        const temp = Math.round(data.current?.temperature_2m ?? 0);
+        const tempEl = document.getElementById('ottawa-temp');
+        if (tempEl) tempEl.textContent = temp + '°C';
+      } catch {
+        const tempEl = document.getElementById('ottawa-temp');
+        if (tempEl) tempEl.textContent = '—°C';
       }
     }
-    // Defer time update to not block initial render
+    function initFooter() {
+      updateOttawaTime();
+      setInterval(updateOttawaTime, 1000);
+      updateOttawaWeather();
+    }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        updateOttawaTime();
-        setInterval(updateOttawaTime, 1000);
-      });
+      document.addEventListener('DOMContentLoaded', initFooter);
     } else {
-      requestAnimationFrame(() => {
-        updateOttawaTime();
-        setInterval(updateOttawaTime, 1000);
-      });
+      requestAnimationFrame(initFooter);
     }
   </script>
 </footer>

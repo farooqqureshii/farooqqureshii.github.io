@@ -15,13 +15,31 @@ const getSpotifyAccessToken = async () => {
   return data.access_token;
 };
 
-export const getPlaylistTracks = async (playlistId: string) => {
+export interface SpotifyTrack {
+  id: string;
+  name: string;
+  artists: { name: string }[];
+  album: { images: { url: string; height: number }[]; name: string };
+  external_urls: { spotify: string };
+}
+
+export const getPlaylistTracks = async (
+  playlistId: string
+): Promise<SpotifyTrack[]> => {
   const accessToken = await getSpotifyAccessToken();
-  const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`, {
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-    },
-  });
+  const res = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  if (!res.ok) {
+    throw new Error(`Spotify API error: ${res.status}`);
+  }
   const data = await res.json();
-  return data.items.map((item: any) => item.track);
+  return (data.items || [])
+    .map((item: { track: SpotifyTrack | null }) => item.track)
+    .filter((t: SpotifyTrack | null): t is SpotifyTrack => t != null && !!t.id);
 }; 
