@@ -1,0 +1,82 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { quotes } from "../../data/quotes";
+---
+
+<Layout title="Quotes | FQ" description="Quotes I find meaningful">
+  <main>
+    <div class="quotes-container" id="quotes-container">
+      {quotes.map((quote) => (
+        <blockquote class="quote-item">
+          <p class="quote-text">"{quote.text}"</p>
+          <cite class="quote-author">— {quote.author}</cite>
+        </blockquote>
+      ))}
+    </div>
+  </main>
+
+  <style>
+    :global(html) {
+      scroll-behavior: smooth;
+    }
+
+    .quotes-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .quote-item {
+      margin: 0;
+      padding: 0.5rem 0;
+      border: none;
+      transition: opacity 0.45s ease-in-out;
+    }
+
+    /* Flashlight effect: dim others when one is hovered */
+    .quotes-container.active .quote-item {
+      opacity: 0.35;
+    }
+
+    .quotes-container.active .quote-item.hovered {
+      opacity: 1;
+    }
+
+    .quote-text {
+      font-size: 1.0625rem;
+      line-height: 1.55;
+      margin: 0 0 0.25rem 0;
+      font-style: italic;
+      color: inherit;
+    }
+
+    .quote-author {
+      font-size: 0.8125rem;
+      font-style: normal;
+      opacity: 0.7;
+      display: block;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('quotes-container');
+      const items = container?.querySelectorAll('.quote-item');
+      if (!container || !items?.length) return;
+
+      items.forEach((item) => {
+        item.addEventListener('mouseenter', () => {
+          items.forEach((q) => q.classList.remove('hovered'));
+          item.classList.add('hovered');
+          container.classList.add('active');
+        });
+      });
+
+      container.addEventListener('mouseleave', () => {
+        items.forEach((q) => q.classList.remove('hovered'));
+        container.classList.remove('active');
+      });
+    });
+  </script>
+</Layout>

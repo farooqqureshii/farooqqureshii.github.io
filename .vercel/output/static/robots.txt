@@ -1,0 +1,6 @@
+
+User-agent: *
+Allow: /
+Disallow: /artifacts/add
+
+Sitemap: https://farooqqureshi.com/sitemap-index.xml

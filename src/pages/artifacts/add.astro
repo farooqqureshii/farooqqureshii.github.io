@@ -1,0 +1,219 @@
+---
+import { SITE_DESCRIPTION } from "../../consts";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Add Content | FQ" description={SITE_DESCRIPTION}>
+  <main>
+    <div class="mb-6">
+      <a
+        href="/artifacts"
+        class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+      >
+        ← Back
+      </a>
+    </div>
+
+    <h1 class="text-xl font-medium mb-2">Add content</h1>
+    <div class="text-zinc-600 dark:text-zinc-400 text-sm mb-6 space-y-2">
+      <p><strong>Paste a link</strong> — it saves instantly (if you've set up live save). Otherwise, copy the output into <code class="bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded text-xs">src/data/savedContent.ts</code>.</p>
+    </div>
+
+    <form id="add-form" class="space-y-4 max-w-md">
+      <div>
+        <input
+          type="url"
+          id="url"
+          name="url"
+          placeholder="Paste link..."
+          class="w-full px-3 py-2.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm placeholder-zinc-400"
+          autofocus
+        />
+      </div>
+
+      <button type="button" id="toggle-optional" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100">
+        + Title, caption, etc.
+      </button>
+
+      <div id="optional-fields" class="space-y-3 hidden">
+        <div>
+          <label for="title" class="block text-xs text-zinc-500 mb-1">Title (optional)</label>
+          <input type="text" id="title" name="title" placeholder="Leave blank for untitled" class="w-full px-3 py-2 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm" />
+        </div>
+        <div>
+          <label for="type" class="block text-xs text-zinc-500 mb-1">Type</label>
+          <select id="type" name="type" class="w-full px-3 py-2 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm">
+            <option value="link">Link</option>
+            <option value="article">Article</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+          </select>
+        </div>
+        <div>
+          <label for="source" class="block text-xs text-zinc-500 mb-1">Source / caption (optional)</label>
+          <input type="text" id="source" name="source" placeholder="e.g. Artist name, site.com" class="w-full px-3 py-2 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm" />
+        </div>
+      </div>
+
+      <button type="submit" id="submit-btn" class="px-4 py-2 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-sm font-medium hover:opacity-90">
+        Save
+      </button>
+    </form>
+
+    <div id="save-status" class="mt-4 text-sm hidden"></div>
+
+    <div id="output-section" class="mt-8 hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-medium">Or copy into savedContent.ts:</span>
+        <button id="copy-btn" class="px-2 py-1 rounded text-xs bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600">Copy</button>
+      </div>
+      <pre id="output" class="p-4 rounded-md bg-zinc-100 dark:bg-zinc-800 text-sm overflow-x-auto"></pre>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-2">Drag to bookmarks bar:</p>
+      <a id="bookmarklet-link" href="#" class="inline-block px-3 py-1.5 rounded text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700">Add to Saved</a>
+    </div>
+  </main>
+
+  <script is:inline>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var key = params.get("key");
+      if (key) localStorage.setItem("saved-add-key", key);
+
+      var form = document.getElementById("add-form");
+      var outputSection = document.getElementById("output-section");
+      var outputEl = document.getElementById("output");
+      var copyBtn = document.getElementById("copy-btn");
+      var submitBtn = document.getElementById("submit-btn");
+      var saveStatus = document.getElementById("save-status");
+      var toggleOptional = document.getElementById("toggle-optional");
+      var optionalFields = document.getElementById("optional-fields");
+      var urlInput = document.getElementById("url");
+      var typeSelect = document.getElementById("type");
+
+      function detectType(url) {
+        var u = (url || "").toLowerCase();
+        if (/\.(jpg|jpeg|png|gif|webp|avif)(\?|$)/i.test(u)) return "image";
+        if (u.includes("youtube.com") || u.includes("youtu.be") || u.includes("vimeo.com")) return "video";
+        if (u.includes("x.com") || u.includes("twitter.com")) return "link";
+        return "link";
+      }
+      function slugify(str) {
+        return String(str).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      }
+      function generateId(title, url) {
+        var base = title ? slugify(title).slice(0, 20) : slugify(url).slice(0, 20) || "item";
+        return base + "-" + Math.random().toString(36).slice(2, 8);
+      }
+
+      if (toggleOptional && optionalFields) {
+        toggleOptional.addEventListener("click", function () {
+          optionalFields.classList.toggle("hidden");
+          toggleOptional.textContent = optionalFields.classList.contains("hidden") ? "+ Title, caption, etc." : "− Hide";
+        });
+      }
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var url = (urlInput?.value || "").trim();
+          if (!url) return;
+          var title = (document.getElementById("title")?.value || "").trim();
+          var type = (typeSelect?.value || detectType(url));
+          var source = (document.getElementById("source")?.value || "").trim();
+          var today = new Date().toISOString().slice(0, 10);
+          var id = generateId(title || url, url);
+          var item = {
+            id: id,
+            type: type,
+            url: url,
+            date: today,
+          };
+          if (title) item.title = title;
+          if (source) item.source = source;
+          if (type === "image") item.thumbnail = url;
+
+          var secret = params.get("key") || localStorage.getItem("saved-add-key");
+          if (secret) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Saving...";
+            fetch("/api/save-content", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ secret: secret, item: item }),
+            })
+              .then(function (r) { return r.json(); })
+              .then(function (data) {
+                if (data.success) {
+                  saveStatus.textContent = "Saved! Redirecting...";
+                  saveStatus.classList.remove("hidden");
+                  saveStatus.className = "mt-4 text-sm text-green-600 dark:text-green-400";
+                  setTimeout(function () { window.location.href = "/artifacts"; }, 800);
+                } else {
+                  throw new Error(data.error || "Failed");
+                }
+              })
+              .catch(function () {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Save";
+                saveStatus.textContent = "Live save not configured. Copy the output below.";
+                saveStatus.classList.remove("hidden");
+                saveStatus.className = "mt-4 text-sm text-zinc-500";
+                showOutput();
+              });
+          } else {
+            showOutput();
+          }
+
+          function showOutput() {
+            var titleVal = title || (type === "image" ? "" : "Untitled");
+            var titleStr = titleVal ? ("    title: \"" + titleVal.replace(/"/g, '\\"') + "\",\n") : "";
+            var entry = "  {\n    id: \"" + id + "\",\n    type: \"" + type + "\",\n" + titleStr + "    url: \"" + url.replace(/"/g, '\\"') + "\",";
+            if (source) entry += "\n    source: \"" + source.replace(/"/g, '\\"') + "\",";
+            if (type === "image") entry += "\n    thumbnail: \"" + url.replace(/"/g, '\\"') + "\",";
+            entry += "\n    date: \"" + today + "\",\n  },";
+            if (outputEl) outputEl.textContent = entry;
+            if (outputSection) {
+              outputSection.classList.remove("hidden");
+              outputSection.scrollIntoView({ behavior: "smooth" });
+            }
+            submitBtn.textContent = "Save";
+            submitBtn.disabled = false;
+          }
+        });
+      }
+
+      if (urlInput && typeSelect) {
+        urlInput.addEventListener("paste", function () { setTimeout(function () { typeSelect.value = detectType(urlInput.value); }, 10); });
+        urlInput.addEventListener("input", function () { typeSelect.value = detectType(urlInput.value); });
+      }
+
+      if (copyBtn && outputEl) {
+        copyBtn.addEventListener("click", function () {
+          var text = outputEl.textContent;
+          if (text) {
+            navigator.clipboard.writeText(text);
+            copyBtn.textContent = "Copied!";
+            setTimeout(function () { copyBtn.textContent = "Copy"; }, 2000);
+          }
+        });
+      }
+
+      var baseUrl = window.location.origin;
+      if (document.getElementById("bookmarklet-link")) {
+        document.getElementById("bookmarklet-link").setAttribute("href",
+          "javascript:(function(){var u=encodeURIComponent(location.href);var t=encodeURIComponent(document.title);window.open('" + baseUrl + "/artifacts/add?url='+u+'&title='+t,'_blank','width=520,height=640');})();");
+      }
+
+      var urlParam = params.get("url");
+      var titleParam = params.get("title");
+      if (urlParam && urlInput) urlInput.value = decodeURIComponent(urlParam);
+      if (titleParam) {
+        var ti = document.getElementById("title");
+        if (ti) ti.value = decodeURIComponent(titleParam);
+      }
+    })();
+  </script>
+</Layout>
