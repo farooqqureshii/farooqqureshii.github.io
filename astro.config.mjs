@@ -11,8 +11,9 @@ export default defineConfig({
   site: process.env.NODE_ENV === 'production' 
     ? 'https://farooqqureshi.com'  // Production domain
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
+  output: 'hybrid',
+  adapter: vercel(),
   integrations: [mdx(), sitemap(), tailwind()],
-  output: 'static',
   prefetch: {
     prefetchAll: false,
     defaultStrategy: 'hover'
