@@ -3,7 +3,7 @@
 import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
 ---
 
-<footer class="mt-12 footer-animate">
+<footer class="mt-12 footer-animate relative">
   <div class="flex flex-col gap-1 text-xs footer-line-color w-full items-start text-left">
     <div class="flex justify-start items-center w-full gap-1.5 flex-wrap">
       <span class="footer-svg-cycler relative inline-flex items-center justify-center w-3 h-3 flex-shrink-0" aria-hidden="true">
@@ -15,11 +15,9 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
       </span>
       <span>Ottawa, ON</span>
     </div>
-    <div id="ottawa-weather" class="opacity-0 transition-opacity duration-300">
-      <span id="ottawa-time">--:--</span>, <span id="ottawa-temp">--°C</span>.
-    </div>
     <!-- <SpotifyNowPlaying /> -->
   </div>
+  <div id="ottawa-time" class="absolute bottom-0 right-0 text-xs footer-line-color opacity-0 transition-opacity duration-300">--:--</div>
 
   <script>
     // Footer SVG cycler - cycle through 5 SVGs every 600ms
@@ -46,26 +44,14 @@ import SpotifyNowPlaying from './SpotifyNowPlaying.astro';
         hour12: false
       });
       const timeEl = document.getElementById('ottawa-time');
-      if (timeEl) timeEl.textContent = ottawaTime;
-      const weatherBlock = document.getElementById('ottawa-weather');
-      if (weatherBlock) weatherBlock.classList.remove('opacity-0');
-    }
-    async function updateOttawaWeather() {
-      try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=45.4215&longitude=-75.6972&current=temperature_2m&timezone=America/Toronto');
-        const data = await res.json();
-        const temp = Math.round(data.current?.temperature_2m ?? 0);
-        const tempEl = document.getElementById('ottawa-temp');
-        if (tempEl) tempEl.textContent = temp + '°C';
-      } catch {
-        const tempEl = document.getElementById('ottawa-temp');
-        if (tempEl) tempEl.textContent = '—°C';
+      if (timeEl) {
+        timeEl.textContent = ottawaTime;
+        timeEl.classList.remove('opacity-0');
       }
     }
     function initFooter() {
       updateOttawaTime();
       setInterval(updateOttawaTime, 1000);
-      updateOttawaWeather();
     }
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initFooter);
