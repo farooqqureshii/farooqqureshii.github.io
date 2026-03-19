@@ -73,6 +73,7 @@
   }
   .no-link-underline .project-links a::after {
     display: block !important;
+    transform: scaleX(1);
   }
 
   /* Project card media - subtle lift on hover */
