@@ -2,6 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CommandMenu from "../components/CommandMenu.astro";
+import FlashlightScript from "../components/FlashlightScript.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 
@@ -24,159 +25,71 @@ const {
 
 <html lang="en">
   <head>
-    <!-- Global Metadata -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- DNS prefetch for external domains -->
-    <link rel="dns-prefetch" href="//api.fontshare.com" />
-    
-    <!-- Preconnect to critical external origins -->
-    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-    
-    <!-- Fontshare: Switzer - Load asynchronously, system fonts render immediately -->
-    <link rel="preload" href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link href="https://api.fontshare.com/v2/css?f[]=switzer@200,300,400,500,600,700&display=swap" rel="stylesheet"></noscript>
-    
-    <!-- Fontshare: Newsreader (serif) - Load asynchronously when serif mode is enabled -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900&display=swap" rel="stylesheet" />
 
-    <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, Astro.url)} />
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={Astro.url} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
-    
-    <!-- Critical CSS for immediate render -->
+
     <style>
-      /* Prevent layout shift with base styles */
-      body { 
-        font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        line-height: 1.5;
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: 460;
+        font-size: 15px;
+        line-height: 1.6;
         margin: 0;
       }
     </style>
-    
-    <!-- Preload theme to prevent flash -->
     <script is:inline>
-      if (
-        localStorage.theme === 'dark' ||
-        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      ) {
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
-      }
-      
-      // Performance monitoring (dev only)
-      if (typeof performance !== 'undefined' && localStorage.getItem('dev-mode') === 'true') {
-        window.addEventListener('load', () => {
-          const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-          console.log(`🚀 Page loaded in ${loadTime}ms`);
-        });
+      } else {
+        document.documentElement.classList.remove('dark');
       }
     </script>
   </head>
-  <body
-    class="text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-200"
-  >
-    <div class={cn("max-w-xl mx-auto px-6 py-4 sm:p-4", className)}>
+  <body class="text-[#111111] antialiased bg-white dark:bg-[#1a1a1a] dark:text-[#e4e4e7]">
+    <div class={cn("max-w-[600px] mx-auto px-6 py-12 sm:px-8", className)}>
       <Header />
       <slot />
       <Footer />
       <CommandMenu />
+      <FlashlightScript />
     </div>
+    {/* Load after content so it overrides per-post footnote styles */}
+    <style is:global>
+      article sup a::after {
+        background: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+      }
+      .footnote-back svg {
+        stroke: rgb(113 113 122) !important;
+      }
+      html.dark .footnote-back svg {
+        stroke: rgb(161 161 170) !important;
+      }
+    </style>
   </body>
 </html>
-
-<script is:inline>
-  const setTheme = () => {
-    let theme;
-
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      theme = localStorage.getItem("theme");
-    } else {
-      // Default to light theme instead of system preference for consistency
-      theme = "light";
-    }
-
-    // Apply the theme
-    const html = document.documentElement;
-    
-    // Remove all theme classes first
-    html.classList.remove("dark", "flexoki");
-    
-    // Add the appropriate theme class
-    if (theme === "dark") {
-      html.classList.add("dark");
-    } else if (theme === "flexoki") {
-      html.classList.add("flexoki");
-    }
-    // If theme is "light" or anything else, no class is added (default light theme)
-
-    if (typeof localStorage !== "undefined") {
-      // Only observe theme changes on user interaction, not automatically
-      const observer = new MutationObserver(() => {
-        const isDark = html.classList.contains("dark");
-        const isFlexoki = html.classList.contains("flexoki");
-        
-        let currentTheme = "light";
-        if (isDark) currentTheme = "dark";
-        else if (isFlexoki) currentTheme = "flexoki";
-        
-        localStorage.setItem("theme", currentTheme);
-      });
-      observer.observe(html, {
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-    }
-  };
-
-  setTheme();
-  
-  // Initialize serif font mode
-  const initSerifMode = () => {
-    const html = document.documentElement;
-    const serifEnabled = localStorage.getItem('serif-mode') === 'true';
-    
-    if (serifEnabled) {
-      html.classList.add('serif-mode');
-      // Load Newsreader (serif) from Fontshare when serif mode is enabled
-      if (!document.getElementById('serif-font')) {
-        const link = document.createElement('link');
-        link.id = 'serif-font';
-        link.rel = 'stylesheet';
-        link.href = 'https://api.fontshare.com/v2/css?f[]=newsreader@200,300,400,500,600,700&display=swap';
-        document.head.appendChild(link);
-      }
-    } else {
-      html.classList.remove('serif-mode');
-    }
-  };
-  
-  initSerifMode();
-  
-  // Only re-run theme on navigation if needed (defer to not block)
-  if (typeof document !== 'undefined' && 'astro' in window) {
-    document.addEventListener("astro:after-swap", () => {
-      requestIdleCallback ? requestIdleCallback(setTheme) : setTimeout(setTheme, 0);
-      initSerifMode();
-    });
-  }
-</script>

@@ -1,367 +1,268 @@
 ---
 import { SITE_DESCRIPTION } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
-import LiveAgeCounter from "../../components/LiveAgeCounter.astro";
+import { artifacts as baseArtifacts } from "../../data/artifacts";
+import type { Artifact, ArtifactType, ArtifactCategory } from "../../data/artifacts";
+import { CATEGORY_LABELS } from "../../data/artifact-categories";
+import { getLinkThumbnails } from "../../lib/link-thumbnail";
 
-const images = [
-  {
-    src: "https://i.postimg.cc/FsH2bVvz/Jeff-Wall-A-Sudden-Gust-of-Wind-after-Hokusai-1993.jpg",
-    alt: "A sudden Gust of Wind (after Hokusai), Jeff Wall, 1993"
-  },
-  {
-    src: "https://i.postimg.cc/RhXNnLBK/chi.jpg",
-    alt: "Grant Park (2009)"
-  },
-  {
-    src: "https://i.postimg.cc/TwQRk24X/61-EL0a-PYY4-L.jpg",
-    alt: ""
-  },
-  {
-    src: "https://i.postimg.cc/y8xvXw8x/9m0di0m3taua1.jpg",
-    alt: ""
-  },
-  {
-    src: "https://i.postimg.cc/sDGrWJsz/paris.jpg",
-    alt: "Paris (2016)"
-  },
-  {
-    src: "https://i.postimg.cc/13p1C58Y/power.jpg",
-    alt: "The Met (2014)"
-  },
-  {
-    src: "https://i.postimg.cc/g0mFfFRc/church.png",
-    alt: "Sydney (2008)"
-  },
-  {
-    src: "https://i.postimg.cc/J0y9b1wx/bike.jpg",
-    alt: "Buenos Aires (2009)"
-  },
-  {
-    src: "https://i.postimg.cc/9MkkXv47/PIA00563-Viking1-First-Color-Image-19760721.jpg",
-    alt: "First colour image from Viking Lander 1, 1976"
-  },
-  {
-    src: "https://i.postimg.cc/fTYMFvFK/Times-Most-Influental-Images-20.jpg",
-    alt: "Dalí Atomicus, 1948"
-  },
-  {
-    src: "https://i.postimg.cc/50HVm5L8/Times-Most-Influental-Images-26-23.jpg",
-    alt: "Milk Drop Coronet, 1957"
-  },
-  {
-    src: "https://i.postimg.cc/nLjRR3SV/tumblr-m4j9qyu-Dn-Y1qcl8ymo1-r1-1280.jpg",
-    alt: "Gilbert Garcin, Work In Progress, 1999"
-  },
-  {
-    src: "https://i.postimg.cc/W3cn9TJS/FKl8lz-HXs-As-OHFx.jpg",
-    alt: "Jan Saudek, Train Passing"
-  },
-  {
-    src: "https://i.postimg.cc/VsGtvzLT/jmu4fst8yrjc1.jpg",
-    alt: "The Last Photo of the Barbary Lion, Marcel Flandrin, 1925"
-  },
-  {
-    src: "https://i.postimg.cc/zGn3CN8q/Yibin-II-Counting-Receipts-Sichuan-Province-2007.jpg",
-    alt: "Yibin II (Counting Receipts), Sichuan Province, 2007, Nadav Kander"
-  },
-  {
-    src: "https://i.postimg.cc/htqtPYx6/fan-ho-approaching-shadow-1024x768.webp",
-    alt: "Fan Ho, Approaching Shadow"
-  },
-  {
-    src: "https://i.postimg.cc/CKhrGb9J/RA-08-0709.webp",
-    alt: "Longmont, Colorado, ca. 1980, Robert Adams"
-  },
-  {
-    src: "https://i.postimg.cc/TP1q20z8/par65507-overlay.jpg",
-    alt: "Josef Koudelka, Exiles, 1987 (France)"
-  },
-  {
-    src: "https://i.postimg.cc/VLztL4t7/STILL-LIFE1.jpg",
-    alt: "Don McCullin, Still Life, England 1979"
-  },
-  {
-    src: "https://i.postimg.cc/Rhfrmwkf/01.jpg",
-    alt: "Push, Pete Turner, 1970"
-  },
-  {
-    src: "https://i.postimg.cc/KvywL3S3/91-102-2-cropped.jpg", 
-    alt: "Paul Strand, Wall Street, New York, 1915"
-  }, 
-  { 
-    src: "https://i.postimg.cc/6pHGnZPm/image.png", 
-    alt: "Newspaper boys, Frans Stoppelman, 1976"
-  }, 
+export const prerender = true;
+
+// Fetch og:image / twitter:image thumbnails for links at build time
+const linkUrls = baseArtifacts
+  .filter((a): a is Artifact & { url: string } => a.type === "link" && !!a.url)
+  .map((a) => a.url);
+const thumbnails = await getLinkThumbnails(linkUrls);
+
+function withCategories(a: Artifact): Artifact & { categories: ArtifactCategory[] } {
+  const cats = a.categories?.length
+    ? a.categories
+    : a.type === "image"
+      ? (["photography"] as ArtifactCategory[])
+      : a.type === "video"
+        ? (["tools"] as ArtifactCategory[])
+        : (["design"] as ArtifactCategory[]);
+  return { ...a, categories: cats };
+}
+
+const artifacts = baseArtifacts.map((a) => {
+  const item = withCategories(a);
+  if (a.type === "link" && a.url) {
+    return { ...item, thumbnail: thumbnails.get(a.url) ?? null };
+  }
+  return item;
+});
+
+const allCategories = [...new Set(artifacts.flatMap((a) => a.categories))].sort();
+const typeFilters: { value: ArtifactType | "all"; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "image", label: "Images" },
+  { value: "link", label: "Links" },
+  { value: "video", label: "Videos" },
 ];
+const categoryFilters = allCategories.map((c) => ({
+  value: c,
+  label: CATEGORY_LABELS[c] ?? c,
+}));
 ---
 
-<Layout title="Artifacts | FQ" description={SITE_DESCRIPTION}>
-  <main>
-    <!-- Description -->
-    <div class="mb-4">
-      <p class="text-base">
-        I've spent a lot of time on the internet over the past 18 years, here are some websites and images I've come across.
-      </p>
+<Layout title="Artifacts | Farooq Qureshi" description={SITE_DESCRIPTION} className="max-w-5xl">
+  <main class="no-link-underline">
+    <h1 class="text-sm font-medium mb-8">Gems on the web that I've came across.</h1>
+
+    <!-- Filters: Type + Category -->
+    <div class="flex flex-col gap-4 mb-8">
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">Type</span>
+        {typeFilters.map((f) => (
+          <button
+            type="button"
+            class="artifact-type-filter px-3 py-1.5 text-xs rounded-full border transition-colors"
+            data-filter={f.value}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">Category</span>
+        {categoryFilters.map((f) => (
+          <button
+            type="button"
+            class="artifact-category-filter px-3 py-1.5 text-xs rounded-full border transition-colors"
+            data-filter={f.value}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
     </div>
 
-    <!-- Path Selection -->
-    <div class="mb-8">
-      <div class="flex items-center space-x-1 text-base">
-        <button id="textPath" class="text-black dark:text-white no-underline hover:no-underline focus:no-underline" style="text-decoration: none !important; color: inherit !important;">
-          Websites
-        </button>
-        <span class="text-black dark:text-white">/</span>
-        <button id="imagesPath" class="text-black dark:text-white no-underline hover:no-underline focus:no-underline" style="text-decoration: none !important; color: inherit !important;">
-          Images
-        </button>
-      </div>
-    </div>
-
-    <!-- Text Content -->
-    <div id="textContent" class="text-base space-y-2" style="display: none;">
-      <p>
-        <a href="http://booksofthecentury.com/" target="_blank">This website</a> for finding new books.
-      </p>
-      <p>
-        <a href="https://byronm.com/13sentences.html" target="_blank">Watch</a> Paul Graham write an essay.
-      </p>
-      <p>
-        <a href="https://visualrambling.space/neural-network/" target="_blank">Understanding Neural Networks</a> and basically all of <a href="https://visualrambling.space/" target="_blank">visualrambling.space</a>.
-      </p>
-      <p>
-        <a href="https://vintageapple.org/inside_r/pdf/Human_Interface_Guidelines_1992.pdf" target="_blank">Apple's Original Human Interface Guidelines</a>.
-      </p>
-      <p> 
-        This list  is incomplete without a special reference to the <a href="https://www.blueskycity.ca/" target="_blank">Blue Sky City</a>.
-      <p>
-        Notably, <a href="https://buildcanada.com/" target="_blank">Build Canada</a>.
-      </p>
-      
-      <p>
-        Patrick Collison's <a href="https://patrickcollison.com/fast" target="_blank">examples of ambitious projects executed on quickly</a>.
-      </p>
-      <p>
-        <a href="https://book.stevejobsarchive.com/" target="_blank">Make Something Wonderful</a>, a collection from the life of Steve Jobs.
-      </p>
-      <p>
-        <a href="https://www.folklore.org/I'll_Be_Your_Best_Friend.html?sort=date" target="_blank">I'll Be Your Best Friend</a>.
-      </p>
-      
-      <p>
-        Bret Victor's <a href="http://worrydream.com/#!/InventingOnPrinciple" target="_blank">talk</a> on creating tools that empower people.
-      </p>
-      <p>
-        Frank Chimero's <a href="https://frankchimero.com/blog/2015/the-webs-grain/" target="_blank">The Web's Grain</a>.
-      </p>
-      <p>
-        <a href="https://gwern.net/improvement" target="_blank">Gwern Branwen's</a> catalog of unheralded quality-of-life improvements.
-      </p>
-      <p>
-        Anything by <a href="https://pudding.cool/" target="_blank">pudding.cool</a>, particularly <a href="https://pudding.cool/2025/06/hello-stranger/" target="_blank">Hello Stranger</a>.
-      </p>
-      <p>
-        <a href="https://www.designarena.ai/" target="_blank">Design Arena</a>, comparing AI design capabilities.
-      </p>
-      <p>
-        <a href="https://waste.space/" target="_blank">waste.space</a> has incredible design inspiration.
-      </p>
-      <p>
-        <a href="https://visualjournal.it/" target="_blank">visualjournal.it</a>.
-      </p>
-      <p>
-        <a href="https://radio.garden/" target="_blank">Radio.garden</a>, let's you listen to the radio anywhere in the world.
-      </p>
-      <p>
-        Nielsen Norman Group's <a href="https://www.nngroup.com/articles/flat-design/" target="_blank">Flat Design</a> - the usability tradeoffs of flat UI trends.
-      </p>
-      <p>
-        <a href="https://littlebigdetails.com/" target="_blank">Little Big Details</a>.
-      </p>
-      <p>
-        <a href="https://press.stripe.com/" target="_blank">Book recommendations</a> from Stripe.
-      </p>
-      <p>
-        <a href="https://www.figma.com/blog/the-birth-of-inter/" target="_blank">The Birth of Inter</a>.
-      </p>
-      <p>
-        Every issue of Stewart Brand's <a href="https://wholeearth.info/" target="_blank">Whole Earth Catalog</a> is available online to look at.
-      </p>
-      <p>
-        C.S. Lewis's <a href="https://www.lesswrong.com/posts/Y8rEA4e4DxafmeAbW/the-inner-ring-by-c-s-lewis" target="_blank">The Inner Ring</a>.
-      </p>
-      <p>
-        An archive of the 1964 New York World's Fair is available <a href="http://www.nywf64.com/index.html" target="_blank">online</a>.
-      </p>
-      <p>
-        <a href="https://lettersfromsweden.se/" target="_blank">Letters from Sweden</a>.
-      </p>
-      <p>
-        The creators of <a href="https://leanprover.github.io/" target="_blank">Lean</a> created <a href="https://leanprover-community.github.io/mathlib-overview.html" target="_blank">mathlib</a>, a collection of useful facts about mathematical objects.
-      </p>
-      <p>
-        <a href="https://www.makingsoftware.com/" target="_blank">Making Software</a> by <a href="https://alcohollick.com/" target="_blank">Dan Hollick</a>.
-      </p>
-      <p>
-        <a href="https://www.themarginalian.org/the-coziest-place-on-the-moon/" target="_blank">The Coziest Place on the Moon</a>.
-      </p>
-      <p>
-        <a href="https://monoskop.org/" target="_blank">Monoskop</a>, a wiki for arts and studies.
-      </p>
-      <p>
-        <a href="https://superbad.com/" target="_blank">Superbad.com</a>.
-      </p>
-      <p>
-        <a href="https://progress.openai.com/" target="_blank">The progress</a> of responses from GPT models over time.
-      </p>
-      <p>
-        <a href="https://parallel.ai/" target="_blank">parallel.ai</a> has a website for humans and machines.
-      </p>
-      <p>
-        <a href="https://sites.stat.columbia.edu/gelman/research/published/bell.pdf" target="_blank">What made Bell Labs special?</a>
-      </p>
-      <p>
-        <a href="http://theory.cs.berkeley.edu/computational-lens.html" target="_blank">The Computational Lens</a>.
-      </p>
-      <p>
-        Richard Hamming <a href="https://www.cs.virginia.edu/~robins/YouAndYourResearch.html" target="_blank">on how to do great research</a>.
-      </p>
-    </div>
-
-    <!-- Images Content -->
-    <div id="imagesContent" class="flex flex-col space-y-4" style="display: none;">
-      <!-- Navigation -->
-      <div class="flex items-center space-x-4 text-base">
-        <div class="flex space-x-1">
-          <button id="prevBtn" class="cursor-pointer text-black dark:text-white no-underline hover:no-underline focus:no-underline" style="text-decoration: none !important; color: inherit !important;">Back</button>
-          <span class="text-black dark:text-white">|</span>
-          <button id="nextBtn" class="cursor-pointer text-black dark:text-white no-underline hover:no-underline focus:no-underline" style="text-decoration: none !important; color: inherit !important;">Next</button>
-        </div>
-        <span id="imageCounter" class="text-black dark:text-white">1/{images.length}</span>
-      </div>
-      
-      <!-- Image container -->
-      <div class="w-full max-w-md">
-        <img 
-          id="currentImage" 
-          src={images[0].src} 
-          alt={images[0].alt} 
-          class="w-full h-auto shadow-sm" 
-          loading="eager"
-          decoding="async"
-          style="min-height: 200px;"
-        />
-      </div>
-      
-      <!-- Description -->
-      <div class="w-full max-w-md">
-        <p id="imageDescription" class="text-sm">{images[0].alt}</p>
-      </div>
+    <!-- Masonry grid -->
+    <div class="flashlight-hover artifact-grid columns-2 sm:columns-3 column-gap-4">
+      {artifacts.map((item) => (
+        <a
+          href={item.url || item.image || "#"}
+          target={item.url || item.image ? "_blank" : undefined}
+          rel={item.url || item.image ? "noopener" : undefined}
+          class="flashlight-item artifact-card block break-inside-avoid mb-4 rounded-lg overflow-hidden bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors group"
+          data-type={item.type}
+          data-categories={item.categories?.join(",") ?? ""}
+        >
+          {item.type === "image" && item.image ? (
+            <div class="overflow-hidden rounded-t-lg bg-zinc-100 dark:bg-zinc-800">
+              <img
+                src={item.image}
+                alt={item.alt || item.title}
+                class="w-full h-auto block"
+                loading="lazy"
+              />
+            </div>
+          ) : item.type === "link" && item.url ? (
+            <div class="aspect-[4/3] overflow-hidden relative flex items-center justify-center">
+              {item.thumbnail ? (
+                <img
+                  src={item.thumbnail}
+                  alt=""
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                  onerror="this.style.display='none';this.nextElementSibling?.classList.remove('hidden');"
+                />
+              ) : null}
+              <div
+                class={`artifact-placeholder w-full h-full ${item.thumbnail ? 'hidden' : ''}`}
+                data-domain={item.domain || item.url}
+              />
+            </div>
+          ) : item.type === "link" ? (
+            <div class="aspect-[4/3] flex items-center justify-center bg-zinc-200 dark:bg-zinc-800">
+              <span class="text-2xl text-zinc-500 dark:text-zinc-400">↗</span>
+            </div>
+          ) : (
+            <div class="aspect-[4/3] flex items-center justify-center bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
+              <span class="text-2xl">▶</span>
+            </div>
+          )}
+          {(item.title || item.alt || item.description || item.domain) && (
+            <div class="p-3">
+              {(item.title || item.alt || item.domain) && (
+                <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-2">
+                  {item.title || item.alt || item.domain || "—"}
+                </p>
+              )}
+              {item.description && (
+                <p class={`text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${item.title || item.alt || item.domain ? "mt-0.5" : ""}`}>
+                  {item.description}
+                </p>
+              )}
+              {item.domain && (
+                <p class={`text-[10px] text-zinc-400 dark:text-zinc-500 truncate group-hover:text-zinc-500 dark:group-hover:text-zinc-400 ${(item.title || item.alt || item.description) ? "mt-1" : ""}`}>
+                  {item.domain}
+                </p>
+              )}
+            </div>
+          )}
+        </a>
+      ))}
     </div>
   </main>
 
-  <script define:vars={{ images }}>
-    let currentIndex = 0;
-    let currentPath = null; // Start with no path selected
-    
-    const textPath = document.getElementById('textPath');
-    const imagesPath = document.getElementById('imagesPath');
-    const textContent = document.getElementById('textContent');
-    const imagesContent = document.getElementById('imagesContent');
-    
-    const currentImage = document.getElementById('currentImage');
-    const imageCounter = document.getElementById('imageCounter');
-    const imageDescription = document.getElementById('imageDescription');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    // Path switching
-    function switchToText() {
-      currentPath = 'text';
-      imagesContent.style.display = 'none';
-      textContent.style.display = 'block';
+  <style>
+    .artifact-grid {
+      column-fill: balance;
     }
-    
-    function switchToImages() {
-      currentPath = 'images';
-      textContent.style.display = 'none';
-      imagesContent.style.display = 'block';
+    .artifact-card[data-type="image"] .aspect-[4/3] img {
+      min-height: 100%;
     }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .artifact-placeholder {
+      background: linear-gradient(135deg, #e8e4dc 0%, #d4cfc4 50%, #c4bfb2 100%);
+    }
+    html.dark .artifact-placeholder {
+      background: linear-gradient(135deg, #2a2824 0%, #1f1d1a 50%, #181614 100%);
+    }
+    /* Filter buttons: inactive */
+    .artifact-type-filter,
+    .artifact-category-filter {
+      border-color: rgb(228 228 231);
+      color: rgb(82 82 91);
+    }
+    html.dark .artifact-type-filter,
+    html.dark .artifact-category-filter {
+      border-color: rgb(63 63 70);
+      color: rgb(161 161 170);
+    }
+    /* Filter buttons: active */
+    .artifact-type-filter.active,
+    .artifact-category-filter.active {
+      background: rgb(24 24 27);
+      color: white;
+      border-color: rgb(24 24 27);
+    }
+    html.dark .artifact-type-filter.active,
+    html.dark .artifact-category-filter.active {
+      background: rgb(244 244 245);
+      color: rgb(24 24 27);
+      border-color: rgb(244 244 245);
+    }
+    /* Filter buttons: hover - keep text visible */
+    .artifact-type-filter:hover,
+    .artifact-category-filter:hover {
+      border-color: rgb(161 161 170);
+      color: rgb(24 24 27);
+    }
+    html.dark .artifact-type-filter:hover,
+    html.dark .artifact-category-filter:hover {
+      border-color: rgb(113 113 122);
+      color: rgb(244 244 245);
+    }
+    .artifact-type-filter.active:hover,
+    .artifact-category-filter.active:hover {
+      background: rgb(39 39 42);
+      color: white;
+      border-color: rgb(39 39 42);
+    }
+    html.dark .artifact-type-filter.active:hover,
+    html.dark .artifact-category-filter.active:hover {
+      background: rgb(228 228 231);
+      color: rgb(24 24 27);
+      border-color: rgb(228 228 231);
+    }
+  </style>
 
-    if (textPath) textPath.addEventListener('click', switchToText);
-    if (imagesPath) imagesPath.addEventListener('click', switchToImages);
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const typeFilters = document.querySelectorAll(".artifact-type-filter");
+      const categoryFilters = document.querySelectorAll(".artifact-category-filter");
+      const cards = document.querySelectorAll(".artifact-card");
 
-    // Image navigation (from original images page)
-    const imageCache = new Map();
-    const preloadImages = () => {
-      // Defer image preloading to not block initial render
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => {
-          images.forEach((img, index) => {
-            const imgElement = new Image();
-            imgElement.src = img.src;
-            imageCache.set(index, imgElement);
-          });
-        }, { timeout: 1000 });
-      } else {
-        setTimeout(() => {
-          images.forEach((img, index) => {
-            const imgElement = new Image();
-            imgElement.src = img.src;
-            imageCache.set(index, imgElement);
-          });
-        }, 100);
+      let activeType = "all";
+      let activeCategory: string | null = null;
+
+      function applyFilters() {
+        cards.forEach((card) => {
+          const type = (card as HTMLElement).dataset.type;
+          const categories = ((card as HTMLElement).dataset.categories ?? "").split(",").filter(Boolean);
+          const typeMatch = activeType === "all" || type === activeType;
+          const categoryMatch = !activeCategory || categories.includes(activeCategory);
+          (card as HTMLElement).style.display = typeMatch && categoryMatch ? "block" : "none";
+        });
       }
-    };
 
-    function updateImage() {
-      if (!currentImage || !imageCounter || !imageDescription) return;
-      
-      const img = images[currentIndex];
-      const cachedImg = imageCache.get(currentIndex);
-      
-      currentImage.src = cachedImg?.src || img.src;
-      currentImage.alt = img.alt;
-      
-      requestAnimationFrame(() => {
-        imageCounter.textContent = `${currentIndex + 1}/${images.length}`;
-        imageDescription.textContent = img.alt;
-      });
-    }
-
-    let isNavigating = false;
-    function navigate(direction) {
-      if (isNavigating) return;
-      isNavigating = true;
-      
-      currentIndex = direction === 'prev' 
-        ? (currentIndex > 0 ? currentIndex - 1 : images.length - 1)
-        : (currentIndex < images.length - 1 ? currentIndex + 1 : 0);
-      
-      updateImage();
-      
-      setTimeout(() => { isNavigating = false; }, 100);
-    }
-
-    function showPrev() { navigate('prev'); }
-    function showNext() { navigate('next'); }
-
-    if (prevBtn) prevBtn.addEventListener('click', showPrev, { passive: true });
-    if (nextBtn) nextBtn.addEventListener('click', showNext, { passive: true });
-
-    document.addEventListener('keydown', (e) => {
-      if (currentPath === 'images') {
-        if (e.key === 'ArrowLeft') { e.preventDefault(); showPrev(); }
-        if (e.key === 'ArrowRight') { e.preventDefault(); showNext(); }
+      function setActiveType(value: string) {
+        activeType = value;
+        typeFilters.forEach((btn) => {
+          const el = btn as HTMLButtonElement;
+          el.classList.toggle("active", el.dataset.filter === value);
+        });
+        applyFilters();
       }
-    }, { passive: false });
 
-    // Defer image preloading to prevent jitter on initial load
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        requestIdleCallback ? requestIdleCallback(preloadImages, { timeout: 500 }) : setTimeout(preloadImages, 100);
+      function setActiveCategory(value: string | null) {
+        activeCategory = value;
+        categoryFilters.forEach((btn) => {
+          const el = btn as HTMLButtonElement;
+          el.classList.toggle("active", el.dataset.filter === value);
+        });
+        applyFilters();
+      }
+
+      typeFilters.forEach((btn) => {
+        btn.addEventListener("click", () => setActiveType((btn as HTMLButtonElement).dataset.filter ?? "all"));
       });
-    } else {
-      requestIdleCallback ? requestIdleCallback(preloadImages, { timeout: 500 }) : setTimeout(preloadImages, 100);
-    }
+      categoryFilters.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = (btn as HTMLButtonElement).dataset.filter;
+          setActiveCategory(activeCategory === val ? null : val ?? null);
+        });
+      });
+
+      setActiveType("all");
+    });
   </script>
 </Layout>

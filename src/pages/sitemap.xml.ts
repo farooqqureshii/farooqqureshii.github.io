@@ -17,7 +17,6 @@ export const GET: APIRoute = async () => {
     { url: '/other/books', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/courses', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/images', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
-    { url: '/other/music', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/pencils', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/resources', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     // Writing articles

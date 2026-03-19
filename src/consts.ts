@@ -7,3 +7,4 @@ export const SITE_DESCRIPTION =
   "Hi! I'm Farooq, welcome to my digital home.";
 
 export const EMAIL = "farooq.qureshi@outlook.com";
+export const EMAIL_UOTTAWA = "farooq.qureshi@uottawa.ca";

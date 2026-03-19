@@ -1,119 +1,137 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-// Book data with ratings, descriptions, and images
+// Book data with ratings, descriptions, images, and genres
 const books = [
-  { title: "For Whom the Bell Tolls", author: "Ernest Hemingway", rating: 5, description: "Hemingway's masterpiece about love, war, and sacrifice. The prose is spare but devastatingly powerful.", image: "https://covers.openlibrary.org/b/isbn/9780684803357-M.jpg" },
-  { title: "The Memory Police", author: "Yoko Ogawa", rating: 4, description: "Classic dystopian novel, predictable but engaging.", image: "https://covers.openlibrary.org/b/isbn/9781101870600-M.jpg" },
-  { title: "The Man in the High Castle", author: "Philip K. Dick", rating: 5, description: "Illuminating, thought provoking alternate history.", image: "https://i.postimg.cc/DZZMhL55/9780544916081-large.webp" },
-  { title: "Everything I Never Told You", author: "Celeste Ng", rating: 4, description: "Beautiful exploration of family dynamics and the weight of unspoken expectations.", image: "https://covers.openlibrary.org/b/isbn/9780143127550-M.jpg" },
-  { title: "Belzhar", author: "Meg Wolitzer", rating: 3, description: "Interesting take on trauma and healing through writing.", image: "https://i.postimg.cc/5NtVsQ8n/71b-J88svh-HL-UF894-1000-QL80.jpg" },
-  { title: "Animal Farm", author: "George Orwell", rating: 5, description: "Timeless allegory about power and corruption. Still relevant today.", image: "https://covers.openlibrary.org/b/isbn/9780451526342-M.jpg" },
-  { title: "1984", author: "George Orwell", rating: 5, description: "Chilling dystopian masterpiece that feels more prescient with each passing year.", image: "https://covers.openlibrary.org/b/isbn/9780451524935-M.jpg" },
-  { title: "Brave New World", author: "Aldous Huxley", rating: 4, description: "Fascinating contrast to 1984 - control through pleasure rather than pain.", image: "https://covers.openlibrary.org/b/isbn/9780060850524-M.jpg" },
-  { title: "Bluets", author: "Maggie Nelson", rating: 4, description: "Poetic meditation on color, love, and loss. Beautifully written.", image: "https://covers.openlibrary.org/b/isbn/9781933517407-M.jpg" },
-  { title: "Sapiens", author: "Yuval Noah Harari", rating: 5, description: "Mind-bending overview of human history. Changed how I think about civilization.", image: "https://covers.openlibrary.org/b/isbn/9780062316097-M.jpg" },
-  { title: "Homo Deus", author: "Yuval Noah Harari", rating: 4, description: "Thought-provoking look at humanity's future. Some predictions feel eerily accurate.", image: "https://covers.openlibrary.org/b/isbn/9780062464316-M.jpg" },
-  { title: "Skin in the Game", author: "Nassim Nicholas Taleb", rating: 4, description: "Taleb's insights on risk and responsibility. Challenging but rewarding.", image: "https://images-na.ssl-images-amazon.com/images/P/042528462X.01.L.jpg" },
-  { title: "Dopamine Nation", author: "Anna Lembke", rating: 4, description: "Eye-opening look at addiction in the digital age. Very relevant.", image: "https://i.postimg.cc/C143Nw5M/91lc-Jzq-YNt-L.jpg" },
-  { title: "All the Light We Cannot See", author: "Anthony Doerr", rating: 5, description: "Stunning prose and heartbreaking story. One of my favorites.", image: "https://covers.openlibrary.org/b/isbn/9781476746586-M.jpg" },
-  { title: "The Alchemist", author: "Paulo Coelho", rating: 3, description: "Simple but profound fable about following your dreams.", image: "https://covers.openlibrary.org/b/isbn/9780061122415-M.jpg" },
-  { title: "South of the Border, West of the Sun", author: "Haruki Murakami", rating: 4, description: "Classic Murakami atmosphere and themes of nostalgia and longing.", image: "https://covers.openlibrary.org/b/isbn/9780679775430-M.jpg" },
-  { title: "Klara and the Sun", author: "Kazuo Ishiguro", rating: 4, description: "Beautiful AI perspective on human nature. Ishiguro's subtle genius.", image: "https://covers.openlibrary.org/b/isbn/9780593318171-M.jpg" },
-  { title: "Wit", author: "Margaret Edson", rating: 4, description: "Powerful play about mortality, academia, and what really matters.", image: "https://i.postimg.cc/B6NzFN7L/71-Tz-IBx-Uza-L-AC-UL600-SR600-600.jpg" },
-  { title: "The Subject Was Roses", author: "Frank D. Gilroy", rating: 3, description: "Intense family drama with complex characters.", image: "https://i.postimg.cc/cJ0TcwnH/7629990.jpg" },
-  { title: "Outliers", author: "Malcolm Gladwell", rating: 4, description: "Fascinating look at success patterns. The 10,000 hour rule is compelling.", image: "https://covers.openlibrary.org/b/isbn/9780316017923-M.jpg" },
-  { title: "Homegoing", author: "Yaa Gyasi", rating: 5, description: "Epic family saga spanning generations. Incredible storytelling.", image: "https://covers.openlibrary.org/b/isbn/9781101947135-M.jpg" },
-  { title: "Speedboat", author: "Renata Adler", rating: 3, description: "Experimental and fragmented, but captures something essential about modern life.", image: "https://i.postimg.cc/h46k1ZPv/71-Cy-DJ-Ph-BL-UF894-1000-QL80.jpg" },
-  { title: "The Folded Clock", author: "Heidi Julavits", rating: 3, description: "Diary-style reflections on time, creativity, and daily life.", image: "https://i.postimg.cc/vTVSKMH5/22716391.jpg" },
-  { title: "We the Animals", author: "Justin Torres", rating: 4, description: "Raw and beautiful coming-of-age story. Short but powerful.", image: "https://covers.openlibrary.org/b/isbn/9780547576725-M.jpg" },
-  { title: "So Sad Today", author: "Melissa Broder", rating: 3, description: "Honest and darkly funny essays about mental health and modern life.", image: "https://i.postimg.cc/FK6pXq6G/91u-GS-f6-WML-UF1000-1000-QL80.jpg" },
-  { title: "Milkman", author: "Anna Burns", rating: 4, description: "Unique voice and perspective on the Troubles. Challenging but rewarding.", image: "https://i.postimg.cc/yNDhjjNV/91-P67-FPmyv-L.jpg" },
-  { title: "Weather", author: "Jenny Offill", rating: 3, description: "Fragmented but insightful look at climate anxiety and modern life.", image: "https://covers.openlibrary.org/b/isbn/9780385351102-M.jpg" },
-  { title: "The Sad Part Was", author: "Prabda Yoon", rating: 3, description: "Quirky and experimental short stories from Thailand.", image: "https://images-na.ssl-images-amazon.com/images/P/1782274561.01.L.jpg" },
-  { title: "Call Me Zebra", author: "Azareen Van der Vliet Oloomi", rating: 3, description: "Wild and experimental novel about exile and literature.", image: "https://i.postimg.cc/k5R8K5jg/81a-P-HE-Dk-L-UF1000-1000-QL80.jpg" },
-  { title: "Native Speaker", author: "Chang-rae Lee", rating: 4, description: "Complex exploration of identity and assimilation in America.", image: "https://covers.openlibrary.org/b/isbn/9781573225311-M.jpg" },
-  { title: "Your Utopia", author: "Bora Chung", rating: 4, description: "Surreal and thought-provoking short stories about technology and society.", image: "https://i.postimg.cc/SNZzP93N/815-RGd-9-S7-L.jpg" },
-  { title: "Temporary", author: "Hilary Leichter", rating: 3, description: "Absurd and funny exploration of modern work culture.", image: "https://i.postimg.cc/L59nC4TF/81-KT-CRk-I6-L.jpg" },
-  { title: "The Employees", author: "Olga Ravn", rating: 4, description: "Strange and beautiful sci-fi about work, consciousness, and what makes us human.", image: "https://i.postimg.cc/2Ss3p7w3/The-Employees-cover.jpg" },
-  { title: "Drinking Coffee Elsewhere", author: "ZZ Packer", rating: 4, description: "Sharp and insightful short stories about race, class, and identity.", image: "https://covers.openlibrary.org/b/isbn/9781573222341-M.jpg" },
-  { title: "No One Is Talking About This", author: "Patricia Lockwood", rating: 4, description: "Brilliant capture of internet culture and its effects on consciousness.", image: "https://covers.openlibrary.org/b/isbn/9780593189580-M.jpg" },
-  { title: "The Year of Magical Thinking", author: "Joan Didion", rating: 5, description: "Devastating and beautiful meditation on grief and loss.", image: "https://covers.openlibrary.org/b/isbn/9781400043149-M.jpg" },
-  { title: "If You Leave Me", author: "Crystal Hana Kim", rating: 4, description: "Epic family saga set during the Korean War. Beautiful and heartbreaking.", image: "https://i.postimg.cc/tRBTRj5S/34858106.jpg" },
-  { title: "How Much of These Hills Is Gold", author: "C Pam Zhang", rating: 4, description: "Lyrical and haunting reimagining of the American West.", image: "https://covers.openlibrary.org/b/isbn/9780525537205-M.jpg" },
-  { title: "The Loneliness of the Long Distance Runner", author: "Alan Sillitoe", rating: 3, description: "Classic working-class British literature. Raw and authentic.", image: "https://covers.openlibrary.org/b/isbn/9780679734529-M.jpg" },
-  { title: "Can't and Won't", author: "Lydia Davis", rating: 4, description: "Master of the very short story. Each piece is perfectly crafted.", image: "https://images-na.ssl-images-amazon.com/images/P/0374534098.01.L.jpg" },
-  { title: "A Heartbreaking Work of Staggering Genius", author: "Dave Eggers", rating: 4, description: "Raw and honest memoir about family, loss, and growing up too fast.", image: "https://covers.openlibrary.org/b/isbn/9780375725784-M.jpg" },
-  { title: "Celestial Bodies", author: "Jokha Alharthi", rating: 4, description: "First Arabic novel to win the Man Booker International Prize. Beautiful and complex.", image: "https://i.postimg.cc/m20Th2F8/71-Pqu-PDCt-SL.jpg" },
-  { title: "Go Home!", author: "Edited by Rowan Hisayo Buchanan", rating: 3, description: "Diverse collection of stories about home and belonging.", image: "https://i.postimg.cc/KjChKJ4r/34381317.jpg" },
-  { title: "Interpreter of Maladies", author: "Jhumpa Lahiri", rating: 5, description: "Perfect short stories about the immigrant experience. Lahiri's prose is exquisite.", image: "https://covers.openlibrary.org/b/isbn/9780395927205-M.jpg" },
-  { title: "The Emperor of All Maladies", author: "Siddhartha Mukherjee", rating: 5, description: "Fascinating biography of cancer. Reads like a novel despite being deeply scientific.", image: "https://covers.openlibrary.org/b/isbn/9781439170915-M.jpg" },
-  { title: "The Boat", author: "Nam Le", rating: 4, description: "Powerful short stories that span the globe. Each one is a world unto itself.", image: "https://covers.openlibrary.org/b/isbn/9780307268082-M.jpg" },
-  { title: "The Ones Who Walk Away from Omelas", author: "Ursula K. Le Guin", rating: 5, description: "Perfect short story that poses the ultimate moral question.", image: "https://i.postimg.cc/qBW76GPK/The-Ones-Who-Walk-Away-From-Omelas.jpg" },
-  { title: "The Dispossessed", author: "Ursula K. Le Guin", rating: 5, description: "Brilliant exploration of anarchism and utopia. Le Guin at her best.", image: "https://images-na.ssl-images-amazon.com/images/P/0061054887.01.L.jpg" },
-  { title: "The Left Hand of Darkness", author: "Ursula K. Le Guin", rating: 5, description: "Revolutionary sci-fi that explores gender and society. Timeless classic.", image: "https://covers.openlibrary.org/b/isbn/9780441478125-M.jpg" },
-  { title: "Frankenstein", author: "Mary Shelley", rating: 4, description: "The original sci-fi novel. Still powerful and relevant after 200 years.", image: "https://covers.openlibrary.org/b/isbn/9780486282114-M.jpg" },
-  { title: "In Search of Lost Time", author: "Marcel Proust", rating: 3, description: "The ultimate literary challenge. Beautiful but requires serious commitment.", image: "https://covers.openlibrary.org/b/isbn/9780142437964-M.jpg" },
-  { title: "The Trial", author: "Franz Kafka", rating: 4, description: "Kafkaesque nightmare that captures the absurdity of bureaucracy and power.", image: "https://i.postimg.cc/W44VHFRJ/9780805209990.jpg" },
-  { title: "To the Lighthouse", author: "Virginia Woolf", rating: 4, description: "Stream of consciousness masterpiece. Challenging but rewarding.", image: "https://covers.openlibrary.org/b/isbn/9780156907392-M.jpg" },
-  { title: "The Crucible", author: "Arthur Miller", rating: 4, description: "Powerful allegory about McCarthyism and mass hysteria.", image: "https://covers.openlibrary.org/b/isbn/9780142437339-M.jpg" },
-  { title: "The Double Helix", author: "James D. Watson", rating: 3, description: "Fascinating insider account of the discovery of DNA structure.", image: "https://covers.openlibrary.org/b/isbn/9780743216302-M.jpg" },
-  { title: "Dune", author: "Frank Herbert", rating: 5, description: "Epic sci-fi masterpiece. Complex world-building and political intrigue.", image: "https://covers.openlibrary.org/b/isbn/9780441013593-M.jpg" },
-  { title: "The Electric Kool-Aid Acid Test", author: "Tom Wolfe", rating: 4, description: "Wild ride through the 60s counterculture. Gonzo journalism at its finest.", image: "https://covers.openlibrary.org/b/isbn/9780312427597-M.jpg" },
-  { title: "Danube", author: "Claudio Magris", rating: 3, description: "Literary travelogue along the Danube. Rich in history and culture.", image: "https://images-na.ssl-images-amazon.com/images/P/0374526338.01.L.jpg" },
-  { title: "The Road to Oxiana", author: "Robert Byron", rating: 4, description: "Classic travel writing from the 1930s. Still fresh and engaging.", image: "https://i.postimg.cc/Mp92V6cq/71j-T6-Tt-Za-L-UF894-1000-QL80.jpg" },
-  { title: "And the Band Played On", author: "Randy Shilts", rating: 5, description: "Devastating account of the AIDS crisis. Essential reading for understanding recent history.", image: "https://covers.openlibrary.org/b/isbn/9780312374631-M.jpg" },
-  { title: "Postwar", author: "Tony Judt", rating: 5, description: "Comprehensive history of Europe after WWII. Masterful synthesis.", image: "https://i.postimg.cc/jqPpvQwY/81nm4-WNQXq-L.jpg" },
-  { title: "The Catcher in the Rye", author: "J.D. Salinger", rating: 4, description: "Classic coming-of-age story. Holden's voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780316769174-M.jpg" },
-  { title: "Middlemarch", author: "George Eliot", rating: 4, description: "Victorian masterpiece about provincial life. Eliot's psychological insight is remarkable.", image: "https://covers.openlibrary.org/b/isbn/9780141439549-M.jpg" },
-  { title: "The Sun Also Rises", author: "Ernest Hemingway", rating: 4, description: "Hemingway's spare prose at its best. Captures the lost generation perfectly.", image: "https://covers.openlibrary.org/b/isbn/9780743297332-M.jpg" },
-  { title: "Midnight's Children", author: "Salman Rushdie", rating: 5, description: "Magical realism meets Indian history. Rushdie's imagination is boundless.", image: "https://covers.openlibrary.org/b/isbn/9780812976533-M.jpg" },
-  { title: "The Plague", author: "Albert Camus", rating: 4, description: "Existentialist masterpiece that feels eerily relevant to our times.", image: "https://covers.openlibrary.org/b/isbn/9780679720218-M.jpg" },
-  { title: "The Man Without Qualities", author: "Robert Musil", rating: 3, description: "Massive modernist novel. Challenging but worth the effort.", image: "https://i.postimg.cc/sxr0bqBN/818-Vu6f-P4d-L-UF894-1000-QL80.jpg" },
-  { title: "The Tale of Genji", author: "Murasaki Shikibu", rating: 3, description: "The world's first novel. Beautiful but requires patience.", image: "https://covers.openlibrary.org/b/isbn/9780143039495-M.jpg" },
-  { title: "In Cold Blood", author: "Truman Capote", rating: 4, description: "Pioneer of true crime writing. Capote's prose is masterful.", image: "https://covers.openlibrary.org/b/isbn/9780679745587-M.jpg" },
-  { title: "Man's Search for Meaning", author: "Viktor E. Frankl", rating: 5, description: "Profound meditation on suffering and meaning. Life-changing read.", image: "https://covers.openlibrary.org/b/isbn/9780807014295-M.jpg" },
-  { title: "Homage to Catalonia", author: "George Orwell", rating: 4, description: "Orwell's personal account of the Spanish Civil War. Honest and insightful.", image: "https://covers.openlibrary.org/b/isbn/9780156421171-M.jpg" },
-  { title: "I Know Why the Caged Bird Sings", author: "Maya Angelou", rating: 5, description: "Powerful memoir about resilience and finding your voice.", image: "https://covers.openlibrary.org/b/isbn/9780345514400-M.jpg" },
-  { title: "All the President's Men", author: "Bob Woodward & Carl Bernstein", rating: 4, description: "Thrilling account of investigative journalism that changed America.", image: "https://covers.openlibrary.org/b/isbn/9781476770512-M.jpg" },
-  { title: "The Warmth of Other Suns", author: "Isabel Wilkerson", rating: 5, description: "Masterful history of the Great Migration. Essential American history.", image: "https://i.postimg.cc/MpTrkyG4/71-Atl-Bx-cx-L-UF894-1000-QL80.jpg" },
-  { title: "The Handmaid's Tale", author: "Margaret Atwood", rating: 5, description: "Dystopian masterpiece that feels more relevant with each passing year. Atwood's world-building is chilling.", image: "https://covers.openlibrary.org/b/isbn/9780385490818-M.jpg" },
-  { title: "Station Eleven", author: "Emily St. John Mandel", rating: 4, description: "Beautiful post-apocalyptic novel about art, connection, and what endures. Haunting and hopeful.", image: "https://covers.openlibrary.org/b/isbn/9780385353304-M.jpg" },
-  { title: "The Underground Railroad", author: "Colson Whitehead", rating: 5, description: "Brilliant reimagining of history. Whitehead's prose is sharp and the story is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780385542364-M.jpg" },
-  { title: "Normal People", author: "Sally Rooney", rating: 4, description: "Intimate portrait of a relationship over years. Rooney captures the complexity of connection.", image: "https://covers.openlibrary.org/b/isbn/9780571334650-M.jpg" },
-  { title: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid", rating: 4, description: "Compelling story of old Hollywood glamour and secrets. Page-turner with depth.", image: "https://covers.openlibrary.org/b/isbn/9781501139239-M.jpg" },
-  { title: "Circe", author: "Madeline Miller", rating: 4, description: "Beautiful retelling of Greek mythology from a fresh perspective. Miller brings ancient stories to life.", image: "https://covers.openlibrary.org/b/isbn/9780316556347-M.jpg" },
-  { title: "The Overstory", author: "Richard Powers", rating: 4, description: "Epic novel about trees and our connection to nature. Ambitious and beautifully written.", image: "https://covers.openlibrary.org/b/isbn/9780393356687-M.jpg" },
-  { title: "Exit West", author: "Mohsin Hamid", rating: 4, description: "Poetic and timely novel about migration and displacement. Hamid's magical realism is subtle and powerful.", image: "https://covers.openlibrary.org/b/isbn/9780241979068-M.jpg" },
-  { title: "The Goldfinch", author: "Donna Tartt", rating: 4, description: "Sweeping coming-of-age story about art, loss, and obsession. Tartt's prose is immersive.", image: "https://covers.openlibrary.org/b/isbn/9780316055437-M.jpg" },
-  { title: "The Sympathizer", author: "Viet Thanh Nguyen", rating: 5, description: "Brilliant spy novel about the Vietnam War. Sharp, darkly funny, and deeply insightful.", image: "https://covers.openlibrary.org/b/isbn/9780802123459-M.jpg" },
-  { title: "Lincoln in the Bardo", author: "George Saunders", rating: 4, description: "Experimental and moving novel about grief and loss. Saunders' unique voice shines.", image: "https://covers.openlibrary.org/b/isbn/9780812995343-M.jpg" },
-  { title: "The Sellout", author: "Paul Beatty", rating: 4, description: "Satirical masterpiece about race in America. Darkly funny and uncomfortably relevant.", image: "https://covers.openlibrary.org/b/isbn/9780374260507-M.jpg" },
-  { title: "The Brief Wondrous Life of Oscar Wao", author: "Junot Díaz", rating: 5, description: "Vibrant and heartbreaking story of a Dominican family. Díaz's voice is electric.", image: "https://covers.openlibrary.org/b/isbn/9781594483295-M.jpg" },
-  { title: "White Teeth", author: "Zadie Smith", rating: 4, description: "Multigenerational saga about immigration and identity in London. Smith's debut is ambitious and funny.", image: "https://covers.openlibrary.org/b/isbn/9780375703867-M.jpg" },
-  { title: "The Kite Runner", author: "Khaled Hosseini", rating: 4, description: "Powerful story of friendship, betrayal, and redemption set in Afghanistan. Emotionally resonant.", image: "https://covers.openlibrary.org/b/isbn/9781594480003-M.jpg" },
-  { title: "The Namesake", author: "Jhumpa Lahiri", rating: 4, description: "Beautiful novel about identity and belonging. Lahiri's exploration of the immigrant experience is masterful.", image: "https://covers.openlibrary.org/b/isbn/9780395927212-M.jpg" },
-  { title: "The Remains of the Day", author: "Kazuo Ishiguro", rating: 5, description: "Perfect novel about duty, regret, and the things left unsaid. Ishiguro's restraint is devastating.", image: "https://covers.openlibrary.org/b/isbn/9780571152230-M.jpg" },
-  { title: "Never Let Me Go", author: "Kazuo Ishiguro", rating: 5, description: "Haunting dystopian novel about memory, love, and what it means to be human. Subtle and profound.", image: "https://covers.openlibrary.org/b/isbn/9780571224142-M.jpg" },
-  { title: "The Road", author: "Cormac McCarthy", rating: 5, description: "Bleak and beautiful post-apocalyptic journey. McCarthy's prose is spare and devastating.", image: "https://covers.openlibrary.org/b/isbn/9780307387899-M.jpg" },
-  { title: "Blood Meridian", author: "Cormac McCarthy", rating: 4, description: "Brutal and brilliant western. McCarthy's vision of violence is unflinching and unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780679728757-M.jpg" },
-  { title: "Beloved", author: "Toni Morrison", rating: 5, description: "Haunting masterpiece about slavery's legacy. Morrison's prose is poetic and powerful.", image: "https://covers.openlibrary.org/b/isbn/9781400033416-M.jpg" },
-  { title: "The Color Purple", author: "Alice Walker", rating: 5, description: "Powerful epistolary novel about resilience and sisterhood. Walker's voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780151191536-M.jpg" },
-  { title: "One Hundred Years of Solitude", author: "Gabriel García Márquez", rating: 5, description: "Magical realism at its finest. Márquez creates a world that feels both fantastical and deeply human.", image: "https://covers.openlibrary.org/b/isbn/9780060883287-M.jpg" },
-  { title: "The Stranger", author: "Albert Camus", rating: 4, description: "Existentialist classic about alienation and absurdity. Camus' spare prose is deceptively simple.", image: "https://covers.openlibrary.org/b/isbn/9780679720201-M.jpg" },
-  { title: "The Great Gatsby", author: "F. Scott Fitzgerald", rating: 5, description: "Perfect American novel about the American Dream. Fitzgerald's prose is luminous and tragic.", image: "https://covers.openlibrary.org/b/isbn/9780743273565-M.jpg" },
-  { title: "Slaughterhouse-Five", author: "Kurt Vonnegut", rating: 5, description: "Anti-war masterpiece that's both funny and devastating. Vonnegut's unique voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780385333849-M.jpg" },
-  { title: "The Master and Margarita", author: "Mikhail Bulgakov", rating: 5, description: "Surreal and satirical masterpiece about good and evil. Bulgakov's imagination is boundless.", image: "https://covers.openlibrary.org/b/isbn/9780679760801-M.jpg" }
+  { title: "For Whom the Bell Tolls", author: "Ernest Hemingway", rating: 5, genre: "Fiction, Literary, War", description: "Hemingway's masterpiece about love, war, and sacrifice. The prose is spare but devastatingly powerful.", image: "https://covers.openlibrary.org/b/isbn/9780684803357-M.jpg" },
+  { title: "The Memory Police", author: "Yoko Ogawa", rating: 4, genre: "Fiction, Dystopian", description: "Classic dystopian novel, predictable but engaging.", image: "https://covers.openlibrary.org/b/isbn/9781101870600-M.jpg" },
+  { title: "The Man in the High Castle", author: "Philip K. Dick", rating: 5, genre: "Sci-Fi, Alternate History", description: "Illuminating, thought provoking alternate history.", image: "https://i.postimg.cc/DZZMhL55/9780544916081-large.webp" },
+  { title: "Everything I Never Told You", author: "Celeste Ng", rating: 4, genre: "Fiction, Literary, Family", description: "Beautiful exploration of family dynamics and the weight of unspoken expectations.", image: "https://covers.openlibrary.org/b/isbn/9780143127550-M.jpg" },
+  { title: "Belzhar", author: "Meg Wolitzer", rating: 3, genre: "Fiction, Young Adult", description: "Interesting take on trauma and healing through writing.", image: "https://i.postimg.cc/5NtVsQ8n/71b-J88svh-HL-UF894-1000-QL80.jpg" },
+  { title: "Animal Farm", author: "George Orwell", rating: 5, genre: "Fiction, Dystopian, Allegory", description: "Timeless allegory about power and corruption. Still relevant today.", image: "https://covers.openlibrary.org/b/isbn/9780451526342-M.jpg" },
+  { title: "1984", author: "George Orwell", rating: 5, genre: "Fiction, Dystopian, Sci-Fi", description: "Chilling dystopian masterpiece that feels more prescient with each passing year.", image: "https://covers.openlibrary.org/b/isbn/9780451524935-M.jpg" },
+  { title: "Brave New World", author: "Aldous Huxley", rating: 4, genre: "Fiction, Dystopian, Sci-Fi", description: "Fascinating contrast to 1984 - control through pleasure rather than pain.", image: "https://covers.openlibrary.org/b/isbn/9780060850524-M.jpg" },
+  { title: "Bluets", author: "Maggie Nelson", rating: 4, genre: "Essay, Memoir, Poetry", description: "Poetic meditation on color, love, and loss. Beautifully written.", image: "https://covers.openlibrary.org/b/isbn/9781933517407-M.jpg" },
+  { title: "Sapiens", author: "Yuval Noah Harari", rating: 5, genre: "Non-Fiction, History, Anthropology", description: "Mind-bending overview of human history. Changed how I think about civilization.", image: "https://covers.openlibrary.org/b/isbn/9780062316097-M.jpg" },
+  { title: "Homo Deus", author: "Yuval Noah Harari", rating: 4, genre: "Non-Fiction, History, Philosophy", description: "Thought-provoking look at humanity's future. Some predictions feel eerily accurate.", image: "https://covers.openlibrary.org/b/isbn/9780062464316-M.jpg" },
+  { title: "Skin in the Game", author: "Nassim Nicholas Taleb", rating: 4, genre: "Non-Fiction, Philosophy, Business", description: "Taleb's insights on risk and responsibility. Challenging but rewarding.", image: "https://images-na.ssl-images-amazon.com/images/P/042528462X.01.L.jpg" },
+  { title: "Dopamine Nation", author: "Anna Lembke", rating: 4, genre: "Non-Fiction, Psychology, Science", description: "Eye-opening look at addiction in the digital age. Very relevant.", image: "https://i.postimg.cc/C143Nw5M/91lc-Jzq-YNt-L.jpg" },
+  { title: "All the Light We Cannot See", author: "Anthony Doerr", rating: 5, genre: "Fiction, Literary, Historical", description: "Stunning prose and heartbreaking story. One of my favorites.", image: "https://covers.openlibrary.org/b/isbn/9781476746586-M.jpg" },
+  { title: "The Alchemist", author: "Paulo Coelho", rating: 3, genre: "Fiction, Fantasy, Fable", description: "Simple but profound fable about following your dreams.", image: "https://covers.openlibrary.org/b/isbn/9780061122415-M.jpg" },
+  { title: "South of the Border, West of the Sun", author: "Haruki Murakami", rating: 4, genre: "Fiction, Literary", description: "Classic Murakami atmosphere and themes of nostalgia and longing.", image: "https://covers.openlibrary.org/b/isbn/9780679775430-M.jpg" },
+  { title: "Klara and the Sun", author: "Kazuo Ishiguro", rating: 4, genre: "Fiction, Sci-Fi, Literary", description: "Beautiful AI perspective on human nature. Ishiguro's subtle genius.", image: "https://covers.openlibrary.org/b/isbn/9780593318171-M.jpg" },
+  { title: "Wit", author: "Margaret Edson", rating: 4, genre: "Drama, Play", description: "Powerful play about mortality, academia, and what really matters.", image: "https://i.postimg.cc/B6NzFN7L/71-Tz-IBx-Uza-L-AC-UL600-SR600-600.jpg" },
+  { title: "The Subject Was Roses", author: "Frank D. Gilroy", rating: 3, genre: "Drama, Play", description: "Intense family drama with complex characters.", image: "https://i.postimg.cc/cJ0TcwnH/7629990.jpg" },
+  { title: "Outliers", author: "Malcolm Gladwell", rating: 4, genre: "Non-Fiction, Psychology, Business", description: "Fascinating look at success patterns. The 10,000 hour rule is compelling.", image: "https://covers.openlibrary.org/b/isbn/9780316017923-M.jpg" },
+  { title: "Homegoing", author: "Yaa Gyasi", rating: 5, genre: "Fiction, Literary, Historical", description: "Epic family saga spanning generations. Incredible storytelling.", image: "https://covers.openlibrary.org/b/isbn/9781101947135-M.jpg" },
+  { title: "Speedboat", author: "Renata Adler", rating: 3, genre: "Fiction, Literary, Experimental", description: "Experimental and fragmented, but captures something essential about modern life.", image: "https://i.postimg.cc/h46k1ZPv/71-Cy-DJ-Ph-BL-UF894-1000-QL80.jpg" },
+  { title: "The Folded Clock", author: "Heidi Julavits", rating: 3, genre: "Memoir, Essay", description: "Diary-style reflections on time, creativity, and daily life.", image: "https://i.postimg.cc/vTVSKMH5/22716391.jpg" },
+  { title: "We the Animals", author: "Justin Torres", rating: 4, genre: "Fiction, Literary, Coming-of-age", description: "Raw and beautiful coming-of-age story. Short but powerful.", image: "https://covers.openlibrary.org/b/isbn/9780547576725-M.jpg" },
+  { title: "So Sad Today", author: "Melissa Broder", rating: 3, genre: "Memoir, Essay", description: "Honest and darkly funny essays about mental health and modern life.", image: "https://i.postimg.cc/FK6pXq6G/91u-GS-f6-WML-UF1000-1000-QL80.jpg" },
+  { title: "Milkman", author: "Anna Burns", rating: 4, genre: "Fiction, Literary", description: "Unique voice and perspective on the Troubles. Challenging but rewarding.", image: "https://i.postimg.cc/yNDhjjNV/91-P67-FPmyv-L.jpg" },
+  { title: "Weather", author: "Jenny Offill", rating: 3, genre: "Fiction, Literary", description: "Fragmented but insightful look at climate anxiety and modern life.", image: "https://covers.openlibrary.org/b/isbn/9780385351102-M.jpg" },
+  { title: "The Sad Part Was", author: "Prabda Yoon", rating: 3, genre: "Fiction, Short Stories", description: "Quirky and experimental short stories from Thailand.", image: "https://images-na.ssl-images-amazon.com/images/P/1782274561.01.L.jpg" },
+  { title: "Call Me Zebra", author: "Azareen Van der Vliet Oloomi", rating: 3, genre: "Fiction, Literary, Experimental", description: "Wild and experimental novel about exile and literature.", image: "https://i.postimg.cc/k5R8K5jg/81a-P-HE-Dk-L-UF1000-1000-QL80.jpg" },
+  { title: "Native Speaker", author: "Chang-rae Lee", rating: 4, genre: "Fiction, Literary", description: "Complex exploration of identity and assimilation in America.", image: "https://covers.openlibrary.org/b/isbn/9781573225311-M.jpg" },
+  { title: "Your Utopia", author: "Bora Chung", rating: 4, genre: "Fiction, Sci-Fi, Short Stories", description: "Surreal and thought-provoking short stories about technology and society.", image: "https://i.postimg.cc/SNZzP93N/815-RGd-9-S7-L.jpg" },
+  { title: "Temporary", author: "Hilary Leichter", rating: 3, genre: "Fiction, Literary, Satire", description: "Absurd and funny exploration of modern work culture.", image: "https://i.postimg.cc/L59nC4TF/81-KT-CRk-I6-L.jpg" },
+  { title: "The Employees", author: "Olga Ravn", rating: 4, genre: "Fiction, Sci-Fi", description: "Strange and beautiful sci-fi about work, consciousness, and what makes us human.", image: "https://i.postimg.cc/2Ss3p7w3/The-Employees-cover.jpg" },
+  { title: "Drinking Coffee Elsewhere", author: "ZZ Packer", rating: 4, genre: "Fiction, Short Stories", description: "Sharp and insightful short stories about race, class, and identity.", image: "https://covers.openlibrary.org/b/isbn/9781573222341-M.jpg" },
+  { title: "No One Is Talking About This", author: "Patricia Lockwood", rating: 4, genre: "Fiction, Literary", description: "Brilliant capture of internet culture and its effects on consciousness.", image: "https://covers.openlibrary.org/b/isbn/9780593189580-M.jpg" },
+  { title: "The Year of Magical Thinking", author: "Joan Didion", rating: 5, genre: "Memoir, Grief", description: "Devastating and beautiful meditation on grief and loss.", image: "https://covers.openlibrary.org/b/isbn/9781400043149-M.jpg" },
+  { title: "If You Leave Me", author: "Crystal Hana Kim", rating: 4, genre: "Fiction, Historical, Romance", description: "Epic family saga set during the Korean War. Beautiful and heartbreaking.", image: "https://i.postimg.cc/tRBTRj5S/34858106.jpg" },
+  { title: "How Much of These Hills Is Gold", author: "C Pam Zhang", rating: 4, genre: "Fiction, Literary, Historical", description: "Lyrical and haunting reimagining of the American West.", image: "https://covers.openlibrary.org/b/isbn/9780525537205-M.jpg" },
+  { title: "The Loneliness of the Long Distance Runner", author: "Alan Sillitoe", rating: 3, genre: "Fiction, Literary", description: "Classic working-class British literature. Raw and authentic.", image: "https://covers.openlibrary.org/b/isbn/9780679734529-M.jpg" },
+  { title: "Can't and Won't", author: "Lydia Davis", rating: 4, genre: "Fiction, Short Stories", description: "Master of the very short story. Each piece is perfectly crafted.", image: "https://images-na.ssl-images-amazon.com/images/P/0374534098.01.L.jpg" },
+  { title: "A Heartbreaking Work of Staggering Genius", author: "Dave Eggers", rating: 4, genre: "Memoir", description: "Raw and honest memoir about family, loss, and growing up too fast.", image: "https://covers.openlibrary.org/b/isbn/9780375725784-M.jpg" },
+  { title: "Celestial Bodies", author: "Jokha Alharthi", rating: 4, genre: "Fiction, Literary", description: "First Arabic novel to win the Man Booker International Prize. Beautiful and complex.", image: "https://i.postimg.cc/m20Th2F8/71-Pqu-PDCt-SL.jpg" },
+  { title: "Go Home!", author: "Edited by Rowan Hisayo Buchanan", rating: 3, genre: "Fiction, Short Stories", description: "Diverse collection of stories about home and belonging.", image: "https://i.postimg.cc/KjChKJ4r/34381317.jpg" },
+  { title: "Interpreter of Maladies", author: "Jhumpa Lahiri", rating: 5, genre: "Fiction, Short Stories, Literary", description: "Perfect short stories about the immigrant experience. Lahiri's prose is exquisite.", image: "https://covers.openlibrary.org/b/isbn/9780395927205-M.jpg" },
+  { title: "The Emperor of All Maladies", author: "Siddhartha Mukherjee", rating: 5, genre: "Non-Fiction, Biography, Science", description: "Fascinating biography of cancer. Reads like a novel despite being deeply scientific.", image: "https://covers.openlibrary.org/b/isbn/9781439170915-M.jpg" },
+  { title: "The Boat", author: "Nam Le", rating: 4, genre: "Fiction, Short Stories", description: "Powerful short stories that span the globe. Each one is a world unto itself.", image: "https://covers.openlibrary.org/b/isbn/9780307268082-M.jpg" },
+  { title: "The Ones Who Walk Away from Omelas", author: "Ursula K. Le Guin", rating: 5, genre: "Fiction, Sci-Fi, Short Stories", description: "Perfect short story that poses the ultimate moral question.", image: "https://i.postimg.cc/qBW76GPK/The-Ones-Who-Walk-Away-From-Omelas.jpg" },
+  { title: "The Dispossessed", author: "Ursula K. Le Guin", rating: 5, genre: "Fiction, Sci-Fi", description: "Brilliant exploration of anarchism and utopia. Le Guin at her best.", image: "https://images-na.ssl-images-amazon.com/images/P/0061054887.01.L.jpg" },
+  { title: "The Left Hand of Darkness", author: "Ursula K. Le Guin", rating: 5, genre: "Fiction, Sci-Fi", description: "Revolutionary sci-fi that explores gender and society. Timeless classic.", image: "https://covers.openlibrary.org/b/isbn/9780441478125-M.jpg" },
+  { title: "Frankenstein", author: "Mary Shelley", rating: 4, genre: "Fiction, Sci-Fi, Gothic", description: "The original sci-fi novel. Still powerful and relevant after 200 years.", image: "https://covers.openlibrary.org/b/isbn/9780486282114-M.jpg" },
+  { title: "In Search of Lost Time", author: "Marcel Proust", rating: 3, genre: "Fiction, Literary", description: "The ultimate literary challenge. Beautiful but requires serious commitment.", image: "https://covers.openlibrary.org/b/isbn/9780142437964-M.jpg" },
+  { title: "The Trial", author: "Franz Kafka", rating: 4, genre: "Fiction, Literary", description: "Kafkaesque nightmare that captures the absurdity of bureaucracy and power.", image: "https://i.postimg.cc/W44VHFRJ/9780805209990.jpg" },
+  { title: "To the Lighthouse", author: "Virginia Woolf", rating: 4, genre: "Fiction, Literary", description: "Stream of consciousness masterpiece. Challenging but rewarding.", image: "https://covers.openlibrary.org/b/isbn/9780156907392-M.jpg" },
+  { title: "The Crucible", author: "Arthur Miller", rating: 4, genre: "Drama, Play", description: "Powerful allegory about McCarthyism and mass hysteria.", image: "https://covers.openlibrary.org/b/isbn/9780142437339-M.jpg" },
+  { title: "The Double Helix", author: "James D. Watson", rating: 3, genre: "Non-Fiction, Biography, Science", description: "Fascinating insider account of the discovery of DNA structure.", image: "https://covers.openlibrary.org/b/isbn/9780743216302-M.jpg" },
+  { title: "Dune", author: "Frank Herbert", rating: 5, genre: "Fiction, Sci-Fi", description: "Epic sci-fi masterpiece. Complex world-building and political intrigue.", image: "https://covers.openlibrary.org/b/isbn/9780441013593-M.jpg" },
+  { title: "The Electric Kool-Aid Acid Test", author: "Tom Wolfe", rating: 4, genre: "Non-Fiction, Journalism", description: "Wild ride through the 60s counterculture. Gonzo journalism at its finest.", image: "https://covers.openlibrary.org/b/isbn/9780312427597-M.jpg" },
+  { title: "Danube", author: "Claudio Magris", rating: 3, genre: "Non-Fiction, Travel", description: "Literary travelogue along the Danube. Rich in history and culture.", image: "https://images-na.ssl-images-amazon.com/images/P/0374526338.01.L.jpg" },
+  { title: "The Road to Oxiana", author: "Robert Byron", rating: 4, genre: "Non-Fiction, Travel", description: "Classic travel writing from the 1930s. Still fresh and engaging.", image: "https://i.postimg.cc/Mp92V6cq/71j-T6-Tt-Za-L-UF894-1000-QL80.jpg" },
+  { title: "And the Band Played On", author: "Randy Shilts", rating: 5, genre: "Non-Fiction, History, Journalism", description: "Devastating account of the AIDS crisis. Essential reading for understanding recent history.", image: "https://covers.openlibrary.org/b/isbn/9780312374631-M.jpg" },
+  { title: "Postwar", author: "Tony Judt", rating: 5, genre: "Non-Fiction, History", description: "Comprehensive history of Europe after WWII. Masterful synthesis.", image: "https://i.postimg.cc/jqPpvQwY/81nm4-WNQXq-L.jpg" },
+  { title: "The Catcher in the Rye", author: "J.D. Salinger", rating: 4, genre: "Fiction, Coming-of-age", description: "Classic coming-of-age story. Holden's voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780316769174-M.jpg" },
+  { title: "Middlemarch", author: "George Eliot", rating: 4, genre: "Fiction, Literary", description: "Victorian masterpiece about provincial life. Eliot's psychological insight is remarkable.", image: "https://covers.openlibrary.org/b/isbn/9780141439549-M.jpg" },
+  { title: "The Sun Also Rises", author: "Ernest Hemingway", rating: 4, genre: "Fiction, Literary", description: "Hemingway's spare prose at its best. Captures the lost generation perfectly.", image: "https://covers.openlibrary.org/b/isbn/9780743297332-M.jpg" },
+  { title: "Midnight's Children", author: "Salman Rushdie", rating: 5, genre: "Fiction, Magical Realism", description: "Magical realism meets Indian history. Rushdie's imagination is boundless.", image: "https://covers.openlibrary.org/b/isbn/9780812976533-M.jpg" },
+  { title: "The Plague", author: "Albert Camus", rating: 4, genre: "Fiction, Literary", description: "Existentialist masterpiece that feels eerily relevant to our times.", image: "https://covers.openlibrary.org/b/isbn/9780679720218-M.jpg" },
+  { title: "The Man Without Qualities", author: "Robert Musil", rating: 3, genre: "Fiction, Literary", description: "Massive modernist novel. Challenging but worth the effort.", image: "https://i.postimg.cc/sxr0bqBN/818-Vu6f-P4d-L-UF894-1000-QL80.jpg" },
+  { title: "The Tale of Genji", author: "Murasaki Shikibu", rating: 3, genre: "Fiction, Literary", description: "The world's first novel. Beautiful but requires patience.", image: "https://covers.openlibrary.org/b/isbn/9780143039495-M.jpg" },
+  { title: "In Cold Blood", author: "Truman Capote", rating: 4, genre: "Non-Fiction, True Crime", description: "Pioneer of true crime writing. Capote's prose is masterful.", image: "https://covers.openlibrary.org/b/isbn/9780679745587-M.jpg" },
+  { title: "Man's Search for Meaning", author: "Viktor E. Frankl", rating: 5, genre: "Non-Fiction, Memoir, Philosophy", description: "Profound meditation on suffering and meaning. Life-changing read.", image: "https://covers.openlibrary.org/b/isbn/9780807014295-M.jpg" },
+  { title: "Homage to Catalonia", author: "George Orwell", rating: 4, genre: "Non-Fiction, Memoir, History", description: "Orwell's personal account of the Spanish Civil War. Honest and insightful.", image: "https://covers.openlibrary.org/b/isbn/9780156421171-M.jpg" },
+  { title: "I Know Why the Caged Bird Sings", author: "Maya Angelou", rating: 5, genre: "Memoir", description: "Powerful memoir about resilience and finding your voice.", image: "https://covers.openlibrary.org/b/isbn/9780345514400-M.jpg" },
+  { title: "All the President's Men", author: "Bob Woodward & Carl Bernstein", rating: 4, genre: "Non-Fiction, Journalism", description: "Thrilling account of investigative journalism that changed America.", image: "https://covers.openlibrary.org/b/isbn/9781476770512-M.jpg" },
+  { title: "The Warmth of Other Suns", author: "Isabel Wilkerson", rating: 5, genre: "Non-Fiction, History", description: "Masterful history of the Great Migration. Essential American history.", image: "https://i.postimg.cc/MpTrkyG4/71-Atl-Bx-cx-L-UF894-1000-QL80.jpg" },
+  { title: "The Handmaid's Tale", author: "Margaret Atwood", rating: 5, genre: "Fiction, Dystopian", description: "Dystopian masterpiece that feels more relevant with each passing year. Atwood's world-building is chilling.", image: "https://covers.openlibrary.org/b/isbn/9780385490818-M.jpg" },
+  { title: "Station Eleven", author: "Emily St. John Mandel", rating: 4, genre: "Fiction, Literary, Dystopian", description: "Beautiful post-apocalyptic novel about art, connection, and what endures. Haunting and hopeful.", image: "https://covers.openlibrary.org/b/isbn/9780385353304-M.jpg" },
+  { title: "The Underground Railroad", author: "Colson Whitehead", rating: 5, genre: "Fiction, Literary, Historical", description: "Brilliant reimagining of history. Whitehead's prose is sharp and the story is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780385542364-M.jpg" },
+  { title: "Normal People", author: "Sally Rooney", rating: 4, genre: "Fiction, Literary, Romance", description: "Intimate portrait of a relationship over years. Rooney captures the complexity of connection.", image: "https://covers.openlibrary.org/b/isbn/9780571334650-M.jpg" },
+  { title: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid", rating: 4, genre: "Fiction, Romance", description: "Compelling story of old Hollywood glamour and secrets. Page-turner with depth.", image: "https://covers.openlibrary.org/b/isbn/9781501139239-M.jpg" },
+  { title: "Circe", author: "Madeline Miller", rating: 4, genre: "Fiction, Fantasy", description: "Beautiful retelling of Greek mythology from a fresh perspective. Miller brings ancient stories to life.", image: "https://covers.openlibrary.org/b/isbn/9780316556347-M.jpg" },
+  { title: "The Overstory", author: "Richard Powers", rating: 4, genre: "Fiction, Literary", description: "Epic novel about trees and our connection to nature. Ambitious and beautifully written.", image: "https://covers.openlibrary.org/b/isbn/9780393356687-M.jpg" },
+  { title: "Exit West", author: "Mohsin Hamid", rating: 4, genre: "Fiction, Literary", description: "Poetic and timely novel about migration and displacement. Hamid's magical realism is subtle and powerful.", image: "https://covers.openlibrary.org/b/isbn/9780241979068-M.jpg" },
+  { title: "The Goldfinch", author: "Donna Tartt", rating: 4, genre: "Fiction, Literary, Coming-of-age", description: "Sweeping coming-of-age story about art, loss, and obsession. Tartt's prose is immersive.", image: "https://covers.openlibrary.org/b/isbn/9780316055437-M.jpg" },
+  { title: "The Sympathizer", author: "Viet Thanh Nguyen", rating: 5, genre: "Fiction, Literary, Historical", description: "Brilliant spy novel about the Vietnam War. Sharp, darkly funny, and deeply insightful.", image: "https://covers.openlibrary.org/b/isbn/9780802123459-M.jpg" },
+  { title: "Lincoln in the Bardo", author: "George Saunders", rating: 4, genre: "Fiction, Literary", description: "Experimental and moving novel about grief and loss. Saunders' unique voice shines.", image: "https://covers.openlibrary.org/b/isbn/9780812995343-M.jpg" },
+  { title: "The Sellout", author: "Paul Beatty", rating: 4, genre: "Fiction, Satire", description: "Satirical masterpiece about race in America. Darkly funny and uncomfortably relevant.", image: "https://covers.openlibrary.org/b/isbn/9780374260507-M.jpg" },
+  { title: "The Brief Wondrous Life of Oscar Wao", author: "Junot Díaz", rating: 5, genre: "Fiction, Literary", description: "Vibrant and heartbreaking story of a Dominican family. Díaz's voice is electric.", image: "https://covers.openlibrary.org/b/isbn/9781594483295-M.jpg" },
+  { title: "White Teeth", author: "Zadie Smith", rating: 4, genre: "Fiction, Literary", description: "Multigenerational saga about immigration and identity in London. Smith's debut is ambitious and funny.", image: "https://covers.openlibrary.org/b/isbn/9780375703867-M.jpg" },
+  { title: "The Kite Runner", author: "Khaled Hosseini", rating: 4, genre: "Fiction, Literary", description: "Powerful story of friendship, betrayal, and redemption set in Afghanistan. Emotionally resonant.", image: "https://covers.openlibrary.org/b/isbn/9781594480003-M.jpg" },
+  { title: "The Namesake", author: "Jhumpa Lahiri", rating: 4, genre: "Fiction, Literary", description: "Beautiful novel about identity and belonging. Lahiri's exploration of the immigrant experience is masterful.", image: "https://covers.openlibrary.org/b/isbn/9780395927212-M.jpg" },
+  { title: "The Remains of the Day", author: "Kazuo Ishiguro", rating: 5, genre: "Fiction, Literary", description: "Perfect novel about duty, regret, and the things left unsaid. Ishiguro's restraint is devastating.", image: "https://covers.openlibrary.org/b/isbn/9780571152230-M.jpg" },
+  { title: "Never Let Me Go", author: "Kazuo Ishiguro", rating: 5, genre: "Fiction, Dystopian, Literary", description: "Haunting dystopian novel about memory, love, and what it means to be human. Subtle and profound.", image: "https://covers.openlibrary.org/b/isbn/9780571224142-M.jpg" },
+  { title: "The Road", author: "Cormac McCarthy", rating: 5, genre: "Fiction, Literary", description: "Bleak and beautiful post-apocalyptic journey. McCarthy's prose is spare and devastating.", image: "https://covers.openlibrary.org/b/isbn/9780307387899-M.jpg" },
+  { title: "Blood Meridian", author: "Cormac McCarthy", rating: 4, genre: "Fiction, Literary, Western", description: "Brutal and brilliant western. McCarthy's vision of violence is unflinching and unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780679728757-M.jpg" },
+  { title: "Beloved", author: "Toni Morrison", rating: 5, genre: "Fiction, Literary", description: "Haunting masterpiece about slavery's legacy. Morrison's prose is poetic and powerful.", image: "https://covers.openlibrary.org/b/isbn/9781400033416-M.jpg" },
+  { title: "The Color Purple", author: "Alice Walker", rating: 5, genre: "Fiction, Literary", description: "Powerful epistolary novel about resilience and sisterhood. Walker's voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780151191536-M.jpg" },
+  { title: "One Hundred Years of Solitude", author: "Gabriel García Márquez", rating: 5, genre: "Fiction, Magical Realism", description: "Magical realism at its finest. Márquez creates a world that feels both fantastical and deeply human.", image: "https://covers.openlibrary.org/b/isbn/9780060883287-M.jpg" },
+  { title: "The Stranger", author: "Albert Camus", rating: 4, genre: "Fiction, Literary", description: "Existentialist classic about alienation and absurdity. Camus' spare prose is deceptively simple.", image: "https://covers.openlibrary.org/b/isbn/9780679720201-M.jpg" },
+  { title: "The Great Gatsby", author: "F. Scott Fitzgerald", rating: 5, genre: "Fiction, Literary", description: "Perfect American novel about the American Dream. Fitzgerald's prose is luminous and tragic.", image: "https://covers.openlibrary.org/b/isbn/9780743273565-M.jpg" },
+  { title: "Slaughterhouse-Five", author: "Kurt Vonnegut", rating: 5, genre: "Fiction, Sci-Fi, Satire", description: "Anti-war masterpiece that's both funny and devastating. Vonnegut's unique voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780385333849-M.jpg" },
+  { title: "The Master and Margarita", author: "Mikhail Bulgakov", rating: 5, genre: "Fiction, Literary, Satire", description: "Surreal and satirical masterpiece about good and evil. Bulgakov's imagination is boundless.", image: "https://covers.openlibrary.org/b/isbn/9780679760801-M.jpg" }
 ];
 ---
 
-<Layout title="Books | FQ" description="Books I've read with ratings and thoughts">
-  <main class="max-w-none">
-    <div class="books-grid">
+<Layout title="Books | FQ" description="Books I've read with ratings and thoughts" className="max-w-5xl">
+  <main class="books-main">
+    <p class="books-intro text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+      Books I've read with ratings and thoughts. Hover to isolate, click for details.
+    </p>
+
+    <div class="books-toolbar mb-6">
+      <input
+        type="search"
+        id="books-search"
+        placeholder="Search by title, author, or genre..."
+        class="books-search w-full text-base px-4 py-3 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:focus:ring-zinc-500 focus:border-transparent transition-shadow"
+        aria-label="Search books"
+      />
+    </div>
+
+    <div class="flashlight-hover books-grid" id="books-grid" data-flashlight-pinnable>
       {books.map((book, index) => (
         <button
-          class="book-cover-btn"
+          class="flashlight-item book-cover-btn"
           data-book={JSON.stringify(book)}
+          data-rating={book.rating}
+          data-title={book.title}
+          data-author={book.author}
+          data-genre={book.genre || ""}
           data-index={index}
           aria-label={`View details for ${book.title}`}
         >
@@ -132,24 +150,30 @@ const books = [
     </div>
   </main>
 
-  <!-- Modal overlay -->
   <div id="book-modal" class="book-modal" role="dialog" aria-modal="true" aria-labelledby="book-modal-title">
     <div class="book-modal-backdrop"></div>
     <div class="book-modal-content">
       <button class="book-modal-close" aria-label="Close modal">×</button>
-      <h2 id="book-modal-title" class="book-modal-title"></h2>
-      <p id="book-modal-author" class="book-modal-author"></p>
-      <div class="book-modal-rating"></div>
-      <p class="book-modal-description"></p>
+      <div class="book-modal-cover"></div>
+      <div class="book-modal-body">
+        <h2 id="book-modal-title" class="book-modal-title"></h2>
+        <p id="book-modal-author" class="book-modal-author"></p>
+        <div class="book-modal-rating"></div>
+        <p class="book-modal-description"></p>
+      </div>
     </div>
   </div>
 
   <style is:global>
+    .books-main {
+      max-width: none;
+    }
+
     .books-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
-      margin-top: 2rem;
+      margin-top: 0;
     }
 
     @media (max-width: 640px) {
@@ -164,10 +188,12 @@ const books = [
       border: none;
       padding: 0;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease-out;
       overflow: hidden;
       aspect-ratio: 2 / 3;
       position: relative;
+      border-radius: 4px;
+      animation: bookFadeIn 0.4s ease-out backwards;
     }
 
     .dark .book-cover-btn {
@@ -181,56 +207,35 @@ const books = [
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-      );
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
       animation: shimmer 2s infinite;
     }
 
     .dark .book-cover-btn::before {
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.1),
-        transparent
-      );
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
     }
 
     @keyframes shimmer {
-      0% {
-        left: -100%;
-      }
-      100% {
-        left: 100%;
-      }
+      0% { left: -100%; }
+      100% { left: 100%; }
     }
 
-    .book-cover-btn img.loaded {
-      opacity: 1;
+    @keyframes bookFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .book-cover-btn img:not(.loaded) {
-      opacity: 0;
-    }
-
-    .book-cover-btn:has(img.loaded)::before {
-      display: none;
-    }
+    .book-cover-btn img.loaded { opacity: 1; }
+    .book-cover-btn img:not(.loaded) { opacity: 0; }
+    .book-cover-btn:has(img.loaded)::before { display: none; }
 
     .book-cover-btn:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.25);
-    }
-
-    .book-cover-btn:active {
-      transform: translateY(-2px) scale(1.01);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.3);
     }
 
     .dark .book-cover-btn:hover {
-      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.55);
     }
 
     .book-cover {
@@ -242,12 +247,13 @@ const books = [
       transition: opacity 0.3s ease;
     }
 
+    .books-search {
+      max-width: 100%;
+    }
+
     .book-modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       z-index: 1000;
       display: none;
       align-items: center;
@@ -261,40 +267,59 @@ const books = [
 
     .book-modal-backdrop {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
     }
 
     .book-modal-content {
       position: relative;
+      display: flex;
+      gap: 1.5rem;
       background: #F2F0EF;
       color: #0a0a0a;
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 1.5rem;
-      max-width: 500px;
+      max-width: 520px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      animation: modalFadeIn 0.15s ease-out;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      animation: modalSlideIn 0.25s ease-out;
     }
 
     .dark .book-modal-content {
-      background: #222222;
+      background: #1f1f1f;
       color: #e5e5e5;
     }
 
-    @keyframes modalFadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.96) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .book-modal-cover {
+      flex-shrink: 0;
+      width: 100px;
+      aspect-ratio: 2/3;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #e5e5e5;
+    }
+
+    .dark .book-modal-cover {
+      background: #2a2a2a;
+    }
+
+    .book-modal-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .book-modal-body {
+      flex: 1;
+      min-width: 0;
     }
 
     .book-modal-close {
@@ -310,29 +335,21 @@ const books = [
       opacity: 0.5;
       transition: opacity 0.15s ease;
       padding: 0.25rem;
-      width: 1.5rem;
-      height: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .book-modal-close:hover {
-      opacity: 1;
-    }
+    .book-modal-close:hover { opacity: 1; }
 
     .book-modal-title {
-      font-size: 1.25rem;
-      font-weight: 400;
+      font-size: 1.125rem;
+      font-weight: 500;
       margin-bottom: 0.25rem;
       padding-right: 2rem;
     }
 
     .book-modal-author {
-      font-size: 0.875rem;
-      opacity: 0.6;
-      margin-bottom: 0.75rem;
-      padding-right: 2rem;
+      font-size: 0.8125rem;
+      opacity: 0.65;
+      margin-bottom: 0.5rem;
     }
 
     .book-modal-rating {
@@ -343,65 +360,70 @@ const books = [
 
     .book-modal-rating .star {
       color: #fbbf24;
-      font-size: 1rem;
+      font-size: 0.9rem;
     }
 
     .book-modal-rating .star.empty {
       color: #6b7280;
       opacity: 0.4;
     }
-    
+
     .book-modal-description {
-      font-size: 0.875rem;
-      line-height: 1.5;
+      font-size: 0.8125rem;
+      line-height: 1.55;
       margin: 0;
-      opacity: 0.8;
+      opacity: 0.85;
+    }
+
+    .book-cover-btn.hidden {
+      display: none !important;
+    }
+
+    .book-cover-btn.pinned {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.3);
+    }
+    .dark .book-cover-btn.pinned {
+      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.55);
     }
   </style>
 
   <script define:vars={{ books }} is:inline>
-    // Preload book images immediately
     (function() {
-      // Preload first 12 images with high priority
-      books.slice(0, 12).forEach(book => {
-        const img = new Image();
-        img.src = book.image;
-        img.loading = 'eager';
-      });
-      
-      // Preload remaining images
-      books.slice(12).forEach(book => {
-        const img = new Image();
-        img.src = book.image;
-      });
+      books.slice(0, 12).forEach(book => { const img = new Image(); img.src = book.image; });
+      books.slice(12).forEach(book => { const img = new Image(); img.src = book.image; });
     })();
-    
+
     document.addEventListener('DOMContentLoaded', function() {
       const modal = document.getElementById('book-modal');
       const modalTitle = document.getElementById('book-modal-title');
       const modalAuthor = document.getElementById('book-modal-author');
       const modalRating = document.querySelector('.book-modal-rating');
       const modalDescription = document.querySelector('.book-modal-description');
+      const modalCover = document.querySelector('.book-modal-cover');
       const modalClose = document.querySelector('.book-modal-close');
       const modalBackdrop = document.querySelector('.book-modal-backdrop');
       const bookButtons = document.querySelectorAll('.book-cover-btn');
-        
+      const searchInput = document.getElementById('books-search');
+
       function showModal(book) {
         modalTitle.textContent = book.title;
         modalAuthor.textContent = book.author;
-            
-            // Create stars
-        const stars = Array.from({length: 5}, (_, i) => {
-          const star = document.createElement('span');
-          star.className = `star ${i < book.rating ? '' : 'empty'}`;
-          star.textContent = '★';
-          return star;
-        });
-        
         modalRating.innerHTML = '';
-        stars.forEach(star => modalRating.appendChild(star));
-        
+        for (var i = 0; i < 5; i++) {
+          const star = document.createElement('span');
+          star.className = 'star ' + (i < book.rating ? '' : 'empty');
+          star.textContent = '★';
+          modalRating.appendChild(star);
+        }
         modalDescription.textContent = book.description;
+        if (modalCover) {
+          modalCover.innerHTML = '';
+          const img = document.createElement('img');
+          img.src = book.image;
+          img.alt = book.title;
+          modalCover.appendChild(img);
+        }
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
       }
@@ -409,31 +431,40 @@ const books = [
       function hideModal() {
         modal.classList.remove('show');
         document.body.style.overflow = '';
+        document.dispatchEvent(new CustomEvent('flashlight-unpin'));
       }
 
-      // Open modal on book click
       bookButtons.forEach(btn => {
         btn.addEventListener('click', function() {
-          const bookData = JSON.parse(btn.getAttribute('data-book'));
-          showModal(bookData);
+          showModal(JSON.parse(btn.getAttribute('data-book')));
         });
       });
 
-      // Close modal on close button click
       modalClose.addEventListener('click', hideModal);
-        
-      // Close modal on backdrop click
       modalBackdrop.addEventListener('click', function(e) {
-        if (e.target === modalBackdrop) {
-          hideModal();
-        }
+        if (e.target === modalBackdrop) hideModal();
       });
-        
-      // Close modal on Escape key
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modal.classList.contains('show')) {
           hideModal();
-          }
+        }
+      });
+
+      function filterBooks() {
+        const q = (searchInput.value || '').toLowerCase().trim();
+        bookButtons.forEach(btn => {
+          const title = (btn.getAttribute('data-title') || '').toLowerCase();
+          const author = (btn.getAttribute('data-author') || '').toLowerCase();
+          const genre = (btn.getAttribute('data-genre') || '').toLowerCase();
+          const matchSearch = !q || title.includes(q) || author.includes(q) || genre.includes(q);
+          btn.classList.toggle('hidden', !matchSearch);
+        });
+      }
+
+      searchInput.addEventListener('input', filterBooks);
+
+      bookButtons.forEach((btn, i) => {
+        btn.style.animationDelay = (i % 24) * 20 + 'ms';
       });
     });
   </script>

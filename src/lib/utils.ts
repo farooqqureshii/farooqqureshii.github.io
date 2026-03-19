@@ -12,6 +12,21 @@ export function formatDate(date: Date) {
   }).format(date);
 }
 
+export function formatLongDate(date: Date) {
+  return Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+}
+
+export function formatShortDate(date: Date) {
+  return Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+  }).format(date);
+}
+
 export function getWordCount(content: string): number {
   // Remove markdown syntax and count words
   const cleanContent = content

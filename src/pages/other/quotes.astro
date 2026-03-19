@@ -5,9 +5,9 @@ import { quotes } from "../../data/quotes";
 
 <Layout title="Quotes | FQ" description="Quotes I find meaningful">
   <main>
-    <div class="quotes-container" id="quotes-container">
+    <div class="flashlight-hover quotes-container">
       {quotes.map((quote) => (
-        <blockquote class="quote-item">
+        <blockquote class="flashlight-item quote-item">
           <p class="quote-text">"{quote.text}"</p>
           <cite class="quote-author">— {quote.author}</cite>
         </blockquote>
@@ -31,16 +31,6 @@ import { quotes } from "../../data/quotes";
       margin: 0;
       padding: 0.5rem 0;
       border: none;
-      transition: opacity 0.45s ease-in-out;
-    }
-
-    /* Flashlight effect: dim others when one is hovered */
-    .quotes-container.active .quote-item {
-      opacity: 0.35;
-    }
-
-    .quotes-container.active .quote-item.hovered {
-      opacity: 1;
     }
 
     .quote-text {
@@ -58,25 +48,4 @@ import { quotes } from "../../data/quotes";
       display: block;
     }
   </style>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('quotes-container');
-      const items = container?.querySelectorAll('.quote-item');
-      if (!container || !items?.length) return;
-
-      items.forEach((item) => {
-        item.addEventListener('mouseenter', () => {
-          items.forEach((q) => q.classList.remove('hovered'));
-          item.classList.add('hovered');
-          container.classList.add('active');
-        });
-      });
-
-      container.addEventListener('mouseleave', () => {
-        items.forEach((q) => q.classList.remove('hovered'));
-        container.classList.remove('active');
-      });
-    });
-  </script>
 </Layout>

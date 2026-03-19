@@ -1,5 +1,5 @@
 ---
-import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+import { SITE_DESCRIPTION } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
 
 const projects = [
@@ -89,143 +89,87 @@ const projects = [
 ];
 ---
 
-<Layout title="Projects | FQ" description={SITE_DESCRIPTION}>
-  <!-- Critical resource hints for blazing fast loading -->
-  <link slot="head" rel="preload" href="/static/uoee.rocks-1755366145491.webm" as="video" type="video/webm" fetchpriority="high" />
-  <link slot="head" rel="preload" href="/static/okbutpitchit_vid.webm" as="video" type="video/webm" fetchpriority="high" />
-  
-  <!-- Prefetch next videos for instant scroll -->
-  <link slot="head" rel="prefetch" href="/static/Marketing_Spaces.png" as="image" />
-  <link slot="head" rel="prefetch" href="/static/voltus.webm" as="video" type="video/webm" />
-  <main>
-    <div class="grid grid-cols-1 gap-12">
-      {projects.map((project, index) => (
-        <div class="flex flex-col items-start">
-          <div class="media-section w-full overflow-visible relative mb-4">
-            {project.type === "video" ? (
-              <video 
-                src={index < 2 ? project.gif : undefined}
-                data-src={index < 2 ? undefined : project.gif}
-                muted 
-                loop 
-                playsinline 
-                autoplay={index < 2}
-                preload={index < 2 ? "metadata" : "none"}
-                class={`w-full aspect-[4/3] object-cover h-80 bg-zinc-100 dark:bg-zinc-900 ${index < 2 ? 'priority-video' : 'lazy-video'}`}
-                style="touch-action: manipulation;"
-              >
-                Your browser does not support the video tag.
-              </video>
-            ) : project.type === "youtube" ? (
-              <div class="w-full aspect-[16/9] h-80 bg-zinc-100 dark:bg-zinc-900 overflow-hidden flex items-center justify-center">
-                <iframe
-                  title={project.title}
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                  class="w-[120%] h-[120%] min-w-full min-h-full object-cover rounded-xl -ml-[10%] -mt-[10%]"
-                  style="object-fit: cover;"
-                ></iframe>
-              </div>
-            ) : (
+<Layout title="Projects | Farooq Qureshi" description={SITE_DESCRIPTION}>
+  <main class="no-link-underline">
+    <div class="flashlight-hover space-y-12">
+    {projects.map((project, index) => (
+      <div class="flashlight-item space-y-3">
+        <div class="media-section w-full overflow-visible">
+          {project.type === "video" ? (
+            <video
+              src={index < 2 ? project.gif : undefined}
+              data-src={index < 2 ? undefined : project.gif}
+              muted
+              loop
+              playsinline
+              autoplay={index < 2}
+              preload={index < 2 ? "metadata" : "none"}
+              class={`w-full aspect-[4/3] object-cover max-h-80 bg-zinc-100 ${index < 2 ? "priority-video" : "lazy-video"}`}
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            project.image && (
               <img
                 src={project.image}
                 alt={project.title}
                 loading={index < 2 ? "eager" : "lazy"}
-                fetchpriority={index < 2 ? "high" : "low"}
-                class="w-full aspect-[4/3] object-cover h-80 bg-zinc-100 dark:bg-zinc-900"
+                class="w-full aspect-[4/3] object-cover max-h-80 bg-zinc-100"
               />
+            )
+          )}
+        </div>
+        <div class="space-y-1 text-sm">
+          <div>{project.title}</div>
+          <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed">{project.description}</p>
+          <div class="project-links flex flex-row flex-wrap gap-x-4 gap-y-0 pt-1">
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener" class="text-zinc-500 dark:text-zinc-400">
+                GitHub
+              </a>
             )}
-          </div>
-          <div class="w-full space-y-2">
-            <div class="text-lg text-zinc-900 dark:text-zinc-100">{project.title}</div>
-            <div class="text-zinc-900 dark:text-zinc-100 text-base leading-snug">{project.description}</div>
-            {project.technologies && (
-              <div class="text-zinc-900 dark:text-zinc-100 text-base tracking-wide">{project.technologies.join(", ")}</div>
+            {project.link && (
+              <a
+                href={project.link}
+                target={project.link.startsWith("/") ? undefined : "_blank"}
+                rel={project.link.startsWith("/") ? undefined : "noopener"}
+                class="text-zinc-500 dark:text-zinc-400"
+              >
+                Link
+              </a>
             )}
-            <div class="flex gap-4 pt-1">
-              {project.github && (
-                <a href={project.github} target="_blank" rel="noopener noreferrer" class="text-zinc-600 dark:text-zinc-400 hover:italic transition-all">
-                  <span style="white-space:nowrap;">
-                    <svg width="12" height="12" viewBox="0 0 12 12" style="display:inline;vertical-align:baseline;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    github
-                  </span>
-                </a>
-              )}
-              {project.link && (
-                <a href={project.link} target="_blank" rel="noopener noreferrer" class="text-zinc-600 dark:text-zinc-400 hover:italic transition-all">
-                  <span style="white-space:nowrap;">
-                    <svg width="12" height="12" viewBox="0 0 12 12" style="display:inline;vertical-align:baseline;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    link
-                  </span>
-                </a>
-              )}
-            </div>
           </div>
         </div>
-      ))}
+      </div>
+    ))}
     </div>
   </main>
 </Layout>
-<style>
-/* Critical styles for immediate render */
-.grid { display: grid; }
-.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-.gap-12 { gap: 3rem; }
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-start { align-items: flex-start; }
-.w-full { width: 100%; }
-.object-cover { object-fit: cover; }
-.h-80 { height: 20rem; }
-
-@media (max-width: 640px) {
-  .media-section > img, .media-section > video {
-    height: 48vw !important;
-    min-height: 120px;
-    max-height: 320px;
-  }
-}
-.media-section {
-  overflow: visible;
-}
-
-/* Optimize video rendering */
-.priority-video {
-  will-change: auto;
-  transform: translateZ(0);
-}
-</style>
 
 <script>
-  // Lazy load videos when they come into view
-  const lazyVideos = document.querySelectorAll('.lazy-video');
-  
-  const videoObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const video = entry.target;
-        if (video instanceof HTMLVideoElement) {
-          const src = video.getAttribute('data-src');
-          
-          if (src && !video.src) {
-            video.src = src;
-            video.autoplay = true;
-            video.load(); // Force immediate load
-            videoObserver.unobserve(video);
+  const lazyVideos = document.querySelectorAll(".lazy-video");
+  const videoObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const video = entry.target;
+          if (video instanceof HTMLVideoElement) {
+            const src = video.getAttribute("data-src");
+            if (src && !video.src) {
+              video.src = src;
+              video.autoplay = true;
+              video.load();
+              videoObserver.unobserve(video);
+            }
           }
         }
-      }
-    });
-  }, {
-    rootMargin: '200px 0px', // Start loading 200px before video comes into view for instant playback
-    threshold: 0
-  });
-
-  lazyVideos.forEach(video => {
-    // Only observe videos that aren't priority-loaded
-    if (video.classList.contains('lazy-video')) {
+      });
+    },
+    { rootMargin: "200px 0px", threshold: 0 }
+  );
+  lazyVideos.forEach((video) => {
+    if (video.classList.contains("lazy-video")) {
       videoObserver.observe(video);
     }
   });
-</script> 
+</script>

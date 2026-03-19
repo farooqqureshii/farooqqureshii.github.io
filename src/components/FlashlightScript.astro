@@ -1,0 +1,44 @@
+---
+// Inline script for flashlight hover effect - runs on DOMContentLoaded
+// data-flashlight-pinnable: click to pin item (stays raised); unpin via custom event 'flashlight-unpin'
+---
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".flashlight-hover").forEach((container) => {
+      const items = container.querySelectorAll(".flashlight-item");
+      if (!items.length) return;
+      const pinnable = container.hasAttribute("data-flashlight-pinnable");
+
+      function unpin() {
+        items.forEach((el) => el.classList.remove("pinned"));
+        container.classList.remove("active");
+      }
+
+      items.forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+          items.forEach((el) => el.classList.remove("hovered"));
+          item.classList.add("hovered");
+          container.classList.add("active");
+        });
+        if (pinnable) {
+          item.addEventListener("click", (e) => {
+            items.forEach((el) => el.classList.remove("pinned"));
+            item.classList.add("pinned");
+            container.classList.add("active");
+          });
+        }
+      });
+
+      container.addEventListener("mouseleave", () => {
+        if (!pinnable || !container.querySelector(".flashlight-item.pinned")) {
+          items.forEach((el) => el.classList.remove("hovered"));
+          container.classList.remove("active");
+        }
+      });
+
+      if (pinnable) {
+        document.addEventListener("flashlight-unpin", unpin);
+      }
+    });
+  });
+</script>

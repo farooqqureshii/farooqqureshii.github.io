@@ -46,12 +46,9 @@
       transform: translateY(20px);
     }
   }
-  
-  /* Better font for keyboard shortcuts in command menu */
-  #command-menu kbd {
-    font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Consolas", "Courier New", monospace !important;
-    font-variant-ligatures: none;
-    letter-spacing: 0.025em;
+
+  .cmd-shortcut-pill {
+    font-variant-numeric: tabular-nums;
   }
 </style>
   
@@ -59,25 +56,28 @@
   <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-[#f5f5f5] dark:bg-[#222222] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 shadow-xl transform transform-gpu opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-[#f5f5f5] dark:bg-[#252525] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-800 flexoki:border-flexoki-ui-3 shadow-xl transform transform-gpu opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
       <!-- Search input -->
-      <div class="hidden sm:flex items-center border-b border-zinc-200 dark:border-zinc-700 flexoki:border-flexoki-ui-3 p-4">
-        <svg class="w-4 h-4 text-zinc-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-        <input
-          id="command-input"
-          type="text"
-          placeholder="What next?"
-          class="flex-1 bg-transparent outline-none text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx placeholder-zinc-500 dark:placeholder-zinc-400 flexoki:placeholder-flexoki-tx-2"
-          autocomplete="off"
-        />
-        <div class="flex items-center gap-2">
-          <kbd class="hidden sm:inline-flex items-center px-2 py-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#e8e8e8] dark:bg-[#2a2a2a] flexoki:bg-flexoki-ui rounded border border-[#d4d4d4] dark:border-[#404040] flexoki:border-flexoki-ui-3">
-            ESC
-          </kbd>
+      <div class="hidden sm:block border-b border-zinc-200 dark:border-zinc-800 flexoki:border-flexoki-ui-3 p-4">
+        <div class="flex items-center">
+          <svg class="w-4 h-4 text-zinc-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input
+            id="command-input"
+            type="text"
+            placeholder="What next?"
+            class="flex-1 bg-transparent outline-none text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx placeholder-zinc-500 dark:placeholder-zinc-400 flexoki:placeholder-flexoki-tx-2"
+            autocomplete="off"
+          />
+          <div class="flex items-center gap-2">
+            <span class="cmd-shortcut-pill hidden sm:inline text-xs px-2 py-1 rounded-md border border-zinc-200 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400">esc</span>
+          </div>
         </div>
+        <p id="command-menu-hint" class="mt-2 text-xs text-zinc-400 dark:text-zinc-500 flexoki:text-flexoki-tx-2">
+          <span id="command-menu-hint-text">⌘K or Ctrl+K to open</span>
+        </p>
       </div>
       
       <!-- Results container -->
@@ -102,6 +102,13 @@
     const navResults = document.getElementById('nav-results');
     
     if (!menu || !backdrop || !container || !navResults) return;
+
+    // OS-specific shortcut hint
+    const hintEl = document.getElementById('command-menu-hint-text');
+    if (hintEl) {
+      const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+      hintEl.textContent = isMac ? '⌘K to open' : 'Ctrl+K to open';
+    }
 
     // Navigation items organized by sections
     const navItems = [
@@ -310,12 +317,13 @@
               : 'hover:bg-[#e8e8e8]/60 dark:hover:bg-[#2a2a2a]/60 flexoki:hover:bg-flexoki-ui/60'
           }`;
           
+          const shortcutLabel = item.shortcut ? `shift + ${item.shortcut.toLowerCase()}` : '';
           div.innerHTML = `
             <div class="flex-1">
               <div class="text-sm text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx">${item.title}</div>
             </div>
             <div class="flex items-center gap-2">
-              ${item.shortcut ? `<div class="hidden sm:flex items-center gap-1"><kbd class="inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#e8e8e8] dark:bg-[#2a2a2a] flexoki:bg-flexoki-ui rounded border border-[#d4d4d4] dark:border-[#404040] flexoki:border-flexoki-ui-3">shift</kbd><span class="text-xs text-zinc-400 dark:text-zinc-500 flexoki:text-flexoki-tx-2">+</span><kbd class="inline-flex items-center px-1.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 bg-[#e8e8e8] dark:bg-[#2a2a2a] flexoki:bg-flexoki-ui rounded border border-[#d4d4d4] dark:border-[#404040] flexoki:border-flexoki-ui-3">${item.shortcut}</kbd></div>` : ''}
+              ${shortcutLabel ? `<span class="cmd-shortcut-pill hidden sm:inline text-xs px-2 py-1 rounded-md border border-zinc-200 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400">${shortcutLabel}</span>` : ''}
             </div>
           `;
           
@@ -666,7 +674,6 @@
         const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || (activeElement as HTMLElement).isContentEditable);
         if ((e.ctrlKey || e.metaKey) && e.key === 'k' && !isInput) {
           e.preventDefault();
-          console.log('Ctrl+K pressed, opening menu');
           openMenu();
         }
         handleKeydown(e);

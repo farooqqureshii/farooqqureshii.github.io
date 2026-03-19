@@ -96,15 +96,6 @@ a[href^="#fn"] {
 .footnote-back svg {
   display: inline !important;
   vertical-align: middle !important;
-  stroke: #000000 !important;
-}
-
-html.dark .footnote-back svg {
-  stroke: #ffffff !important;
-}
-
-html.flexoki .footnote-back svg {
-  stroke: #100F0F !important;
 }
 </style>
 
