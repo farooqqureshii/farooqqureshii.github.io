@@ -41,8 +41,8 @@
     
     if (!toggle || !shaded) return;
 
-    function setRotation(isDark) {
-      shaded.style.transform = isDark ? "rotate(180deg)" : "rotate(0deg)";
+    function setRotation(isDark: boolean) {
+      shaded!.style.transform = isDark ? "rotate(180deg)" : "rotate(0deg)";
     }
     setRotation(document.documentElement.classList.contains("dark"));
 
