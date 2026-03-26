@@ -360,8 +360,8 @@ html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   opacity: 1 !important;
 }
 
-/* No underlines on footnote refs [1], footnotes, back arrows - outside layer to override per-post styles */
-a[href^="#fnref"]::after,
+/* No underlines on footnote refs [1] (#fn1), back links (#fnref1), footnote section - outside layer to override article link styles */
+a[href^="#fn"]::after,
 .footnote-back::after,
 .footnotes a::after {
   display: none !important;
