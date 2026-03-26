@@ -1,33 +1,99 @@
 ---
 ---
 
-<footer class="mt-12 relative">
-  <div class="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400">
-    <span id="ottawa-time">--:--:--</span>
-    <span>in Ottawa, Ontario</span>
+<footer class="mt-12">
+  <div
+    class="flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400"
+  >
+    <span id="ottawa-time" class="tabular-nums">--:--:--</span>
+    <div class="flex items-center gap-2" aria-label="Location and weather in Ottawa">
+      <span>Ottawa, ON</span>
+      <span id="footer-weather-icon" class="inline-flex size-4 shrink-0 items-center justify-center" aria-hidden="true"></span>
+      <span id="footer-weather-temp" class="tabular-nums">--°C</span>
+    </div>
   </div>
 </footer>
 
 <script>
+  const OTTAWA = { lat: 45.4215, lon: -75.6972 };
+  const WEATHER_URL = `https://api.open-meteo.com/v1/forecast?latitude=${OTTAWA.lat}&longitude=${OTTAWA.lon}&current=temperature_2m,weather_code&timezone=America%2FToronto`;
+
+  const svgWrap =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">';
+
+  function iconForCode(code: number) {
+    const clear =
+      svgWrap +
+      '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+    const partly =
+      svgWrap +
+      '<path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.498a4 4 0 0 0-5.68-4.88A4 4 0 1 0 12 20h2a5 5 0 0 0 1.947-7.502z"/></svg>';
+    const cloud =
+      svgWrap +
+      '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 0 1 0 9Z"/></svg>';
+    const fog =
+      svgWrap + '<path d="M4 14h16"/><path d="M4 18h12"/><path d="M4 10h10"/><path d="M8 6h8"/></svg>';
+    const rain =
+      svgWrap +
+      '<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>';
+    const snow =
+      svgWrap +
+      '<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M8 15h.01"/><path d="M8 19h.01"/><path d="M12 17h.01"/><path d="M12 21h.01"/><path d="M16 15h.01"/><path d="M16 19h.01"/></svg>';
+    const storm =
+      svgWrap +
+      '<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M13 11l-4 6h6l-4 6"/></svg>';
+
+    if (code === 0) return clear;
+    if (code <= 3) return code === 3 ? cloud : partly;
+    if (code >= 45 && code <= 48) return fog;
+    if (code >= 51 && code <= 67) return rain;
+    if (code >= 71 && code <= 77) return snow;
+    if (code >= 80 && code <= 82) return rain;
+    if (code >= 95) return storm;
+    return cloud;
+  }
+
   function updateOttawaTime() {
-    const ottawaTime = new Date().toLocaleTimeString('en-CA', {
-      timeZone: 'America/Toronto',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
+    const ottawaTime = new Date().toLocaleTimeString("en-CA", {
+      timeZone: "America/Toronto",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
     });
-    const timeEl = document.getElementById('ottawa-time');
-    if (timeEl) {
-      timeEl.textContent = ottawaTime;
+    const timeEl = document.getElementById("ottawa-time");
+    if (timeEl) timeEl.textContent = ottawaTime;
+  }
+
+  async function updateWeather() {
+    const iconEl = document.getElementById("footer-weather-icon");
+    const tempEl = document.getElementById("footer-weather-temp");
+    if (!iconEl || !tempEl) return;
+
+    try {
+      const res = await fetch(WEATHER_URL);
+      if (!res.ok) throw new Error("weather");
+      const data = await res.json();
+      const cur = data.current;
+      if (!cur) throw new Error("weather");
+      const t = Math.round(cur.temperature_2m);
+      tempEl.textContent = `${t}°C`;
+      iconEl.innerHTML = iconForCode(cur.weather_code);
+    } catch {
+      tempEl.textContent = "—°C";
+      iconEl.innerHTML = "";
     }
   }
+
   function initFooter() {
     updateOttawaTime();
     setInterval(updateOttawaTime, 1000);
+    updateWeather();
+    setInterval(updateWeather, 30 * 60 * 1000);
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFooter);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFooter);
   } else {
     initFooter();
   }
