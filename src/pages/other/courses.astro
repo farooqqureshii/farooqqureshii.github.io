@@ -1,50 +1,49 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
+const courses: { title: string; detail: string }[] = [
+  { title: "CHM 1311: Principles of Chemistry", detail: "8/10 | Prof. Kathy-Sarah Focsaneanu" },
+  { title: "GNG 1105: Engineering Mechanics", detail: "4/10 | N/A" },
+  { title: "ITI 1120: Introduction to Computing I", detail: "5/10 | N/A" },
+  { title: "MAT 1341: Introduction to Linear Algebra", detail: "6/10 | Prof. Elizabeth Maltais" },
+  { title: "MAT 1320: Calculus I", detail: "8/10 | Prof. Elizabeth Maltais" },
+  { title: "MAT 1322: Calculus II", detail: "10/10 | Prof. Kianoosh Shokri" },
+  { title: "GNG 1103: Introduction to Engineering Design", detail: "7/10 | Prof. Martin Noel or Prof. Muslim Majeed" },
+  { title: "ENG 1112: Technical Report Writing", detail: "8/10 | Prof. Miles Tittle" },
+  { title: "ITI 1100: Digital Systems I", detail: "8/10 | Prof. Wassim El Ahmar" },
+  { title: "PHY 1124: Fundamentals of Physics for Engineers", detail: "4/10 | N/A" },
+  { title: "PHI 2394: Scientific Thought and Social Values", detail: "10/10 | Prof. Dean Laurer" },
+  {
+    title: "MAT 2384: Ordinary Differential Equations, Laplace Transforms and Numerical Methods",
+    detail: "10/10 | Prof. Joseph Khoury",
+  },
+  { title: "MAT 2322: Calculus III for Engineers", detail: "8/10 | N/A" },
+  { title: "CEG 2136: Computer Architecture I", detail: "8/10 | Prof. Wassim El Ahmar" },
+  { title: "ADM 1100: Introduction to Business", detail: "7/10 | N/A" },
+  { title: "ELG 2138: Circuit Theory I", detail: "8/10 | Prof. Aneta George Traikova" },
+];
 ---
 
 <Layout title="Courses | FQ" description="Miscellaneous pages by Farooq Qureshi">
-  <main class="prose prose-sm md:prose-base lg:prose-lg prose-invert max-w-none">
-    <p>
-      Here are all the courses I've taken in my degree. Assigned to each of them is a rating out of 10 and my recommendations for professors for each course.
-    </p>
-    <p>
-      <br>
-      I also write course reviews for each semester. Here's <a href="/writing/f25" class="hover:italic">Fall 2024</a>, <a href="/writing/w25" class="hover:italic">Winter 2025</a>, and <a href="/writing/s25" class="hover:italic">Summer 2025</a>.
-    </p>
-<br>
-    <p>
-      CHM 1311: Principles of Chemistry<br>
-      8/10 | Prof. Kathy-Sarah Focsaneanu<br><br>
-      GNG 1105: Engineering Mechanics<br>
-      4/10 | N/A<br><br>
-      ITI 1120: Introduction to Computing I<br>
-      5/10 | N/A<br><br>
-      MAT 1341: Introduction to Linear Algebra<br>
-      6/10 | Prof. Elizabeth Maltais<br><br>
-      MAT 1320: Calculus I<br>
-      8/10 | Prof. Elizabeth Maltais<br><br>
-      MAT 1322: Calculus II<br>
-      10/10 | Prof. Kianoosh Shokri<br><br>
-      GNG 1103: Introduction to Engineering Design<br>
-      7/10 | Prof. Martin Noel or Prof. Muslim Majeed<br><br>
-      ENG 1112: Technical Report Writing<br>
-      8/10 | Prof. Miles Tittle<br><br>
-      ITI 1100: Digital Systems I<br>
-      8/10 | Prof. Wassim El Ahmar<br><br>
-      PHY 1124: Fundamentals of Physics for Engineers<br>
-      4/10 | N/A<br><br>
-      PHI 2394: Scientific Thought and Social Values<br>
-      10/10 | Prof. Dean Laurer<br><br>
-      MAT 2384: Ordinary Differential Equations, Laplace Transforms and Numerical Methods<br>
-      10/10 | Prof. Joseph Khoury<br><br>
-      MAT 2322: Calculus III for Engineers<br>
-      8/10 | N/A<br><br>
-      CEG 2136: Computer Architecture I<br>
-      8/10 | Prof. Wassim El Ahmar<br><br>
-      ADM 1100: Introduction to Business<br>
-      7/10 | N/A<br><br>
-      ELG 2138: Circuit Theory I<br>
-      8/10 | Prof. Aneta George Traikova
-    </p>
+  <main>
+    <article class="space-y-8 text-sm leading-relaxed">
+      <div class="space-y-4">
+        <p>
+          Here are all the courses I've taken in my degree. Assigned to each of them is a rating out of 10 and my recommendations for professors for each course.
+        </p>
+        <p>
+          I also write course reviews for each semester. Here's <a href="/writing/f25">Fall 2024</a>, <a href="/writing/w25">Winter 2025</a>, and <a href="/writing/s25">Summer 2025</a>.
+        </p>
+      </div>
+
+      <dl class="space-y-6">
+        {courses.map((c) => (
+          <div class="space-y-1">
+            <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">{c.title}</dt>
+            <dd class="m-0 text-zinc-600 dark:text-zinc-400">{c.detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </article>
   </main>
 </Layout>

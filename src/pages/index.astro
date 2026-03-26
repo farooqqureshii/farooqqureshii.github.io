@@ -6,16 +6,46 @@ import EmailReveal from "../components/EmailReveal.astro";
 
 <IndexLayout title="Farooq Qureshi" description={SITE_DESCRIPTION}>
   <main class="index-page no-link-underline">
-    <nav class="index-nav flashlight-hover flex flex-col gap-2 text-sm">
-      <a href="/about" class="flashlight-item index-nav-link" data-stagger="1">About</a>
-      <a href="/projects" class="flashlight-item index-nav-link" data-stagger="2">Projects</a>
-      <a href="/writing" class="flashlight-item index-nav-link" data-stagger="3">Writing</a>
-      <a href="/artifacts" class="flashlight-item index-nav-link" data-stagger="4">Artifacts</a>
-      <a href="/other" class="flashlight-item index-nav-link" data-stagger="5">Other</a>
+    <nav class="index-nav flex w-full flex-col gap-2 text-sm">
+      <a href="/about" class="hub-nav-link index-nav-link" data-stagger="1">
+        <span class="hub-nav-label">About</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
+      <a href="/projects" class="hub-nav-link index-nav-link" data-stagger="2">
+        <span class="hub-nav-label">Projects</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
+      <a href="/writing" class="hub-nav-link index-nav-link" data-stagger="3">
+        <span class="hub-nav-label">Writing</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
+      <a href="/artifacts" class="hub-nav-link index-nav-link" data-stagger="4">
+        <span class="hub-nav-label">Artifacts</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
+      <a href="/other" class="hub-nav-link index-nav-link" data-stagger="5">
+        <span class="hub-nav-label">Other</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
       <EmailReveal />
-      <a href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing" target="_blank" rel="noopener" class="flashlight-item index-nav-link" data-stagger="7">Résumé</a>
-      <a href="https://linkedin.com/in/farooqq" target="_blank" rel="noopener" class="flashlight-item index-nav-link" data-stagger="8">LinkedIn</a>
-      <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="flashlight-item index-nav-link" data-stagger="9">GitHub</a>
+      <a
+        href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing"
+        target="_blank"
+        rel="noopener"
+        class="hub-nav-link index-nav-link"
+        data-stagger="7"
+      >
+        <span class="hub-nav-label">Résumé</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
+      <a href="https://linkedin.com/in/farooqq" target="_blank" rel="noopener" class="hub-nav-link index-nav-link" data-stagger="8">
+        <span class="hub-nav-label">LinkedIn</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
+      <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="hub-nav-link index-nav-link" data-stagger="9">
+        <span class="hub-nav-label">GitHub</span>
+        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      </a>
     </nav>
   </main>
 </IndexLayout>
@@ -35,13 +65,6 @@ import EmailReveal from "../components/EmailReveal.astro";
     opacity: 0;
     transform: translateY(8px);
     animation: indexFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-  /* Flashlight override */
-  .index-nav.flashlight-hover.active .flashlight-item {
-    opacity: 0.35 !important;
-  }
-  .index-nav.flashlight-hover.active .flashlight-item.hovered {
-    opacity: 1 !important;
   }
   /* Explicit stagger by data attribute - no nth-child ambiguity */
   .index-nav-link[data-stagger="1"] { animation-delay: 80ms; }

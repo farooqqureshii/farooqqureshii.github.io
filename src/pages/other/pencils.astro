@@ -3,11 +3,12 @@ import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout title="Pencils | FQ" description="Mechanical pencils I love and want to try.">
-  <main class="prose prose-sm md:prose-base lg:prose-lg prose-invert max-w-none">
+  <main>
+    <article class="space-y-6 text-sm leading-relaxed">
     <p>I'm a huge fan of mechanical pencils – here are some ones that I love, as well as some I'd want to snag some day.</p>
-    <br>
-    <h2>Currently:</h2>
-    <ul>
+    <div>
+    <h2 class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Currently:</h2>
+    <ul class="mt-2 list-disc space-y-1 pl-5">
       <li>
         <a href="https://www.amazon.ca/Steadtler-Drafting-Mechanical-925-15-05/dp/B076WV36HJ/ref=asc_df_B076WV36HJ?mcid=a0430c3c93193e0d8e4f2b3ba0bba3b9&hvadid=706839300467&hvpos=&hvnetw=g&hvrand=8189658977666193731&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9191113&hvtargid=pla-441477531744&psc=1&hvocijid=8189658977666193731-B076WV36HJ-&hvexpln=0" target="_blank" rel="noopener">Staedtler 925 15-05 Drafting Mechanical Pencil</a>
       </li>
@@ -21,9 +22,10 @@ import Layout from "../../layouts/Layout.astro";
         <a href="https://www.amazon.ca/Staedtler-Mechanical-Pencil-925-35-05/dp/B003LOQ76I" target="_blank" rel="noopener">Staedtler 925 35-05 Mechanical Pencil</a>
       </li>
     </ul>
-    <br>
-    <h2>Someday:</h2>
-    <ul>
+    </div>
+    <div>
+    <h2 class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Someday:</h2>
+    <ul class="mt-2 list-disc space-y-1 pl-5">
       <li>
         <a href="https://www.amazon.ca/Pentel-Automatic-Forwarding-Mechanical-PP3005/dp/B08JYH88G6" target="_blank" rel="noopener">Pentel Automatic Forwarding Mechanical Pencil (PP3005)</a>
       </li>
@@ -31,5 +33,7 @@ import Layout from "../../layouts/Layout.astro";
         <a href="https://www.amazon.ca/Pentel-Mechanical-Pencil-Smash-Q1005-1/dp/B0013NHU6K/ref=pd_lpo_d_sccl_3/134-9908580-5800557?psc=1" target="_blank" rel="noopener">Pentel Smash 0.5mm (Q1005-1)</a>
       </li>
     </ul>
+    </div>
+    </article>
   </main>
-</Layout> 
+</Layout>

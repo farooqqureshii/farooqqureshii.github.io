@@ -123,6 +123,24 @@ const {
           transform: translateX(0);
         }
       }
+
+      /* Scale-on-press feedback only on the main page (not other layouts) */
+      body > div.index-page > header .command-menu-btn,
+      body > div.index-page > header .theme-toggle-btn {
+        transition: transform 200ms ease-out;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        body > div.index-page > header .command-menu-btn:hover,
+        body > div.index-page > header .theme-toggle-btn:hover {
+          transform: scale(1.1);
+        }
+      }
+      body > div.index-page > header .command-menu-btn:active {
+        transform: scale(0.95);
+      }
+      body > div.index-page > header .theme-toggle-btn:active {
+        transform: scale(0.9);
+      }
     </style>
   </body>
 </html>
