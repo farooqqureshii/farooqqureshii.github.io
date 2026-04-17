@@ -1,5 +1,5 @@
 ---
-// Theme toggle - full circle, half shaded, shaded half switches sides with smooth animation
+// Theme toggle - minimal filled circle that swaps color by mode
 ---
 
 <button
@@ -8,43 +8,22 @@
   aria-label="Toggle theme"
   title="Toggle theme"
 >
-<style>
-  #toggle-shaded {
-    transform-origin: center;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  html.dark #toggle-shaded {
-    transform: rotate(180deg);
-  }
-</style>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-  >
-    <!-- Full circle outline -->
-    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
-    <!-- Shaded half - rotates to the other side when toggling -->
-    <path
-      id="toggle-shaded"
-      d="M 12 2 A 10 10 0 0 1 12 22 L 12 12 Z"
-      fill="currentColor"
-    />
-  </svg>
+  <style>
+    .toggle-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      background: currentColor;
+      transition: background-color 180ms ease;
+    }
+  </style>
+  <span class="toggle-dot" aria-hidden="true"></span>
 </button>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const toggle = document.getElementById('theme-toggle');
-    const shaded = document.getElementById('toggle-shaded');
-    
-    if (!toggle || !shaded) return;
-
-    function setRotation(isDark: boolean) {
-      shaded!.style.transform = isDark ? "rotate(180deg)" : "rotate(0deg)";
-    }
-    setRotation(document.documentElement.classList.contains("dark"));
+    if (!toggle) return;
 
     toggle.addEventListener('click', function() {
       const html = document.documentElement;
@@ -52,11 +31,9 @@
       
       if (isDark) {
         html.classList.remove("dark");
-        setRotation(false);
         localStorage.theme = "light";
       } else {
         html.classList.add("dark");
-        setRotation(true);
         localStorage.theme = "dark";
       }
     });

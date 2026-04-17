@@ -2,17 +2,9 @@
 import { SITE_DESCRIPTION } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
 import { artifacts as baseArtifacts } from "../../data/artifacts";
-import type { Artifact, ArtifactType, ArtifactCategory } from "../../data/artifacts";
-import { CATEGORY_LABELS } from "../../data/artifact-categories";
-import { getLinkThumbnails } from "../../lib/link-thumbnail";
+import type { Artifact, ArtifactCategory } from "../../data/artifacts";
 
 export const prerender = true;
-
-// Fetch og:image / twitter:image thumbnails for links at build time
-const linkUrls = baseArtifacts
-  .filter((a): a is Artifact & { url: string } => a.type === "link" && !!a.url)
-  .map((a) => a.url);
-const thumbnails = await getLinkThumbnails(linkUrls);
 
 function withCategories(a: Artifact): Artifact & { categories: ArtifactCategory[] } {
   const cats = a.categories?.length
@@ -25,119 +17,59 @@ function withCategories(a: Artifact): Artifact & { categories: ArtifactCategory[
   return { ...a, categories: cats };
 }
 
-const artifacts = baseArtifacts.map((a) => {
-  const item = withCategories(a);
-  if (a.type === "link" && a.url) {
-    return { ...item, thumbnail: thumbnails.get(a.url) ?? null };
-  }
-  return item;
-});
+const artifacts = baseArtifacts.map(withCategories);
 
-const allCategories = [...new Set(artifacts.flatMap((a) => a.categories))].sort();
-const typeFilters: { value: ArtifactType | "all"; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "image", label: "Images" },
-  { value: "link", label: "Links" },
-  { value: "video", label: "Videos" },
-];
-const categoryFilters = allCategories.map((c) => ({
-  value: c,
-  label: CATEGORY_LABELS[c] ?? c,
-}));
+const items = artifacts.filter((a) => {
+  if (a.type === "link") return !!a.url;
+  if (a.type === "video") return !!a.url;
+  if (a.type === "image") return !!a.image;
+  return false;
+});
 ---
 
 <Layout title="Artifacts | Farooq Qureshi" description={SITE_DESCRIPTION} className="max-w-5xl">
   <main class="no-link-underline">
-    <h1 class="text-sm font-medium mb-8">Gems on the web that I've came across.</h1>
-
-    <!-- Filters: Type + Category -->
-    <div class="flex flex-col gap-4 mb-8">
-      <div class="flex flex-wrap gap-2 items-center">
-        <span class="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">Type</span>
-        {typeFilters.map((f) => (
-          <button
-            type="button"
-            class="artifact-type-filter px-3 py-1.5 text-xs rounded-full border transition-colors"
-            data-filter={f.value}
-          >
-            {f.label}
-          </button>
-        ))}
+    <header class="mb-10">
+      <p class="text-sm text-zinc-900 dark:text-zinc-100">
+        A small stash of links, images, and videos I’ve bookmarked.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button type="button" class="artifact-tab" data-tab="all">All</button>
+        <button type="button" class="artifact-tab" data-tab="link">Links</button>
+        <button type="button" class="artifact-tab" data-tab="image">Images</button>
+        <button type="button" class="artifact-tab" data-tab="video">Videos</button>
       </div>
-      <div class="flex flex-wrap gap-2 items-center">
-        <span class="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">Category</span>
-        {categoryFilters.map((f) => (
-          <button
-            type="button"
-            class="artifact-category-filter px-3 py-1.5 text-xs rounded-full border transition-colors"
-            data-filter={f.value}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-    </div>
+    </header>
 
-    <!-- Masonry grid -->
     <div class="flashlight-hover artifact-grid columns-2 sm:columns-3 column-gap-4">
-      {artifacts.map((item) => (
+      {items.map((item) => (
         <a
-          href={item.url || item.image || "#"}
-          target={item.url || item.image ? "_blank" : undefined}
-          rel={item.url || item.image ? "noopener" : undefined}
+          href={item.type === "image" ? item.image : item.url}
+          target="_blank"
+          rel="noopener"
           class="flashlight-item artifact-card block break-inside-avoid mb-4 rounded-lg overflow-hidden bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors group"
           data-type={item.type}
-          data-categories={item.categories?.join(",") ?? ""}
         >
-          {item.type === "image" && item.image ? (
-            <div class="overflow-hidden rounded-t-lg bg-zinc-100 dark:bg-zinc-800">
-              <img
-                src={item.image}
-                alt={item.alt || item.title}
-                class="w-full h-auto block"
-                loading="lazy"
-              />
-            </div>
-          ) : item.type === "link" && item.url ? (
-            <div class="aspect-[4/3] overflow-hidden relative flex items-center justify-center">
-              {item.thumbnail ? (
-                <img
-                  src={item.thumbnail}
-                  alt=""
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                  onerror="this.style.display='none';this.nextElementSibling?.classList.remove('hidden');"
-                />
-              ) : null}
-              <div
-                class={`artifact-placeholder w-full h-full ${item.thumbnail ? 'hidden' : ''}`}
-                data-domain={item.domain || item.url}
-              />
-            </div>
-          ) : item.type === "link" ? (
-            <div class="aspect-[4/3] flex items-center justify-center bg-zinc-200 dark:bg-zinc-800">
-              <span class="text-2xl text-zinc-500 dark:text-zinc-400">↗</span>
-            </div>
+          {item.type === "image" ? (
+            <img
+              src={item.image}
+              alt={item.alt || item.title || "Artifact image"}
+              class="w-full h-auto block"
+              loading="lazy"
+            />
           ) : (
-            <div class="aspect-[4/3] flex items-center justify-center bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
-              <span class="text-2xl">▶</span>
-            </div>
-          )}
-          {(item.title || item.alt || item.description || item.domain) && (
             <div class="p-3">
-              {(item.title || item.alt || item.domain) && (
-                <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-2">
-                  {item.title || item.alt || item.domain || "—"}
+              <div class="flex items-start justify-between gap-3">
+                <p class="text-sm text-zinc-900 dark:text-zinc-100 leading-snug">
+                  {item.title?.trim() || item.domain || (item.url ?? "")}
                 </p>
-              )}
-              {item.description && (
-                <p class={`text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${item.title || item.alt || item.domain ? "mt-0.5" : ""}`}>
-                  {item.description}
-                </p>
-              )}
-              {item.domain && (
-                <p class={`text-[10px] text-zinc-400 dark:text-zinc-500 truncate group-hover:text-zinc-500 dark:group-hover:text-zinc-400 ${(item.title || item.alt || item.description) ? "mt-1" : ""}`}>
-                  {item.domain}
+                <span class="text-xs text-zinc-400 dark:text-zinc-500 shrink-0">
+                  {item.type === "video" ? "▶" : "↗"}
+                </span>
+              </div>
+              {(item.description || item.domain) && (
+                <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+                  {item.description?.trim() || item.domain}
                 </p>
               )}
             </div>
@@ -148,11 +80,38 @@ const categoryFilters = allCategories.map((c) => ({
   </main>
 
   <style>
+    .artifact-tab {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 9999px;
+      border: 1px solid rgb(228 228 231);
+      color: rgb(63 63 70);
+      transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+    }
+    html.dark .artifact-tab {
+      border-color: rgb(63 63 70);
+      color: rgb(212 212 216);
+    }
+    .artifact-tab:hover {
+      border-color: rgb(161 161 170);
+      color: rgb(24 24 27);
+    }
+    html.dark .artifact-tab:hover {
+      border-color: rgb(113 113 122);
+      color: rgb(244 244 245);
+    }
+    .artifact-tab.is-active {
+      background: rgb(24 24 27);
+      border-color: rgb(24 24 27);
+      color: #fff;
+    }
+    html.dark .artifact-tab.is-active {
+      background: rgb(244 244 245);
+      border-color: rgb(244 244 245);
+      color: rgb(24 24 27);
+    }
     .artifact-grid {
       column-fill: balance;
-    }
-    .artifact-card[data-type="image"] .aspect-[4/3] img {
-      min-height: 100%;
     }
     .line-clamp-2 {
       display: -webkit-box;
@@ -160,109 +119,24 @@ const categoryFilters = allCategories.map((c) => ({
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    .artifact-placeholder {
-      background: linear-gradient(135deg, #e8e4dc 0%, #d4cfc4 50%, #c4bfb2 100%);
-    }
-    html.dark .artifact-placeholder {
-      background: linear-gradient(135deg, #2a2824 0%, #1f1d1a 50%, #181614 100%);
-    }
-    /* Filter buttons: inactive */
-    .artifact-type-filter,
-    .artifact-category-filter {
-      border-color: rgb(228 228 231);
-      color: rgb(82 82 91);
-    }
-    html.dark .artifact-type-filter,
-    html.dark .artifact-category-filter {
-      border-color: rgb(63 63 70);
-      color: rgb(161 161 170);
-    }
-    /* Filter buttons: active */
-    .artifact-type-filter.active,
-    .artifact-category-filter.active {
-      background: rgb(24 24 27);
-      color: white;
-      border-color: rgb(24 24 27);
-    }
-    html.dark .artifact-type-filter.active,
-    html.dark .artifact-category-filter.active {
-      background: rgb(244 244 245);
-      color: rgb(24 24 27);
-      border-color: rgb(244 244 245);
-    }
-    /* Filter buttons: hover - keep text visible */
-    .artifact-type-filter:hover,
-    .artifact-category-filter:hover {
-      border-color: rgb(161 161 170);
-      color: rgb(24 24 27);
-    }
-    html.dark .artifact-type-filter:hover,
-    html.dark .artifact-category-filter:hover {
-      border-color: rgb(113 113 122);
-      color: rgb(244 244 245);
-    }
-    .artifact-type-filter.active:hover,
-    .artifact-category-filter.active:hover {
-      background: rgb(39 39 42);
-      color: white;
-      border-color: rgb(39 39 42);
-    }
-    html.dark .artifact-type-filter.active:hover,
-    html.dark .artifact-category-filter.active:hover {
-      background: rgb(228 228 231);
-      color: rgb(24 24 27);
-      border-color: rgb(228 228 231);
-    }
   </style>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const typeFilters = document.querySelectorAll(".artifact-type-filter");
-      const categoryFilters = document.querySelectorAll(".artifact-category-filter");
-      const cards = document.querySelectorAll(".artifact-card");
+  <script is:inline>
+    (() => {
+      const tabs = Array.from(document.querySelectorAll(".artifact-tab"));
+      const cards = Array.from(document.querySelectorAll(".artifact-card"));
 
-      let activeType = "all";
-      let activeCategory: string | null = null;
-
-      function applyFilters() {
-        cards.forEach((card) => {
-          const type = (card as HTMLElement).dataset.type;
-          const categories = ((card as HTMLElement).dataset.categories ?? "").split(",").filter(Boolean);
-          const typeMatch = activeType === "all" || type === activeType;
-          const categoryMatch = !activeCategory || categories.includes(activeCategory);
-          (card as HTMLElement).style.display = typeMatch && categoryMatch ? "block" : "none";
+      const setActive = (name) => {
+        tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === name));
+        cards.forEach((c) => {
+          const type = c.dataset.type;
+          const show = name === "all" || type === name;
+          c.style.display = show ? "block" : "none";
         });
-      }
+      };
 
-      function setActiveType(value: string) {
-        activeType = value;
-        typeFilters.forEach((btn) => {
-          const el = btn as HTMLButtonElement;
-          el.classList.toggle("active", el.dataset.filter === value);
-        });
-        applyFilters();
-      }
-
-      function setActiveCategory(value: string | null) {
-        activeCategory = value;
-        categoryFilters.forEach((btn) => {
-          const el = btn as HTMLButtonElement;
-          el.classList.toggle("active", el.dataset.filter === value);
-        });
-        applyFilters();
-      }
-
-      typeFilters.forEach((btn) => {
-        btn.addEventListener("click", () => setActiveType((btn as HTMLButtonElement).dataset.filter ?? "all"));
-      });
-      categoryFilters.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const val = (btn as HTMLButtonElement).dataset.filter;
-          setActiveCategory(activeCategory === val ? null : val ?? null);
-        });
-      });
-
-      setActiveType("all");
-    });
+      tabs.forEach((t) => t.addEventListener("click", () => setActive(t.dataset.tab)));
+      setActive("all");
+    })();
   </script>
 </Layout>
