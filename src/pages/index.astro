@@ -6,45 +6,53 @@ import EmailReveal from "../components/EmailReveal.astro";
 
 <IndexLayout title="Farooq Qureshi" description={SITE_DESCRIPTION}>
   <main class="index-page no-link-underline">
-    <nav class="index-nav flex w-full flex-col gap-2 text-sm">
-      <a href="/about" class="hub-nav-link index-nav-link" data-stagger="1">
-        <span class="hub-nav-label">About</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+    <nav class="index-nav flashlight-hover flex w-full flex-col gap-2 text-sm">
+      <a href="/about" class="hub-nav-link index-nav-link flashlight-item" data-stagger="1">
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">About</span>
+        </span>
       </a>
-      <a href="/projects" class="hub-nav-link index-nav-link" data-stagger="2">
-        <span class="hub-nav-label">Projects</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      <a href="/projects" class="hub-nav-link index-nav-link flashlight-item" data-stagger="2">
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">Projects</span>
+        </span>
       </a>
-      <a href="/writing" class="hub-nav-link index-nav-link" data-stagger="3">
-        <span class="hub-nav-label">Writing</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      <a href="/writing" class="hub-nav-link index-nav-link flashlight-item" data-stagger="3">
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">Writing</span>
+        </span>
       </a>
-      <a href="/artifacts" class="hub-nav-link index-nav-link" data-stagger="4">
-        <span class="hub-nav-label">Artifacts</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      <a href="/artifacts" class="hub-nav-link index-nav-link flashlight-item" data-stagger="4">
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">Artifacts</span>
+        </span>
       </a>
-      <a href="/other" class="hub-nav-link index-nav-link" data-stagger="5">
-        <span class="hub-nav-label">Other</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      <a href="/other" class="hub-nav-link index-nav-link flashlight-item" data-stagger="5">
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">Other</span>
+        </span>
       </a>
       <EmailReveal />
       <a
-        href="https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing"
+        href="https://www.cosmos.so/farooqqureshi"
         target="_blank"
         rel="noopener"
-        class="hub-nav-link index-nav-link"
+        class="hub-nav-link index-nav-link flashlight-item"
         data-stagger="7"
       >
-        <span class="hub-nav-label">Résumé</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">Cosmos</span>
+        </span>
       </a>
-      <a href="https://linkedin.com/in/farooqq" target="_blank" rel="noopener" class="hub-nav-link index-nav-link" data-stagger="8">
-        <span class="hub-nav-label">LinkedIn</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      <a href="https://linkedin.com/in/farooqq" target="_blank" rel="noopener" class="hub-nav-link index-nav-link flashlight-item" data-stagger="8">
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">LinkedIn</span>
+        </span>
       </a>
-      <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="hub-nav-link index-nav-link" data-stagger="9">
-        <span class="hub-nav-label">GitHub</span>
-        <span class="hub-nav-trail" aria-hidden="true">[↗]</span>
+      <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="hub-nav-link index-nav-link flashlight-item" data-stagger="9">
+        <span class="index-nav-inner">
+          <span class="hub-nav-label">GitHub</span>
+        </span>
       </a>
     </nav>
   </main>
@@ -61,18 +69,20 @@ import EmailReveal from "../components/EmailReveal.astro";
       transform: translateY(0);
     }
   }
-  .index-nav-link {
+  /* Animate inner wrapper so flashlight can own transforms on the link */
+  .index-nav-inner {
+    display: inline-block;
     opacity: 0;
     transform: translateY(8px);
     animation: indexFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   /* Explicit stagger by data attribute - no nth-child ambiguity */
-  .index-nav-link[data-stagger="1"] { animation-delay: 80ms; }
-  .index-nav-link[data-stagger="2"] { animation-delay: 135ms; }
-  .index-nav-link[data-stagger="3"] { animation-delay: 190ms; }
-  .index-nav-link[data-stagger="4"] { animation-delay: 245ms; }
-  .index-nav-link[data-stagger="5"] { animation-delay: 300ms; }
-  .index-nav-link[data-stagger="7"] { animation-delay: 410ms; }
-  .index-nav-link[data-stagger="8"] { animation-delay: 465ms; }
-  .index-nav-link[data-stagger="9"] { animation-delay: 520ms; }
+  .index-nav-link[data-stagger="1"] .index-nav-inner { animation-delay: 80ms; }
+  .index-nav-link[data-stagger="2"] .index-nav-inner { animation-delay: 135ms; }
+  .index-nav-link[data-stagger="3"] .index-nav-inner { animation-delay: 190ms; }
+  .index-nav-link[data-stagger="4"] .index-nav-inner { animation-delay: 245ms; }
+  .index-nav-link[data-stagger="5"] .index-nav-inner { animation-delay: 300ms; }
+  .index-nav-link[data-stagger="7"] .index-nav-inner { animation-delay: 410ms; }
+  .index-nav-link[data-stagger="8"] .index-nav-inner { animation-delay: 465ms; }
+  .index-nav-link[data-stagger="9"] .index-nav-inner { animation-delay: 520ms; }
 </style>

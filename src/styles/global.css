@@ -76,7 +76,7 @@
     transform: scaleX(1);
   }
 
-  /* Main page only: [↗] pinned to content’s right edge on hover */
+  /* Main page: keep links full-width (flashlight handles hover) */
   .index-page .hub-nav-link {
     display: flex;
     width: 100%;
@@ -88,36 +88,6 @@
   }
   .index-page .hub-nav-link .hub-nav-label {
     min-width: 0;
-  }
-  .index-page .hub-nav-link .hub-nav-trail {
-    flex-shrink: 0;
-    font-size: 0.9em;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    color: #111111;
-    opacity: 0;
-    transform: translate(-5px, 4px);
-    transition:
-      opacity 0.18s ease-out,
-      transform 0.22s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  html.dark .index-page .hub-nav-link .hub-nav-trail {
-    color: #e4e4e7;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .index-page .hub-nav-link:hover .hub-nav-trail {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .index-page .hub-nav-link .hub-nav-trail {
-      transition: opacity 0.15s ease;
-      transform: none;
-    }
-    .index-page .hub-nav-link:hover .hub-nav-trail {
-      transform: none;
-    }
   }
 
   /* Project card media - subtle lift on hover */
@@ -135,6 +105,12 @@
   }
   header a::after {
     display: none;
+  }
+
+  .nav-brand {
+    font-family: inherit;
+    font-weight: 460;
+    letter-spacing: 0;
   }
 
   /* Section headings */

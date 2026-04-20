@@ -2,48 +2,49 @@
 // Command menu component
 ---
 
-<div id="command-menu" class="fixed inset-0 z-[1001] hidden">
+<div id="command-menu" class="fixed inset-0 z-[1001] hidden" aria-hidden="true">
   <!-- Backdrop -->
   <div 
     id="command-backdrop" 
-    class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-75 ease-out opacity-0"
+    class="absolute inset-0 bg-black/20 backdrop-blur-sm"
   ></div>
 
 <style>
+  /* Smooth, prominent open/close (avoid mobile jitter) */
+  #command-menu:not(.hidden) {
+    display: block;
+  }
+
+  #command-backdrop {
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.35);
+    transition: opacity 200ms ease;
+    will-change: opacity;
+  }
+
   #command-container {
-    transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translate3d(0, -14px, 0) scale(0.985);
+    transition:
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 180ms ease;
     will-change: transform, opacity;
-    transform: translateZ(0);
     backface-visibility: hidden;
   }
-  
-  #command-container.animate-in {
-    animation: slideInFromTop 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  #command-menu.is-open #command-backdrop {
+    opacity: 1;
   }
-  
-  #command-container.animate-out {
-    animation: slideOutToBottom 0.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  #command-menu.is-open #command-container {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
   }
-  
-  @keyframes slideInFromTop {
-    0% {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes slideOutToBottom {
-    0% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(20px);
+
+  @media (prefers-reduced-motion: reduce) {
+    #command-backdrop,
+    #command-container {
+      transition: none !important;
     }
   }
 
@@ -53,10 +54,10 @@
 </style>
   
   <!-- Menu container -->
-  <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+  <div class="absolute inset-0 flex items-start justify-center p-4 pt-[24vh] sm:pt-[26vh] pointer-events-none">
     <div 
       id="command-container"
-      class="w-full max-w-lg bg-[#f5f5f5] dark:bg-[#252525] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-800 flexoki:border-flexoki-ui-3 shadow-xl transform transform-gpu opacity-0 pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="w-full max-w-lg bg-[#f5f5f5] dark:bg-[#252525] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-800 flexoki:border-flexoki-ui-3 shadow-2xl transform-gpu pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
     >
       <!-- Search input -->
       <div class="hidden sm:block border-b border-zinc-200 dark:border-zinc-800 flexoki:border-flexoki-ui-3 p-4">
@@ -100,8 +101,11 @@
     const container = document.getElementById('command-container');
     const input = document.getElementById('command-input') as HTMLInputElement;
     const navResults = document.getElementById('nav-results');
+    let closeTimeout: number | null = null;
     
     if (!menu || !backdrop || !container || !navResults) return;
+    const menuEl = menu as HTMLDivElement;
+    const containerEl = container as HTMLDivElement;
 
     // OS-specific shortcut hint
     const hintEl = document.getElementById('command-menu-hint-text');
@@ -122,10 +126,9 @@
 
     const linkItems = [
       { title: 'Email', url: 'mailto:farooq.qureshi@outlook.com', description: 'Send me an email', section: 'links', shortcut: 'E' },
-      { title: 'Résumé', url: 'https://drive.google.com/file/d/1sM9b3G5AbRIG-kDz68KOzGxeETeKm8rN/view?usp=sharing', description: 'View my résumé', section: 'links', shortcut: 'R' },
       { title: 'LinkedIn', url: 'https://linkedin.com/in/farooqq', description: 'Work & experience', section: 'links', shortcut: 'L' },
       { title: 'GitHub', url: 'https://github.com/farooqqureshii', description: 'Projects and more', section: 'links', shortcut: 'G' },
-      { title: 'Curius', url: 'https://curius.app/farooq-qureshi', description: 'What I\'m finding interesting', section: 'links', shortcut: 'C' }
+      { title: 'Cosmos', url: 'https://www.cosmos.so/farooqqureshi', description: 'Collected internet gems', section: 'links', shortcut: 'C' }
     ];
 
     // Books data
@@ -259,10 +262,9 @@
     let selectedIndex = 0;
     let filteredItems: MenuItem[] = [...allItems];
 
-    // Initialize navigation items
     function renderItems() {
       if (!navResults) return;
-      
+
       navResults.innerHTML = '';
       
       // Group items by section
@@ -340,6 +342,11 @@
     }
 
     let openMenu = function openMenuImpl() {
+      if (closeTimeout) {
+        window.clearTimeout(closeTimeout);
+        closeTimeout = null;
+      }
+
       // Reset state when opening
       filteredItems = [...allItems];
       selectedIndex = 0;
@@ -354,11 +361,12 @@
       }
       
       menu?.classList.remove('hidden');
-      setTimeout(() => {
-        container?.classList.remove('opacity-0');
-        container?.classList.add('animate-in');
-        backdrop?.classList.remove('opacity-0');
-      }, 10);
+      menu?.setAttribute('aria-hidden', 'false');
+      // Ensure the browser commits styles before transitioning.
+      requestAnimationFrame(() => {
+        menu?.classList.add('is-open');
+      });
+
       if (input) {
         input.focus();
       }
@@ -371,23 +379,21 @@
 
     // Close command menu
     function closeMenu() {
-      container?.classList.remove('animate-in');
-      container?.classList.add('animate-out');
-    backdrop?.classList.add('opacity-0');
-    setTimeout(() => {
-      menu?.classList.add('hidden');
-      if (input) {
-        input.value = '';
-      }
-      // Reset filtered items to show all items
-      filteredItems = [...allItems];
-      selectedIndex = 0;
-      renderItems();
-      // Reset position for next open
-      container?.classList.remove('animate-out');
-      container?.classList.add('opacity-0');
-      backdrop?.classList.add('opacity-0');
-    }, 100);
+      menu?.classList.remove('is-open');
+      menu?.setAttribute('aria-hidden', 'true');
+
+      if (closeTimeout) window.clearTimeout(closeTimeout);
+      closeTimeout = window.setTimeout(() => {
+        menu?.classList.add('hidden');
+        if (input) {
+          input.value = '';
+        }
+        // Reset filtered items to show all items
+        filteredItems = [...allItems];
+        selectedIndex = 0;
+        renderItems();
+        closeTimeout = null;
+      }, 220);
     }
 
     // Keyboard navigation
