@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --highlight-bg: #fde68a; /* amber-200 */
+    --highlight-fg: #111827; /* gray-900 */
+  }
+
+  html.dark {
+    --highlight-bg: #78350f; /* amber-900 */
+    --highlight-fg: #fffbeb; /* amber-50 */
+  }
+
   html {
     font-size: 15px;
   }
@@ -133,12 +143,12 @@
   }
 
   ::selection {
-    background: #e5e5e5;
-    color: #111111;
+    background: var(--highlight-bg);
+    color: var(--highlight-fg);
   }
   html.dark ::selection {
-    background: #27272a;
-    color: #e4e4e7;
+    background: var(--highlight-bg);
+    color: var(--highlight-fg);
   }
 }
 
@@ -216,10 +226,12 @@
       @apply border-zinc-600 bg-zinc-800 text-zinc-200;
     }
     mark {
-      @apply bg-zinc-200 text-zinc-900;
+      background: var(--highlight-bg);
+      color: var(--highlight-fg);
     }
     html.dark mark {
-      @apply bg-zinc-700 text-zinc-100;
+      background: var(--highlight-bg);
+      color: var(--highlight-fg);
     }
   }
 
