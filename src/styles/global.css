@@ -17,6 +17,18 @@
     font-size: 15px;
   }
 
+  /* Smooth theme transitions (only when toggling) */
+  @media (prefers-reduced-motion: no-preference) {
+    html.theme-transition,
+    html.theme-transition * {
+      transition-property:
+        background-color, color, border-color, outline-color, fill, stroke,
+        text-decoration-color;
+      transition-duration: 300ms;
+      transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+  }
+
   body {
     background-color: #ffffff;
     color: #111111;
@@ -30,9 +42,24 @@
   /* Inter - 15px, weight 460 */
   html,
   body,
-  h1, h2, h3, h4, h5, h6,
-  p, li, ul, ol, span, div {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  ul,
+  ol,
+  span,
+  div {
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
     font-weight: 460;
   }
 
@@ -53,7 +80,9 @@
     border-radius: 1px;
     transform-origin: left;
     transform: scaleX(0);
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
+    transition:
+      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.2s ease;
   }
   a:hover::after {
     transform: scaleX(1);
@@ -163,7 +192,10 @@
     h2 {
       @apply my-6 text-sm font-semibold;
     }
-    h3, h4, h5, h6 {
+    h3,
+    h4,
+    h5,
+    h6 {
       @apply my-4 text-sm font-medium;
     }
     :not(pre) > code {
@@ -333,7 +365,9 @@ html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
 
 /* Flashlight hover effect - isolate hovered item, dim others (like quotes page) */
 .flashlight-hover .flashlight-item {
-  transition: opacity 0.2s ease-out, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .flashlight-hover .flashlight-item:hover,
 .flashlight-hover .flashlight-item.hovered,

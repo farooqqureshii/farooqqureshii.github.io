@@ -4,7 +4,7 @@
 
 <button
   id="theme-toggle"
-  class="theme-toggle-btn w-5 h-5 flex items-center justify-center text-[#111111] dark:text-[#e4e4e7] no-theme-transition"
+  class="theme-toggle-btn no-theme-transition flex h-5 w-5 items-center justify-center text-[#111111] dark:text-[#e4e4e7]"
   aria-label="Toggle theme"
   title="Toggle theme"
 >
@@ -21,14 +21,15 @@
 </button>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('theme-toggle');
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("theme-toggle");
     if (!toggle) return;
 
-    toggle.addEventListener('click', function() {
+    toggle.addEventListener("click", function () {
       const html = document.documentElement;
+      html.classList.add("theme-transition");
       const isDark = html.classList.contains("dark");
-      
+
       if (isDark) {
         html.classList.remove("dark");
         localStorage.theme = "light";
@@ -36,6 +37,10 @@
         html.classList.add("dark");
         localStorage.theme = "dark";
       }
+
+      window.setTimeout(() => {
+        html.classList.remove("theme-transition");
+      }, 320);
     });
   });
 </script>

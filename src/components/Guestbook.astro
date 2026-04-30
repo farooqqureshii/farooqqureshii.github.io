@@ -1,0 +1,722 @@
+<section class="mt-10" aria-labelledby="guestbook-title">
+  <div class="flex items-baseline justify-between gap-3">
+    <h2 id="guestbook-title" class="section-heading">
+      Guestbook
+    </h2>
+    <p class="text-xs text-zinc-500 dark:text-zinc-400">
+      Stored locally on your device.
+    </p>
+  </div>
+
+  <div class="mt-3 grid gap-4 md:grid-cols-2">
+    <form class="gb-panel rounded-xl border border-zinc-200 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-900/40">
+      <div class="flex items-center justify-between gap-3">
+        <p class="text-sm font-medium">Leave a message</p>
+        <button
+          type="button"
+          class="gb-clear rounded-md px-2 py-1 text-xs text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-100"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div class="mt-3 grid gap-3">
+        <label class="grid gap-1">
+          <span class="text-xs text-zinc-600 dark:text-zinc-400">Name</span>
+          <input
+            class="gb-name w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none ring-amber-300/40 focus:ring-4 dark:border-zinc-800 dark:bg-zinc-950"
+            name="name"
+            autocomplete="name"
+            maxlength="40"
+            placeholder="Your name"
+            required
+          />
+        </label>
+
+        <label class="grid gap-1">
+          <span class="text-xs text-zinc-600 dark:text-zinc-400">Message</span>
+          <textarea
+            class="gb-message min-h-[96px] w-full resize-none rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none ring-amber-300/40 focus:ring-4 dark:border-zinc-800 dark:bg-zinc-950"
+            name="message"
+            maxlength="240"
+            placeholder="Write something nice (or chaotic)."
+            required
+          ></textarea>
+        </label>
+
+        <div class="grid gap-1">
+          <span class="text-xs text-zinc-600 dark:text-zinc-400">Vibe</span>
+          <div class="gb-vibes flex flex-wrap gap-2">
+            <label class="gb-pill">
+              <input type="radio" name="vibe" value="cosmic" checked />
+              <span>Cosmic</span>
+            </label>
+            <label class="gb-pill">
+              <input type="radio" name="vibe" value="citrus" />
+              <span>Citrus</span>
+            </label>
+            <label class="gb-pill">
+              <input type="radio" name="vibe" value="noir" />
+              <span>Noir</span>
+            </label>
+            <label class="gb-pill">
+              <input type="radio" name="vibe" value="ocean" />
+              <span>Ocean</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-1">
+          <p class="gb-hint text-xs text-zinc-500 dark:text-zinc-400">
+            Preview updates live.
+          </p>
+          <button
+            type="submit"
+            class="gb-submit rounded-lg bg-zinc-900 px-3 py-2 text-sm font-medium text-white shadow-sm ring-amber-300/30 transition hover:bg-zinc-800 focus:outline-none focus:ring-4 active:translate-y-px dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            Sign guestbook
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
+      <p class="text-sm font-medium">Your card</p>
+      <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+        Hover/touch it. It’s a little alive.
+      </p>
+
+      <div class="mt-3">
+        <div class="gb-card" tabindex="0" role="group" aria-label="Guestbook card preview">
+          <div class="gb-card-inner">
+            <div class="gb-card-top">
+              <div class="gb-stamp" aria-hidden="true"></div>
+              <div class="gb-meta">
+                <div class="gb-to-label">To:</div>
+                <div class="gb-to">Farooq</div>
+              </div>
+            </div>
+            <div class="gb-body">
+              <div class="gb-message-preview">Write a message to generate your card.</div>
+            </div>
+            <div class="gb-footer">
+              <div class="gb-sig">
+                <span class="gb-sig-label">Signed,</span>
+                <span class="gb-sig-name">Anonymous</span>
+              </div>
+              <div class="gb-date"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            class="gb-reroll rounded-md px-2 py-1 text-xs text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+          >
+            Reroll design
+          </button>
+          <p class="gb-count text-xs text-zinc-500 dark:text-zinc-400" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
+    <div class="flex items-center justify-between gap-3">
+      <p class="text-sm font-medium">Messages</p>
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          class="gb-sort rounded-md px-2 py-1 text-xs text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+          aria-pressed="false"
+        >
+          Sort: newest
+        </button>
+        <button
+          type="button"
+          class="gb-reset rounded-md px-2 py-1 text-xs text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+        >
+          Reset (local)
+        </button>
+      </div>
+    </div>
+    <div class="gb-list mt-3 grid gap-3"></div>
+  </div>
+
+  <style>
+    .gb-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgb(228 228 231);
+      background: white;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.75rem;
+      color: rgb(39 39 42);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 160ms ease-out, background-color 160ms ease-out, border-color 160ms ease-out;
+    }
+    html.dark .gb-pill {
+      border-color: rgb(39 39 42);
+      background: rgb(9 9 11);
+      color: rgb(228 228 231);
+    }
+    .gb-pill input {
+      width: 0;
+      height: 0;
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+    .gb-pill:has(input:checked) {
+      border-color: rgba(245, 158, 11, 0.55);
+      background: rgba(245, 158, 11, 0.08);
+    }
+    html.dark .gb-pill:has(input:checked) {
+      border-color: rgba(245, 158, 11, 0.45);
+      background: rgba(245, 158, 11, 0.1);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .gb-pill:hover {
+        transform: translateY(-1px);
+      }
+    }
+
+    .gb-card {
+      --rx: 0deg;
+      --ry: 0deg;
+      --mx: 50%;
+      --my: 50%;
+      --g1: #7c3aed;
+      --g2: #06b6d4;
+      --g3: #f59e0b;
+      --ink: rgba(17, 17, 17, 0.82);
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgb(228 228 231);
+      background: radial-gradient(1200px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.14), transparent 45%),
+        linear-gradient(135deg, var(--g1), var(--g2) 55%, var(--g3));
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+      transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+      transform-style: preserve-3d;
+      transition: transform 180ms ease-out, box-shadow 220ms ease-out;
+      outline: none;
+    }
+    html.dark .gb-card {
+      border-color: rgb(39 39 42);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+    }
+    .gb-card:focus-visible {
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18), 0 0 0 4px rgba(245, 158, 11, 0.32);
+    }
+    .gb-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(900px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.32), transparent 40%),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06) 1px, transparent 1px, transparent 3px);
+      mix-blend-mode: overlay;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .gb-card::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: radial-gradient(600px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.24), transparent 55%);
+      opacity: 0;
+      transition: opacity 220ms ease-out;
+      pointer-events: none;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .gb-card:hover {
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+      }
+      .gb-card:hover::after {
+        opacity: 1;
+      }
+    }
+    .gb-card-inner {
+      position: relative;
+      padding: 16px;
+      min-height: 220px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      color: var(--ink);
+    }
+    html.dark .gb-card-inner {
+      --ink: rgba(10, 10, 10, 0.84);
+    }
+    .gb-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .gb-stamp {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background:
+        radial-gradient(10px 10px at 20% 30%, rgba(255, 255, 255, 0.8), transparent 60%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0.12));
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+      transform: translateZ(14px) rotate(-4deg);
+    }
+    .gb-meta {
+      text-align: right;
+      transform: translateZ(8px);
+    }
+    .gb-to-label {
+      font-size: 11px;
+      opacity: 0.82;
+    }
+    .gb-to {
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+    .gb-body {
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 12px;
+      transform: translateZ(10px);
+    }
+    .gb-message-preview {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .gb-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      transform: translateZ(8px);
+    }
+    .gb-sig {
+      display: grid;
+      gap: 2px;
+    }
+    .gb-sig-label {
+      font-size: 11px;
+      opacity: 0.82;
+    }
+    .gb-sig-name {
+      font-family: "Bodoni Moda", serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    .gb-date {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    .gb-entry {
+      border: 1px solid rgb(228 228 231);
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+    }
+    html.dark .gb-entry {
+      border-color: rgb(39 39 42);
+      background: rgb(9 9 11);
+    }
+    .gb-entry-top {
+      padding: 12px 12px 0 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .gb-entry-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .gb-entry-time {
+      font-size: 11px;
+      color: rgb(113 113 122);
+    }
+    html.dark .gb-entry-time {
+      color: rgb(161 161 170);
+    }
+    .gb-entry-msg {
+      padding: 8px 12px 12px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .gb-entry-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px 12px 12px;
+      border-top: 1px solid rgb(244 244 245);
+      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.02));
+    }
+    html.dark .gb-entry-actions {
+      border-top-color: rgb(39 39 42);
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.02));
+    }
+    .gb-like {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid rgb(228 228 231);
+      background: white;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: rgb(39 39 42);
+      transition: transform 160ms ease-out, background-color 160ms ease-out, border-color 160ms ease-out;
+    }
+    html.dark .gb-like {
+      border-color: rgb(39 39 42);
+      background: rgb(9 9 11);
+      color: rgb(228 228 231);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .gb-like:hover {
+        transform: translateY(-1px);
+      }
+    }
+    .gb-like[aria-pressed="true"] {
+      border-color: rgba(245, 158, 11, 0.55);
+      background: rgba(245, 158, 11, 0.08);
+    }
+    .gb-like svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gb-card {
+        transition: none;
+        transform: none !important;
+      }
+      .gb-pill,
+      .gb-like {
+        transition: none;
+      }
+    }
+  </style>
+
+  <script is:inline type="module">
+    const root = document.currentScript?.closest("section");
+    if (!root) throw new Error("Guestbook root not found");
+
+    const $ = (sel) => root.querySelector(sel);
+    const $$ = (sel) => Array.from(root.querySelectorAll(sel));
+
+    const form = root.querySelector("form");
+    const nameInput = $(".gb-name");
+    const messageInput = $(".gb-message");
+    const rerollBtn = $(".gb-reroll");
+    const clearBtn = $(".gb-clear");
+    const submitBtn = $(".gb-submit");
+    const sortBtn = $(".gb-sort");
+    const resetBtn = $(".gb-reset");
+    const listEl = $(".gb-list");
+    const countEl = $(".gb-count");
+
+    const card = $(".gb-card");
+    const cardPreviewMessage = $(".gb-message-preview");
+    const cardSigName = $(".gb-sig-name");
+    const cardDate = $(".gb-date");
+
+    const STORAGE_KEY = "guestbook:v1";
+    const LIKED_KEY = "guestbook:liked:v1";
+
+    const safeParse = (v, fallback) => {
+      try {
+        const parsed = JSON.parse(v);
+        return parsed ?? fallback;
+      } catch {
+        return fallback;
+      }
+    };
+
+    const nowISO = () => new Date().toISOString();
+    const formatDate = (iso) =>
+      new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+    const formatTime = (iso) =>
+      new Date(iso).toLocaleString(undefined, { month: "short", day: "2-digit", year: "numeric" });
+
+    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+    const pick = (arr, idx) => arr[((idx % arr.length) + arr.length) % arr.length];
+
+    const vibes = {
+      cosmic: ["#7c3aed", "#06b6d4", "#f59e0b"],
+      citrus: ["#f59e0b", "#84cc16", "#22c55e"],
+      noir: ["#111827", "#475569", "#a3a3a3"],
+      ocean: ["#2563eb", "#06b6d4", "#22c55e"],
+    };
+
+    const hash = (str) => {
+      let h = 2166136261;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return (h >>> 0) / 4294967295;
+    };
+
+    const id = () => {
+      if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
+      return "id_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+    };
+
+    const getVibe = () => {
+      const checked = root.querySelector('input[name="vibe"]:checked');
+      return checked?.value || "cosmic";
+    };
+
+    const applyDesign = ({ vibe, seed }) => {
+      const cols = vibes[vibe] || vibes.cosmic;
+      const s = seed ?? Math.random();
+      const rot = (s * 12 - 6).toFixed(2) + "deg";
+      const g1 = pick(cols, Math.floor(s * 10));
+      const g2 = pick(cols, Math.floor(s * 10) + 1);
+      const g3 = pick(cols, Math.floor(s * 10) + 2);
+      card.style.setProperty("--g1", g1);
+      card.style.setProperty("--g2", g2);
+      card.style.setProperty("--g3", g3);
+      card.querySelector(".gb-stamp").style.transform = `translateZ(14px) rotate(${rot})`;
+    };
+
+    const updatePreview = ({ keepSeed = true } = {}) => {
+      const name = (nameInput.value || "").trim() || "Anonymous";
+      const msg = (messageInput.value || "").trim() || "Write a message to generate your card.";
+      const vibe = getVibe();
+      const seed = keepSeed ? card.dataset.seed : String(hash(name + "|" + msg + "|" + vibe));
+      card.dataset.seed = seed;
+
+      cardSigName.textContent = name;
+      cardPreviewMessage.textContent = msg;
+      cardDate.textContent = formatDate(nowISO());
+      applyDesign({ vibe, seed: Number(seed) });
+
+      const len = (messageInput.value || "").length;
+      countEl.textContent = `${len}/240`;
+    };
+
+    const loadState = () => {
+      const entries = safeParse(localStorage.getItem(STORAGE_KEY), []);
+      const liked = safeParse(localStorage.getItem(LIKED_KEY), {});
+      return { entries: Array.isArray(entries) ? entries : [], liked: liked && typeof liked === "object" ? liked : {} };
+    };
+
+    const saveState = ({ entries, liked }) => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      localStorage.setItem(LIKED_KEY, JSON.stringify(liked));
+    };
+
+    let sortMode = "newest";
+    let state = loadState();
+
+    const render = () => {
+      const entries = [...state.entries];
+      if (sortMode === "top") entries.sort((a, b) => (b.likes || 0) - (a.likes || 0) || (b.createdAt > a.createdAt ? 1 : -1));
+      else entries.sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+
+      listEl.innerHTML = "";
+      if (entries.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "text-sm text-zinc-500 dark:text-zinc-400";
+        empty.textContent = "No messages yet — be the first.";
+        listEl.appendChild(empty);
+        return;
+      }
+
+      for (const e of entries) {
+        const wrap = document.createElement("article");
+        wrap.className = "gb-entry";
+        wrap.dataset.id = e.id;
+
+        const top = document.createElement("div");
+        top.className = "gb-entry-top";
+
+        const name = document.createElement("div");
+        name.className = "gb-entry-name";
+        name.textContent = e.name || "Anonymous";
+
+        const time = document.createElement("div");
+        time.className = "gb-entry-time";
+        time.textContent = formatTime(e.createdAt);
+
+        top.append(name, time);
+
+        const msg = document.createElement("div");
+        msg.className = "gb-entry-msg";
+        msg.textContent = e.message || "";
+
+        const actions = document.createElement("div");
+        actions.className = "gb-entry-actions";
+
+        const like = document.createElement("button");
+        like.type = "button";
+        like.className = "gb-like";
+        const isLiked = Boolean(state.liked?.[e.id]);
+        like.setAttribute("aria-pressed", String(isLiked));
+        like.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 21s-7-4.35-9.5-8.5C.4 8.86 2.25 6 5.5 6c1.86 0 3.32 1.05 4.2 2.25C10.58 7.05 12.04 6 13.9 6c3.25 0 5.1 2.86 3 6.5C19 16.65 12 21 12 21z"></path>
+          </svg>
+          <span class="gb-like-label">${isLiked ? "Liked" : "Like"}</span>
+          <span class="gb-like-count">${e.likes || 0}</span>
+        `;
+
+        const vibe = document.createElement("div");
+        vibe.className = "text-xs text-zinc-500 dark:text-zinc-400";
+        vibe.textContent = e.vibe ? `Vibe: ${e.vibe}` : "";
+
+        actions.append(like, vibe);
+        wrap.append(top, msg, actions);
+        listEl.appendChild(wrap);
+      }
+    };
+
+    const likeEntry = (entryId) => {
+      const i = state.entries.findIndex((e) => e.id === entryId);
+      if (i === -1) return;
+      const isLiked = Boolean(state.liked?.[entryId]);
+      state.liked = state.liked || {};
+      state.liked[entryId] = !isLiked;
+      const delta = isLiked ? -1 : 1;
+      state.entries[i].likes = clamp((state.entries[i].likes || 0) + delta, 0, 99999);
+      saveState(state);
+      render();
+    };
+
+    const resetAll = () => {
+      state = { entries: [], liked: {} };
+      saveState(state);
+      render();
+    };
+
+    // Tilt / shimmer interaction
+    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const setTiltFromEvent = (ev) => {
+      if (prefersReduced) return;
+      const r = card.getBoundingClientRect();
+      const x = (ev.clientX - r.left) / r.width;
+      const y = (ev.clientY - r.top) / r.height;
+      const rx = (0.5 - y) * 10;
+      const ry = (x - 0.5) * 12;
+      card.style.setProperty("--rx", rx.toFixed(2) + "deg");
+      card.style.setProperty("--ry", ry.toFixed(2) + "deg");
+      card.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+      card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+    };
+    const resetTilt = () => {
+      card.style.setProperty("--rx", "0deg");
+      card.style.setProperty("--ry", "0deg");
+      card.style.setProperty("--mx", "50%");
+      card.style.setProperty("--my", "50%");
+    };
+
+    card.addEventListener("pointermove", setTiltFromEvent);
+    card.addEventListener("pointerleave", resetTilt);
+    card.addEventListener("pointerdown", (ev) => {
+      if (prefersReduced) return;
+      setTiltFromEvent(ev);
+    });
+
+    // Events
+    nameInput.addEventListener("input", () => updatePreview());
+    messageInput.addEventListener("input", () => updatePreview());
+    $$(".gb-vibes input").forEach((r) => r.addEventListener("change", () => updatePreview({ keepSeed: false })));
+
+    rerollBtn.addEventListener("click", () => {
+      card.dataset.seed = String(Math.random());
+      updatePreview();
+    });
+
+    clearBtn.addEventListener("click", () => {
+      nameInput.value = "";
+      messageInput.value = "";
+      root.querySelector('input[name="vibe"][value="cosmic"]').checked = true;
+      card.dataset.seed = String(Math.random());
+      updatePreview();
+      nameInput.focus();
+    });
+
+    sortBtn.addEventListener("click", () => {
+      sortMode = sortMode === "newest" ? "top" : "newest";
+      sortBtn.textContent = sortMode === "newest" ? "Sort: newest" : "Sort: top";
+      sortBtn.setAttribute("aria-pressed", String(sortMode === "top"));
+      render();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      resetAll();
+    });
+
+    listEl.addEventListener("click", (ev) => {
+      const btn = ev.target?.closest?.("button.gb-like");
+      if (!btn) return;
+      const entry = btn.closest?.(".gb-entry");
+      const entryId = entry?.dataset?.id;
+      if (!entryId) return;
+      likeEntry(entryId);
+    });
+
+    form.addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      const name = (nameInput.value || "").trim() || "Anonymous";
+      const message = (messageInput.value || "").trim();
+      const vibe = getVibe();
+
+      if (!message) {
+        messageInput.focus();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Signing…";
+
+      const entry = {
+        id: id(),
+        name: name.slice(0, 40),
+        message: message.slice(0, 240),
+        vibe,
+        likes: 0,
+        createdAt: nowISO(),
+        seed: Number(card.dataset.seed || Math.random()),
+      };
+
+      state.entries = [entry, ...state.entries].slice(0, 50);
+      saveState(state);
+      render();
+
+      messageInput.value = "";
+      card.dataset.seed = String(Math.random());
+      updatePreview();
+
+      window.setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Sign guestbook";
+      }, 260);
+    });
+
+    // Init
+    if (!card.dataset.seed) card.dataset.seed = String(Math.random());
+    updatePreview();
+    render();
+  </script>
+</section>
+
