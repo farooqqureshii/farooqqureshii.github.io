@@ -223,12 +223,7 @@
       @apply border-zinc-700;
     }
     blockquote {
-      @apply my-4 border-l-2 border-zinc-300 pl-4 text-zinc-600;
-    }
-    html.dark blockquote,
-    html.dark article blockquote {
-      border-left-color: rgb(82 82 91);
-      color: rgb(212 212 216);
+      @apply my-4 border-l-2 border-zinc-900 pl-4 text-zinc-900;
     }
     table {
       @apply my-4 w-full table-auto border-collapse text-sm;
@@ -265,6 +260,12 @@
       background: var(--highlight-bg);
       color: var(--highlight-fg);
     }
+  }
+
+  html.dark blockquote,
+  html.dark article blockquote {
+    border-left-color: rgb(255 255 255);
+    color: rgb(255 255 255);
   }
 
   /* Footnote styling */
