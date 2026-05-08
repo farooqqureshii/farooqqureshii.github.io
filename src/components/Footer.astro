@@ -396,9 +396,9 @@
     <div class="flex items-center gap-3">
       <div
         class="flex items-center gap-2"
-        aria-label="Location and weather in Calgary"
+        aria-label="Location and weather in Ottawa"
       >
-        <span>Calgary, AB</span>
+        <span>Ottawa, ON</span>
         <span aria-hidden="true" class="text-zinc-400/70 dark:text-zinc-500/80"
           >|</span
         >
@@ -421,12 +421,12 @@
 </style>
 
 <script>
-  const CALGARY = { lat: 51.0447, lon: -114.0719 };
-  const WEATHER_URL = `https://api.open-meteo.com/v1/forecast?latitude=${CALGARY.lat}&longitude=${CALGARY.lon}&current=temperature_2m,weather_code&timezone=America%2FEdmonton`;
+  const OTTAWA = { lat: 45.4215, lon: -75.6972 };
+  const WEATHER_URL = `https://api.open-meteo.com/v1/forecast?latitude=${OTTAWA.lat}&longitude=${OTTAWA.lon}&current=temperature_2m,weather_code&timezone=America%2FToronto`;
 
   function updateOttawaTime() {
     const ottawaTime = new Date().toLocaleTimeString("en-CA", {
-      timeZone: "America/Edmonton",
+      timeZone: "America/Toronto",
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",

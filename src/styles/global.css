@@ -27,6 +27,15 @@
       transition-duration: 300ms;
       transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
     }
+
+    /* On mobile, text color compositing is CPU-bound and lags behind
+       background changes. Use a shorter duration so the gap is imperceptible. */
+    @media (max-width: 768px) {
+      html.theme-transition,
+      html.theme-transition * {
+        transition-duration: 120ms;
+      }
+    }
   }
 
   body {
