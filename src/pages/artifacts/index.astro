@@ -1,12 +1,14 @@
 ---
 import { SITE_DESCRIPTION } from "../../consts";
-import Layout from "../../layouts/Layout.astro";
-import { artifacts as baseArtifacts } from "../../data/artifacts";
 import type { Artifact, ArtifactCategory } from "../../data/artifacts";
+import { artifacts as baseArtifacts } from "../../data/artifacts";
+import Layout from "../../layouts/Layout.astro";
 
 export const prerender = true;
 
-function withCategories(a: Artifact): Artifact & { categories: ArtifactCategory[] } {
+function withCategories(
+  a: Artifact,
+): Artifact & { categories: ArtifactCategory[] } {
   const cats = a.categories?.length
     ? a.categories
     : a.type === "image"
@@ -45,7 +47,11 @@ while (byType.image.length || byType.link.length || byType.video.length) {
 }
 ---
 
-<Layout title="Artifacts | Farooq Qureshi" description={SITE_DESCRIPTION} className="max-w-5xl">
+<Layout
+  title="Artifacts | Farooq Qureshi"
+  description={SITE_DESCRIPTION}
+  className="max-w-5xl"
+>
   <main class="no-link-underline">
     <header class="mb-10">
       <p class="text-sm text-zinc-900 dark:text-zinc-100">
@@ -53,49 +59,59 @@ while (byType.image.length || byType.link.length || byType.video.length) {
       </p>
       <div class="mt-4 flex flex-wrap gap-2">
         <button type="button" class="artifact-tab" data-tab="all">All</button>
-        <button type="button" class="artifact-tab" data-tab="link">Links</button>
-        <button type="button" class="artifact-tab" data-tab="image">Images</button>
-        <button type="button" class="artifact-tab" data-tab="video">Videos</button>
+        <button type="button" class="artifact-tab" data-tab="link">Links</button
+        >
+        <button type="button" class="artifact-tab" data-tab="image"
+          >Images</button
+        >
+        <button type="button" class="artifact-tab" data-tab="video"
+          >Videos</button
+        >
       </div>
     </header>
 
-    <div class="flashlight-hover artifact-grid columns-2 sm:columns-3 column-gap-4">
-      {itemsMixed.map((item) => (
-        <a
-          href={item.type === "image" ? item.image : item.url}
-          target="_blank"
-          rel="noopener"
-          class="flashlight-item artifact-card block break-inside-avoid mb-4 rounded-lg overflow-hidden bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors group"
-          data-type={item.type}
-        >
-          {item.type === "image" ? (
-            <img
-              src={item.image}
-              alt={item.alt || item.title || "Artifact image"}
-              class="w-full h-auto block"
-              loading="lazy"
-              decoding="async"
-              referrerpolicy="no-referrer"
-            />
-          ) : (
-            <div class="p-3">
-              <div class="flex items-start justify-between gap-3">
-                <p class="text-sm text-zinc-900 dark:text-zinc-100 leading-snug">
-                  {item.title?.trim() || item.domain || (item.url ?? "")}
-                </p>
-                <span class="text-xs text-zinc-400 dark:text-zinc-500 shrink-0">
-                  {item.type === "video" ? "▶" : "↗"}
-                </span>
+    <div
+      class="flashlight-hover artifact-grid column-gap-4 columns-2 sm:columns-3"
+      style="opacity:0;transition:opacity 150ms ease"
+    >
+      {
+        itemsMixed.map((item) => (
+          <a
+            href={item.type === "image" ? item.image : item.url}
+            target="_blank"
+            rel="noopener"
+            class="flashlight-item artifact-card group mb-4 block break-inside-avoid overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 transition-colors hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-zinc-600"
+            data-type={item.type}
+          >
+            {item.type === "image" ? (
+              <img
+                src={item.image}
+                alt={item.alt || item.title || "Artifact image"}
+                class="block h-auto w-full"
+                loading="lazy"
+                decoding="async"
+                referrerpolicy="no-referrer"
+              />
+            ) : (
+              <div class="p-3">
+                <div class="flex items-start justify-between gap-3">
+                  <p class="text-sm leading-snug text-zinc-900 dark:text-zinc-100">
+                    {item.title?.trim() || item.domain || (item.url ?? "")}
+                  </p>
+                  <span class="shrink-0 text-xs text-zinc-400 dark:text-zinc-500">
+                    {item.type === "video" ? "▶" : "↗"}
+                  </span>
+                </div>
+                {(item.description || item.domain) && (
+                  <p class="mt-1 line-clamp-2 text-xs text-zinc-500 dark:text-zinc-400">
+                    {item.description?.trim() || item.domain}
+                  </p>
+                )}
               </div>
-              {(item.description || item.domain) && (
-                <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
-                  {item.description?.trim() || item.domain}
-                </p>
-              )}
-            </div>
-          )}
-        </a>
-      ))}
+            )}
+          </a>
+        ))
+      }
     </div>
   </main>
 
@@ -106,7 +122,10 @@ while (byType.image.length || byType.link.length || byType.video.length) {
       border-radius: 9999px;
       border: 1px solid rgb(228 228 231);
       color: rgb(63 63 70);
-      transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+      transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        color 150ms ease;
     }
     html.dark .artifact-tab {
       border-color: rgb(63 63 70);
@@ -148,7 +167,7 @@ while (byType.image.length || byType.link.length || byType.video.length) {
 
       // Fallback broken images (hotlinking / CDN issues) to a nice placeholder.
       const imgEls = Array.from(
-        document.querySelectorAll(".artifact-card img")
+        document.querySelectorAll(".artifact-card img"),
       );
       const placeholder =
         "data:image/svg+xml;charset=utf-8," +
@@ -177,12 +196,14 @@ while (byType.image.length || byType.link.length || byType.video.length) {
             img.src = placeholder;
             img.style.opacity = "0.9";
           },
-          { once: false }
+          { once: false },
         );
       });
 
       const setActive = (name) => {
-        tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === name));
+        tabs.forEach((t) =>
+          t.classList.toggle("is-active", t.dataset.tab === name),
+        );
         cards.forEach((c) => {
           const type = c.dataset.type;
           const show = name === "all" || type === name;
@@ -190,8 +211,11 @@ while (byType.image.length || byType.link.length || byType.video.length) {
         });
       };
 
-      tabs.forEach((t) => t.addEventListener("click", () => setActive(t.dataset.tab)));
+      tabs.forEach((t) =>
+        t.addEventListener("click", () => setActive(t.dataset.tab)),
+      );
       setActive("all");
+      document.querySelector(".artifact-grid").style.opacity = "1";
     })();
   </script>
 </Layout>
