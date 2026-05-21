@@ -71,8 +71,17 @@ while (byType.image.length || byType.link.length || byType.video.length) {
     </header>
 
     <div
+      id="artifact-loader"
+      class="flex items-center gap-2 text-sm text-zinc-400 dark:text-zinc-500"
+      style="transition:opacity 200ms ease"
+    >
+      <span class="artifact-spinner"></span>
+      Loading…
+    </div>
+
+    <div
       class="flashlight-hover artifact-grid column-gap-4 columns-2 sm:columns-3"
-      style="opacity:0;transition:opacity 150ms ease"
+      style="opacity:0;transition:opacity 250ms ease"
     >
       {
         itemsMixed.map((item) => (
@@ -88,7 +97,8 @@ while (byType.image.length || byType.link.length || byType.video.length) {
                 src={item.image}
                 alt={item.alt || item.title || "Artifact image"}
                 class="block h-auto w-full"
-                loading="lazy"
+                style="display:block;width:100%;height:auto;"
+                loading="eager"
                 decoding="async"
                 referrerpolicy="no-referrer"
               />
@@ -151,6 +161,20 @@ while (byType.image.length || byType.link.length || byType.video.length) {
     }
     .artifact-grid {
       column-fill: balance;
+    }
+    .artifact-spinner {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
     .line-clamp-2 {
       display: -webkit-box;
@@ -215,7 +239,40 @@ while (byType.image.length || byType.link.length || byType.video.length) {
         t.addEventListener("click", () => setActive(t.dataset.tab)),
       );
       setActive("all");
-      document.querySelector(".artifact-grid").style.opacity = "1";
+
+      const grid = document.querySelector(".artifact-grid");
+      const loader = document.getElementById("artifact-loader");
+
+      const reveal = () => {
+        if (loader) loader.style.opacity = "0";
+        grid.style.opacity = "1";
+        setTimeout(() => {
+          if (loader) loader.style.display = "none";
+        }, 220);
+      };
+
+      // Reveal as soon as every image has loaded or errored (eager loading means this is fast)
+      let timer = setTimeout(reveal, 2000); // hard cap
+      if (imgEls.length === 0) {
+        clearTimeout(timer);
+        reveal();
+      } else {
+        let remaining = imgEls.length;
+        const check = () => {
+          if (--remaining === 0) {
+            clearTimeout(timer);
+            reveal();
+          }
+        };
+        imgEls.forEach((img) => {
+          if (img.complete) {
+            check();
+          } else {
+            img.addEventListener("load", check, { once: true });
+            img.addEventListener("error", check, { once: true });
+          }
+        });
+      }
     })();
   </script>
 </Layout>

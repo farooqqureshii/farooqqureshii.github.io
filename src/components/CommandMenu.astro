@@ -2,87 +2,117 @@
 // Command menu component
 ---
 
+<!-- Hidden trigger buttons for programmatic access -->
+<button id="command-menu-button" class="hidden" aria-hidden="true" tabindex="-1"
+></button>
+<!-- Hidden theme toggle for CommandMenu to trigger -->
+<button id="theme-toggle" class="hidden" aria-hidden="true" tabindex="-1"
+></button>
+
 <div id="command-menu" class="fixed inset-0 z-[1001] hidden" aria-hidden="true">
   <!-- Backdrop -->
-  <div 
-    id="command-backdrop" 
+  <div
+    id="command-backdrop"
     class="absolute inset-0 bg-black/20 backdrop-blur-sm"
-  ></div>
+  >
+  </div>
 
-<style>
-  /* Smooth, prominent open/close (avoid mobile jitter) */
-  #command-menu:not(.hidden) {
-    display: block;
-  }
-
-  #command-backdrop {
-    opacity: 0;
-    background: rgba(0, 0, 0, 0.35);
-    transition: opacity 200ms ease;
-    will-change: opacity;
-  }
-
-  #command-container {
-    opacity: 0;
-    transform: translate3d(0, -14px, 0) scale(0.985);
-    transition:
-      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 180ms ease;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-  }
-
-  #command-menu.is-open #command-backdrop {
-    opacity: 1;
-  }
-
-  #command-menu.is-open #command-container {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    #command-backdrop,
-    #command-container {
-      transition: none !important;
+  <style>
+    /* Smooth, prominent open/close (avoid mobile jitter) */
+    #command-menu:not(.hidden) {
+      display: block;
     }
-  }
 
-  .cmd-shortcut-pill {
-    font-variant-numeric: tabular-nums;
-  }
-</style>
-  
+    #command-backdrop {
+      opacity: 0;
+      background: rgba(0, 0, 0, 0.35);
+      transition: opacity 200ms ease;
+      will-change: opacity;
+    }
+
+    #command-container {
+      opacity: 0;
+      transform: translate3d(0, -14px, 0) scale(0.985);
+      transition:
+        transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 180ms ease;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+    }
+
+    #command-menu.is-open #command-backdrop {
+      opacity: 1;
+    }
+
+    #command-menu.is-open #command-container {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #command-backdrop,
+      #command-container {
+        transition: none !important;
+      }
+    }
+
+    .cmd-shortcut-pill {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+
   <!-- Menu container -->
-  <div class="absolute inset-0 flex items-start justify-center p-4 pt-[24vh] sm:pt-[26vh] pointer-events-none">
-    <div 
+  <div
+    class="pointer-events-none absolute inset-0 flex items-start justify-center p-4 pt-[24vh] sm:pt-[26vh]"
+  >
+    <div
       id="command-container"
-      class="w-full max-w-lg bg-[#f5f5f5] dark:bg-[#252525] flexoki:bg-flexoki-bg rounded-lg border border-zinc-200 dark:border-zinc-800 flexoki:border-flexoki-ui-3 shadow-2xl transform-gpu pointer-events-auto sm:max-h-[80vh] max-h-[90vh]"
+      class="flexoki:bg-flexoki-bg flexoki:border-flexoki-ui-3 pointer-events-auto max-h-[90vh] w-full max-w-lg transform-gpu rounded-lg border border-zinc-200 bg-[#f5f5f5] shadow-2xl dark:border-zinc-800 dark:bg-[#252525] sm:max-h-[80vh]"
     >
       <!-- Search input -->
-      <div class="hidden sm:block border-b border-zinc-200 dark:border-zinc-800 flexoki:border-flexoki-ui-3 p-4">
+      <div
+        class="flexoki:border-flexoki-ui-3 hidden border-b border-zinc-200 p-4 dark:border-zinc-800 sm:block"
+      >
         <div class="flex items-center">
-          <svg class="w-4 h-4 text-zinc-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          <svg
+            class="mr-3 h-4 w-4 text-zinc-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
           <input
             id="command-input"
             type="text"
             placeholder="What next?"
-            class="flex-1 bg-transparent outline-none text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx placeholder-zinc-500 dark:placeholder-zinc-400 flexoki:placeholder-flexoki-tx-2"
+            class="flexoki:text-flexoki-tx flexoki:placeholder-flexoki-tx-2 flex-1 bg-transparent text-zinc-900 placeholder-zinc-500 outline-none dark:text-zinc-100 dark:placeholder-zinc-400"
             autocomplete="off"
           />
           <div class="flex items-center gap-2">
-            <span class="cmd-shortcut-pill hidden sm:inline text-xs px-2 py-1 rounded-md border border-zinc-200 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400">esc</span>
+            <span
+              class="cmd-shortcut-pill hidden rounded-md border border-zinc-200 bg-zinc-100 px-2 py-1 text-xs text-zinc-500 dark:border-zinc-600 dark:bg-zinc-800/80 dark:text-zinc-400 sm:inline"
+              >esc</span
+            >
           </div>
         </div>
-        <p id="command-menu-hint" class="mt-2 text-xs text-zinc-400 dark:text-zinc-500 flexoki:text-flexoki-tx-2">
+        <p
+          id="command-menu-hint"
+          class="flexoki:text-flexoki-tx-2 mt-2 text-xs text-zinc-400 dark:text-zinc-500"
+        >
           <span id="command-menu-hint-text">⌘K or Ctrl+K to open</span>
         </p>
       </div>
-      
+
       <!-- Results container -->
-      <div id="command-results" class="max-h-96 sm:max-h-96 max-h-64 overflow-y-auto custom-scrollbar">
+      <div
+        id="command-results"
+        class="custom-scrollbar max-h-64 max-h-96 overflow-y-auto sm:max-h-96"
+      >
         <div id="nav-results" class="p-2">
           <!-- All items will be populated by JavaScript -->
         </div>
@@ -91,129 +121,230 @@
   </div>
 </div>
 
-
-
 <script>
   let origOpenMenu: () => void;
-  document.addEventListener('DOMContentLoaded', function() {
-    const menu = document.getElementById('command-menu');
-    const backdrop = document.getElementById('command-backdrop');
-    const container = document.getElementById('command-container');
-    const input = document.getElementById('command-input') as HTMLInputElement;
-    const navResults = document.getElementById('nav-results');
+  document.addEventListener("DOMContentLoaded", function () {
+    const menu = document.getElementById("command-menu");
+    const backdrop = document.getElementById("command-backdrop");
+    const container = document.getElementById("command-container");
+    const input = document.getElementById("command-input") as HTMLInputElement;
+    const navResults = document.getElementById("nav-results");
     let closeTimeout: number | null = null;
-    
+
     if (!menu || !backdrop || !container || !navResults) return;
     const menuEl = menu as HTMLDivElement;
     const containerEl = container as HTMLDivElement;
 
     // OS-specific shortcut hint
-    const hintEl = document.getElementById('command-menu-hint-text');
+    const hintEl = document.getElementById("command-menu-hint-text");
     if (hintEl) {
-      const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
-      hintEl.textContent = isMac ? '⌘K to open' : 'Ctrl+K to open';
+      const isMac =
+        typeof navigator !== "undefined" &&
+        /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+      hintEl.textContent = isMac ? "⌘K to open" : "Ctrl+K to open";
     }
 
     // Navigation items organized by sections
     const navItems = [
-      { title: 'Home', url: '/', description: 'Go home', section: 'navigation', shortcut: 'H' },
-      { title: 'About', url: '/about', description: 'About me', section: 'navigation', shortcut: 'A' },
-      { title: 'Projects', url: '/projects', description: 'View my projects', section: 'navigation', shortcut: 'P' },
-      { title: 'Writing', url: '/writing', description: 'Read my writing', section: 'navigation', shortcut: 'W' },
-      { title: 'Artifacts', url: '/artifacts', description: 'Browse internet gems', section: 'navigation', shortcut: 'B' },
-      { title: 'Other', url: '/other', description: 'Other pages', section: 'navigation', shortcut: 'O' },
+      {
+        title: "Home",
+        url: "/",
+        description: "Go home",
+        section: "navigation",
+        shortcut: "H",
+      },
+      {
+        title: "About",
+        url: "/about",
+        description: "About me",
+        section: "navigation",
+        shortcut: "A",
+      },
+      {
+        title: "Projects",
+        url: "/projects",
+        description: "View my projects",
+        section: "navigation",
+        shortcut: "P",
+      },
+      {
+        title: "Writing",
+        url: "/writing",
+        description: "Read my writing",
+        section: "navigation",
+        shortcut: "W",
+      },
+      {
+        title: "Artifacts",
+        url: "/artifacts",
+        description: "Browse internet gems",
+        section: "navigation",
+        shortcut: "B",
+      },
+      {
+        title: "Other",
+        url: "/other",
+        description: "Other pages",
+        section: "navigation",
+        shortcut: "O",
+      },
     ];
 
     const linkItems = [
-      { title: 'Email', url: 'mailto:farooq.qureshi@outlook.com', description: 'Send me an email', section: 'links', shortcut: 'E' },
-      { title: 'LinkedIn', url: 'https://linkedin.com/in/farooqq', description: 'Work & experience', section: 'links', shortcut: 'L' },
-      { title: 'GitHub', url: 'https://github.com/farooqqureshii', description: 'Projects and more', section: 'links', shortcut: 'G' },
-      { title: 'Cosmos', url: 'https://www.cosmos.so/farooqqureshi', description: 'Collected internet gems', section: 'links', shortcut: 'C' }
+      {
+        title: "Email",
+        url: "mailto:farooq.qureshi@outlook.com",
+        description: "Send me an email",
+        section: "links",
+        shortcut: "E",
+      },
+      {
+        title: "LinkedIn",
+        url: "https://linkedin.com/in/farooqq",
+        description: "Work & experience",
+        section: "links",
+        shortcut: "L",
+      },
+      {
+        title: "GitHub",
+        url: "https://github.com/farooqqureshii",
+        description: "Projects and more",
+        section: "links",
+        shortcut: "G",
+      },
+      {
+        title: "Cosmos",
+        url: "https://www.cosmos.so/farooqqureshi",
+        description: "Collected internet gems",
+        section: "links",
+        shortcut: "C",
+      },
     ];
 
     // Books data
     const books = [
-      { title: 'Everything I Never Told You', author: 'Celeste Ng' },
-      { title: 'Belzhar', author: 'Meg Wolitzer' },
-      { title: 'Animal Farm', author: 'George Orwell' },
-      { title: '1984', author: 'George Orwell' },
-      { title: 'Brave New World', author: 'Aldous Huxley' },
-      { title: 'Bluets', author: 'Maggie Nelson' },
-      { title: 'Sapiens', author: 'Yuval Noah Harari' },
-      { title: 'Homo Deus', author: 'Yuval Noah Harari' },
-      { title: 'Skin in the Game', author: 'Nassim Nicholas Taleb' },
-      { title: 'Dopamine Nation', author: 'Anna Lembke' },
-      { title: 'All the Light We Cannot See', author: 'Anthony Doerr' },
-      { title: 'The Alchemist', author: 'Paulo Coelho' },
-      { title: 'South of the Border, West of the Sun', author: 'Haruki Murakami' },
-      { title: 'Klara and the Sun', author: 'Kazuo Ishiguro' },
-      { title: 'Wit', author: 'Margaret Edson' },
-      { title: 'The Subject Was Roses', author: 'Frank D. Gilroy' },
-      { title: 'Outliers', author: 'Malcolm Gladwell' },
-      { title: 'Homegoing', author: 'Yaa Gyasi' },
-      { title: 'Speedboat', author: 'Renata Adler' },
-      { title: 'The Folded Clock', author: 'Heidi Julavits' },
-      { title: 'We the Animals', author: 'Justin Torres' },
-      { title: 'So Sad Today', author: 'Melissa Broder' },
-      { title: 'Milkman', author: 'Anna Burns' },
-      { title: 'Weather', author: 'Jenny Offill' },
-      { title: 'The Sad Part Was', author: 'Prabda Yoon' },
-      { title: 'Call Me Zebra', author: 'Azareen Van der Vliet Oloomi' },
-      { title: 'Native Speaker', author: 'Chang-rae Lee' },
-      { title: 'Your Utopia', author: 'Bora Chung' },
-      { title: 'Temporary', author: 'Hilary Leichter' },
-      { title: 'The Employees', author: 'Olga Ravn' },
-      { title: 'Drinking Coffee Elsewhere', author: 'ZZ Packer' },
-      { title: 'No One Is Talking About This', author: 'Patricia Lockwood' },
-      { title: 'The Year of Magical Thinking', author: 'Joan Didion' },
-      { title: 'If You Leave Me', author: 'Crystal Hana Kim' },
-      { title: 'How Much of These Hills Is Gold', author: 'C Pam Zhang' },
-      { title: 'The Loneliness of the Long Distance Runner', author: 'Alan Sillitoe' },
-      { title: 'Can\'t and Won\'t', author: 'Lydia Davis' },
-      { title: 'A Heartbreaking Work of Staggering Genius', author: 'Dave Eggers' },
-      { title: 'Celestial Bodies', author: 'Jokha Alharthi' },
-      { title: 'Go Home!', author: 'Edited by Rowan Hisayo Buchanan' },
-      { title: 'Interpreter of Maladies', author: 'Jhumpa Lahiri' },
-      { title: 'The Emperor of All Maladies', author: 'Siddhartha Mukherjee' },
-      { title: 'The Boat', author: 'Nam Le' },
-      { title: 'The Ones Who Walk Away from Omelas', author: 'Ursula K. Le Guin' },
-      { title: 'The Dispossessed', author: 'Ursula K. Le Guin' },
-      { title: 'The Left Hand of Darkness', author: 'Ursula K. Le Guin' },
-      { title: 'Frankenstein', author: 'Mary Shelley' },
-      { title: 'In Search of Lost Time', author: 'Marcel Proust' },
-      { title: 'The Trial', author: 'Franz Kafka' },
-      { title: 'To the Lighthouse', author: 'Virginia Woolf' },
-      { title: 'The Crucible', author: 'Arthur Miller' },
-      { title: 'The Double Helix', author: 'James D. Watson' },
-      { title: 'Dune', author: 'Frank Herbert' },
-      { title: 'The Electric Kool-Aid Acid Test', author: 'Tom Wolfe' },
-      { title: 'Danube', author: 'Claudio Magris' },
-      { title: 'The Road to Oxiana', author: 'Robert Byron' },
-      { title: 'And the Band Played On', author: 'Randy Shilts' },
-      { title: 'Postwar', author: 'Tony Judt' },
-      { title: 'The Catcher in the Rye', author: 'J.D. Salinger' },
-      { title: 'Middlemarch', author: 'George Eliot' },
-      { title: 'The Sun Also Rises', author: 'Ernest Hemingway' },
-      { title: 'Midnight\'s Children', author: 'Salman Rushdie' },
-      { title: 'The Plague', author: 'Albert Camus' },
-      { title: 'The Man Without Qualities', author: 'Robert Musil' },
-      { title: 'The Tale of Genji', author: 'Murasaki Shikibu' },
-      { title: 'In Cold Blood', author: 'Truman Capote' },
-      { title: 'Man\'s Search for Meaning', author: 'Viktor E. Frankl' },
-      { title: 'Homage to Catalonia', author: 'George Orwell' },
-      { title: 'I Know Why the Caged Bird Sings', author: 'Maya Angelou' },
-      { title: 'All the President\'s Men', author: 'Bob Woodward & Carl Bernstein' },
-      { title: 'The Warmth of Other Suns', author: 'Isabel Wilkerson' }
+      { title: "Everything I Never Told You", author: "Celeste Ng" },
+      { title: "Belzhar", author: "Meg Wolitzer" },
+      { title: "Animal Farm", author: "George Orwell" },
+      { title: "1984", author: "George Orwell" },
+      { title: "Brave New World", author: "Aldous Huxley" },
+      { title: "Bluets", author: "Maggie Nelson" },
+      { title: "Sapiens", author: "Yuval Noah Harari" },
+      { title: "Homo Deus", author: "Yuval Noah Harari" },
+      { title: "Skin in the Game", author: "Nassim Nicholas Taleb" },
+      { title: "Dopamine Nation", author: "Anna Lembke" },
+      { title: "All the Light We Cannot See", author: "Anthony Doerr" },
+      { title: "The Alchemist", author: "Paulo Coelho" },
+      {
+        title: "South of the Border, West of the Sun",
+        author: "Haruki Murakami",
+      },
+      { title: "Klara and the Sun", author: "Kazuo Ishiguro" },
+      { title: "Wit", author: "Margaret Edson" },
+      { title: "The Subject Was Roses", author: "Frank D. Gilroy" },
+      { title: "Outliers", author: "Malcolm Gladwell" },
+      { title: "Homegoing", author: "Yaa Gyasi" },
+      { title: "Speedboat", author: "Renata Adler" },
+      { title: "The Folded Clock", author: "Heidi Julavits" },
+      { title: "We the Animals", author: "Justin Torres" },
+      { title: "So Sad Today", author: "Melissa Broder" },
+      { title: "Milkman", author: "Anna Burns" },
+      { title: "Weather", author: "Jenny Offill" },
+      { title: "The Sad Part Was", author: "Prabda Yoon" },
+      { title: "Call Me Zebra", author: "Azareen Van der Vliet Oloomi" },
+      { title: "Native Speaker", author: "Chang-rae Lee" },
+      { title: "Your Utopia", author: "Bora Chung" },
+      { title: "Temporary", author: "Hilary Leichter" },
+      { title: "The Employees", author: "Olga Ravn" },
+      { title: "Drinking Coffee Elsewhere", author: "ZZ Packer" },
+      { title: "No One Is Talking About This", author: "Patricia Lockwood" },
+      { title: "The Year of Magical Thinking", author: "Joan Didion" },
+      { title: "If You Leave Me", author: "Crystal Hana Kim" },
+      { title: "How Much of These Hills Is Gold", author: "C Pam Zhang" },
+      {
+        title: "The Loneliness of the Long Distance Runner",
+        author: "Alan Sillitoe",
+      },
+      { title: "Can't and Won't", author: "Lydia Davis" },
+      {
+        title: "A Heartbreaking Work of Staggering Genius",
+        author: "Dave Eggers",
+      },
+      { title: "Celestial Bodies", author: "Jokha Alharthi" },
+      { title: "Go Home!", author: "Edited by Rowan Hisayo Buchanan" },
+      { title: "Interpreter of Maladies", author: "Jhumpa Lahiri" },
+      { title: "The Emperor of All Maladies", author: "Siddhartha Mukherjee" },
+      { title: "The Boat", author: "Nam Le" },
+      {
+        title: "The Ones Who Walk Away from Omelas",
+        author: "Ursula K. Le Guin",
+      },
+      { title: "The Dispossessed", author: "Ursula K. Le Guin" },
+      { title: "The Left Hand of Darkness", author: "Ursula K. Le Guin" },
+      { title: "Frankenstein", author: "Mary Shelley" },
+      { title: "In Search of Lost Time", author: "Marcel Proust" },
+      { title: "The Trial", author: "Franz Kafka" },
+      { title: "To the Lighthouse", author: "Virginia Woolf" },
+      { title: "The Crucible", author: "Arthur Miller" },
+      { title: "The Double Helix", author: "James D. Watson" },
+      { title: "Dune", author: "Frank Herbert" },
+      { title: "The Electric Kool-Aid Acid Test", author: "Tom Wolfe" },
+      { title: "Danube", author: "Claudio Magris" },
+      { title: "The Road to Oxiana", author: "Robert Byron" },
+      { title: "And the Band Played On", author: "Randy Shilts" },
+      { title: "Postwar", author: "Tony Judt" },
+      { title: "The Catcher in the Rye", author: "J.D. Salinger" },
+      { title: "Middlemarch", author: "George Eliot" },
+      { title: "The Sun Also Rises", author: "Ernest Hemingway" },
+      { title: "Midnight's Children", author: "Salman Rushdie" },
+      { title: "The Plague", author: "Albert Camus" },
+      { title: "The Man Without Qualities", author: "Robert Musil" },
+      { title: "The Tale of Genji", author: "Murasaki Shikibu" },
+      { title: "In Cold Blood", author: "Truman Capote" },
+      { title: "Man's Search for Meaning", author: "Viktor E. Frankl" },
+      { title: "Homage to Catalonia", author: "George Orwell" },
+      { title: "I Know Why the Caged Bird Sings", author: "Maya Angelou" },
+      {
+        title: "All the President's Men",
+        author: "Bob Woodward & Carl Bernstein",
+      },
+      { title: "The Warmth of Other Suns", author: "Isabel Wilkerson" },
     ];
 
     // Projects data
     const projects = [
-      { title: 'okbutpitchit', url: 'https://okbutpitchit.vercel.app/', description: 'Code to Pitch-Ready slides, in an Instant' },
-      { title: 'Substack Case Study', url: '/writing/substack/', description: 'Product/strategy case study for Substack growth' },
-      { title: 'Code Compass', url: 'https://trycodecompass.vercel.app/', description: 'Understand any GitHub repo and find beginner-friendly issues, fast' },
-      { title: 'uOttaHack | Director', url: 'https://www.uottahack.ca/', description: 'Leading the team behind Ottawa\'s largest tech event' },
-      { title: 'EchoScope', url: 'https://echoscope.vercel.app/', description: 'Use AI to uncover sentiment, bias, and diversity in YouTube comments' },
-      { title: 'Analyzing and predicting housing prices in London', url: 'https://farooq.craft.me/write-up', description: 'Smarter housing price predictions with machine learning' }
+      {
+        title: "okbutpitchit",
+        url: "https://okbutpitchit.vercel.app/",
+        description: "Code to Pitch-Ready slides, in an Instant",
+      },
+      {
+        title: "Substack Case Study",
+        url: "/writing/substack/",
+        description: "Product/strategy case study for Substack growth",
+      },
+      {
+        title: "Code Compass",
+        url: "https://trycodecompass.vercel.app/",
+        description:
+          "Understand any GitHub repo and find beginner-friendly issues, fast",
+      },
+      {
+        title: "uOttaHack | Director",
+        url: "https://www.uottahack.ca/",
+        description: "Leading the team behind Ottawa's largest tech event",
+      },
+      {
+        title: "EchoScope",
+        url: "https://echoscope.vercel.app/",
+        description:
+          "Use AI to uncover sentiment, bias, and diversity in YouTube comments",
+      },
+      {
+        title: "Analyzing and predicting housing prices in London",
+        url: "https://farooq.craft.me/write-up",
+        description: "Smarter housing price predictions with machine learning",
+      },
     ];
 
     // Generate random book and project
@@ -222,29 +353,36 @@
 
     // Get current theme
     function getCurrentTheme() {
-      if (document.documentElement.classList.contains('dark')) {
-        return 'dark';
-      } else if (document.documentElement.classList.contains('flexoki')) {
-        return 'flexoki';
+      if (document.documentElement.classList.contains("dark")) {
+        return "dark";
+      } else if (document.documentElement.classList.contains("flexoki")) {
+        return "flexoki";
       } else {
-        return 'light';
+        return "light";
       }
     }
 
     // Get theme toggle text based on current theme
     function getThemeToggleText() {
       const currentTheme = getCurrentTheme();
-      if (currentTheme === 'dark') {
-        return 'Toggle Light Mode';
-      } else if (currentTheme === 'flexoki') {
-        return 'Toggle Light Mode';
+      if (currentTheme === "dark") {
+        return "Toggle Light Mode";
+      } else if (currentTheme === "flexoki") {
+        return "Toggle Light Mode";
       } else {
-        return 'Toggle Dark Mode';
+        return "Toggle Dark Mode";
       }
     }
 
     const otherItems = [
-      { title: getThemeToggleText(), url: '#', description: 'Switch theme modes', section: 'preferences', action: 'toggle-theme', shortcut: 'T' }
+      {
+        title: getThemeToggleText(),
+        url: "#",
+        description: "Switch theme modes",
+        section: "preferences",
+        action: "toggle-theme",
+        shortcut: "T",
+      },
     ];
 
     // Define the item type to include optional action property
@@ -265,54 +403,60 @@
     function renderItems() {
       if (!navResults) return;
 
-      navResults.innerHTML = '';
-      
+      navResults.innerHTML = "";
+
       // Group items by section
-      const groupedItems = filteredItems.reduce((acc, item) => {
-        if (!acc[item.section]) {
-          acc[item.section] = [];
-        }
-        acc[item.section].push(item);
-        return acc;
-      }, {} as Record<string, MenuItem[]>);
-      
+      const groupedItems = filteredItems.reduce(
+        (acc, item) => {
+          if (!acc[item.section]) {
+            acc[item.section] = [];
+          }
+          acc[item.section].push(item);
+          return acc;
+        },
+        {} as Record<string, MenuItem[]>,
+      );
+
       // Define section order: preferences first, then match main page
-      const sectionOrder = ['preferences', 'navigation', 'links'];
-      
+      const sectionOrder = ["preferences", "navigation", "links"];
+
       // Render each section in the specified order
       sectionOrder.forEach((section) => {
         const items = groupedItems[section];
         if (!items || items.length === 0) return;
         // Section header
-        const sectionHeader = document.createElement('div');
-        sectionHeader.className = 'text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 px-3 py-2 capitalize';
+        const sectionHeader = document.createElement("div");
+        sectionHeader.className =
+          "text-xs text-zinc-500 dark:text-zinc-400 flexoki:text-flexoki-tx-2 px-3 py-2 capitalize";
         sectionHeader.textContent = section;
         navResults.appendChild(sectionHeader);
-        
+
         // Section items
         items.forEach((item, index) => {
           const globalIndex = filteredItems.indexOf(item);
-          const div = document.createElement('div');
+          const div = document.createElement("div");
           div.className = `flex items-center px-3 py-2 rounded cursor-pointer transition-colors no-theme-transition ${
-            globalIndex === selectedIndex 
-              ? 'bg-[#e8e8e8]/70 dark:bg-[#2a2a2a]/70 flexoki:bg-flexoki-ui/70' 
-              : 'hover:bg-[#e8e8e8]/60 dark:hover:bg-[#2a2a2a]/60 flexoki:hover:bg-flexoki-ui/60'
+            globalIndex === selectedIndex
+              ? "bg-[#e8e8e8]/70 dark:bg-[#2a2a2a]/70 flexoki:bg-flexoki-ui/70"
+              : "hover:bg-[#e8e8e8]/60 dark:hover:bg-[#2a2a2a]/60 flexoki:hover:bg-flexoki-ui/60"
           }`;
-          
-          const shortcutLabel = item.shortcut ? `shift + ${item.shortcut.toLowerCase()}` : '';
+
+          const shortcutLabel = item.shortcut
+            ? `shift + ${item.shortcut.toLowerCase()}`
+            : "";
           div.innerHTML = `
             <div class="flex-1">
               <div class="text-sm text-zinc-900 dark:text-zinc-100 flexoki:text-flexoki-tx">${item.title}</div>
             </div>
             <div class="flex items-center gap-2">
-              ${shortcutLabel ? `<span class="cmd-shortcut-pill hidden sm:inline text-xs px-2 py-1 rounded-md border border-zinc-200 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400">${shortcutLabel}</span>` : ''}
+              ${shortcutLabel ? `<span class="cmd-shortcut-pill hidden sm:inline text-xs px-2 py-1 rounded-md border border-zinc-200 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400">${shortcutLabel}</span>` : ""}
             </div>
           `;
-          
-          div.addEventListener('click', () => {
-            if (item.action === 'toggle-theme') {
+
+          div.addEventListener("click", () => {
+            if (item.action === "toggle-theme") {
               // Trigger theme toggle
-              const themeToggle = document.getElementById('theme-toggle');
+              const themeToggle = document.getElementById("theme-toggle");
               if (themeToggle) {
                 themeToggle.click();
               }
@@ -321,7 +465,7 @@
               window.location.href = item.url;
             }
           });
-          
+
           navResults.appendChild(div);
         });
       });
@@ -332,9 +476,10 @@
       if (!query.trim()) {
         filteredItems = [...allItems];
       } else {
-        filteredItems = allItems.filter(item => 
-          item.title.toLowerCase().includes(query.toLowerCase()) ||
-          item.description.toLowerCase().includes(query.toLowerCase())
+        filteredItems = allItems.filter(
+          (item) =>
+            item.title.toLowerCase().includes(query.toLowerCase()) ||
+            item.description.toLowerCase().includes(query.toLowerCase()),
         );
       }
       selectedIndex = 0;
@@ -351,20 +496,22 @@
       filteredItems = [...allItems];
       selectedIndex = 0;
       if (input) {
-        input.value = '';
+        input.value = "";
       }
-      
+
       // Update theme toggle text
-      const themeToggleItem = filteredItems.find(item => item.action === 'toggle-theme');
+      const themeToggleItem = filteredItems.find(
+        (item) => item.action === "toggle-theme",
+      );
       if (themeToggleItem) {
         themeToggleItem.title = getThemeToggleText();
       }
-      
-      menu?.classList.remove('hidden');
-      menu?.setAttribute('aria-hidden', 'false');
+
+      menu?.classList.remove("hidden");
+      menu?.setAttribute("aria-hidden", "false");
       // Ensure the browser commits styles before transitioning.
       requestAnimationFrame(() => {
-        menu?.classList.add('is-open');
+        menu?.classList.add("is-open");
       });
 
       if (input) {
@@ -379,14 +526,14 @@
 
     // Close command menu
     function closeMenu() {
-      menu?.classList.remove('is-open');
-      menu?.setAttribute('aria-hidden', 'true');
+      menu?.classList.remove("is-open");
+      menu?.setAttribute("aria-hidden", "true");
 
       if (closeTimeout) window.clearTimeout(closeTimeout);
       closeTimeout = window.setTimeout(() => {
-        menu?.classList.add('hidden');
+        menu?.classList.add("hidden");
         if (input) {
-          input.value = '';
+          input.value = "";
         }
         // Reset filtered items to show all items
         filteredItems = [...allItems];
@@ -398,17 +545,19 @@
 
     // Keyboard navigation
     function handleKeydown(e: KeyboardEvent) {
-      if (!menu?.classList.contains('hidden')) {
+      if (!menu?.classList.contains("hidden")) {
         const items = filteredItems;
-        
+
         // Check for shortcuts first (Shift + key)
         if (e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
           const pressedKey = e.key.toUpperCase();
-          const shortcutItem = items.find(item => item.shortcut === pressedKey);
+          const shortcutItem = items.find(
+            (item) => item.shortcut === pressedKey,
+          );
           if (shortcutItem) {
             e.preventDefault();
-            if (shortcutItem.action === 'toggle-theme') {
-              const themeToggle = document.getElementById('theme-toggle');
+            if (shortcutItem.action === "toggle-theme") {
+              const themeToggle = document.getElementById("theme-toggle");
               if (themeToggle) {
                 themeToggle.click();
               }
@@ -419,9 +568,9 @@
             return;
           }
         }
-        
+
         switch (e.key) {
-          case 'ArrowDown':
+          case "ArrowDown":
             e.preventDefault();
             selectedIndex = (selectedIndex + 1) % items.length;
             renderItems();
@@ -429,21 +578,22 @@
               scrollToSelected();
             });
             break;
-          case 'ArrowUp':
+          case "ArrowUp":
             e.preventDefault();
-            selectedIndex = selectedIndex === 0 ? items.length - 1 : selectedIndex - 1;
+            selectedIndex =
+              selectedIndex === 0 ? items.length - 1 : selectedIndex - 1;
             renderItems();
             requestAnimationFrame(() => {
               scrollToSelected();
             });
             break;
-          case 'Enter':
+          case "Enter":
             e.preventDefault();
-                        if (items[selectedIndex]) {
+            if (items[selectedIndex]) {
               const item = items[selectedIndex];
-              if (item.action === 'toggle-theme') {
+              if (item.action === "toggle-theme") {
                 // Trigger theme toggle
-                const themeToggle = document.getElementById('theme-toggle');
+                const themeToggle = document.getElementById("theme-toggle");
                 if (themeToggle) {
                   themeToggle.click();
                 }
@@ -453,7 +603,7 @@
               }
             }
             break;
-          case 'Escape':
+          case "Escape":
             e.preventDefault();
             closeMenu();
             break;
@@ -464,29 +614,39 @@
     // Scroll to keep selected item visible
     function scrollToSelected() {
       if (!navResults) return;
-      
+
       // Find all clickable items in the results (skip section headers)
-      const items = Array.from(navResults.querySelectorAll('div[class*="cursor-pointer"]'));
-      
-      if (items.length > 0 && selectedIndex < items.length && selectedIndex >= 0) {
+      const items = Array.from(
+        navResults.querySelectorAll('div[class*="cursor-pointer"]'),
+      );
+
+      if (
+        items.length > 0 &&
+        selectedIndex < items.length &&
+        selectedIndex >= 0
+      ) {
         const selectedElement = items[selectedIndex];
         if (selectedElement) {
           selectedElement.scrollIntoView({
-            block: 'nearest',
-            behavior: 'smooth'
+            block: "nearest",
+            behavior: "smooth",
           });
         }
       }
     }
 
     // Event listeners
-    document.addEventListener('keydown', (e: KeyboardEvent) => {
+    document.addEventListener("keydown", (e: KeyboardEvent) => {
       // Only enable keyboard shortcuts on desktop
       if (window.innerWidth > 768) {
         // Open menu on Ctrl+K (Windows) or Cmd+K (Mac)
         const activeElement = document.activeElement;
-        const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || (activeElement as HTMLElement).isContentEditable);
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k' && !isInput) {
+        const isInput =
+          activeElement &&
+          (activeElement.tagName === "INPUT" ||
+            activeElement.tagName === "TEXTAREA" ||
+            (activeElement as HTMLElement).isContentEditable);
+        if ((e.ctrlKey || e.metaKey) && e.key === "k" && !isInput) {
           e.preventDefault();
           openMenu();
         }
@@ -495,22 +655,20 @@
     });
 
     // Command menu button
-    const commandButton = document.getElementById('command-menu-button');
-    commandButton?.addEventListener('click', () => {
+    const commandButton = document.getElementById("command-menu-button");
+    commandButton?.addEventListener("click", () => {
       openMenu();
     });
 
+    backdrop?.addEventListener("click", closeMenu);
 
-
-    backdrop?.addEventListener('click', closeMenu);
-    
     // Prevent clicks inside the menu container from closing the menu
-    container?.addEventListener('click', (e) => {
+    container?.addEventListener("click", (e) => {
       e.stopPropagation();
     });
-    
+
     if (input) {
-      input.addEventListener('input', (e: Event) => {
+      input.addEventListener("input", (e: Event) => {
         const target = e.target as HTMLInputElement;
         if (target) {
           filterItems(target.value);
@@ -521,24 +679,43 @@
     // Removed font preference initialization
 
     // Initialize background pattern preference (default: none)
-    const savedBackground = localStorage.getItem('background-pattern');
+    const savedBackground = localStorage.getItem("background-pattern");
     if (savedBackground) {
       if (savedBackground) {
-        document.documentElement.classList.remove('bg-waves');
-        if (savedBackground) document.documentElement.classList.add(savedBackground);
+        document.documentElement.classList.remove("bg-waves");
+        if (savedBackground)
+          document.documentElement.classList.add(savedBackground);
       }
     }
 
     // Initialize link color preference
-    const savedLinkColorPreference = localStorage.getItem('link-color-preference');
+    const savedLinkColorPreference = localStorage.getItem(
+      "link-color-preference",
+    );
     if (savedLinkColorPreference) {
       document.documentElement.classList.add(savedLinkColorPreference);
     } else {
       // Default to blue (scheme 1)
-      document.documentElement.classList.add('link-scheme-1');
+      document.documentElement.classList.add("link-scheme-1");
     }
 
     // Initial render
     renderItems();
+
+    // Wire up hidden theme-toggle button (used by CommandMenu action + HamburgerMenu)
+    const hiddenThemeToggle = document.getElementById("theme-toggle");
+    hiddenThemeToggle?.addEventListener("click", () => {
+      const html = document.documentElement;
+      html.classList.add("theme-transition");
+      const isDark = html.classList.contains("dark");
+      if (isDark) {
+        html.classList.remove("dark");
+        localStorage.theme = "light";
+      } else {
+        html.classList.add("dark");
+        localStorage.theme = "dark";
+      }
+      window.setTimeout(() => html.classList.remove("theme-transition"), 320);
+    });
   });
-</script> 
+</script>

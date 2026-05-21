@@ -3,466 +3,438 @@
 ---
 
 <footer class="mt-12">
-  <div
-    class="flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400"
-  >
-    <div class="flex items-center gap-2">
-      <span id="calgary-time" class="tabular-nums">--:--:--</span>
-      <span
-        id="footer-weather-loader"
-        class="footer-loader inline-flex items-center justify-center text-zinc-400 dark:text-zinc-500"
-        aria-hidden="true"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="-13 -13 45 45"
-          width="18"
-          height="18"
-          fill="none"
-          aria-hidden="true"
-          style="color: inherit; display: block"
-        >
-          <style>
-            .box5631 {
-              transform-origin: 50% 50%;
-              fill: currentColor;
-            }
+  <p class="text-sm text-zinc-500 dark:text-zinc-400">
+    It's <span
+      id="ottawa-time"
+      class="inline-block tabular-nums"
+      style="min-width:5.5ch;">--:--:--</span
+    >
+    and <span id="ottawa-weather">--°C</span> in Ottawa, Ontario.<svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 36 36"
+      width="14"
+      height="14"
+      fill="none"
+      aria-hidden="true"
+      style="display:inline-block;vertical-align:middle;margin-left:0.35em;opacity:0.6;"
+    >
+      <style>
+        .box5532 {
+          fill: currentColor;
+          transform-origin: 50% 50%;
+        }
+        @keyframes box5532-1 {
+          9.0909090909% {
+            transform: translate(-12px, 0);
+          }
+          18.1818181818% {
+            transform: translate(0px, 0);
+          }
+          27.2727272727% {
+            transform: translate(0px, 0);
+          }
+          36.3636363636% {
+            transform: translate(12px, 0);
+          }
+          45.4545454545% {
+            transform: translate(12px, 12px);
+          }
+          54.5454545455% {
+            transform: translate(12px, 12px);
+          }
+          63.6363636364% {
+            transform: translate(12px, 12px);
+          }
+          72.7272727273% {
+            transform: translate(12px, 0px);
+          }
+          81.8181818182% {
+            transform: translate(0px, 0px);
+          }
+          90.9090909091% {
+            transform: translate(-12px, 0px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(1) {
+          animation: box5532-1 4s infinite;
+        }
 
-            @keyframes moveBox5631-1 {
-              9.0909090909% {
-                transform: translate(-12px, 0);
-              }
-              18.1818181818% {
-                transform: translate(0px, 0);
-              }
-              27.2727272727% {
-                transform: translate(0px, 0);
-              }
-              36.3636363636% {
-                transform: translate(12px, 0);
-              }
-              45.4545454545% {
-                transform: translate(12px, 12px);
-              }
-              54.5454545455% {
-                transform: translate(12px, 12px);
-              }
-              63.6363636364% {
-                transform: translate(12px, 12px);
-              }
-              72.7272727273% {
-                transform: translate(12px, 0px);
-              }
-              81.8181818182% {
-                transform: translate(0px, 0px);
-              }
-              90.9090909091% {
-                transform: translate(-12px, 0px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(1) {
-              animation: moveBox5631-1 4s infinite;
-            }
+        @keyframes box5532-2 {
+          9.0909090909% {
+            transform: translate(0, 0);
+          }
+          18.1818181818% {
+            transform: translate(12px, 0);
+          }
+          27.2727272727% {
+            transform: translate(0px, 0);
+          }
+          36.3636363636% {
+            transform: translate(12px, 0);
+          }
+          45.4545454545% {
+            transform: translate(12px, 12px);
+          }
+          54.5454545455% {
+            transform: translate(12px, 12px);
+          }
+          63.6363636364% {
+            transform: translate(12px, 12px);
+          }
+          72.7272727273% {
+            transform: translate(12px, 12px);
+          }
+          81.8181818182% {
+            transform: translate(0px, 12px);
+          }
+          90.9090909091% {
+            transform: translate(0px, 12px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(2) {
+          animation: box5532-2 4s infinite;
+        }
 
-            @keyframes moveBox5631-2 {
-              9.0909090909% {
-                transform: translate(0, 0);
-              }
-              18.1818181818% {
-                transform: translate(12px, 0);
-              }
-              27.2727272727% {
-                transform: translate(0px, 0);
-              }
-              36.3636363636% {
-                transform: translate(12px, 0);
-              }
-              45.4545454545% {
-                transform: translate(12px, 12px);
-              }
-              54.5454545455% {
-                transform: translate(12px, 12px);
-              }
-              63.6363636364% {
-                transform: translate(12px, 12px);
-              }
-              72.7272727273% {
-                transform: translate(12px, 12px);
-              }
-              81.8181818182% {
-                transform: translate(0px, 12px);
-              }
-              90.9090909091% {
-                transform: translate(0px, 12px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(2) {
-              animation: moveBox5631-2 4s infinite;
-            }
+        @keyframes box5532-3 {
+          9.0909090909% {
+            transform: translate(-12px, 0);
+          }
+          18.1818181818% {
+            transform: translate(-12px, 0);
+          }
+          27.2727272727% {
+            transform: translate(0px, 0);
+          }
+          36.3636363636% {
+            transform: translate(-12px, 0);
+          }
+          45.4545454545% {
+            transform: translate(-12px, 0);
+          }
+          54.5454545455% {
+            transform: translate(-12px, 0);
+          }
+          63.6363636364% {
+            transform: translate(-12px, 0);
+          }
+          72.7272727273% {
+            transform: translate(-12px, 0);
+          }
+          81.8181818182% {
+            transform: translate(-12px, -12px);
+          }
+          90.9090909091% {
+            transform: translate(0px, -12px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(3) {
+          animation: box5532-3 4s infinite;
+        }
 
-            @keyframes moveBox5631-3 {
-              9.0909090909% {
-                transform: translate(-12px, 0);
-              }
-              18.1818181818% {
-                transform: translate(-12px, 0);
-              }
-              27.2727272727% {
-                transform: translate(0px, 0);
-              }
-              36.3636363636% {
-                transform: translate(-12px, 0);
-              }
-              45.4545454545% {
-                transform: translate(-12px, 0);
-              }
-              54.5454545455% {
-                transform: translate(-12px, 0);
-              }
-              63.6363636364% {
-                transform: translate(-12px, 0);
-              }
-              72.7272727273% {
-                transform: translate(-12px, 0);
-              }
-              81.8181818182% {
-                transform: translate(-12px, -12px);
-              }
-              90.9090909091% {
-                transform: translate(0px, -12px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(3) {
-              animation: moveBox5631-3 4s infinite;
-            }
+        @keyframes box5532-4 {
+          9.0909090909% {
+            transform: translate(-12px, 0);
+          }
+          18.1818181818% {
+            transform: translate(-12px, 0);
+          }
+          27.2727272727% {
+            transform: translate(-12px, -12px);
+          }
+          36.3636363636% {
+            transform: translate(0px, -12px);
+          }
+          45.4545454545% {
+            transform: translate(0px, 0px);
+          }
+          54.5454545455% {
+            transform: translate(0px, -12px);
+          }
+          63.6363636364% {
+            transform: translate(0px, -12px);
+          }
+          72.7272727273% {
+            transform: translate(0px, -12px);
+          }
+          81.8181818182% {
+            transform: translate(-12px, -12px);
+          }
+          90.9090909091% {
+            transform: translate(-12px, 0px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(4) {
+          animation: box5532-4 4s infinite;
+        }
 
-            @keyframes moveBox5631-4 {
-              9.0909090909% {
-                transform: translate(-12px, 0);
-              }
-              18.1818181818% {
-                transform: translate(-12px, 0);
-              }
-              27.2727272727% {
-                transform: translate(-12px, -12px);
-              }
-              36.3636363636% {
-                transform: translate(0px, -12px);
-              }
-              45.4545454545% {
-                transform: translate(0px, 0px);
-              }
-              54.5454545455% {
-                transform: translate(0px, -12px);
-              }
-              63.6363636364% {
-                transform: translate(0px, -12px);
-              }
-              72.7272727273% {
-                transform: translate(0px, -12px);
-              }
-              81.8181818182% {
-                transform: translate(-12px, -12px);
-              }
-              90.9090909091% {
-                transform: translate(-12px, 0px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(4) {
-              animation: moveBox5631-4 4s infinite;
-            }
+        @keyframes box5532-5 {
+          9.0909090909% {
+            transform: translate(0, 0);
+          }
+          18.1818181818% {
+            transform: translate(0, 0);
+          }
+          27.2727272727% {
+            transform: translate(0, 0);
+          }
+          36.3636363636% {
+            transform: translate(12px, 0);
+          }
+          45.4545454545% {
+            transform: translate(12px, 0);
+          }
+          54.5454545455% {
+            transform: translate(12px, 0);
+          }
+          63.6363636364% {
+            transform: translate(12px, 0);
+          }
+          72.7272727273% {
+            transform: translate(12px, 0);
+          }
+          81.8181818182% {
+            transform: translate(12px, -12px);
+          }
+          90.9090909091% {
+            transform: translate(0px, -12px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(5) {
+          animation: box5532-5 4s infinite;
+        }
 
-            @keyframes moveBox5631-5 {
-              9.0909090909% {
-                transform: translate(0, 0);
-              }
-              18.1818181818% {
-                transform: translate(0, 0);
-              }
-              27.2727272727% {
-                transform: translate(0, 0);
-              }
-              36.3636363636% {
-                transform: translate(12px, 0);
-              }
-              45.4545454545% {
-                transform: translate(12px, 0);
-              }
-              54.5454545455% {
-                transform: translate(12px, 0);
-              }
-              63.6363636364% {
-                transform: translate(12px, 0);
-              }
-              72.7272727273% {
-                transform: translate(12px, 0);
-              }
-              81.8181818182% {
-                transform: translate(12px, -12px);
-              }
-              90.9090909091% {
-                transform: translate(0px, -12px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(5) {
-              animation: moveBox5631-5 4s infinite;
-            }
+        @keyframes box5532-6 {
+          9.0909090909% {
+            transform: translate(0, 0);
+          }
+          18.1818181818% {
+            transform: translate(-12px, 0);
+          }
+          27.2727272727% {
+            transform: translate(-12px, 0);
+          }
+          36.3636363636% {
+            transform: translate(0px, 0);
+          }
+          45.4545454545% {
+            transform: translate(0px, 0);
+          }
+          54.5454545455% {
+            transform: translate(0px, 0);
+          }
+          63.6363636364% {
+            transform: translate(0px, 0);
+          }
+          72.7272727273% {
+            transform: translate(0px, 12px);
+          }
+          81.8181818182% {
+            transform: translate(-12px, 12px);
+          }
+          90.9090909091% {
+            transform: translate(-12px, 0px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(6) {
+          animation: box5532-6 4s infinite;
+        }
 
-            @keyframes moveBox5631-6 {
-              9.0909090909% {
-                transform: translate(0, 0);
-              }
-              18.1818181818% {
-                transform: translate(-12px, 0);
-              }
-              27.2727272727% {
-                transform: translate(-12px, 0);
-              }
-              36.3636363636% {
-                transform: translate(0px, 0);
-              }
-              45.4545454545% {
-                transform: translate(0px, 0);
-              }
-              54.5454545455% {
-                transform: translate(0px, 0);
-              }
-              63.6363636364% {
-                transform: translate(0px, 0);
-              }
-              72.7272727273% {
-                transform: translate(0px, 12px);
-              }
-              81.8181818182% {
-                transform: translate(-12px, 12px);
-              }
-              90.9090909091% {
-                transform: translate(-12px, 0px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(6) {
-              animation: moveBox5631-6 4s infinite;
-            }
+        @keyframes box5532-7 {
+          9.0909090909% {
+            transform: translate(12px, 0);
+          }
+          18.1818181818% {
+            transform: translate(12px, 0);
+          }
+          27.2727272727% {
+            transform: translate(12px, 0);
+          }
+          36.3636363636% {
+            transform: translate(0px, 0);
+          }
+          45.4545454545% {
+            transform: translate(0px, -12px);
+          }
+          54.5454545455% {
+            transform: translate(12px, -12px);
+          }
+          63.6363636364% {
+            transform: translate(0px, -12px);
+          }
+          72.7272727273% {
+            transform: translate(0px, -12px);
+          }
+          81.8181818182% {
+            transform: translate(0px, 0px);
+          }
+          90.9090909091% {
+            transform: translate(12px, 0px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(7) {
+          animation: box5532-7 4s infinite;
+        }
 
-            @keyframes moveBox5631-7 {
-              9.0909090909% {
-                transform: translate(12px, 0);
-              }
-              18.1818181818% {
-                transform: translate(12px, 0);
-              }
-              27.2727272727% {
-                transform: translate(12px, 0);
-              }
-              36.3636363636% {
-                transform: translate(0px, 0);
-              }
-              45.4545454545% {
-                transform: translate(0px, -12px);
-              }
-              54.5454545455% {
-                transform: translate(12px, -12px);
-              }
-              63.6363636364% {
-                transform: translate(0px, -12px);
-              }
-              72.7272727273% {
-                transform: translate(0px, -12px);
-              }
-              81.8181818182% {
-                transform: translate(0px, 0px);
-              }
-              90.9090909091% {
-                transform: translate(12px, 0px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(7) {
-              animation: moveBox5631-7 4s infinite;
-            }
+        @keyframes box5532-8 {
+          9.0909090909% {
+            transform: translate(0, 0);
+          }
+          18.1818181818% {
+            transform: translate(-12px, 0);
+          }
+          27.2727272727% {
+            transform: translate(-12px, -12px);
+          }
+          36.3636363636% {
+            transform: translate(0px, -12px);
+          }
+          45.4545454545% {
+            transform: translate(0px, -12px);
+          }
+          54.5454545455% {
+            transform: translate(0px, -12px);
+          }
+          63.6363636364% {
+            transform: translate(0px, -12px);
+          }
+          72.7272727273% {
+            transform: translate(0px, -12px);
+          }
+          81.8181818182% {
+            transform: translate(12px, -12px);
+          }
+          90.9090909091% {
+            transform: translate(12px, 0px);
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
+        }
+        .box5532:nth-child(8) {
+          animation: box5532-8 4s infinite;
+        }
 
-            @keyframes moveBox5631-8 {
-              9.0909090909% {
-                transform: translate(0, 0);
-              }
-              18.1818181818% {
-                transform: translate(-12px, 0);
-              }
-              27.2727272727% {
-                transform: translate(-12px, -12px);
-              }
-              36.3636363636% {
-                transform: translate(0px, -12px);
-              }
-              45.4545454545% {
-                transform: translate(0px, -12px);
-              }
-              54.5454545455% {
-                transform: translate(0px, -12px);
-              }
-              63.6363636364% {
-                transform: translate(0px, -12px);
-              }
-              72.7272727273% {
-                transform: translate(0px, -12px);
-              }
-              81.8181818182% {
-                transform: translate(12px, -12px);
-              }
-              90.9090909091% {
-                transform: translate(12px, 0px);
-              }
-              100% {
-                transform: translate(0px, 0px);
-              }
-            }
-            .box5631:nth-child(8) {
-              animation: moveBox5631-8 4s infinite;
-            }
-
-            @keyframes moveBox5631-9 {
-              9.0909090909% {
-                transform: translate(-12px, 0);
-              }
-              18.1818181818% {
-                transform: translate(-12px, 0);
-              }
-              27.2727272727% {
-                transform: translate(0px, 0);
-              }
-              36.3636363636% {
-                transform: translate(-12px, 0);
-              }
-              45.4545454545% {
-                transform: translate(0px, 0);
-              }
-              54.5454545455% {
-                transform: translate(0px, 0);
-              }
-              63.6363636364% {
-                transform: translate(-12px, 0);
-              }
-              72.7272727273% {
-                transform: translate(-12px, 0);
-              }
-              81.8181818182% {
-                transform: translate(-24px, 0);
-              }
-              90.9090909091% {
-                transform: translate(-12px, 0);
-              }
-              100% {
-                transform: translate(0px, 0);
-              }
-            }
-            .box5631:nth-child(9) {
-              animation: moveBox5631-9 4s infinite;
-            }
-          </style>
-          <g>
-            <circle class="box5631" cx="13" cy="1" r="5"></circle>
-            <circle class="box5631" cx="13" cy="1" r="5"></circle>
-            <circle class="box5631" cx="25" cy="25" r="5"></circle>
-            <circle class="box5631" cx="13" cy="13" r="5"></circle>
-            <circle class="box5631" cx="13" cy="13" r="5"></circle>
-            <circle class="box5631" cx="25" cy="13" r="5"></circle>
-            <circle class="box5631" cx="1" cy="25" r="5"></circle>
-            <circle class="box5631" cx="13" cy="25" r="5"></circle>
-            <circle class="box5631" cx="25" cy="25" r="5"></circle>
-          </g>
-        </svg>
-      </span>
-    </div>
-    <div class="flex items-center gap-3">
-      <div
-        class="flex items-center gap-2"
-        aria-label="Location and weather in Ottawa"
-      >
-        <span>Ottawa, ON</span>
-        <span aria-hidden="true" class="text-zinc-400/70 dark:text-zinc-500/80"
-          >|</span
-        >
-        <span id="footer-weather-temp" class="tabular-nums">--°C</span>
-      </div>
-    </div>
-  </div>
+        @keyframes box5532-9 {
+          9.0909090909% {
+            transform: translate(-12px, 0);
+          }
+          18.1818181818% {
+            transform: translate(-12px, 0);
+          }
+          27.2727272727% {
+            transform: translate(0px, 0);
+          }
+          36.3636363636% {
+            transform: translate(-12px, 0);
+          }
+          45.4545454545% {
+            transform: translate(0px, 0);
+          }
+          54.5454545455% {
+            transform: translate(0px, 0);
+          }
+          63.6363636364% {
+            transform: translate(-12px, 0);
+          }
+          72.7272727273% {
+            transform: translate(-12px, 0);
+          }
+          81.8181818182% {
+            transform: translate(-24px, 0);
+          }
+          90.9090909091% {
+            transform: translate(-12px, 0);
+          }
+          100% {
+            transform: translate(0px, 0);
+          }
+        }
+        .box5532:nth-child(9) {
+          animation: box5532-9 4s infinite;
+        }
+      </style>
+      <g>
+        <rect class="box5532" x="13" y="1" rx="1" width="10" height="10"></rect>
+        <rect class="box5532" x="13" y="1" rx="1" width="10" height="10"></rect>
+        <rect class="box5532" x="25" y="25" rx="1" width="10" height="10"
+        ></rect>
+        <rect class="box5532" x="13" y="13" rx="1" width="10" height="10"
+        ></rect>
+        <rect class="box5532" x="13" y="13" rx="1" width="10" height="10"
+        ></rect>
+        <rect class="box5532" x="25" y="13" rx="1" width="10" height="10"
+        ></rect>
+        <rect class="box5532" x="1" y="25" rx="1" width="10" height="10"></rect>
+        <rect class="box5532" x="13" y="25" rx="1" width="10" height="10"
+        ></rect>
+        <rect class="box5532" x="25" y="25" rx="1" width="10" height="10"
+        ></rect>
+      </g>
+    </svg>
+  </p>
 </footer>
-
-<style>
-  @media (prefers-reduced-motion: reduce) {
-    .footer-loader svg .box5631 {
-      animation: none !important;
-    }
-  }
-
-  .footer-loader svg {
-    display: block;
-  }
-</style>
 
 <script>
   const OTTAWA = { lat: 45.4215, lon: -75.6972 };
-  const WEATHER_URL = `https://api.open-meteo.com/v1/forecast?latitude=${OTTAWA.lat}&longitude=${OTTAWA.lon}&current=temperature_2m,weather_code&timezone=America%2FToronto`;
+  const WEATHER_URL = `https://api.open-meteo.com/v1/forecast?latitude=${OTTAWA.lat}&longitude=${OTTAWA.lon}&current=temperature_2m&timezone=America%2FToronto`;
 
-  function updateOttawaTime() {
-    const ottawaTime = new Date().toLocaleTimeString("en-CA", {
+  function updateTime() {
+    const t = new Date().toLocaleTimeString("en-CA", {
       timeZone: "America/Toronto",
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
       hour12: false,
     });
-    const timeEl = document.getElementById("calgary-time");
-    if (timeEl) timeEl.textContent = ottawaTime;
+    const el = document.getElementById("ottawa-time");
+    if (el) el.textContent = t;
   }
 
   async function updateWeather() {
-    const tempEl = document.getElementById("footer-weather-temp");
-    if (!tempEl) return;
-
+    const el = document.getElementById("ottawa-weather");
+    if (!el) return;
     try {
       const res = await fetch(WEATHER_URL);
-      if (!res.ok) throw new Error("weather");
+      if (!res.ok) throw new Error();
       const data = await res.json();
-      const cur = data.current;
-      if (!cur) throw new Error("weather");
-      const t = Math.round(cur.temperature_2m);
-      tempEl.textContent = `${t}°C`;
+      const t = Math.round(data.current.temperature_2m);
+      el.textContent = `${t}°C`;
     } catch {
-      tempEl.textContent = "—°C";
+      el.textContent = "—°C";
     }
   }
 
-  function initFooter() {
-    updateOttawaTime();
-    setInterval(updateOttawaTime, 1000);
+  function init() {
+    updateTime();
+    setInterval(updateTime, 1000);
     updateWeather();
     setInterval(updateWeather, 30 * 60 * 1000);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initFooter);
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    initFooter();
+    init();
   }
 </script>
