@@ -274,7 +274,7 @@
       const closeBtn = overlay.querySelector(
         "#menu-close",
       ) as HTMLElement | null;
-      if (!closeBtn) return;
+      if (!closeBtn || !btn) return;
       const r = btn.getBoundingClientRect();
       closeBtn.style.top = r.top + "px";
       closeBtn.style.left = r.left + "px";
@@ -327,7 +327,7 @@
           el.style.animation = "none";
         });
       }, 320);
-      btn.setAttribute("aria-expanded", "true");
+      btn?.setAttribute("aria-expanded", "true");
       overlay.setAttribute("aria-hidden", "false");
       // Animate X button bars from horizontal → X
       const closeBtn = overlay.querySelector("#menu-close");
@@ -358,7 +358,7 @@
       }
       overlay.classList.add("closing");
       overlay.classList.remove("open");
-      btn.setAttribute("aria-expanded", "false");
+      btn?.setAttribute("aria-expanded", "false");
       overlay.setAttribute("aria-hidden", "true");
 
       // Step 3: cleanup
