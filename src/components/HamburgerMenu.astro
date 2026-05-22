@@ -307,7 +307,6 @@
       overlay.querySelectorAll<HTMLElement>(".mo-link, .mo-actions");
 
     function openMenu() {
-      positionCloseBtn();
       updateThemeLabel();
       // Clear any inline overrides from a previous session so CSS animations re-run cleanly
       menuEls().forEach((el) => {
@@ -315,9 +314,12 @@
         el.style.removeProperty("opacity");
         el.style.removeProperty("transform");
       });
+      // Prevent layout shift by locking scroll before measuring/positioning
       document.body.style.overflow = "hidden";
       overlay.classList.remove("closing");
       overlay.classList.add("open");
+      // Position close button after overflow change has taken effect
+      requestAnimationFrame(() => positionCloseBtn());
       // After the last entrance animation finishes (164ms delay + 140ms = ~310ms),
       // strip animation fill so flashlight opacity/transform transitions work freely
       setTimeout(() => {
@@ -329,7 +331,7 @@
       }, 320);
       btn?.setAttribute("aria-expanded", "true");
       overlay.setAttribute("aria-hidden", "false");
-      // Animate X button bars from horizontal → X
+      // Animate X button bars from horizontal → X (ensure positioned first)
       const closeBtn = overlay.querySelector("#menu-close");
       closeBtn?.classList.remove("reversing");
       requestAnimationFrame(() => closeBtn?.classList.add("active"));
@@ -382,6 +384,13 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && overlay.classList.contains("open")) closeMenu();
+    });
+    // Reposition the close button if viewport changes while open (orientation/resize)
+    window.addEventListener("resize", () => {
+      if (overlay.classList.contains("open")) requestAnimationFrame(() => positionCloseBtn());
+    });
+    window.addEventListener("orientationchange", () => {
+      if (overlay.classList.contains("open")) requestAnimationFrame(() => positionCloseBtn());
     });
   }
 

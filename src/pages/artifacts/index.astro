@@ -73,7 +73,7 @@ while (byType.image.length || byType.link.length || byType.video.length) {
     <div
       id="artifact-loader"
       class="flex items-center gap-2 text-sm text-zinc-400 dark:text-zinc-500"
-      style="transition:opacity 200ms ease"
+      style="transition:opacity 200ms ease; min-height:24px;"
     >
       <span class="artifact-spinner"></span>
       Loading…
@@ -246,8 +246,9 @@ while (byType.image.length || byType.link.length || byType.video.length) {
       const reveal = () => {
         if (loader) loader.style.opacity = "0";
         grid.style.opacity = "1";
+        // Keep the loader in the flow to avoid layout shift; hide visibility instead
         setTimeout(() => {
-          if (loader) loader.style.display = "none";
+          if (loader) loader.style.visibility = "hidden";
         }, 220);
       };
 
