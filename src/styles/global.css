@@ -154,6 +154,14 @@
   header a::after {
     display: none;
   }
+  /* Hint to the browser to composite the header separately to reduce layout jitter */
+  header {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
 
   .nav-brand {
     font-family: inherit;

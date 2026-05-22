@@ -32,9 +32,11 @@
     transition: opacity 0.12s ease;
   }
 
+  /* When open, visually hide the hamburger without removing it from flow to avoid layout jumps */
   .hamburger-btn[aria-expanded="true"] {
     pointer-events: none;
-    opacity: 0;
+    opacity: 0.01;
+    transform: scale(0.98);
   }
 
   .h-bar {
@@ -119,7 +121,7 @@
         transition: opacity 0.12s ease 0.08s, visibility 0s linear 0.22s;
       }
 
-      /* Close X — positioned over the hamburger via JS */
+      /* Close X — positioned by JS to overlay the hamburger */
       .mo-close {
         position: fixed;
         width: 20px;
@@ -171,24 +173,24 @@
         text-decoration: none;
         line-height: 1.35;
         opacity: 0;
-        transform: translateY(8px);
         position: relative;
+        will-change: opacity;
       }
       .mo-link::after,
       .mo-action-btn::after {
         display: none !important;
       }
 
-      /* Enter: top-to-bottom stagger, slide up */
-      #menu-overlay.open .mo-link[data-s="1"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 20ms  forwards; }
-      #menu-overlay.open .mo-link[data-s="2"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 38ms  forwards; }
-      #menu-overlay.open .mo-link[data-s="3"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 56ms  forwards; }
-      #menu-overlay.open .mo-link[data-s="4"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 74ms  forwards; }
-      #menu-overlay.open .mo-link[data-s="5"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 92ms  forwards; }
-      #menu-overlay.open .mo-link[data-s="6"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 110ms forwards; }
-      #menu-overlay.open .mo-link[data-s="7"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 128ms forwards; }
-      #menu-overlay.open .mo-link[data-s="8"]    { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 146ms forwards; }
-      #menu-overlay.open .mo-actions[data-s="9"] { animation: moIn 0.14s cubic-bezier(0.34,1.56,0.64,1) 164ms forwards; }
+      /* Enter: top-to-bottom stagger, fade in only (no translateY) to prevent text movement/jitter */
+      #menu-overlay.open .mo-link[data-s="1"]    { animation: moIn 0.14s ease 20ms  forwards; }
+      #menu-overlay.open .mo-link[data-s="2"]    { animation: moIn 0.14s ease 38ms  forwards; }
+      #menu-overlay.open .mo-link[data-s="3"]    { animation: moIn 0.14s ease 56ms  forwards; }
+      #menu-overlay.open .mo-link[data-s="4"]    { animation: moIn 0.14s ease 74ms  forwards; }
+      #menu-overlay.open .mo-link[data-s="5"]    { animation: moIn 0.14s ease 92ms  forwards; }
+      #menu-overlay.open .mo-link[data-s="6"]    { animation: moIn 0.14s ease 110ms forwards; }
+      #menu-overlay.open .mo-link[data-s="7"]    { animation: moIn 0.14s ease 128ms forwards; }
+      #menu-overlay.open .mo-link[data-s="8"]    { animation: moIn 0.14s ease 146ms forwards; }
+      #menu-overlay.open .mo-actions[data-s="9"] { animation: moIn 0.14s ease 164ms forwards; }
 
       /* Exit: all items out together, fast */
       #menu-overlay.closing .mo-link,
@@ -197,17 +199,16 @@
       #menu-overlay:not(.open):not(.closing) .mo-link,
       #menu-overlay:not(.open):not(.closing) .mo-actions {
         opacity: 0 !important;
-        transform: translateY(8px);
         animation: none !important;
       }
 
       @keyframes moIn {
-        from { opacity: 0; transform: translateY(8px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; }
+        to   { opacity: 1; }
       }
       @keyframes moOut {
-        from { opacity: 1; transform: translateY(0); }
-        to   { opacity: 0; transform: translateY(8px); }
+        from { opacity: 1; }
+        to   { opacity: 0; }
       }
 
       /* Flashlight effect overrides — ensure smooth opacity transition beats animation fill */
@@ -228,7 +229,25 @@
         align-items: flex-start;
         gap: 0;
         opacity: 0;
-        transform: translateY(8px);
+        will-change: opacity;
+      }
+      /* Theme label: compositing hints to avoid sub-pixel movement/jitter on iOS
+         and ensure font-weight/smoothing matches the surrounding links */
+      .mo-action-btn {
+        will-change: opacity, transform;
+        font-weight: 400;
+        color: inherit;
+        -webkit-font-smoothing: antialiased;
+      }
+      #menu-theme-label {
+        display: inline-block;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: opacity, transform;
+        font-weight: 400;
+        color: inherit;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
       }
       .mo-action-btn {
         background: transparent;
@@ -269,13 +288,14 @@
       });
     }
 
-    // Place the X button exactly over the hamburger
+    // Place the X button exactly over the hamburger (restore JS positioning)
     function positionCloseBtn() {
       const closeBtn = overlay.querySelector(
         "#menu-close",
       ) as HTMLElement | null;
       if (!closeBtn || !btn) return;
       const r = btn.getBoundingClientRect();
+      // position: fixed uses viewport coordinates, so r.top/left are correct
       closeBtn.style.top = r.top + "px";
       closeBtn.style.left = r.left + "px";
     }
@@ -320,7 +340,7 @@
       document.body.style.overflow = "hidden";
       overlay.classList.remove("closing");
       overlay.classList.add("open");
-      // Position close button after overflow change has taken effect
+      // Positioning is handled by CSS; keep a no-op call for safety
       requestAnimationFrame(() => positionCloseBtn());
       // After the last entrance animation finishes (164ms delay + 140ms = ~310ms),
       // strip animation fill so flashlight opacity/transform transitions work freely
