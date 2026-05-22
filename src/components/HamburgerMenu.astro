@@ -314,7 +314,9 @@
         el.style.removeProperty("opacity");
         el.style.removeProperty("transform");
       });
-      // Prevent layout shift by locking scroll before measuring/positioning
+      // Prevent layout shift by locking scroll and compensating for scrollbar width
+      const scrollBarComp = window.innerWidth - document.documentElement.clientWidth;
+      if (scrollBarComp > 0) document.body.style.paddingRight = scrollBarComp + "px";
       document.body.style.overflow = "hidden";
       overlay.classList.remove("closing");
       overlay.classList.add("open");
@@ -367,6 +369,7 @@
       setTimeout(() => {
         overlay.classList.remove("closing");
         document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
       }, 240);
     }
 
@@ -375,6 +378,10 @@
     });
 
     overlay.querySelector("#menu-close")?.addEventListener("click", closeMenu);
+    // Close when clicking the overlay backdrop (outside the inner menu)
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeMenu();
+    });
     overlay
       .querySelectorAll(".mo-link")
       .forEach((l) => l.addEventListener("click", closeMenu));
