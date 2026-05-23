@@ -24,18 +24,23 @@ const buildGeniusCandidates = (songName: string, artistName: string) => {
 };
 
 const resolveGeniusSongUrl = async (songName: string, artistName: string) => {
+  const headers = { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36',
+                    Accept: 'text/html'};
+
   for (const candidate of buildGeniusCandidates(songName, artistName)) {
     try {
       const response = await fetch(candidate, {
-        method: 'HEAD',
-        redirect: 'manual',
+        method: 'GET',
+        headers,
+        redirect: 'follow',
       });
 
-      if (response.ok || [301, 302, 307, 308].includes(response.status)) {
-        return candidate;
+      if (response.ok) {
+        // return the final resolved URL if available
+        return response.url || candidate;
       }
-    } catch {
-      // Try the next candidate.
+    } catch (err) {
+      // Try the next candidate on error.
     }
   }
 
