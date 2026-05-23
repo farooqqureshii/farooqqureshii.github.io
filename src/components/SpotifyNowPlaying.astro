@@ -59,12 +59,18 @@
       if (link && full && bars) {
         const a = link as HTMLAnchorElement;
         
-        if (data.isPlaying) {
-          console.log('Song is playing:', data.title, 'by', data.artist);
-          full.textContent = `listening to: ${data.title} — ${data.artist}`;
+        if (data.title && data.artist) {
+          console.log(data.isPlaying ? 'Song is playing:' : 'Last played track:', data.title, 'by', data.artist);
+          full.textContent = data.isPlaying
+            ? `listening to: ${data.title} — ${data.artist}`
+            : `last listened to: ${data.title} — ${data.artist}`;
           a.href = data.songUrl || '#';
           a.style.pointerEvents = data.songUrl ? 'auto' : 'none';
-          bars.classList.remove('bars-static');
+          if (data.isPlaying) {
+            bars.classList.remove('bars-static');
+          } else {
+            bars.classList.add('bars-static');
+          }
         } else {
           console.log('Not currently playing anything');
           full.textContent = 'not listening';

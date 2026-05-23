@@ -17,7 +17,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
           href="https://www.fleetway.ca/en/"
           target="_blank"
           rel="noopener">Fleetway</a
-        > as a Junior Electrical Engineer where I work on the Halifax-class frigates and River-class destroyers
+        > as a Junior Electrical Engineer on the Halifax-class frigates and River-class destroyers
         for the Canadian Navy.
       </p>
       <p data-stagger="2">
@@ -27,23 +27,28 @@ import IndexLayout from "../layouts/IndexLayout.astro";
           rel="noopener">uOttaHack</a
         >, the largest technology event in Ottawa. Before that, I was a
         competitive debater. I now coach students who've won the Canadian National
-        Debating Championships, Harvard, Yale and Princeton Invitationals.
+        Debating Championships and Harvard invitational.
       </p>
       <p data-stagger="3">
-        Professionally, I'm interested in analog IC and semiconductor device
+        I'm interested in analog IC and semiconductor device
         design. Particularly CMOS technology, transistor-level circuit design,
-        mixed-signal systems and signal conditioning circuits. 
+        mixed-signal systems and signal conditioning circuits.
       </p>
       <p data-stagger="4">
         In my free time, I <a href="/other/books">read</a>, <a href="/writing"
           >write</a
-        > and love design engineering.
+          > and love design engineering.
       </p>
       <p data-stagger="5">
         I'm currently reading <em>Stranger in a Strange Land</em> by Robert A.
-        Heinlein, listening to music from Leon Bridges and <em
-          >Spacey</em
-        > by the Rose Hips.
+        Heinlein. I last listened to <a
+          href="#"
+          id="spotify-last-song-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        ><span id="spotify-last-song">a song</span></a> by <span
+          id="spotify-last-artist">an artist</span
+        >.
       </p>
       <p data-stagger="6">
         Please feel free to <a href="#" id="look-around-btn">look around</a>,
@@ -58,7 +63,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         >.
       </p>
       <p data-stagger="7">
-        This page was last updated on May 20. Thank you for stopping by.
+        This page was last updated on May 20. Thank you for stopping by. 
       </p>
     </article>
   </main>
@@ -102,13 +107,60 @@ import IndexLayout from "../layouts/IndexLayout.astro";
     .index-content [data-stagger="7"] {
       animation-delay: 640ms;
     }
+
   </style>
   <script>
+    async function updateSpotifyTrack() {
+      const songElement = document.getElementById("spotify-last-song");
+      const artistElement = document.getElementById("spotify-last-artist");
+      const linkElement = document.getElementById(
+        "spotify-last-song-link"
+      ) as HTMLAnchorElement | null;
+
+      if (!songElement || !artistElement || !linkElement) {
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/spotify-now-playing/", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data?.title && data?.artist) {
+          songElement.textContent = data.title;
+          artistElement.textContent = data.artist;
+
+          if (data.songUrl) {
+            linkElement.href = data.songUrl;
+            linkElement.style.pointerEvents = "auto";
+          } else {
+            linkElement.href = "#";
+            linkElement.style.pointerEvents = "none";
+          }
+        } else {
+          songElement.textContent = "a song";
+          artistElement.textContent = "an artist";
+          linkElement.href = "#";
+          linkElement.style.pointerEvents = "none";
+        }
+      } catch (error) {
+        console.error("Error fetching Spotify data:", error);
+      }
+    }
+
     document
       .getElementById("look-around-btn")
       ?.addEventListener("click", (e) => {
         e.preventDefault();
         document.getElementById("hamburger-btn")?.click();
       });
+
+    updateSpotifyTrack();
   </script>
 </IndexLayout>
