@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 
+const GENIUS_DEBUG = !!process.env.GENIUS_DEBUG;
+
 const slugify = (value: string) =>
   value
     .normalize('NFKD')
@@ -24,10 +26,16 @@ const buildGeniusCandidates = (songName: string, artistName: string) => {
 };
 
 const resolveGeniusSongUrl = async (songName: string, artistName: string) => {
-  const headers = { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36',
-                    Accept: 'text/html'};
+  const headers = {
+    'User-Agent':
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36',
+    Accept: 'text/html',
+  };
 
-  for (const candidate of buildGeniusCandidates(songName, artistName)) {
+  const candidates = buildGeniusCandidates(songName, artistName);
+  if (GENIUS_DEBUG) console.error('Genius candidates:', candidates);
+
+  for (const candidate of candidates) {
     try {
       const response = await fetch(candidate, {
         method: 'GET',
@@ -35,15 +43,20 @@ const resolveGeniusSongUrl = async (songName: string, artistName: string) => {
         redirect: 'follow',
       });
 
+      if (GENIUS_DEBUG) console.error('Genius probe:', candidate, 'status=', response.status, 'final=', response.url);
+
       if (response.ok) {
-        // return the final resolved URL if available
-        return response.url || candidate;
+        const finalUrl = response.url || candidate;
+        if (GENIUS_DEBUG) console.error('Genius resolved to:', finalUrl);
+        return finalUrl;
       }
-    } catch (err) {
+    } catch (err: any) {
+      if (GENIUS_DEBUG) console.error('Genius probe error for', candidate, err && err.message);
       // Try the next candidate on error.
     }
   }
 
+  if (GENIUS_DEBUG) console.error('Genius resolver falling back to search for', songName, '—', artistName);
   return `https://genius.com/search?q=${encodeURIComponent(`${songName} ${artistName}`)}`;
 };
 

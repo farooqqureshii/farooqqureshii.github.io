@@ -35,7 +35,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       <p data-stagger="4">
         In my free time, I <a href="/other/books">read</a>, <a href="/writing"
           >write</a
-          > and love design engineering.
+          > and love <span class="flow-gradient" data-text="design engineering">design engineering</span>.
       </p>
       <p data-stagger="5">
         I'm currently reading <em>Stranger in a Strange Land</em> by Robert A.
@@ -61,7 +61,22 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         >.
       </p>
       <p data-stagger="7">
-        This page was last updated on May 20. Thank you for stopping by. 
+        This page was last updated on May 20. <span class="thank-wrap">Thank you for stopping by.
+          <span class="marquee" aria-hidden="true">
+            <svg class="marquee-svg" width="220" height="48" viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <path id="rectPath" d="M8 8 h204 a8 8 0 0 1 8 8 v16 a8 8 0 0 1 -8 8 h-204 a8 8 0 0 1 -8 -8 v-16 a8 8 0 0 1 8 -8 z" />
+              </defs>
+              <use href="#rectPath" fill="none" stroke="currentColor" stroke-opacity="0.12" stroke-width="1.2" />
+              <text font-family="Inter, system-ui, -apple-system, Arial" font-size="10" fill="currentColor">
+                <textPath href="#rectPath" startOffset="0%">
+                  HAVE A GREAT DAY 😊  HAVE A GREAT DAY 😊  HAVE A GREAT DAY 😊  HAVE A GREAT DAY 😊
+                  <animate attributeName="startOffset" from="0%" to="-100%" dur="8s" repeatCount="indefinite" />
+                </textPath>
+              </text>
+            </svg>
+          </span>
+        </span>
       </p>
     </article>
   </main>
@@ -105,6 +120,55 @@ import IndexLayout from "../layouts/IndexLayout.astro";
     .index-content [data-stagger="7"] {
       animation-delay: 640ms;
     }
+
+    /* Flowing gradient for specific words (on hover only) */
+    .flow-gradient {
+      position: relative;
+      color: inherit;
+      -webkit-text-fill-color: initial;
+    }
+
+    .flow-gradient:hover {
+      background: linear-gradient(90deg,#ff6b6b 0%,#f8e71c 25%,#7bed9f 50%,#4facfe 75%,#a29bfe 100%);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: flow 4s linear infinite;
+    }
+
+    @keyframes flow {
+      from { background-position: 0% 50%; }
+      to { background-position: 100% 50%; }
+    }
+
+    /* Marquee rectangle for the thank-you line */
+    .thank-wrap { position: relative; display: inline-block; }
+    .thank-wrap .marquee {
+      position: absolute;
+      left: -8px;
+      right: -8px;
+      top: -8px;
+      bottom: -8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      padding: 6px 10px;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .28s ease, transform .28s ease;
+      mix-blend-mode: screen;
+    }
+    .thank-wrap:hover .marquee { opacity: 1; transform: translateY(0); }
+
+    .marquee-track { display: inline-block; white-space: nowrap; font-weight: 600; letter-spacing: 0.04em; color: currentColor; }
+    .marquee-track svg { margin-left: 8px; vertical-align: middle; }
+    .marquee-track { animation: marquee 6s linear infinite; }
+    @keyframes marquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
   </style>
   <script>

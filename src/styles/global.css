@@ -412,3 +412,51 @@ article sup a::after {
   height: 0 !important;
   min-height: 0 !important;
 }
+
+/* Shared styles for flowing gradient on hover */
+.flow-gradient {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+}
+.flow-gradient::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg,#ff6b6b 0%,#f8e71c 22%,#7bed9f 44%,#4facfe 66%,#a29bfe 88%);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, background-position;
+  white-space: nowrap;
+}
+.flow-gradient::before { animation: flow 12s linear infinite; }
+.flow-gradient:hover::before { opacity: 1; }
+@keyframes flow { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+
+/* Shared marquee wrapper styles (used inline in some pages) */
+.thank-wrap { position: relative; display: inline-block; }
+.thank-wrap .marquee {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  transform: translateX(-50%) translateY(-6px);
+  width: 220px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.thank-wrap:hover .marquee { opacity: 1; transform: translateX(-50%) translateY(0); }
+.marquee-svg { display: block; }
