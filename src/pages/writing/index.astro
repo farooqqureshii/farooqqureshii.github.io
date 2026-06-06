@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import { SITE_DESCRIPTION } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
-import { formatShortDate } from "../../lib/utils";
 
 const posts = await getCollection("writing");
 const sortedPosts = posts
@@ -13,15 +12,11 @@ const sortedPosts = posts
 <Layout title="Writing | Farooq Qureshi" description={SITE_DESCRIPTION}>
   <main class="no-link-underline">
     <div class="flashlight-hover space-y-2 text-sm">
-      {sortedPosts.map((post) => {
-        const dateStr = formatShortDate(post.data.date);
-        return (
-          <div class="flashlight-item flex items-baseline gap-2">
-            <a href={`/writing/${post.slug}`}>{post.data.title}</a>
-            <span class="text-zinc-500 dark:text-zinc-400 text-xs">{dateStr}</span>
-          </div>
-        );
-      })}
+      {sortedPosts.map((post) => (
+        <div class="flashlight-item flex items-baseline gap-2">
+          <a href={`/writing/${post.slug}`}>{post.data.title}</a>
+        </div>
+      ))}
     </div>
   </main>
 </Layout>
