@@ -4,172 +4,321 @@ import Layout from "../../layouts/Layout.astro";
 
 const projects = [
   {
-    title: "uoee.rocks",
-    description: "Course visualizer and search, for uOttawa EE students",
-    gif: "/static/uoee.rocks-1755366145491.webm",
-    link: "https://uoee.rocks/",
-    github: "https://github.com/farooqqureshii/uoee.rocks",
-    technologies: ["React", "TypeScript", "Tailwind", "Framer Motion"],
-    type: "video"
-  },
-  {
-    title: "okbutpitchit",
-    description: "Code to Pitch-Ready slides, in an Instant",
-    gif: "/static/okbutpitchit_vid.webm",
-    link: "https://okbutpitchit.vercel.app/",
-    github: "https://github.com/farooqqureshii/okbutpitchit",
-    technologies: ["Next.js", "React", "Tailwind", "Node", "Llama 3"],
-    type: "video"
-  },
-  {
-    title: "Substack Case Study",
-    description: "Product/strategy case study for Substack growth",
-    image: "/static/Marketing_Spaces.png",
-    link: "/writing/substack/",
-    technologies: ["PM", "Strategy", "UI/UX", "Marketing"],
-    type: "image"
-  },
-  {
-    title: "Voltus",
-    description: "RLC circuit visualization, analysis, and simulation",
-    gif: "/static/voltus.webm",
-    link: "https://voltus.streamlit.app/",
-    github: "https://github.com/farooqqureshii/voltus",
-    technologies: ["Streamlit", "Plotly", "NumPy", "SciPy", "Pandas"],
-    type: "video"
-  },
-  {
-    title: "Code Compass",
-    description: "Understand any GitHub repo and find beginner-friendly issues, fast",
-    gif: "/static/codecompass_vid.webm",
-    link: "https://trycodecompass.vercel.app/",
-    github: "https://github.com/farooqqureshii/code-compass",
-    technologies: ["Next.js", "TypeScript", "Tailwind", "Groq Llama 3", "GitHub REST API"],
-    type: "video"
+    title: "Analog Front-End Design for Hydrophone Sensors",
+    description:
+      "Signal conditioning, INA128 InAmp, Butterworth LPF, RTI noise budget",
+    media: "/static/demo.gif",
+    category: "engineering",
+    mediaType: "image",
+    reportLink: "/static/analog-front-end-report.pdf",
+    technologies: [
+      "Signal Conditioning",
+      "INA128",
+      "Butterworth LPF",
+      "RTI Noise Budget",
+    ],
   },
   {
     title: "uOttaHack | Director",
     description: "Leading the team behind Ottawa's largest tech event",
-    image: "/static/uottahack.jpg",
+    media: "/static/uottahack.jpg",
+    category: "product",
     link: "https://www.uottahack.ca/",
+    mediaType: "image",
     technologies: ["PM", "UI/UX", "Figma", "Software", "Sales"],
-    type: "image"
+  },
+  {
+    title: "Substack Case Study",
+    description: "Product/strategy case study for Substack growth",
+    media: "/static/Marketing_Spaces.png",
+    category: "product",
+    link: "/writing/substack/",
+    mediaType: "image",
+    technologies: ["PM", "Strategy", "UI/UX", "Marketing"],
+  },
+  {
+    title: "uoee.rocks",
+    description: "Course visualizer and search, for uOttawa EE students",
+    media: "/static/uoee.rocks-1755366145491.webm",
+    category: "software",
+    link: "https://uoee.rocks/",
+    github: "https://github.com/farooqqureshii/uoee.rocks",
+    mediaType: "video",
+    technologies: ["React", "TypeScript", "Tailwind", "Framer Motion"],
+  },
+  {
+    title: "okbutpitchit",
+    description: "Code to Pitch-Ready slides, in an Instant",
+    media: "/static/okbutpitchit_vid.webm",
+    category: "software",
+    link: "https://okbutpitchit.vercel.app/",
+    github: "https://github.com/farooqqureshii/okbutpitchit",
+    mediaType: "video",
+    technologies: ["Next.js", "React", "Tailwind", "Node", "Llama 3"],
+  },
+  {
+    title: "Voltus",
+    description: "RLC circuit visualization, analysis, and simulation",
+    media: "/static/voltus.webm",
+    category: "software",
+    link: "https://voltus.streamlit.app/",
+    github: "https://github.com/farooqqureshii/voltus",
+    mediaType: "video",
+    technologies: ["Streamlit", "Plotly", "NumPy", "SciPy", "Pandas"],
+  },
+  {
+    title: "Code Compass",
+    description: "Understand any GitHub repo and find beginner-friendly issues, fast",
+    media: "/static/codecompass_vid.webm",
+    category: "software",
+    link: "https://trycodecompass.vercel.app/",
+    github: "https://github.com/farooqqureshii/code-compass",
+    mediaType: "video",
+    technologies: ["Next.js", "TypeScript", "Tailwind", "Groq Llama 3", "GitHub REST API"],
   },
   {
     title: "EchoScope",
     description: "Use AI to uncover sentiment, bias, and diversity in YouTube comments",
-    gif: "/static/echoscope_vid.webm",
+    media: "/static/echoscope_vid.webm",
+    category: "software",
     link: "https://echoscope.vercel.app/",
     github: "https://github.com/farooqqureshii/echoscope",
+    mediaType: "video",
     technologies: ["TypeScript", "Node", "TensorFlow", "Sentiment Analysis"],
-    type: "video"
   },
   {
     title: "Analyzing and predicting housing prices in London",
     description: "Smarter housing price predictions with machine learning",
-    gif: "/static/london_vid.webm",
+    media: "/static/london_vid.webm",
+    category: "software",
     link: "https://farooq.craft.me/write-up",
+    mediaType: "video",
     technologies: ["Pandas", "Matplotlib", "Scikit-learn", "SHAP", "LightGBM"],
-    type: "video"
   },
   {
     title: "NLP for Google Calendar",
     description: "Conversational AI for Google Calendar using NLP",
-    gif: "/static/nlp_vid.webm",
+    media: "/static/nlp_vid.webm",
+    category: "software",
+    mediaType: "video",
     technologies: ["LangChain", "Rasa", "Typescript", "OAuth"],
-    type: "video"
   },
   {
     title: "Notion2Todoist",
     description: "Syncing Tasks from Notion to Todoist",
-    gif: "/static/notion api video.webm",
+    media: "/static/notion api video.webm",
+    category: "software",
+    mediaType: "video",
     technologies: ["REST API", "Bash", "Scripting", "Python"],
-    type: "video"
   }
+];
+
+const categories = [
+  { label: "Engineering", value: "engineering" },
+  { label: "Software", value: "software" },
+  { label: "Product", value: "product" },
 ];
 ---
 
 <Layout title="Projects | Farooq Qureshi" description={SITE_DESCRIPTION}>
   <main class="no-link-underline">
+    <header class="mb-10">
+      <p class="text-sm text-zinc-900 dark:text-zinc-100">
+        A split view of engineering, software, and product work.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {categories.map((category) => (
+          <button type="button" class="project-tab" data-tab={category.value}>
+            {category.label}
+          </button>
+        ))}
+      </div>
+    </header>
+
     <div class="flashlight-hover space-y-12">
-    {projects.map((project, index) => (
-      <div class="flashlight-item space-y-3">
-        <div class="media-section w-full overflow-visible">
-          {project.type === "video" ? (
-            <video
-              src={index < 2 ? project.gif : undefined}
-              data-src={index < 2 ? undefined : project.gif}
-              muted
-              loop
-              playsinline
-              autoplay={index < 2}
-              preload={index < 2 ? "metadata" : "none"}
-              class={`w-full aspect-[4/3] object-cover max-h-80 bg-zinc-100 ${index < 2 ? "priority-video" : "lazy-video"}`}
-            >
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            project.image && (
+      {projects.map((project, index) => (
+        <div class="flashlight-item project-item space-y-3" data-type={project.category}>
+          <div class="media-section w-full overflow-visible">
+            {project.mediaType === "video" ? (
+              <video
+                src={index < 2 ? project.media : undefined}
+                data-src={index < 2 ? undefined : project.media}
+                muted
+                loop
+                playsinline
+                autoplay={index < 2}
+                preload={index < 2 ? "metadata" : "none"}
+                class={`w-full aspect-[4/3] object-cover max-h-80 bg-zinc-100 ${index < 2 ? "priority-video" : "lazy-video"}`}
+              >
+                Your browser does not support the video tag.
+              </video>
+            ) : (
               <img
-                src={project.image}
+                src={project.media}
                 alt={project.title}
                 loading={index < 2 ? "eager" : "lazy"}
                 class="w-full aspect-[4/3] object-cover max-h-80 bg-zinc-100"
               />
-            )
-          )}
-        </div>
-        <div class="space-y-1 text-sm">
-          <div>{project.title}</div>
-          <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed">{project.description}</p>
-          <div class="project-links flex flex-row flex-wrap gap-x-4 gap-y-0 pt-1">
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noopener" class="text-zinc-500 dark:text-zinc-400">
-                GitHub
-              </a>
-            )}
-            {project.link && (
-              <a
-                href={project.link}
-                target={project.link.startsWith("/") ? undefined : "_blank"}
-                rel={project.link.startsWith("/") ? undefined : "noopener"}
-                class="text-zinc-500 dark:text-zinc-400"
-              >
-                Link
-              </a>
             )}
           </div>
+          <div class="space-y-1 text-sm">
+            <div>{project.title}</div>
+            <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed">{project.description}</p>
+            <div class="project-links flex flex-row flex-wrap gap-x-4 gap-y-0 pt-1">
+              {project.github && (
+                <a href={project.github} target="_blank" rel="noopener" class="text-zinc-500 dark:text-zinc-400">
+                  GitHub
+                </a>
+              )}
+              {project.reportLink && (
+                <a
+                  href={project.reportLink}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-zinc-500 dark:text-zinc-400"
+                >
+                  Report
+                </a>
+              )}
+              {project.link && (
+                <a
+                  href={project.link}
+                  target={project.link.startsWith("/") ? undefined : "_blank"}
+                  rel={project.link.startsWith("/") ? undefined : "noopener"}
+                  class="text-zinc-500 dark:text-zinc-400"
+                >
+                  Link
+                </a>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    ))}
+      ))}
     </div>
   </main>
-</Layout>
 
-<script>
-  const lazyVideos = document.querySelectorAll(".lazy-video");
-  const videoObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const video = entry.target;
-          if (video instanceof HTMLVideoElement) {
-            const src = video.getAttribute("data-src");
-            if (src && !video.src) {
-              video.src = src;
-              video.autoplay = true;
-              video.load();
-              videoObserver.unobserve(video);
+  <style>
+    .project-tab {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 9999px;
+      border: 1px solid rgb(228 228 231);
+      color: rgb(63 63 70);
+      transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        color 150ms ease;
+    }
+
+    html.dark .project-tab {
+      border-color: rgb(63 63 70);
+      color: rgb(212 212 216);
+    }
+
+    .project-tab:hover {
+      border-color: rgb(161 161 170);
+      color: rgb(24 24 27);
+    }
+
+    html.dark .project-tab:hover {
+      border-color: rgb(113 113 122);
+      color: rgb(244 244 245);
+    }
+
+    .project-tab.is-active {
+      background: rgb(24 24 27);
+      border-color: rgb(24 24 27);
+      color: #fff;
+    }
+
+    html.dark .project-tab.is-active {
+      background: rgb(244 244 245);
+      border-color: rgb(244 244 245);
+      color: rgb(24 24 27);
+    }
+
+  </style>
+
+  <script is:inline>
+    (() => {
+      const tabs = Array.from(document.querySelectorAll(".project-tab"));
+      const cards = Array.from(document.querySelectorAll(".project-item"));
+
+      const imgEls = Array.from(document.querySelectorAll(".project-item img"));
+      const placeholder =
+        "data:image/svg+xml;charset=utf-8," +
+        encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#f4f4f5"/>
+                <stop offset="1" stop-color="#e4e4e7"/>
+              </linearGradient>
+            </defs>
+            <rect width="1200" height="800" fill="url(#g)"/>
+            <rect x="60" y="60" width="1080" height="680" rx="28" fill="rgba(0,0,0,0.04)"/>
+            <text x="100" y="160" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="42" fill="rgba(0,0,0,0.35)">
+              Preview unavailable
+            </text>
+          </svg>
+        `);
+
+      imgEls.forEach((img) => {
+        img.addEventListener(
+          "error",
+          () => {
+            if (img.dataset.fallbackApplied) return;
+            img.dataset.fallbackApplied = "1";
+            img.src = placeholder;
+            img.style.opacity = "0.92";
+          },
+          { once: false },
+        );
+      });
+
+      const setActive = (name) => {
+        tabs.forEach((tab) => {
+          tab.classList.toggle("is-active", tab.dataset.tab === name);
+        });
+
+        cards.forEach((card) => {
+          const show = name === "all" || card.dataset.type === name;
+          card.style.display = show ? "block" : "none";
+        });
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => setActive(tab.dataset.tab));
+      });
+
+      setActive("engineering");
+
+      const lazyVideos = document.querySelectorAll(".lazy-video");
+      const videoObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const video = entry.target;
+              if (video instanceof HTMLVideoElement) {
+                const src = video.getAttribute("data-src");
+                if (src && !video.src) {
+                  video.src = src;
+                  video.autoplay = true;
+                  video.load();
+                  videoObserver.unobserve(video);
+                }
+              }
             }
-          }
+          });
+        },
+        { rootMargin: "200px 0px", threshold: 0 },
+      );
+
+      lazyVideos.forEach((video) => {
+        if (video.classList.contains("lazy-video")) {
+          videoObserver.observe(video);
         }
       });
-    },
-    { rootMargin: "200px 0px", threshold: 0 }
-  );
-  lazyVideos.forEach((video) => {
-    if (video.classList.contains("lazy-video")) {
-      videoObserver.observe(video);
-    }
-  });
-</script>
+    })();
+  </script>
+</Layout>
