@@ -1,0 +1,734 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const markTypes = [
+  { label: "Highlight", value: "highlight" },
+  { label: "Underline", value: "underline" },
+  { label: "Overline", value: "overline" },
+  { label: "Strike", value: "strike" },
+];
+
+const swatches = [
+  { label: "Sun", value: "255, 205, 77" },
+  { label: "Lime", value: "145, 214, 91" },
+  { label: "Sky", value: "91, 187, 255" },
+  { label: "Rose", value: "255, 150, 178" },
+  { label: "Ink", value: "46, 214, 192" },
+];
+---
+
+<Layout
+  title="Farooq Q. | Highlighters"
+  description="An interactive text-highlighting demo inspired by highlighte.rs"
+  className="max-w-5xl"
+>
+  <main class="highlighters-page no-link-underline">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Inspired by highlighte.rs</p>
+        <h1>Text that stays readable while the ink sits on top.</h1>
+        <p class="lede">
+          A small demo of marker-style highlights with live controls for mark
+          type, color, opacity, and overlap behavior. The text stays selectable
+          and searchable, while the ink changes shape above it.
+        </p>
+      </div>
+
+      <div class="hero-meta">
+        <div class="meta-card">
+          <span class="meta-label">Mark types</span>
+          <strong>4</strong>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Selectable text</span>
+          <strong>Yes</strong>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Blend modes</span>
+          <strong>On / Off</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-shell">
+      <aside class="controls-panel" aria-label="Highlighter controls">
+        <div class="control-group">
+          <div class="control-label-row">
+            <h2>Mark type</h2>
+            <span id="mark-type-label" class="control-value">Highlight</span>
+          </div>
+          <div class="button-row" role="tablist" aria-label="Mark type">
+            {
+              markTypes.map((markType, index) => (
+                <button
+                  type="button"
+                  class={`control-pill ${index === 0 ? "is-active" : ""}`}
+                  data-mark-type={markType.value}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                >
+                  {markType.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <h2>Color</h2>
+            <span id="color-label" class="control-value">Sun</span>
+          </div>
+          <div class="swatch-row" role="listbox" aria-label="Highlight colors">
+            {
+              swatches.map((swatch, index) => (
+                <button
+                  type="button"
+                  class={`swatch ${index === 0 ? "is-active" : ""}`}
+                  data-color={swatch.value}
+                  data-color-label={swatch.label}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                  title={swatch.label}
+                  style={`--swatch-color: rgb(${swatch.value});`}
+                >
+                  <span class="sr-only">{swatch.label}</span>
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <h2>Opacity</h2>
+            <span id="opacity-label" class="control-value">72%</span>
+          </div>
+          <input
+            id="opacity-slider"
+            class="opacity-slider"
+            type="range"
+            min="35"
+            max="90"
+            value="72"
+            step="1"
+            aria-label="Highlight opacity"
+          />
+        </div>
+
+        <div class="control-group">
+          <div class="control-label-row">
+            <h2>Overlap optics</h2>
+            <span id="blend-label" class="control-value">Multiply</span>
+          </div>
+          <button
+            type="button"
+            class="blend-toggle is-active"
+            id="blend-toggle"
+            aria-pressed="true"
+          >
+            Multiply
+          </button>
+          <p class="control-note">
+            Turn blend mode off when you want flat ink; keep it on when layers
+            should darken like real translucent passes.
+          </p>
+        </div>
+      </aside>
+
+      <article
+        class="preview-panel"
+        id="highlighter-demo"
+        data-mark-type="highlight"
+      >
+        <div class="preview-head">
+          <p class="eyebrow">Preview passage</p>
+          <p class="preview-hint">
+            Try selecting this text. The marks do not trap the cursor.
+          </p>
+        </div>
+
+        <div class="passage">
+          <p>
+            The best interfaces rarely announce themselves. They hold still long
+            enough for people to trust them, then move with enough certainty
+            that the next step feels obvious. A highlighter should do the same
+            thing: sit
+            <span class="hl-mark">on top of the words</span> without swallowing them.
+          </p>
+          <p>
+            What matters is not just the color, but the way the ink starts,
+            slows, and settles. The stroke needs a little unevenness so it feels
+            drawn by a hand rather than stamped by a machine, and the text
+            beneath it should stay
+            <span class="hl-mark">readable, searchable, and easy to trust</span
+            >.
+          </p>
+          <p>
+            When two marks overlap, the darker region tells the same story a
+            real marker would. That tiny detail changes the whole feel of the
+            page, because it makes the layer feel physical instead of purely
+            decorative. In practice, the thing people remember is usually the
+            one they never had to think about:
+            <span class="hl-mark"
+              >the smallest details are what make the whole surface feel alive</span
+            >.
+          </p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <style>
+    .highlighters-page {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 0.8fr);
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .hero-copy h1 {
+      margin: 0.2rem 0 0.7rem;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      max-width: 11ch;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 50ch;
+      color: rgb(82 82 91);
+    }
+
+    html.dark .lede {
+      color: rgb(212 212 216);
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .meta-card {
+      border: 1px solid rgb(228 228 231);
+      border-radius: 1rem;
+      padding: 0.9rem;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.92),
+        rgba(244, 244, 245, 0.72)
+      );
+      box-shadow: 0 10px 30px rgba(24, 24, 27, 0.05);
+    }
+
+    html.dark .meta-card {
+      border-color: rgb(63 63 70);
+      background: linear-gradient(
+        180deg,
+        rgba(39, 39, 42, 0.88),
+        rgba(24, 24, 27, 0.88)
+      );
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .meta-label,
+    .control-label-row h2,
+    .control-value,
+    .preview-hint,
+    .eyebrow {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meta-card strong {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .demo-shell {
+      display: grid;
+      grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .controls-panel,
+    .preview-panel {
+      border: 1px solid rgb(228 228 231);
+      border-radius: 1.25rem;
+      background: rgba(250, 250, 250, 0.86);
+      box-shadow: 0 20px 50px rgba(24, 24, 27, 0.06);
+      backdrop-filter: blur(16px);
+    }
+
+    html.dark .controls-panel,
+    html.dark .preview-panel {
+      border-color: rgb(63 63 70);
+      background: rgba(24, 24, 27, 0.82);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .controls-panel {
+      position: sticky;
+      top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      padding: 1rem;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .control-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .control-label-row h2 {
+      margin: 0;
+      color: rgb(113 113 122);
+      font-weight: 600;
+    }
+
+    html.dark .control-label-row h2 {
+      color: rgb(161 161 170);
+    }
+
+    .control-value {
+      color: rgb(82 82 91);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    html.dark .control-value {
+      color: rgb(212 212 216);
+    }
+
+    .button-row,
+    .swatch-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .control-pill,
+    .swatch,
+    .blend-toggle {
+      border: 1px solid rgb(228 228 231);
+      border-radius: 9999px;
+      background: white;
+      color: rgb(63 63 70);
+      transition:
+        transform 160ms ease-out,
+        border-color 160ms ease-out,
+        background-color 160ms ease-out,
+        color 160ms ease-out,
+        box-shadow 160ms ease-out;
+    }
+
+    html.dark .control-pill,
+    html.dark .swatch,
+    html.dark .blend-toggle {
+      border-color: rgb(63 63 70);
+      background: rgb(39 39 42);
+      color: rgb(228 228 231);
+    }
+
+    .control-pill {
+      padding: 0.55rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .swatch {
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+    }
+
+    .swatch::before {
+      content: "";
+      position: absolute;
+      inset: 0.28rem;
+      border-radius: 9999px;
+      background: var(--swatch-color);
+    }
+
+    .control-pill:hover,
+    .swatch:hover,
+    .blend-toggle:hover {
+      border-color: rgb(161 161 170);
+      color: rgb(24 24 27);
+      box-shadow: 0 6px 16px rgba(24, 24, 27, 0.08);
+    }
+
+    html.dark .control-pill:hover,
+    html.dark .swatch:hover,
+    html.dark .blend-toggle:hover {
+      border-color: rgb(113 113 122);
+      color: rgb(244 244 245);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .control-pill:active,
+    .swatch:active,
+    .blend-toggle:active {
+      transform: scale(0.97);
+    }
+
+    .control-pill.is-active,
+    .swatch.is-active,
+    .blend-toggle.is-active {
+      background: rgb(24 24 27);
+      border-color: rgb(24 24 27);
+      color: white;
+    }
+
+    html.dark .control-pill.is-active,
+    html.dark .swatch.is-active,
+    html.dark .blend-toggle.is-active {
+      background: rgb(244 244 245);
+      border-color: rgb(244 244 245);
+      color: rgb(24 24 27);
+    }
+
+    .blend-toggle {
+      width: fit-content;
+      padding: 0.55rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .opacity-slider {
+      width: 100%;
+      accent-color: rgb(var(--hl-color-rgb));
+    }
+
+    .control-note {
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: rgb(113 113 122);
+    }
+
+    html.dark .control-note {
+      color: rgb(161 161 170);
+    }
+
+    .preview-panel {
+      padding: 1.25rem;
+      min-height: 100%;
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(255, 205, 77, 0.18),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at top right,
+          rgba(91, 187, 255, 0.12),
+          transparent 28%
+        ),
+        rgba(250, 250, 250, 0.86);
+    }
+
+    html.dark .preview-panel {
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(255, 205, 77, 0.14),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at top right,
+          rgba(91, 187, 255, 0.1),
+          transparent 28%
+        ),
+        rgba(24, 24, 27, 0.82);
+    }
+
+    .preview-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .preview-hint {
+      margin: 0;
+      color: rgb(113 113 122);
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 0.8rem;
+    }
+
+    html.dark .preview-hint {
+      color: rgb(161 161 170);
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: rgb(113 113 122);
+    }
+
+    html.dark .eyebrow {
+      color: rgb(161 161 170);
+    }
+
+    .passage {
+      font-size: clamp(1.03rem, 1.1vw + 0.9rem, 1.2rem);
+      line-height: 1.8;
+      color: rgb(24 24 27);
+    }
+
+    html.dark .passage {
+      color: rgb(244 244 245);
+    }
+
+    .passage p {
+      margin: 0 0 1rem;
+    }
+
+    .hl-mark {
+      position: relative;
+      z-index: 0;
+      display: inline;
+      padding: 0 0.06em;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      isolation: isolate;
+      transition:
+        color 160ms ease-out,
+        text-shadow 160ms ease-out,
+        background-color 160ms ease-out;
+    }
+
+    .hl-mark::before {
+      content: "";
+      position: absolute;
+      inset: 0.28em -0.03em 0.12em;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        rgba(var(--hl-color-rgb), 0.12) 0%,
+        rgba(var(--hl-color-rgb), 0.98) 18%,
+        rgba(var(--hl-color-rgb), 0.98) 82%,
+        rgba(var(--hl-color-rgb), 0.12) 100%
+      );
+      opacity: var(--hl-opacity);
+      mix-blend-mode: var(--hl-blend-mode);
+      transform: rotate(-0.7deg);
+      filter: saturate(1.1);
+      z-index: -1;
+      transition:
+        opacity 160ms ease-out,
+        transform 160ms ease-out,
+        inset 160ms ease-out,
+        background-color 160ms ease-out;
+    }
+
+    .hl-mark::after {
+      content: "";
+      position: absolute;
+      inset: auto -0.01em 0.16em;
+      height: 0.06em;
+      border-radius: 999px;
+      background: rgba(var(--hl-color-rgb), 0.3);
+      opacity: var(--hl-opacity);
+      mix-blend-mode: var(--hl-blend-mode);
+      z-index: -1;
+      transition:
+        opacity 160ms ease-out,
+        inset 160ms ease-out;
+    }
+
+    #highlighter-demo[data-mark-type="underline"] .hl-mark::before {
+      inset: auto -0.02em 0.12em;
+      height: 0.14em;
+      border-radius: 999px;
+      transform: none;
+    }
+
+    #highlighter-demo[data-mark-type="underline"] .hl-mark::after {
+      opacity: 0;
+    }
+
+    #highlighter-demo[data-mark-type="overline"] .hl-mark::before {
+      inset: 0.08em -0.02em auto;
+      height: 0.16em;
+      border-radius: 999px;
+      transform: none;
+    }
+
+    #highlighter-demo[data-mark-type="overline"] .hl-mark::after {
+      opacity: 0;
+    }
+
+    #highlighter-demo[data-mark-type="strike"] .hl-mark::before {
+      inset: 0.48em -0.03em auto;
+      height: 0.12em;
+      border-radius: 999px;
+      transform: rotate(-0.4deg);
+    }
+
+    #highlighter-demo[data-mark-type="strike"] .hl-mark::after {
+      opacity: 0;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .demo-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .controls-panel {
+        position: relative;
+        top: auto;
+      }
+
+      .hero-meta {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-panel,
+      .controls-panel {
+        border-radius: 1rem;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    (() => {
+      const demo = document.getElementById("highlighter-demo");
+      const typeButtons = Array.from(
+        document.querySelectorAll("[data-mark-type]"),
+      );
+      const swatchButtons = Array.from(
+        document.querySelectorAll("[data-color]"),
+      );
+      const opacitySlider = document.getElementById("opacity-slider");
+      const markTypeLabel = document.getElementById("mark-type-label");
+      const colorLabel = document.getElementById("color-label");
+      const opacityLabel = document.getElementById("opacity-label");
+      const blendLabel = document.getElementById("blend-label");
+      const blendToggle = document.getElementById("blend-toggle");
+
+      if (
+        !(demo instanceof HTMLElement) ||
+        !(opacitySlider instanceof HTMLInputElement)
+      ) {
+        return;
+      }
+
+      const state = {
+        markType: "highlight",
+        color: "255, 205, 77",
+        colorLabel: "Sun",
+        opacity: 0.72,
+        blendMode: "multiply",
+      };
+
+      const applyState = () => {
+        demo.dataset.markType = state.markType;
+        demo.style.setProperty("--hl-color-rgb", state.color);
+        demo.style.setProperty("--hl-opacity", String(state.opacity));
+        demo.style.setProperty("--hl-blend-mode", state.blendMode);
+        if (markTypeLabel) markTypeLabel.textContent = state.markType;
+        if (colorLabel) colorLabel.textContent = state.colorLabel;
+        if (opacityLabel)
+          opacityLabel.textContent = `${Math.round(state.opacity * 100)}%`;
+        if (blendLabel)
+          blendLabel.textContent =
+            state.blendMode === "multiply" ? "Multiply" : "Normal";
+        if (blendToggle)
+          blendToggle.classList.toggle(
+            "is-active",
+            state.blendMode === "multiply",
+          );
+        if (blendToggle)
+          blendToggle.setAttribute(
+            "aria-pressed",
+            state.blendMode === "multiply" ? "true" : "false",
+          );
+      };
+
+      typeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const nextType = button.getAttribute("data-mark-type");
+          if (!nextType) return;
+          state.markType = nextType;
+
+          typeButtons.forEach((control) => {
+            const active = control.getAttribute("data-mark-type") === nextType;
+            control.classList.toggle("is-active", active);
+            control.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+
+          applyState();
+        });
+      });
+
+      swatchButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const nextColor = button.getAttribute("data-color");
+          const nextLabel = button.getAttribute("data-color-label") || "";
+          if (!nextColor) return;
+          state.color = nextColor;
+          state.colorLabel = nextLabel;
+
+          swatchButtons.forEach((control) => {
+            const active = control.getAttribute("data-color") === nextColor;
+            control.classList.toggle("is-active", active);
+            control.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+
+          applyState();
+        });
+      });
+
+      opacitySlider.addEventListener("input", () => {
+        state.opacity = Number(opacitySlider.value) / 100;
+        applyState();
+      });
+
+      if (blendToggle) {
+        blendToggle.addEventListener("click", () => {
+          state.blendMode =
+            state.blendMode === "multiply" ? "normal" : "multiply";
+          applyState();
+        });
+      }
+
+      applyState();
+    })();
+  </script>
+</Layout>

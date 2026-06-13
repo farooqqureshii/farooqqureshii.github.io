@@ -3,7 +3,6 @@
 import FlashlightScript from "../components/FlashlightScript.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import HighlighterScript from "../components/HighlighterScript.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 
@@ -100,7 +99,61 @@ const {
       <Footer />
       {/* <CommandMenu /> */}
       <FlashlightScript />
-      <HighlighterScript />
+      <script>
+        import { highlightSelection } from "@highlighters/core";
+
+        document.addEventListener("DOMContentLoaded", () => {
+          highlightSelection({
+            color: "#ff6bab",
+            opacity: 0.74,
+            blendMode: "multiply",
+            glow: {
+              enabled: true,
+              intensity: 0.55,
+              spread: 7,
+            },
+            tip: {
+              type: "chisel",
+              angle: 13,
+              overshoot: 6,
+              overshootJitter: 3.2,
+              angleJitter: 3.5,
+            },
+            ink: {
+              flow: 0.84,
+              viscosity: 0.16,
+              feathering: 0.58,
+              streakiness: 0.3,
+              dryout: 0.05,
+              startEndBuildup: 0.88,
+              flowFade: 0.12,
+            },
+            paper: { absorbency: 0.82 },
+            edge: {
+              waviness: 2.2,
+              roughness: 0.58,
+              frequency: 14,
+              cap: "round",
+              radius: 13,
+            },
+            speed: {
+              enabled: true,
+              sensitivity: 0.92,
+              minDeposit: 0.24,
+              dryoutBoost: 0.9,
+              streakBoost: 0.26,
+              featherReduce: 0.78,
+              poolBoost: 0.96,
+            },
+            animation: {
+              draw: true,
+              duration: 150,
+              direction: "left-to-right",
+              easing: "linear",
+            },
+          });
+        });
+      </script>
     </div>
     <style is:global>
       @keyframes indexFadeIn {
