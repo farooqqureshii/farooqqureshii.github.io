@@ -68,17 +68,25 @@ const projects = [
   },
   {
     title: "Code Compass",
-    description: "Understand any GitHub repo and find beginner-friendly issues, fast",
+    description:
+      "Understand any GitHub repo and find beginner-friendly issues, fast",
     media: "/static/codecompass_vid.webm",
     category: "software",
     link: "https://trycodecompass.vercel.app/",
     github: "https://github.com/farooqqureshii/code-compass",
     mediaType: "video",
-    technologies: ["Next.js", "TypeScript", "Tailwind", "Groq Llama 3", "GitHub REST API"],
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind",
+      "Groq Llama 3",
+      "GitHub REST API",
+    ],
   },
   {
     title: "EchoScope",
-    description: "Use AI to uncover sentiment, bias, and diversity in YouTube comments",
+    description:
+      "Use AI to uncover sentiment, bias, and diversity in YouTube comments",
     media: "/static/echoscope_vid.webm",
     category: "software",
     link: "https://echoscope.vercel.app/",
@@ -110,7 +118,7 @@ const projects = [
     category: "software",
     mediaType: "video",
     technologies: ["REST API", "Bash", "Scripting", "Python"],
-  }
+  },
 ];
 
 const categories = [
@@ -120,77 +128,91 @@ const categories = [
 ];
 ---
 
-<Layout title="Projects | Farooq Qureshi" description={SITE_DESCRIPTION}>
+<Layout title="Farooq Q. | Projects" description={SITE_DESCRIPTION}>
   <main class="no-link-underline">
     <header class="mb-10">
       <div class="mt-4 flex flex-wrap gap-2">
-        {categories.map((category) => (
-          <button type="button" class="project-tab" data-tab={category.value}>
-            {category.label}
-          </button>
-        ))}
+        {
+          categories.map((category) => (
+            <button type="button" class="project-tab" data-tab={category.value}>
+              {category.label}
+            </button>
+          ))
+        }
       </div>
     </header>
 
     <div class="flashlight-hover space-y-12">
-      {projects.map((project, index) => (
-        <div class="flashlight-item project-item space-y-3" data-type={project.category}>
-          <div class="media-section w-full overflow-visible">
-            {project.mediaType === "video" ? (
-              <video
-                src={index < 2 ? project.media : undefined}
-                data-src={index < 2 ? undefined : project.media}
-                muted
-                loop
-                playsinline
-                autoplay={index < 2}
-                preload={index < 2 ? "metadata" : "none"}
-                class={`w-full aspect-[4/3] object-cover max-h-80 bg-zinc-100 ${index < 2 ? "priority-video" : "lazy-video"}`}
-              >
-                Your browser does not support the video tag.
-              </video>
-            ) : (
-              <img
-                src={project.media}
-                alt={project.title}
-                loading={index < 2 ? "eager" : "lazy"}
-                class="w-full aspect-[4/3] object-cover max-h-80 bg-zinc-100"
-              />
-            )}
-          </div>
-          <div class="space-y-1 text-sm">
-            <div>{project.title}</div>
-            <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed">{project.description}</p>
-            <div class="project-links flex flex-row flex-wrap gap-x-4 gap-y-0 pt-1">
-              {project.github && (
-                <a href={project.github} target="_blank" rel="noopener" class="text-zinc-500 dark:text-zinc-400">
-                  GitHub
-                </a>
-              )}
-              {project.reportLink && (
-                <a
-                  href={project.reportLink}
-                  target="_blank"
-                  rel="noopener"
-                  class="text-zinc-500 dark:text-zinc-400"
+      {
+        projects.map((project, index) => (
+          <div
+            class="flashlight-item project-item space-y-3"
+            data-type={project.category}
+          >
+            <div class="media-section w-full overflow-visible">
+              {project.mediaType === "video" ? (
+                <video
+                  src={index < 2 ? project.media : undefined}
+                  data-src={index < 2 ? undefined : project.media}
+                  muted
+                  loop
+                  playsinline
+                  autoplay={index < 2}
+                  preload={index < 2 ? "metadata" : "none"}
+                  class={`aspect-[4/3] max-h-80 w-full bg-zinc-100 object-cover ${index < 2 ? "priority-video" : "lazy-video"}`}
                 >
-                  Report
-                </a>
-              )}
-              {project.link && (
-                <a
-                  href={project.link}
-                  target={project.link.startsWith("/") ? undefined : "_blank"}
-                  rel={project.link.startsWith("/") ? undefined : "noopener"}
-                  class="text-zinc-500 dark:text-zinc-400"
-                >
-                  Link
-                </a>
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <img
+                  src={project.media}
+                  alt={project.title}
+                  loading={index < 2 ? "eager" : "lazy"}
+                  class="aspect-[4/3] max-h-80 w-full bg-zinc-100 object-cover"
+                />
               )}
             </div>
+            <div class="space-y-1 text-sm">
+              <div>{project.title}</div>
+              <p class="leading-relaxed text-zinc-500 dark:text-zinc-400">
+                {project.description}
+              </p>
+              <div class="project-links flex flex-row flex-wrap gap-x-4 gap-y-0 pt-1">
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener"
+                    class="text-zinc-500 dark:text-zinc-400"
+                  >
+                    GitHub
+                  </a>
+                )}
+                {project.reportLink && (
+                  <a
+                    href={project.reportLink}
+                    target="_blank"
+                    rel="noopener"
+                    class="text-zinc-500 dark:text-zinc-400"
+                  >
+                    Report
+                  </a>
+                )}
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target={project.link.startsWith("/") ? undefined : "_blank"}
+                    rel={project.link.startsWith("/") ? undefined : "noopener"}
+                    class="text-zinc-500 dark:text-zinc-400"
+                  >
+                    Link
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </main>
 
@@ -233,7 +255,6 @@ const categories = [
       border-color: rgb(244 244 245);
       color: rgb(24 24 27);
     }
-
   </style>
 
   <script is:inline>

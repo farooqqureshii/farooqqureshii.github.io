@@ -5,96 +5,96 @@ import Layout from "../../layouts/Layout.astro";
 const images = [
   {
     src: "https://i.postimg.cc/FsH2bVvz/Jeff-Wall-A-Sudden-Gust-of-Wind-after-Hokusai-1993.jpg",
-    alt: "A sudden Gust of Wind (after Hokusai), Jeff Wall, 1993"
+    alt: "A sudden Gust of Wind (after Hokusai), Jeff Wall, 1993",
   },
   {
     src: "https://i.postimg.cc/RhXNnLBK/chi.jpg",
-    alt: "Grant Park (2009)"
+    alt: "Grant Park (2009)",
   },
   {
     src: "https://i.postimg.cc/TwQRk24X/61-EL0a-PYY4-L.jpg",
-    alt: ""
+    alt: "",
   },
   {
     src: "https://i.postimg.cc/y8xvXw8x/9m0di0m3taua1.jpg",
-    alt: ""
+    alt: "",
   },
   {
     src: "https://i.postimg.cc/sDGrWJsz/paris.jpg",
-    alt: "Paris (2016)"
+    alt: "Paris (2016)",
   },
   {
     src: "https://i.postimg.cc/13p1C58Y/power.jpg",
-    alt: "The Met (2014)"
+    alt: "The Met (2014)",
   },
   {
     src: "https://i.postimg.cc/g0mFfFRc/church.png",
-    alt: "Sydney (2008)"
+    alt: "Sydney (2008)",
   },
   {
     src: "https://i.postimg.cc/J0y9b1wx/bike.jpg",
-    alt: "Buenos Aires (2009)"
+    alt: "Buenos Aires (2009)",
   },
   {
     src: "https://i.postimg.cc/9MkkXv47/PIA00563-Viking1-First-Color-Image-19760721.jpg",
-    alt: "First colour image from Viking Lander 1, 1976"
+    alt: "First colour image from Viking Lander 1, 1976",
   },
   {
     src: "https://i.postimg.cc/fTYMFvFK/Times-Most-Influental-Images-20.jpg",
-    alt: "Dalí Atomicus, 1948"
+    alt: "Dalí Atomicus, 1948",
   },
   {
     src: "https://i.postimg.cc/50HVm5L8/Times-Most-Influental-Images-26-23.jpg",
-    alt: "Milk Drop Coronet, 1957"
+    alt: "Milk Drop Coronet, 1957",
   },
   {
     src: "https://i.postimg.cc/nLjRR3SV/tumblr-m4j9qyu-Dn-Y1qcl8ymo1-r1-1280.jpg",
-    alt: "Gilbert Garcin, Work In Progress, 1999"
+    alt: "Gilbert Garcin, Work In Progress, 1999",
   },
   {
     src: "https://i.postimg.cc/W3cn9TJS/FKl8lz-HXs-As-OHFx.jpg",
-    alt: "Jan Saudek, Train Passing"
+    alt: "Jan Saudek, Train Passing",
   },
   {
     src: "https://i.postimg.cc/VsGtvzLT/jmu4fst8yrjc1.jpg",
-    alt: "The Last Photo of the Barbary Lion, Marcel Flandrin, 1925"
+    alt: "The Last Photo of the Barbary Lion, Marcel Flandrin, 1925",
   },
   {
     src: "https://i.postimg.cc/zGn3CN8q/Yibin-II-Counting-Receipts-Sichuan-Province-2007.jpg",
-    alt: "Yibin II (Counting Receipts), Sichuan Province, 2007, Nadav Kander"
+    alt: "Yibin II (Counting Receipts), Sichuan Province, 2007, Nadav Kander",
   },
   {
     src: "https://i.postimg.cc/htqtPYx6/fan-ho-approaching-shadow-1024x768.webp",
-    alt: "Fan Ho, Approaching Shadow"
+    alt: "Fan Ho, Approaching Shadow",
   },
   {
     src: "https://i.postimg.cc/CKhrGb9J/RA-08-0709.webp",
-    alt: "Longmont, Colorado, ca. 1980, Robert Adams"
+    alt: "Longmont, Colorado, ca. 1980, Robert Adams",
   },
   {
     src: "https://i.postimg.cc/TP1q20z8/par65507-overlay.jpg",
-    alt: "Josef Koudelka, Exiles, 1987 (France)"
+    alt: "Josef Koudelka, Exiles, 1987 (France)",
   },
   {
     src: "https://i.postimg.cc/VLztL4t7/STILL-LIFE1.jpg",
-    alt: "Don McCullin, Still Life, England 1979"
+    alt: "Don McCullin, Still Life, England 1979",
   },
   {
     src: "https://i.postimg.cc/Rhfrmwkf/01.jpg",
-    alt: "Push, Pete Turner, 1970"
+    alt: "Push, Pete Turner, 1970",
   },
   {
-    src: "https://i.postimg.cc/KvywL3S3/91-102-2-cropped.jpg", 
-    alt: "Paul Strand, Wall Street, New York, 1915"
-  }, 
-  { 
-    src: "https://i.postimg.cc/6pHGnZPm/image.png", 
-    alt: "Newspaper boys, Frans Stoppelman, 1976"
-  }, 
+    src: "https://i.postimg.cc/KvywL3S3/91-102-2-cropped.jpg",
+    alt: "Paul Strand, Wall Street, New York, 1915",
+  },
+  {
+    src: "https://i.postimg.cc/6pHGnZPm/image.png",
+    alt: "Newspaper boys, Frans Stoppelman, 1976",
+  },
 ];
 ---
 
-<Layout title="Images | FQ" description={SITE_DESCRIPTION}>
+<Layout title="Farooq Q. | Images" description={SITE_DESCRIPTION}>
   <main>
     <div class="flex flex-col space-y-4">
       <!-- Navigation -->
@@ -106,17 +106,17 @@ const images = [
         </div>
         <span id="imageCounter">1/{images.length} </span>
       </div>
-      
+
       <!-- Image container -->
       <div class="w-full max-w-md">
-        <img 
-          id="currentImage" 
-          src={images[0].src} 
-          alt={images[0].alt} 
-          class="w-full h-auto shadow-sm" 
+        <img
+          id="currentImage"
+          src={images[0].src}
+          alt={images[0].alt}
+          class="h-auto w-full shadow-sm"
         />
       </div>
-      
+
       <!-- Description -->
       <div class="w-full max-w-md">
         <p id="imageDescription" class="text-sm">{images[0].alt}</p>
@@ -126,11 +126,11 @@ const images = [
 
   <script define:vars={{ images }}>
     let currentIndex = 0;
-    const currentImage = document.getElementById('currentImage');
-    const imageCounter = document.getElementById('imageCounter');
-    const imageDescription = document.getElementById('imageDescription');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    const currentImage = document.getElementById("currentImage");
+    const imageCounter = document.getElementById("imageCounter");
+    const imageDescription = document.getElementById("imageDescription");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
     // Preload images for instant navigation
     const imageCache = new Map();
@@ -145,14 +145,14 @@ const images = [
     // Optimized update function with minimal DOM manipulation
     function updateImage() {
       if (!currentImage || !imageCounter || !imageDescription) return;
-      
+
       const img = images[currentIndex];
       const cachedImg = imageCache.get(currentIndex);
-      
+
       // Use cached image if available, otherwise fallback to src
       currentImage.src = cachedImg?.src || img.src;
       currentImage.alt = img.alt;
-      
+
       // Batch DOM updates
       requestAnimationFrame(() => {
         imageCounter.textContent = `${currentIndex + 1}/${images.length}`;
@@ -165,31 +165,52 @@ const images = [
     function navigate(direction) {
       if (isNavigating) return;
       isNavigating = true;
-      
-      currentIndex = direction === 'prev' 
-        ? (currentIndex > 0 ? currentIndex - 1 : images.length - 1)
-        : (currentIndex < images.length - 1 ? currentIndex + 1 : 0);
-      
+
+      currentIndex =
+        direction === "prev"
+          ? currentIndex > 0
+            ? currentIndex - 1
+            : images.length - 1
+          : currentIndex < images.length - 1
+            ? currentIndex + 1
+            : 0;
+
       updateImage();
-      
+
       // Reset navigation lock after a short delay
-      setTimeout(() => { isNavigating = false; }, 100);
+      setTimeout(() => {
+        isNavigating = false;
+      }, 100);
     }
 
-    function showPrev() { navigate('prev'); }
-    function showNext() { navigate('next'); }
+    function showPrev() {
+      navigate("prev");
+    }
+    function showNext() {
+      navigate("next");
+    }
 
     // Event listeners with passive option for better performance
-    if (prevBtn) prevBtn.addEventListener('click', showPrev, { passive: true });
-    if (nextBtn) nextBtn.addEventListener('click', showNext, { passive: true });
+    if (prevBtn) prevBtn.addEventListener("click", showPrev, { passive: true });
+    if (nextBtn) nextBtn.addEventListener("click", showNext, { passive: true });
 
     // Optimized keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); showPrev(); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); showNext(); }
-    }, { passive: false });
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          showPrev();
+        }
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          showNext();
+        }
+      },
+      { passive: false },
+    );
 
     // Start preloading images immediately
     preloadImages();
   </script>
-</Layout> 
+</Layout>

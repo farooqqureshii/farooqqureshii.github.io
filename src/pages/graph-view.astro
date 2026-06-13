@@ -1,17 +1,37 @@
 ---
+
 ---
 
 <html>
   <head>
-    <title>Substack Graph View | FQ</title>
-    <meta name="description" content="Interactive graph of creator and reader relationships for the Substack case study.">
-    <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.css" />
+    <title>Farooq Q. | Substack Graph View</title>
+    <meta
+      name="description"
+      content="Interactive graph of creator and reader relationships for the Substack case study."
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/vis-network/styles/vis-network.css"
+    />
     <style>
-      html, body { height: 100%; margin: 0; padding: 0; }
-      body { background: #18181b; font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #18181b;
+        font-family: "Inter", sans-serif;
+        height: 100vh;
+        overflow: hidden;
+      }
       #graph-network {
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         width: 100vw;
         height: 100vh;
         background: #18181b;
@@ -22,7 +42,7 @@
         top: 32px;
         left: 32px;
         z-index: 10;
-        background: rgba(24,24,27,0.85);
+        background: rgba(24, 24, 27, 0.85);
         color: #a5b4fc;
         border: none;
         font-size: 1.1rem;
@@ -30,7 +50,9 @@
         padding: 10px 18px;
         border-radius: 8px;
         text-decoration: none;
-        transition: background 0.2s, color 0.2s;
+        transition:
+          background 0.2s,
+          color 0.2s;
         box-shadow: 0 2px 8px #0005;
       }
       .back-btn:hover {
@@ -68,36 +90,106 @@
     <div id="graph-network"></div>
     <div id="tooltip"></div>
     <script type="module">
-      document.addEventListener('DOMContentLoaded', async function () {
-        const vis = await import('vis-network');
+      document.addEventListener("DOMContentLoaded", async function () {
+        const vis = await import("vis-network");
         const nodes = [
-          { id: 1, label: 'Central', color: { background: '#6366f1', border: '#818cf8', highlight: { background: '#818cf8', border: '#fff' } }, font: { color: '#fff', size: 28, face: 'Inter' }, size: 50 },
-          { id: 2, label: 'PL', color: '#22c55e', font: { color: '#fff' }, size: 36 },
-          { id: 3, label: 'AJ', color: '#22c55e', font: { color: '#fff' }, size: 36 },
-          { id: 4, label: 'BO', color: '#22c55e', font: { color: '#fff' }, size: 36 },
-          { id: 5, label: 'WJ', color: '#22c55e', font: { color: '#fff' }, size: 36 },
-          { id: 6, label: 'Writing with M.', color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
-          { id: 7, label: 'Design with Roe', color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
-          { id: 8, label: "Erick's Newsletter", color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
-          { id: 9, label: "Amy's Substack", color: '#a5b4fc', font: { color: '#18181b' }, size: 28 },
+          {
+            id: 1,
+            label: "Central",
+            color: {
+              background: "#6366f1",
+              border: "#818cf8",
+              highlight: { background: "#818cf8", border: "#fff" },
+            },
+            font: { color: "#fff", size: 28, face: "Inter" },
+            size: 50,
+          },
+          {
+            id: 2,
+            label: "PL",
+            color: "#22c55e",
+            font: { color: "#fff" },
+            size: 36,
+          },
+          {
+            id: 3,
+            label: "AJ",
+            color: "#22c55e",
+            font: { color: "#fff" },
+            size: 36,
+          },
+          {
+            id: 4,
+            label: "BO",
+            color: "#22c55e",
+            font: { color: "#fff" },
+            size: 36,
+          },
+          {
+            id: 5,
+            label: "WJ",
+            color: "#22c55e",
+            font: { color: "#fff" },
+            size: 36,
+          },
+          {
+            id: 6,
+            label: "Writing with M.",
+            color: "#a5b4fc",
+            font: { color: "#18181b" },
+            size: 28,
+          },
+          {
+            id: 7,
+            label: "Design with Roe",
+            color: "#a5b4fc",
+            font: { color: "#18181b" },
+            size: 28,
+          },
+          {
+            id: 8,
+            label: "Erick's Newsletter",
+            color: "#a5b4fc",
+            font: { color: "#18181b" },
+            size: 28,
+          },
+          {
+            id: 9,
+            label: "Amy's Substack",
+            color: "#a5b4fc",
+            font: { color: "#18181b" },
+            size: 28,
+          },
         ];
         const edges = [
-          { from: 1, to: 2 }, { from: 1, to: 3 }, { from: 1, to: 4 }, { from: 1, to: 5 },
-          { from: 2, to: 6 }, { from: 2, to: 1 }, { from: 3, to: 7 }, { from: 4, to: 9 },
-          { from: 5, to: 8 }, { from: 6, to: 2 }, { from: 7, to: 3 }, { from: 8, to: 5 },
+          { from: 1, to: 2 },
+          { from: 1, to: 3 },
+          { from: 1, to: 4 },
+          { from: 1, to: 5 },
+          { from: 2, to: 6 },
+          { from: 2, to: 1 },
+          { from: 3, to: 7 },
+          { from: 4, to: 9 },
+          { from: 5, to: 8 },
+          { from: 6, to: 2 },
+          { from: 7, to: 3 },
+          { from: 8, to: 5 },
           { from: 9, to: 4 },
         ];
-        const container = document.getElementById('graph-network');
-        const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+        const container = document.getElementById("graph-network");
+        const data = {
+          nodes: new vis.DataSet(nodes),
+          edges: new vis.DataSet(edges),
+        };
         const options = {
           nodes: {
-            shape: 'dot',
+            shape: "dot",
             borderWidth: 2,
             shadow: true,
           },
           edges: {
             width: 2,
-            color: { color: '#a1a1aa', highlight: '#818cf8' },
+            color: { color: "#a1a1aa", highlight: "#818cf8" },
             smooth: true,
             shadow: true,
           },
@@ -119,4 +211,4 @@
       });
     </script>
   </body>
-</html> 
+</html>

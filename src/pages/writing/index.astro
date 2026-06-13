@@ -9,14 +9,16 @@ const sortedPosts = posts
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="Writing | Farooq Qureshi" description={SITE_DESCRIPTION}>
+<Layout title="Farooq Q. | Writing" description={SITE_DESCRIPTION}>
   <main class="no-link-underline">
     <div class="flashlight-hover space-y-2 text-sm">
-      {sortedPosts.map((post) => (
-        <div class="flashlight-item flex items-baseline gap-2">
-          <a href={`/writing/${post.slug}`}>{post.data.title}</a>
-        </div>
-      ))}
+      {
+        sortedPosts.map((post) => (
+          <div class="flashlight-item flex items-baseline gap-2">
+            <a href={`/writing/${post.slug}`}>{post.data.title}</a>
+          </div>
+        ))
+      }
     </div>
   </main>
 </Layout>

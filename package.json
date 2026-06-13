@@ -22,6 +22,7 @@
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.2",
     "@astrojs/vercel": "^8.2.0",
+    "@highlighters/core": "^1.2.0",
     "astro": "^5.10.1",
     "dotenv": "^16.5.0",
     "framer-motion": "^12.36.0",

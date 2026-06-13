@@ -3,6 +3,7 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 // import CommandMenu from "../components/CommandMenu.astro";
 import FlashlightScript from "../components/FlashlightScript.astro";
+import HighlighterScript from "../components/HighlighterScript.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 
@@ -88,20 +89,21 @@ const {
   <body
     class="bg-white text-[#111111] antialiased dark:bg-[#1a1a1a] dark:text-[#e4e4e7]"
   >
-    <div class={cn("max-w-[600px] mx-auto px-6 py-12 sm:px-8", className)}>
+    <div
+      class={cn(
+        "page-enter max-w-[600px] mx-auto px-6 py-12 sm:px-8",
+        className,
+      )}
+    >
       <Header />
       <slot />
       <Footer />
       {/* <CommandMenu /> */}
       <FlashlightScript />
+      <HighlighterScript />
     </div>
     {/* Load after content so it overrides per-post footnote styles */}
     <style is:global>
-      article sup a::after {
-        background: none !important;
-        height: 0 !important;
-        min-height: 0 !important;
-      }
       .footnote-back svg {
         stroke: rgb(113 113 122) !important;
       }

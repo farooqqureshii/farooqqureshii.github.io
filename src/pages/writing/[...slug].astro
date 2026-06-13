@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { formatLongDate, getWordCount, getReadingTime } from "../../lib/utils";
+import { formatLongDate, getReadingTime, getWordCount } from "../../lib/utils";
 
 export const prerender = true;
 
@@ -20,7 +20,9 @@ if (!post) {
 }
 
 if (!post.data) {
-  throw new Error(`Post data is undefined for slug: ${Astro.params.slug}. Post object: ${JSON.stringify(post, null, 2)}`);
+  throw new Error(
+    `Post data is undefined for slug: ${Astro.params.slug}. Post object: ${JSON.stringify(post, null, 2)}`,
+  );
 }
 
 const { title, date, description } = post.data;
@@ -31,26 +33,34 @@ const wordCount = getWordCount(rawContent);
 const readingTime = getReadingTime(wordCount);
 
 const allPosts = await getCollection("writing");
-const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
 const currentIndex = sortedPosts.findIndex((p) => p.slug === post.slug);
 const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 ---
 
-<Layout title={`${title} | Farooq Qureshi`} description={description}>
+<Layout title={`Farooq Q. | ${title}`} description={description}>
   <main>
-    <p class="text-sm font-medium mb-1">{title}</p>
-    <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+    <p class="mb-1 text-sm font-medium">{title}</p>
+    <p class="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
       {formatLongDate(date)} · {readingTime} min read
     </p>
     <article class="text-sm leading-relaxed [&_p]:my-4">
       <Content />
     </article>
 
-    <div class="no-link-underline mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700 flex justify-between items-center text-sm text-zinc-500 dark:text-zinc-400">
+    <div
+      class="no-link-underline mt-12 flex items-center justify-between border-t border-zinc-200 pt-8 text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+    >
       <a href="/writing">← All Writing</a>
-      {nextPost && (
-        <a href={`/writing/${nextPost.slug}`}>Next: {nextPost.data.title} →</a>
-      )}
+      {
+        nextPost && (
+          <a href={`/writing/${nextPost.slug}`}>
+            Next: {nextPost.data.title} →
+          </a>
+        )
+      }
     </div>
   </main>
 </Layout>

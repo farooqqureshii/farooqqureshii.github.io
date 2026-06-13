@@ -3,6 +3,7 @@
 import FlashlightScript from "../components/FlashlightScript.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import HighlighterScript from "../components/HighlighterScript.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 
@@ -99,11 +100,16 @@ const {
       <Footer />
       {/* <CommandMenu /> */}
       <FlashlightScript />
+      <HighlighterScript />
     </div>
     <style is:global>
       @keyframes indexFadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
       /* Fade-in for navbar (header) and footer without vertical movement */
       body > div.index-page > header,

@@ -3,18 +3,17 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --highlight-bg: #fde68a; /* amber-200 */
-    --highlight-fg: #111827; /* gray-900 */
-  }
-
-  html.dark {
-    --highlight-bg: #78350f; /* amber-900 */
-    --highlight-fg: #fffbeb; /* amber-50 */
+  ::selection {
+    background: transparent;
+    color: inherit;
   }
 
   html {
     font-size: 15px;
+  }
+
+  ::selection {
+    background: transparent;
   }
 
   /* Smooth theme transitions (only when toggling) */
@@ -75,53 +74,39 @@
   /* Links - soft underline (cmdk style) with grow-on-hover */
   a {
     color: inherit;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  a:hover {
+    text-decoration-color: #737373;
+  }
+  /* Article links: underline always visible for readability */
+  article a {
+    text-decoration-color: #d4d4d4;
+  }
+  article a:hover {
+    text-decoration-color: #737373;
+  }
+  html.dark a:hover {
+    text-decoration-color: #a1a1aa;
+  }
+  html.dark article a {
+    text-decoration-color: #3f3f46;
+  }
+  html.dark article a:hover {
+    text-decoration-color: #a1a1aa;
+  }
+  .no-link-underline a {
     text-decoration: none;
-    position: relative;
   }
-  a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 1px;
-    background-color: #d4d4d4;
-    border-radius: 1px;
-    transform-origin: left;
-    transform: scaleX(0);
-    transition:
-      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-      background-color 0.2s ease;
-  }
-  a:hover::after {
-    transform: scaleX(1);
-    background-color: #737373;
-  }
-  /* Article links: keep underline visible for readability */
-  article a::after {
-    transform: scaleX(1);
-  }
-  article a:hover::after {
-    background-color: #737373;
-  }
-  html.dark a::after {
-    background-color: #3f3f46;
-  }
-  html.dark a:hover::after {
-    background-color: #a1a1aa;
-  }
-  html.dark article a::after {
-    background-color: #3f3f46;
-  }
-  html.dark article a:hover::after {
-    background-color: #a1a1aa;
-  }
-  .no-link-underline a::after {
-    display: none !important;
-  }
-  .no-link-underline .project-links a::after {
-    display: block !important;
-    transform: scaleX(1);
+  .no-link-underline .project-links a {
+    text-decoration: underline;
+    text-decoration-color: #d4d4d4;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
   }
 
   /* Main page: keep links full-width (flashlight handles hover) */
@@ -151,8 +136,8 @@
   .flashlight-item.pinned .media-section img {
     transform: translateY(-2px);
   }
-  header a::after {
-    display: none;
+  header a {
+    text-decoration: none;
   }
   /* Hint to the browser to composite the header separately to reduce layout jitter */
   header {
@@ -186,15 +171,6 @@
   }
   html.dark hr {
     border-top-color: #27272a;
-  }
-
-  ::selection {
-    background: var(--highlight-bg);
-    color: var(--highlight-fg);
-  }
-  html.dark ::selection {
-    background: var(--highlight-bg);
-    color: var(--highlight-fg);
   }
 }
 
@@ -322,17 +298,9 @@
     color: inherit;
     text-decoration: none;
   }
-  article .footnotes a::after,
-  .footnotes a::after {
-    display: none;
-  }
   article .footnotes a:hover,
   .footnotes a:hover {
     text-decoration: underline;
-  }
-  article .footnotes a:hover::after,
-  .footnotes a:hover::after {
-    display: none;
   }
   article sup a,
   sup a {
@@ -400,17 +368,29 @@ html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   opacity: 1 !important;
 }
 
-/* No underlines on footnote refs [1] (#fn1), back links (#fnref1), footnote section - outside layer to override article link styles */
-a[href^="#fn"]::after,
-.footnote-back::after,
-.footnotes a::after {
-  display: none !important;
+/* Footnote refs and back-links: no underline */
+a[href^="#fn"],
+.footnote-back,
+.footnotes a {
+  text-decoration: none !important;
 }
-/* Footnote ref [1] - remove underline but keep bracket (md adds content via ::after) */
-article sup a::after {
-  background: none !important;
-  height: 0 !important;
-  min-height: 0 !important;
+
+/* Page entrance animation (all non-index pages) */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes pageIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .page-enter {
+    animation: pageIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 }
 
 /* Shared styles for flowing gradient on hover */
@@ -426,7 +406,14 @@ article sup a::after {
   top: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg,#ff6b6b 0%,#f8e71c 22%,#7bed9f 44%,#4facfe 66%,#a29bfe 88%);
+  background: linear-gradient(
+    90deg,
+    #ff6b6b 0%,
+    #f8e71c 22%,
+    #7bed9f 44%,
+    #4facfe 66%,
+    #a29bfe 88%
+  );
   background-size: 400% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -437,12 +424,26 @@ article sup a::after {
   will-change: opacity, background-position;
   white-space: nowrap;
 }
-.flow-gradient::before { animation: flow 12s linear infinite; }
-.flow-gradient:hover::before { opacity: 1; }
-@keyframes flow { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+.flow-gradient::before {
+  animation: flow 12s linear infinite;
+}
+.flow-gradient:hover::before {
+  opacity: 1;
+}
+@keyframes flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
 
 /* Shared marquee wrapper styles (used inline in some pages) */
-.thank-wrap { position: relative; display: inline-block; }
+.thank-wrap {
+  position: relative;
+  display: inline-block;
+}
 .thank-wrap .marquee {
   position: absolute;
   left: 50%;
@@ -456,7 +457,14 @@ article sup a::after {
   justify-content: center;
   pointer-events: none;
   opacity: 0;
-  transition: opacity .22s ease, transform .22s ease;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
 }
-.thank-wrap:hover .marquee { opacity: 1; transform: translateX(-50%) translateY(0); }
-.marquee-svg { display: block; }
+.thank-wrap:hover .marquee {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.marquee-svg {
+  display: block;
+}

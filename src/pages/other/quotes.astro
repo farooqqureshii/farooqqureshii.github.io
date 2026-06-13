@@ -1,17 +1,19 @@
 ---
-import Layout from "../../layouts/Layout.astro";
 import { quotes } from "../../data/quotes";
+import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="Quotes | FQ" description="Quotes I find meaningful">
+<Layout title="Farooq Q. | Quotes" description="Quotes I find meaningful">
   <main>
     <div class="flashlight-hover quotes-container">
-      {quotes.map((quote) => (
-        <blockquote class="flashlight-item quote-item">
-          <p class="quote-text">"{quote.text}"</p>
-          <cite class="quote-author">— {quote.author}</cite>
-        </blockquote>
-      ))}
+      {
+        quotes.map((quote) => (
+          <blockquote class="flashlight-item quote-item">
+            <p class="quote-text">"{quote.text}"</p>
+            <cite class="quote-author">— {quote.author}</cite>
+          </blockquote>
+        ))
+      }
     </div>
   </main>
 
