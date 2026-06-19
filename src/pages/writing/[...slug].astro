@@ -44,7 +44,7 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
   <main>
     <p class="mb-1 text-sm font-medium">{title}</p>
     <p class="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
-      {formatLongDate(date)} · {readingTime} min read
+      Published on {formatLongDate(date)}, {readingTime} minute read
     </p>
     <article class="text-sm leading-relaxed [&_p]:my-4">
       <Content />
