@@ -1,0 +1,172 @@
+---
+---
+
+<script>
+  class AudioSynth {
+    private ctx: AudioContext | null = null;
+    private initialized = false;
+    private activeHoverOsc: OscillatorNode | null = null;
+    private activeHoverGain: GainNode | null = null;
+    private lastClickTime = 0;
+
+    private init() {
+      if (this.initialized) return;
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioContextClass) {
+          this.ctx = new AudioContextClass();
+          this.initialized = true;
+        }
+      } catch (e) {
+        console.warn("Web Audio API is not supported in this browser:", e);
+      }
+    }
+
+    private stopActiveHover() {
+      if (this.activeHoverOsc) {
+        try {
+          // Instantly ramp down volume to avoid clicks/pops when cutting off sound
+          if (this.ctx && this.activeHoverGain) {
+            const now = this.ctx.currentTime;
+            this.activeHoverGain.gain.cancelScheduledValues(now);
+            this.activeHoverGain.gain.setValueAtTime(this.activeHoverGain.gain.value, now);
+            this.activeHoverGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.01);
+            
+            const osc = this.activeHoverOsc;
+            setTimeout(() => {
+              try { osc.stop(); } catch(err) {}
+            }, 10);
+          } else {
+            this.activeHoverOsc.stop();
+          }
+        } catch (e) {}
+        this.activeHoverOsc = null;
+      }
+      this.activeHoverGain = null;
+    }
+
+    public playHover() {
+      this.init();
+      if (!this.ctx) return;
+      if (localStorage.sound === "off") return;
+
+      // Suppress hover sounds immediately after clicks to prevent overlap in transitions
+      if (Date.now() - this.lastClickTime < 350) {
+        return;
+      }
+
+      // Ignore if audio context is suspended
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume().catch(() => {});
+        return;
+      }
+
+      // Stop any existing hover to prevent overlapping mechanical ticks
+      this.stopActiveHover();
+
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.type = "sine";
+      
+      // Extremely quick and soft high frequency sweep (pleasant mechanical click/tick sound)
+      osc.frequency.setValueAtTime(1000, now);
+      osc.frequency.exponentialRampToValueAtTime(700, now + 0.035);
+
+      gain.gain.setValueAtTime(0.006, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+      osc.start(now);
+      osc.stop(now + 0.035);
+
+      this.activeHoverOsc = osc;
+      this.activeHoverGain = gain;
+    }
+
+    public playClick() {
+      this.init();
+      if (!this.ctx) return;
+      if (localStorage.sound === "off") return;
+      
+      this.ctx.resume().catch(() => {});
+
+      // Record click time to suppress subsequent synthetic hovers during layouts/transitions
+      this.lastClickTime = Date.now();
+
+      // Cut off any active hover sound immediately on click
+      this.stopActiveHover();
+
+      const now = this.ctx.currentTime;
+
+      // Crispy double-beep boop pluck
+      // Beep 1
+      const osc1 = this.ctx.createOscillator();
+      const gain1 = this.ctx.createGain();
+      osc1.connect(gain1);
+      gain1.connect(this.ctx.destination);
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(600, now);
+      osc1.frequency.exponentialRampToValueAtTime(500, now + 0.04);
+      gain1.gain.setValueAtTime(0.012, now);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+      osc1.start(now);
+      osc1.stop(now + 0.04);
+
+      // Beep 2 (offset by 25ms)
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(780, now + 0.025);
+      osc2.frequency.exponentialRampToValueAtTime(620, now + 0.07);
+      gain2.gain.setValueAtTime(0.009, now + 0.025);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+      osc2.start(now + 0.025);
+      osc2.stop(now + 0.07);
+    }
+  }
+
+  const audioSynth = new AudioSynth();
+  const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+  function setupAudioListeners() {
+    // 1. Hover Listener (Gated to avoid mobile issues)
+    document.addEventListener("mouseover", (e) => {
+      if (!hoverQuery.matches) return;
+      
+      const targetEl = e.target as HTMLElement;
+      
+      // Do not play hover sound if hovering over the design engineering shimmer text
+      if (targetEl.closest("[data-gradient-shimmer]")) {
+        return;
+      }
+
+      const target = targetEl.closest("a, button, [role=button], .flashlight-item, #spotify-last-song-link");
+      if (!target) return;
+
+      // Prevent triggers on minor mouse movement within the same parent target
+      if (e.relatedTarget && target.contains(e.relatedTarget as Node)) {
+        return;
+      }
+
+      audioSynth.playHover();
+    });
+
+    // 2. Click Listener
+    document.addEventListener("click", (e) => {
+      const target = (e.target as HTMLElement).closest("a, button, [role=button], .flashlight-item, #spotify-last-song-link");
+      if (target) {
+        audioSynth.playClick();
+      }
+    });
+  }
+
+  // Initialize listeners on DOM load & Astro Page Transition load
+  document.addEventListener("DOMContentLoaded", setupAudioListeners);
+  document.addEventListener("astro:page-load", setupAudioListeners);
+</script>

@@ -3,6 +3,7 @@
 import FlashlightScript from "../components/FlashlightScript.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import AudioEffects from "../components/AudioEffects.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 
@@ -168,16 +169,16 @@ const {
       body > div.index-page > header,
       body > div.index-page > footer {
         opacity: 0;
-        animation: indexFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        animation: indexFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
       body > div.index-page > header {
         animation-duration: 0.55s;
-        animation-timing-function: ease-in-out;
         animation-delay: 0ms;
       }
       body > div.index-page > footer {
-        animation-delay: 620ms;
+        animation-delay: 480ms;
       }
     </style>
+    <AudioEffects />
   </body>
 </html>

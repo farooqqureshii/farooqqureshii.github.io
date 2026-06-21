@@ -1,6 +1,7 @@
 ---
 import { SITE_DESCRIPTION } from "../consts";
 import IndexLayout from "../layouts/IndexLayout.astro";
+import GradientShimmer from "../components/GradientShimmer.astro";
 ---
 
 <IndexLayout title="Farooq Q." description={SITE_DESCRIPTION}>
@@ -37,7 +38,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         <p data-stagger="4">
           In my free time, I <a href="/other/books">read</a>, <a href="/writing"
             >write</a
-          > and love design engineering.
+          > and love <GradientShimmer duration={2.2} angle={135}>design engineering</GradientShimmer>.
         </p>
         <p data-stagger="5">
           I'm currently reading <em>The Fifth Risk</em> by Michael Lewis. I last
@@ -82,29 +83,29 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       .index-content [data-stagger] {
         opacity: 0;
         transform: translateY(8px);
-        animation: indexFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        animation: indexFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
       .index-content [data-stagger="1"] {
-        animation-delay: 220ms;
+        animation-delay: 100ms;
       }
       .index-content [data-stagger="2"] {
-        animation-delay: 290ms;
+        animation-delay: 150ms;
       }
       .index-content [data-stagger="3"] {
-        animation-delay: 360ms;
+        animation-delay: 200ms;
       }
       .index-content [data-stagger="4"] {
-        animation-delay: 430ms;
+        animation-delay: 250ms;
       }
       .index-content [data-stagger="5"] {
-        animation-delay: 500ms;
+        animation-delay: 300ms;
       }
       .index-content [data-stagger="6"] {
-        animation-delay: 570ms;
+        animation-delay: 350ms;
       }
       .index-content [data-stagger="7"] {
-        animation-delay: 640ms;
+        animation-delay: 400ms;
       }
     </style>
     <script>

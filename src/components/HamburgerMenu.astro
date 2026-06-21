@@ -85,8 +85,9 @@
           <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="mo-link flashlight-item" data-s="7">GitHub</a>
           <a href="mailto:farooq.qureshi@outlook.com" class="mo-link flashlight-item" data-s="8">Email</a>
         </nav>
-        <div class="mo-actions flashlight-item" data-s="9">
-          <button id="menu-theme-toggle" class="mo-action-btn"><span id="menu-theme-label">Dark</span></button>
+        <div class="mo-actions">
+          <button id="menu-theme-toggle" class="mo-action-btn flashlight-item" data-s="9"><span id="menu-theme-label">Dark</span></button>
+          <button id="menu-sound-toggle" class="mo-action-btn flashlight-item" style="margin-top: 0.5rem;" data-s="10"><span id="menu-sound-label">Sound: On</span></button>
         </div>
       </div>
     `;
@@ -194,7 +195,7 @@
         opacity: 1;
       }
       #menu-overlay.open .mo-link,
-      #menu-overlay.open .mo-actions {
+      #menu-overlay.open .mo-action-btn {
         opacity: 1;
         transform: translateY(0);
       }
@@ -204,13 +205,13 @@
         opacity: 0;
       }
       #menu-overlay.closing .mo-link,
-      #menu-overlay.closing .mo-actions {
+      #menu-overlay.closing .mo-action-btn {
         opacity: 0;
         transform: translateY(6px);
       }
 
       #menu-overlay:not(.open):not(.closing) .mo-link,
-      #menu-overlay:not(.open):not(.closing) .mo-actions {
+      #menu-overlay:not(.open):not(.closing) .mo-action-btn {
         opacity: 0 !important;
         animation: none !important;
         transform: translateY(6px) !important;
@@ -233,27 +234,9 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0;
-        opacity: 0;
-        will-change: opacity;
       }
       /* Theme label: compositing hints to avoid sub-pixel movement/jitter on iOS
          and ensure font-weight/smoothing matches the surrounding links */
-      .mo-action-btn {
-        will-change: opacity, transform;
-        font-weight: 400;
-        color: inherit;
-        -webkit-font-smoothing: antialiased;
-      }
-      #menu-theme-label {
-        display: inline-block;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        will-change: opacity, transform;
-        font-weight: 400;
-        color: inherit;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-      }
       .mo-action-btn {
         background: transparent;
         border: none;
@@ -268,11 +251,30 @@
         display: block;
         text-align: left;
         position: relative;
+        opacity: 0;
+        will-change: opacity, transform;
+        transform: translateY(6px);
+        transition:
+          opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1),
+          transform 0.18s cubic-bezier(0.23, 1, 0.32, 1);
+        -webkit-font-smoothing: antialiased;
+      }
+      #menu-theme-label,
+      #menu-sound-label {
+        display: inline-block;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: opacity, transform;
+        font-weight: 400;
+        color: inherit;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
       }
     `;
 
     document.head.appendChild(style);
     document.body.appendChild(overlay);
+
 
     // Init flashlight effect for the menu nav
     const flashContainer = overlay.querySelector(
@@ -328,16 +330,34 @@
         : "Dark";
     }
 
+    function toggleSound() {
+      const isMuted = localStorage.sound === "off";
+      if (isMuted) {
+        localStorage.sound = "on";
+      } else {
+        localStorage.sound = "off";
+      }
+      updateSoundLabel();
+    }
+
+    function updateSoundLabel() {
+      const label = document.getElementById("menu-sound-label");
+      if (!label) return;
+      label.textContent = localStorage.sound === "off" ? "Sound: Off" : "Sound: On";
+    }
+
     const menuEls = () =>
-      overlay.querySelectorAll<HTMLElement>(".mo-link, .mo-actions");
+      overlay.querySelectorAll<HTMLElement>(".mo-link, .mo-action-btn");
 
     function openMenu() {
       updateThemeLabel();
-      // Clear any inline overrides from a previous session so CSS animations re-run cleanly
-      menuEls().forEach((el) => {
+      updateSoundLabel();
+      // Clear any inline overrides from a previous session and apply stagger delays
+      menuEls().forEach((el, index) => {
         el.style.removeProperty("animation");
         el.style.removeProperty("opacity");
         el.style.removeProperty("transform");
+        el.style.transitionDelay = `${index * 30}ms`;
       });
       // Prevent layout shift by locking scroll and compensating for scrollbar width
       const scrollBarComp = window.innerWidth - document.documentElement.clientWidth;
@@ -353,8 +373,9 @@
           el.style.opacity = "1";
           el.style.transform = "none";
           el.style.animation = "none";
+          el.style.removeProperty("transition-delay");
         });
-      }, 240);
+      }, 550);
       btn?.setAttribute("aria-expanded", "true");
       overlay.setAttribute("aria-hidden", "false");
       // Animate X button bars from horizontal → X (ensure positioned first)
@@ -392,6 +413,9 @@
         overlay.classList.remove("closing");
         document.body.style.overflow = "";
         document.body.style.paddingRight = "";
+        menuEls().forEach((el) => {
+          el.style.removeProperty("transition-delay");
+        });
       }, 300);
     }
 
@@ -410,6 +434,9 @@
     overlay
       .querySelector("#menu-theme-toggle")
       ?.addEventListener("click", toggleTheme);
+    overlay
+      .querySelector("#menu-sound-toggle")
+      ?.addEventListener("click", toggleSound);
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && overlay.classList.contains("open")) closeMenu();
