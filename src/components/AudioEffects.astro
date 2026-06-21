@@ -8,6 +8,7 @@
     private activeHoverOsc: OscillatorNode | null = null;
     private activeHoverGain: GainNode | null = null;
     private lastClickTime = 0;
+    private onSuspendedCallbacks: (() => void)[] = [];
 
     private init() {
       if (this.initialized) return;
@@ -16,16 +17,52 @@
         if (AudioContextClass) {
           this.ctx = new AudioContextClass();
           this.initialized = true;
+
+          // Apply iOS silent switch safeguard if available (Safari 16.4+)
+          if (typeof navigator !== "undefined" && "audioSession" in navigator) {
+            try {
+              (navigator as any).audioSession.type = "playback";
+            } catch (err) {
+              console.warn("Failed to set audioSession type:", err);
+            }
+          }
+
+          // Listen for state changes to detect if context is auto-suspended by browser
+          this.ctx.addEventListener("statechange", () => {
+            if (this.ctx && this.ctx.state === "suspended") {
+              this.onSuspendedCallbacks.forEach((cb) => cb());
+            }
+          });
         }
       } catch (e) {
         console.warn("Web Audio API is not supported in this browser:", e);
       }
     }
 
+    public onSuspended(callback: () => void) {
+      this.onSuspendedCallbacks.push(callback);
+    }
+
+    public getContextState(): string {
+      return this.ctx ? this.ctx.state : "uninitialized";
+    }
+
     public resume() {
       this.init();
-      if (this.ctx && this.ctx.state === "suspended") {
-        this.ctx.resume().catch(() => {});
+      if (this.ctx) {
+        if (this.ctx.state === "suspended") {
+          this.ctx.resume().catch(() => {});
+        }
+        // Unlock Web Audio API on iOS by playing a silent buffer source
+        try {
+          const buffer = this.ctx.createBuffer(1, 1, 22050);
+          const source = this.ctx.createBufferSource();
+          source.buffer = buffer;
+          source.connect(this.ctx.destination);
+          source.start(0);
+        } catch (e) {
+          console.warn("Failed to play silent buffer for unlocking:", e);
+        }
       }
     }
 
@@ -99,7 +136,9 @@
       if (!this.ctx) return;
       if (localStorage.sound === "off") return;
       
-      this.ctx.resume().catch(() => {});
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume().catch(() => {});
+      }
 
       // Record click time to suppress subsequent synthetic hovers during layouts/transitions
       this.lastClickTime = Date.now();
@@ -138,21 +177,50 @@
     }
   }
 
-  const audioSynth = new AudioSynth();
+  // Reuse existing instance on window if it exists to prevent browser AudioContext limits
+  const globalKey = "__audio_synth__";
+  const audioSynth: AudioSynth = (window as any)[globalKey] || new AudioSynth();
+  (window as any)[globalKey] = audioSynth;
+
   const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
 
   function setupAudioListeners() {
-    // Resume context on any user interaction gesture anywhere on the document
+    let listenersAdded = false;
+
     const resumeAudio = () => {
       audioSynth.resume();
-      // Remove listeners once run
+      removeResumeListeners();
+    };
+
+    function addResumeListeners() {
+      if (listenersAdded) return;
+      ["click", "keydown", "touchstart", "mousedown"].forEach((event) => {
+        document.addEventListener(event, resumeAudio, { once: true, capture: true });
+      });
+      listenersAdded = true;
+    }
+
+    function removeResumeListeners() {
+      if (!listenersAdded) return;
       ["click", "keydown", "touchstart", "mousedown"].forEach((event) => {
         document.removeEventListener(event, resumeAudio, { capture: true });
       });
-    };
+      listenersAdded = false;
+    }
 
-    ["click", "keydown", "touchstart", "mousedown"].forEach((event) => {
-      document.addEventListener(event, resumeAudio, { once: true, capture: true });
+    // Register initial listeners
+    addResumeListeners();
+
+    // Listen for context state changes to re-add gesture listeners if it gets suspended
+    audioSynth.onSuspended(() => {
+      addResumeListeners();
+    });
+
+    // Listen for visibility change as a fallback to re-add gesture listeners
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && audioSynth.getContextState() === "suspended") {
+        addResumeListeners();
+      }
     });
 
     // 1. Hover Listener (Gated to avoid mobile issues)
@@ -177,16 +245,24 @@
       audioSynth.playHover();
     });
 
-    // 2. Click Listener
+    // 2. Click Listener (using capture phase to intercept clicked elements that call stopPropagation)
     document.addEventListener("click", (e) => {
       const target = (e.target as HTMLElement).closest("a, button, [role=button], .flashlight-item, #spotify-last-song-link");
       if (target) {
         audioSynth.playClick();
       }
-    });
+    }, { capture: true });
   }
 
-  // Initialize listeners on DOM load & Astro Page Transition load
-  document.addEventListener("DOMContentLoaded", setupAudioListeners);
-  document.addEventListener("astro:page-load", setupAudioListeners);
+  // Ensure listeners are only attached once per window lifecycle to prevent duplicates & leaks
+  if (!(window as any).__audio_listeners_setup__) {
+    (window as any).__audio_listeners_setup__ = true;
+    
+    // Initialize listeners on DOM load & Astro Page Transition load
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setupAudioListeners);
+    } else {
+      setupAudioListeners();
+    }
+  }
 </script>
