@@ -1,0 +1,926 @@
+---
+// Floating Selection Highlight and Text Formatting Menu
+---
+
+<div id="text-format-popup" class="text-format-popup hidden" role="tooltip">
+  <div class="tf-row">
+    <!-- Format buttons -->
+    <button type="button" class="tf-btn" id="tf-btn-bold" title="Bold">
+      <span style="font-weight: 800;">B</span>
+    </button>
+    <button type="button" class="tf-btn" id="tf-btn-italic" title="Italic">
+      <span style="font-style: italic; font-family: Georgia, serif;">I</span>
+    </button>
+    
+    <div class="tf-divider"></div>
+    
+    <!-- Color Swatches -->
+    <button type="button" class="tf-swatch tf-swatch-pink" id="tf-swatch-pink" title="Pink highlight" data-color="pink"></button>
+    <button type="button" class="tf-swatch tf-swatch-yellow" id="tf-swatch-yellow" title="Yellow highlight" data-color="yellow"></button>
+    <button type="button" class="tf-swatch tf-swatch-blue" id="tf-swatch-blue" title="Blue highlight" data-color="blue"></button>
+    <button type="button" class="tf-swatch tf-swatch-green" id="tf-swatch-green" title="Green highlight" data-color="green"></button>
+    
+    <div class="tf-divider"></div>
+    
+    <!-- Sizing buttons -->
+    <button type="button" class="tf-btn tf-size-btn" id="tf-btn-h1" title="Heading 1 size">H1</button>
+    <button type="button" class="tf-btn tf-size-btn" id="tf-btn-h2" title="Heading 2 size">H2</button>
+    <button type="button" class="tf-btn tf-size-btn" id="tf-btn-h3" title="Heading 3 size">H3</button>
+    
+    <div class="tf-divider"></div>
+    
+    <!-- Clear formatting button -->
+    <button type="button" class="tf-btn tf-btn-clear" id="tf-btn-clear" title="Clear formatting">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+        <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 13M17 17L20 20" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .text-format-popup {
+    position: absolute;
+    z-index: 100000;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 
+      0 12px 32px -4px rgba(0, 0, 0, 0.1),
+      0 4px 12px -2px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(0, 0, 0, 0.02);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(0.96) translateY(4px);
+    pointer-events: auto;
+    opacity: 0;
+    display: flex;
+  }
+
+  :global(html.dark) .text-format-popup {
+    background: rgba(24, 24, 27, 0.85);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 
+      0 12px 32px -4px rgba(0, 0, 0, 0.28),
+      0 4px 12px -2px rgba(0, 0, 0, 0.16),
+      0 0 0 1px rgba(255, 255, 255, 0.02);
+  }
+
+  .text-format-popup.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  .tf-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .tf-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: rgb(82, 82, 91);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    transition: 
+      background-color 0.12s ease,
+      color 0.12s ease,
+      transform 0.08s ease;
+  }
+
+  :global(html.dark) .tf-btn {
+    color: rgb(161, 161, 170);
+  }
+
+  .tf-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: rgb(24, 24, 27);
+  }
+
+  :global(html.dark) .tf-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgb(244, 244, 245);
+  }
+
+  .tf-btn:active {
+    transform: scale(0.94);
+  }
+
+  .tf-size-btn {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .tf-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 0 2px;
+  }
+
+  :global(html.dark) .tf-divider {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Color Swatches */
+  .tf-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    margin: 0 3px;
+    padding: 0;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    position: relative;
+  }
+
+  :global(html.dark) .tf-swatch {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .tf-swatch:hover {
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  }
+
+  .tf-swatch:active {
+    transform: scale(0.95);
+  }
+
+  .tf-swatch-pink { background: #ff6bab; }
+  .tf-swatch-yellow { background: #ffcd4d; }
+  .tf-swatch-blue { background: #5bbbff; }
+  .tf-swatch-green { background: #91d65b; }
+
+  .tf-btn-clear {
+    color: rgb(239, 68, 68);
+  }
+  
+  :global(html.dark) .tf-btn-clear {
+    color: rgb(248, 113, 113);
+  }
+
+  .tf-btn-clear:hover {
+    background: rgba(239, 68, 68, 0.08);
+    color: rgb(220, 38, 38);
+  }
+
+  :global(html.dark) .tf-btn-clear:hover {
+    background: rgba(248, 113, 113, 0.1);
+    color: rgb(252, 165, 165);
+  }
+
+  /* Spring transitions for formatting removal during reset action */
+  :global(.format-bold),
+  :global(.format-italic),
+  :global(.format-size-h1),
+  :global(.format-size-h2),
+  :global(.format-size-h3) {
+    transition: font-weight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                font-size 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                font-style 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                line-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  :global(.format-resetting-active .format-bold) {
+    font-weight: inherit !important;
+  }
+
+  :global(.format-resetting-active .format-italic) {
+    font-style: inherit !important;
+  }
+
+  :global(.format-resetting-active .format-size-h1),
+  :global(.format-resetting-active .format-size-h2),
+  :global(.format-resetting-active .format-size-h3) {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    transform: scale(0.96) translateY(2px) !important;
+    opacity: 0.7 !important;
+  }
+</style>
+
+<script>
+  import { highlight } from "@highlighters/core";
+
+  // Core implementation of the highlighter popup menu
+  let currentRange: Range | null = null;
+  let activeHighlighters = new Map<Element, any>();
+
+  // Restore edits immediately upon script evaluation/DOMContentLoaded
+  function applySavedAnnotations() {
+    const pathname = window.location.pathname;
+    let annotations: Record<string, Record<string, string>> = {};
+    try {
+      annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
+    } catch (e) {
+      return;
+    }
+
+    const pageAnnotations = annotations[pathname];
+    if (!pageAnnotations) return;
+
+    Object.keys(pageAnnotations).forEach(selector => {
+      try {
+        const el = document.querySelector(selector);
+        if (el) {
+          el.innerHTML = pageAnnotations[selector];
+        }
+      } catch (err) {
+        console.error(`Failed to restore selector "${selector}":`, err);
+      }
+    });
+
+    updateResetButtonVisibility();
+  }
+
+  function applyHighlighters() {
+    // Clean up any handles whose elements are no longer in the DOM
+    for (const [el, handle] of activeHighlighters.entries()) {
+      if (!document.body.contains(el)) {
+        try { handle.remove(); } catch (e) {}
+        activeHighlighters.delete(el);
+      }
+    }
+
+    const pinkSpans = document.querySelectorAll('.format-hl-pink');
+    const yellowSpans = document.querySelectorAll('.format-hl-yellow');
+    const blueSpans = document.querySelectorAll('.format-hl-blue');
+    const greenSpans = document.querySelectorAll('.format-hl-green');
+
+    const isDark = document.documentElement.classList.contains('dark');
+    const blendMode = isDark ? ("screen" as const) : ("multiply" as const);
+    
+    const highlightOptions = (colorValue: string) => {
+      // Adjust colors to be more saturated/vibrant in dark mode to prevent washing out
+      let finalColor = colorValue;
+      if (isDark) {
+        if (colorValue === '#ff6bab') finalColor = '#ff8ebb'; // Pink
+        else if (colorValue === '#ffcd4d') finalColor = '#ffe066'; // Yellow
+        else if (colorValue === '#5bbbff') finalColor = '#7cd0ff'; // Blue
+        else if (colorValue === '#91d65b') finalColor = '#aae27b'; // Green
+      }
+
+      return {
+        color: finalColor,
+        opacity: isDark ? 0.92 : 0.74,
+        blendMode: blendMode,
+        glow: {
+          enabled: true,
+          intensity: isDark ? 0.85 : 0.55,
+          spread: isDark ? 10 : 7,
+        },
+        tip: {
+          type: "chisel" as const,
+          angle: 13,
+          overshoot: 6,
+          overshootJitter: 3.2,
+          angleJitter: 3.5,
+        },
+        ink: {
+          flow: isDark ? 0.95 : 0.84,
+          viscosity: 0.16,
+          feathering: 0.58,
+          streakiness: 0.3,
+          dryout: 0.05,
+          startEndBuildup: 0.88,
+          flowFade: 0.12,
+        },
+        paper: { absorbency: 0.82 },
+        edge: {
+          waviness: 2.2,
+          roughness: 0.58,
+          frequency: 14,
+          cap: "round" as const,
+          radius: 13,
+        },
+        speed: {
+          enabled: true,
+          sensitivity: 0.92,
+          minDeposit: 0.24,
+          dryoutBoost: 0.9,
+          streakBoost: 0.26,
+          featherReduce: 0.78,
+          poolBoost: 0.96,
+        },
+        animation: {
+          draw: false,
+        },
+      };
+    };
+
+    pinkSpans.forEach(el => {
+      if (activeHighlighters.has(el)) return;
+      const handle = highlight(el as HTMLElement, highlightOptions('#ff6bab'));
+      activeHighlighters.set(el, handle);
+    });
+    yellowSpans.forEach(el => {
+      if (activeHighlighters.has(el)) return;
+      const handle = highlight(el as HTMLElement, highlightOptions('#ffcd4d'));
+      activeHighlighters.set(el, handle);
+    });
+    blueSpans.forEach(el => {
+      if (activeHighlighters.has(el)) return;
+      const handle = highlight(el as HTMLElement, highlightOptions('#5bbbff'));
+      activeHighlighters.set(el, handle);
+    });
+    greenSpans.forEach(el => {
+      if (activeHighlighters.has(el)) return;
+      const handle = highlight(el as HTMLElement, highlightOptions('#91d65b'));
+      activeHighlighters.set(el, handle);
+    });
+  }
+
+  // Setup selector paths
+  function getUniqueSelector(el: HTMLElement): string {
+    if (el.id) {
+      return `#${el.id}`;
+    }
+    const parts: string[] = [];
+    let current: HTMLElement | null = el;
+    while (current && current.nodeType === Node.ELEMENT_NODE) {
+      if (current.tagName === 'BODY') {
+        parts.unshift('body');
+        break;
+      }
+      if (current.id) {
+        parts.unshift(`#${current.id}`);
+        break;
+      }
+      let sibCount = 0;
+      let sibIndex = 0;
+      const parent = current.parentNode;
+      if (parent) {
+        for (let sib = parent.firstChild; sib; sib = sib.nextSibling) {
+          if (sib.nodeType === Node.ELEMENT_NODE && (sib as HTMLElement).tagName === current.tagName) {
+            if (sib === current) {
+              sibIndex = sibCount;
+            }
+            sibCount++;
+          }
+        }
+      }
+      const tag = current.tagName.toLowerCase();
+      if (sibCount > 1) {
+        parts.unshift(`${tag}:nth-of-type(${sibIndex + 1})`);
+      } else {
+        parts.unshift(tag);
+      }
+      current = parent as HTMLElement | null;
+    }
+    return parts.join(' > ');
+  }
+
+  // Update visibility of the header reset button
+  function updateResetButtonVisibility() {
+    const btn = document.getElementById('reset-annotations-btn');
+    if (!btn) return;
+
+    let hasEdits = false;
+    try {
+      const annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
+      const pathname = window.location.pathname;
+      hasEdits = annotations[pathname] && Object.keys(annotations[pathname]).length > 0;
+    } catch (e) {
+      // ignore
+    }
+
+    if (hasEdits) {
+      btn.classList.remove('hidden');
+      btn.classList.add('flex');
+    } else {
+      btn.classList.add('hidden');
+      btn.classList.remove('flex');
+    }
+  }
+
+  function captureOriginalsBeforeEdit(range: Range) {
+    const textNodes = getTextNodesInRange(range);
+    const blocks = new Set<HTMLElement>();
+
+    textNodes.forEach(node => {
+      let parent = node.parentNode as HTMLElement | null;
+      while (parent) {
+        const tag = parent.tagName.toLowerCase();
+        if (['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'figcaption', 'header', 'div', 'section'].includes(tag)) {
+          blocks.add(parent);
+          break;
+        }
+        parent = parent.parentNode as HTMLElement | null;
+      }
+    });
+
+    if (blocks.size === 0) {
+      let parent = range.commonAncestorContainer as HTMLElement;
+      if (parent.nodeType !== Node.ELEMENT_NODE) parent = parent.parentNode as HTMLElement;
+      blocks.add(parent);
+    }
+
+    const pathname = window.location.pathname;
+    let originals: Record<string, Record<string, string>> = {};
+    try {
+      originals = JSON.parse(localStorage.getItem('text-annotations-originals:v1') || '{}');
+    } catch (e) {
+      // ignore
+    }
+
+    if (!originals[pathname]) {
+      originals[pathname] = {};
+    }
+
+    blocks.forEach(block => {
+      const selector = getUniqueSelector(block);
+      if (selector) {
+        // Save original HTML ONLY if it wasn't saved before
+        if (!originals[pathname][selector]) {
+          originals[pathname][selector] = block.innerHTML;
+        }
+      }
+    });
+
+    localStorage.setItem('text-annotations-originals:v1', JSON.stringify(originals));
+  }
+
+  // Save modified block elements in localStorage
+  function saveModifiedBlocks(range: Range) {
+    const textNodes = getTextNodesInRange(range);
+    const blocks = new Set<HTMLElement>();
+
+    textNodes.forEach(node => {
+      let parent = node.parentNode as HTMLElement | null;
+      while (parent) {
+        const tag = parent.tagName.toLowerCase();
+        if (['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'figcaption', 'header', 'div', 'section'].includes(tag)) {
+          blocks.add(parent);
+          break;
+        }
+        parent = parent.parentNode as HTMLElement | null;
+      }
+    });
+
+    if (blocks.size === 0) {
+      let parent = range.commonAncestorContainer as HTMLElement;
+      if (parent.nodeType !== Node.ELEMENT_NODE) parent = parent.parentNode as HTMLElement;
+      blocks.add(parent);
+    }
+
+    const pathname = window.location.pathname;
+    let annotations: Record<string, Record<string, string>> = {};
+    try {
+      annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
+    } catch (e) {
+      // ignore
+    }
+
+    if (!annotations[pathname]) {
+      annotations[pathname] = {};
+    }
+
+    blocks.forEach(block => {
+      const selector = getUniqueSelector(block);
+      if (selector) {
+        annotations[pathname][selector] = block.innerHTML;
+      }
+    });
+
+    localStorage.setItem('text-annotations:v1', JSON.stringify(annotations));
+    updateResetButtonVisibility();
+  }
+
+  // Fetch all text nodes in a range
+  function getTextNodesInRange(range: Range): Text[] {
+    const textNodes: Text[] = [];
+    const container = range.commonAncestorContainer;
+    const root = container.nodeType === Node.ELEMENT_NODE ? container : container.parentNode;
+    if (!root) return [];
+
+    const walker = document.createTreeWalker(
+      root,
+      NodeFilter.SHOW_TEXT,
+      null
+    );
+
+    while (walker.nextNode()) {
+      const node = walker.currentNode as Text;
+      if (range.intersectsNode(node)) {
+        if (node.nodeValue && (node.nodeValue.trim().length > 0 || node === range.startContainer || node === range.endContainer)) {
+          textNodes.push(node);
+        }
+      }
+    }
+
+    if (container.nodeType === Node.TEXT_NODE) {
+      textNodes.push(container as Text);
+    }
+
+    return textNodes;
+  }
+
+  // Wrap selections
+  function wrapRangeInSpan(range: Range, styleClass: string) {
+    const textNodes = getTextNodesInRange(range);
+    if (textNodes.length === 0) return;
+
+    const startContainer = range.startContainer;
+    const startOffset = range.startOffset;
+    const endContainer = range.endContainer;
+    const endOffset = range.endOffset;
+
+    textNodes.forEach(node => {
+      const val = node.nodeValue || '';
+      let start = 0;
+      let end = val.length;
+
+      if (node === startContainer) {
+        start = startOffset;
+      }
+      if (node === endContainer) {
+        end = endOffset;
+      }
+
+      if (start === end) return;
+
+      const selectedText = val.substring(start, end);
+      const parent = node.parentNode;
+      if (!parent) return;
+
+      const span = document.createElement('span');
+      span.className = styleClass;
+      span.textContent = selectedText;
+
+      const beforeText = document.createTextNode(val.substring(0, start));
+      const afterText = document.createTextNode(val.substring(end));
+
+      parent.insertBefore(span, node);
+      if (afterText.nodeValue && afterText.nodeValue.length > 0) {
+        parent.insertBefore(afterText, node.nextSibling);
+      }
+      if (beforeText.nodeValue && beforeText.nodeValue.length > 0) {
+        parent.insertBefore(beforeText, span);
+      }
+
+      parent.removeChild(node);
+    });
+  }
+
+  // Remove styling class from range
+  function removeFormatClassInRange(range: Range, className: string) {
+    const container = range.commonAncestorContainer;
+    const root = container.nodeType === Node.ELEMENT_NODE ? container : container.parentNode;
+    if (!root) return;
+
+    const spans = (root as HTMLElement).querySelectorAll(`span.${className}`);
+    spans.forEach(span => {
+      if (range.intersectsNode(span)) {
+        span.classList.remove(className);
+        // If it has no styling class and no styling left, unwrap it
+        if (span.className === '' && !span.getAttribute('style')) {
+          const parent = span.parentNode;
+          if (parent) {
+            while (span.firstChild) {
+              parent.insertBefore(span.firstChild, span);
+            }
+            parent.removeChild(span);
+          }
+        }
+      }
+    });
+    root.normalize();
+  }
+
+  // Toggle bold/italic format
+  function toggleFormatClass(className: string) {
+    if (!currentRange) return;
+
+    const textNodes = getTextNodesInRange(currentRange);
+    if (textNodes.length === 0) return;
+
+    captureOriginalsBeforeEdit(currentRange);
+
+    const hasClassAll = textNodes.every(node => {
+      let parent = node.parentNode as HTMLElement | null;
+      while (parent && parent !== currentRange!.commonAncestorContainer.parentNode) {
+        if (parent.classList && parent.classList.contains(className)) {
+          return true;
+        }
+        parent = parent.parentNode as HTMLElement | null;
+      }
+      return false;
+    });
+
+    if (hasClassAll) {
+      removeFormatClassInRange(currentRange, className);
+    } else {
+      wrapRangeInSpan(currentRange, className);
+    }
+
+    saveModifiedBlocks(currentRange);
+    applyHighlighters();
+    clearActiveSelection();
+  }
+
+  // Toggle highlighter highlight color
+  function toggleHighlightClass(className: string) {
+    if (!currentRange) return;
+
+    const textNodes = getTextNodesInRange(currentRange);
+    if (textNodes.length === 0) return;
+
+    captureOriginalsBeforeEdit(currentRange);
+
+    const hasClassAll = textNodes.every(node => {
+      let parent = node.parentNode as HTMLElement | null;
+      while (parent && parent !== currentRange!.commonAncestorContainer.parentNode) {
+        if (parent.classList && parent.classList.contains(className)) {
+          return true;
+        }
+        parent = parent.parentNode as HTMLElement | null;
+      }
+      return false;
+    });
+
+    // Strip all highlight classes first (mutually exclusive)
+    const hlClasses = ['format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green'];
+    hlClasses.forEach(cls => removeFormatClassInRange(currentRange!, cls));
+
+    if (!hasClassAll) {
+      wrapRangeInSpan(currentRange, className);
+    }
+
+    saveModifiedBlocks(currentRange);
+    applyHighlighters();
+    clearActiveSelection();
+  }
+
+  // Change font sizing class
+  function setSizeClass(sizeClass: string | null) {
+    if (!currentRange) return;
+
+    captureOriginalsBeforeEdit(currentRange);
+
+    // Strip existing sizes
+    const sizeClasses = ['format-size-h1', 'format-size-h2', 'format-size-h3'];
+    sizeClasses.forEach(cls => removeFormatClassInRange(currentRange!, cls));
+
+    if (sizeClass) {
+      wrapRangeInSpan(currentRange, sizeClass);
+    }
+
+    saveModifiedBlocks(currentRange);
+    applyHighlighters();
+    clearActiveSelection();
+  }
+
+  // Clear all formatting in range
+  function clearAllFormatting() {
+    if (!currentRange) return;
+
+    captureOriginalsBeforeEdit(currentRange);
+
+    const allFormatClasses = [
+      'format-bold', 'format-italic',
+      'format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green',
+      'format-size-h1', 'format-size-h2', 'format-size-h3'
+    ];
+
+    allFormatClasses.forEach(cls => removeFormatClassInRange(currentRange!, cls));
+    saveModifiedBlocks(currentRange);
+    applyHighlighters();
+    clearActiveSelection();
+  }
+
+  function clearActiveSelection() {
+    const selection = window.getSelection();
+    if (selection) selection.removeAllRanges();
+    hidePopup();
+  }
+
+  // Popup visibility helpers
+  const popup = document.getElementById('text-format-popup');
+
+  function showPopup(rect: DOMRect) {
+    if (!popup) return;
+    popup.classList.remove('hidden');
+    
+    // Force a reflow for transition animation
+    popup.getBoundingClientRect();
+    popup.classList.add('visible');
+
+    const popupWidth = popup.offsetWidth;
+    const popupHeight = popup.offsetHeight;
+
+    const parentRect = popup.offsetParent ? popup.offsetParent.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth };
+    const left = rect.left - parentRect.left + rect.width / 2 - popupWidth / 2;
+    const top = rect.top - parentRect.top - popupHeight - 12;
+
+    // Boundary constraints relative to offsetParent
+    const minLeft = 8;
+    const maxLeft = (popup.offsetParent ? (popup.offsetParent as HTMLElement).offsetWidth : window.innerWidth) - popupWidth - 8;
+
+    // Flip to bottom if there's not enough room above the selection
+    let finalTop = top;
+    if (rect.top - parentRect.top < popupHeight + 16) {
+      finalTop = rect.bottom - parentRect.top + 12;
+    }
+
+    popup.style.left = `${Math.max(minLeft, Math.min(maxLeft, left))}px`;
+    popup.style.top = `${finalTop}px`;
+  }
+
+  function hidePopup() {
+    if (!popup) return;
+    popup.classList.remove('visible');
+    // Hide completely after transition finish
+    setTimeout(() => {
+      if (!popup.classList.contains('visible')) {
+        popup.classList.add('hidden');
+      }
+    }, 150);
+    currentRange = null;
+  }
+
+  // Selection detection triggers
+  function handleSelectionCheck() {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+      hidePopup();
+      return;
+    }
+
+    const range = selection.getRangeAt(0);
+    const ancestor = range.commonAncestorContainer;
+    const parent = ancestor.nodeType === Node.ELEMENT_NODE ? ancestor as HTMLElement : ancestor.parentNode as HTMLElement;
+
+    // Check scope boundaries
+    if (!parent || !parent.closest('main, article, header')) {
+      hidePopup();
+      return;
+    }
+
+    // Exclude components/inputs
+    if (parent.closest('button, input, textarea, select, [role="button"], #menu-overlay, #text-format-popup, .hamburger-btn')) {
+      hidePopup();
+      return;
+    }
+
+    // Don't pop up for empty space selections
+    if (selection.toString().trim().length === 0) {
+      hidePopup();
+      return;
+    }
+
+    currentRange = range.cloneRange();
+
+    const rect = range.getBoundingClientRect();
+    showPopup(rect);
+  }
+
+  // Initialize listeners
+  function initTextSelector() {
+    applySavedAnnotations();
+    applyHighlighters();
+
+    // Event listeners for selection detection
+    document.addEventListener('mouseup', () => {
+      // Delay slightly to allow selection to finalize
+      setTimeout(handleSelectionCheck, 10);
+    });
+
+    document.addEventListener('touchend', () => {
+      setTimeout(handleSelectionCheck, 50);
+    });
+
+    // Dismiss popup when clicking elsewhere
+    document.addEventListener('mousedown', (e) => {
+      if (popup && !popup.contains(e.target as Node)) {
+        // Only hide if the user isn't clicking to start a new selection in text
+        const target = e.target as HTMLElement;
+        if (!target.closest('main, article') || target.closest('button, #text-format-popup')) {
+          hidePopup();
+        }
+      }
+    });
+
+    // Setup action button click handlers
+    document.getElementById('tf-btn-bold')?.addEventListener('click', () => toggleFormatClass('format-bold'));
+    document.getElementById('tf-btn-italic')?.addEventListener('click', () => toggleFormatClass('format-italic'));
+    
+    document.getElementById('tf-swatch-pink')?.addEventListener('click', () => toggleHighlightClass('format-hl-pink'));
+    document.getElementById('tf-swatch-yellow')?.addEventListener('click', () => toggleHighlightClass('format-hl-yellow'));
+    document.getElementById('tf-swatch-blue')?.addEventListener('click', () => toggleHighlightClass('format-hl-blue'));
+    document.getElementById('tf-swatch-green')?.addEventListener('click', () => toggleHighlightClass('format-hl-green'));
+
+    document.getElementById('tf-btn-h1')?.addEventListener('click', () => setSizeClass('format-size-h1'));
+    document.getElementById('tf-btn-h2')?.addEventListener('click', () => setSizeClass('format-size-h2'));
+    document.getElementById('tf-btn-h3')?.addEventListener('click', () => setSizeClass('format-size-h3'));
+
+    document.getElementById('tf-btn-clear')?.addEventListener('click', clearAllFormatting);
+
+    // Header Reset Button logic
+    const resetBtn = document.getElementById('reset-annotations-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        // 1. Add active class to initiate spring-based text shrink/fade animations
+        document.body.classList.add('format-resetting-active');
+
+        // 2. Locate and smoothly wipe/fade out the @highlighters/core overlays
+        const overlays = document.querySelectorAll('[data-highlighters-overlay]');
+        overlays.forEach(el => {
+          (el as HTMLElement).style.transition = 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+          (el as HTMLElement).style.opacity = '0';
+        });
+
+        // 3. Wait for the transitions to complete before swapping the innerHTML back
+        setTimeout(() => {
+          const pathname = window.location.pathname;
+          let originals: Record<string, Record<string, string>> = {};
+          try {
+            originals = JSON.parse(localStorage.getItem('text-annotations-originals:v1') || '{}');
+          } catch (e) {
+            // ignore
+          }
+          
+          const pageOriginals = originals[pathname];
+          if (pageOriginals) {
+            Object.keys(pageOriginals).forEach(selector => {
+              try {
+                const el = document.querySelector(selector);
+                if (el) {
+                  el.innerHTML = pageOriginals[selector];
+                }
+              } catch (err) {
+                console.error(`Failed to restore selector "${selector}":`, err);
+              }
+            });
+          }
+
+          // Clear active highlighters
+          for (const handle of activeHighlighters.values()) {
+            try { handle.remove(); } catch (e) {}
+          }
+          activeHighlighters.clear();
+
+          // Remove page annotations from localStorage
+          let annotations: Record<string, Record<string, string>> = {};
+          try {
+            annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
+          } catch (e) {
+            // ignore
+          }
+          delete annotations[pathname];
+          localStorage.setItem('text-annotations:v1', JSON.stringify(annotations));
+
+          delete originals[pathname];
+          localStorage.setItem('text-annotations-originals:v1', JSON.stringify(originals));
+
+          // Clean up formatting classes
+          document.body.classList.remove('format-resetting-active');
+          updateResetButtonVisibility();
+        }, 380); // fits transition timing perfectly
+      });
+      updateResetButtonVisibility();
+    }
+
+    // Event delegation to restore homepage click listeners broken by DOM edits
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.id === 'look-around-btn' || target.closest('#look-around-btn'))) {
+        e.preventDefault();
+        document.getElementById('hamburger-btn')?.click();
+      }
+    });
+
+    // Watch for theme changes to automatically refresh highlighters
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          applyHighlighters();
+        }
+      });
+    });
+    observer.observe(document.documentElement, { attributes: true });
+  }
+
+  // Run on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTextSelector);
+  } else {
+    initTextSelector();
+  }
+</script>

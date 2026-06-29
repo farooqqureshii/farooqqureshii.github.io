@@ -3,17 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  ::selection {
-    background: transparent;
-    color: inherit;
-  }
-
   html {
     font-size: 15px;
-  }
-
-  ::selection {
-    background: transparent;
   }
 
   /* Smooth theme transitions (only when toggling) */
@@ -468,3 +459,43 @@ a[href^="#fn"],
 .marquee-svg {
   display: block;
 }
+
+/* Text Selection Formatting Utility Styles */
+.format-bold {
+  font-weight: 700 !important;
+}
+
+.format-italic {
+  font-style: italic !important;
+}
+
+/* Color Highlights (Managed dynamically by @highlighters/core) */
+.format-hl-pink,
+.format-hl-yellow,
+.format-hl-blue,
+.format-hl-green {
+  background: transparent !important;
+}
+
+/* Sizing (to emulate headers inline) */
+.format-size-h1 {
+  font-size: 2.25rem !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  display: inline-block;
+}
+
+.format-size-h2 {
+  font-size: 1.75rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  display: inline-block;
+}
+
+.format-size-h3 {
+  font-size: 1.35rem !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  display: inline-block;
+}
+
