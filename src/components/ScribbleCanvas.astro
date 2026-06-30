@@ -5,19 +5,7 @@
 <div id="scribble-dock" class="scribble-dock-hidden" aria-label="Drawing tools">
   <div class="scribble-dock-inner">
     
-    <!-- Drag Handle -->
-    <div class="scribble-drag-handle" title="Drag Toolbar" aria-label="Drag Toolbar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="9" cy="12" r="0.75"></circle>
-        <circle cx="9" cy="5" r="0.75"></circle>
-        <circle cx="9" cy="19" r="0.75"></circle>
-        <circle cx="15" cy="12" r="0.75"></circle>
-        <circle cx="15" cy="5" r="0.75"></circle>
-        <circle cx="15" cy="19" r="0.75"></circle>
-      </svg>
-    </div>
-    
-    <div class="scribble-divider"></div>
+
 
     <!-- Section 1: Interaction Mode Tools -->
     <div class="scribble-tool-group" role="radiogroup" aria-label="Drawing tool selection">
@@ -188,11 +176,11 @@
   }
 
   :global(#scribble-trigger.active) {
-    color: #3b82f6 !important;
+    color: #000000 !important;
   }
   
   :global(html.dark #scribble-trigger.active) {
-    color: #60a5fa !important;
+    color: #ffffff !important;
   }
 
   /* Whiteboard Dock (Default: Vertical Left Dock) */
@@ -202,13 +190,15 @@
     left: 24px;
     transform: translateY(-50%);
     z-index: 10001;
-    transition: transform 320ms var(--ease-drawer), opacity 250ms ease-out;
+    transition: transform 180ms ease-out, opacity 180ms ease-out;
+    will-change: transform, opacity;
   }
 
   .scribble-dock-hidden {
-    transform: translateY(-50%) translateX(-42px) scale(0.96) !important;
+    transform: translateY(-50%) translateX(-8px) !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    transition: transform 150ms ease-in, opacity 150ms ease-in !important;
   }
 
   .scribble-dock-inner {
@@ -228,31 +218,7 @@
     transition: padding 320ms var(--ease-drawer);
   }
 
-  /* Drag Handle */
-  .scribble-drag-handle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 16px;
-    color: var(--color-default);
-    opacity: 0.45;
-    cursor: grab;
-    transition: opacity 160ms ease, transform 160ms var(--ease-out-cubic);
-    user-select: none;
-    -webkit-user-drag: none;
-    flex-shrink: 0;
-  }
-  .scribble-drag-handle:hover {
-    opacity: 0.8;
-  }
-  .scribble-drag-handle:active {
-    cursor: grabbing;
-  }
-  .scribble-drag-handle svg {
-    width: 14px;
-    height: 14px;
-  }
+
 
   /* Divider */
   .scribble-divider {
@@ -445,8 +411,15 @@
     }
   }
 
-  /* Mobile Responsive and Short Viewports Fallback: Horizontal Bottom Dock */
-  @media (max-width: 768px), (max-height: 600px) {
+  /* Mobile: Hide Dock completely */
+  @media (max-width: 768px) {
+    #scribble-dock {
+      display: none !important;
+    }
+  }
+
+  /* Short Viewports Fallback on Desktop: Horizontal Bottom Dock */
+  @media (min-width: 769px) and (max-height: 600px) {
     #scribble-dock {
       top: auto;
       left: 50%;
@@ -534,6 +507,13 @@
   }
 
   function initScribble() {
+    // If mobile, do not initialize drawing feature
+    if (window.innerWidth < 768) {
+      const dock = document.getElementById("scribble-dock");
+      if (dock) dock.style.display = "none";
+      return;
+    }
+
     const canvas = document.getElementById("scribble-canvas") as HTMLCanvasElement;
     const fab = document.getElementById("scribble-trigger") as HTMLButtonElement;
     const dock = document.getElementById("scribble-dock") as HTMLDivElement;
@@ -701,6 +681,13 @@
 
     // Toggle entire drawing mode
     function toggleDrawingMode(forceState?: boolean) {
+      if (window.innerWidth < 768) {
+        isDrawingMode = false;
+        if (fab) fab.classList.remove("active");
+        if (dock) dock.classList.add("scribble-dock-hidden");
+        setTool('navigate');
+        return;
+      }
       isDrawingMode = forceState !== undefined ? forceState : !isDrawingMode;
       
       if (isDrawingMode) {
@@ -712,11 +699,6 @@
         fab.classList.remove("active");
         dock.classList.add("scribble-dock-hidden");
         setTool('navigate');
-        // Reset drag coordinates so it starts centered next time
-        dock.style.left = '';
-        dock.style.top = '';
-        dock.style.bottom = '';
-        dock.style.transform = '';
       }
     }
 
@@ -778,6 +760,7 @@
 
     // Drawing interaction handlers (Pointer Events)
     function onPointerDown(e: PointerEvent) {
+      if (window.innerWidth < 768) return;
       if (currentTool === 'navigate' || !isVisible) return;
       
       // Only draw on left click / main touch point
@@ -1043,6 +1026,7 @@
 
     // Keyboard Shortcuts Listener
     function handleKeydown(e: KeyboardEvent) {
+      if (window.innerWidth < 768) return;
       // Toggle drawing mode: Alt + D
       if (e.altKey && e.code === "KeyD") {
         e.preventDefault();
@@ -1096,82 +1080,11 @@
     updateCanvasSize();
     loadStrokes();
 
-    // Dragging Dock Logic
-    let isDraggingDock = false;
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let dockInitialLeft = 0;
-    let dockInitialTop = 0;
-
-    const dragHandle = document.querySelector(".scribble-drag-handle") as HTMLDivElement | null;
-    
-    const handleDragStart = (e: PointerEvent) => {
-      e.preventDefault();
-      isDraggingDock = true;
-      dragStartX = e.clientX;
-      dragStartY = e.clientY;
-      
-      const rect = dock.getBoundingClientRect();
-      dockInitialLeft = rect.left;
-      dockInitialTop = rect.top;
-      
-      if (dragHandle) {
-        dragHandle.setPointerCapture(e.pointerId);
-        dragHandle.style.cursor = 'grabbing';
-      }
-      document.body.classList.add("scribble-active-drawing");
-    };
-
-    const handleDragMove = (e: PointerEvent) => {
-      if (!isDraggingDock) return;
-      
-      const dx = e.clientX - dragStartX;
-      const dy = e.clientY - dragStartY;
-      
-      const rect = dock.getBoundingClientRect();
-      const newLeft = dockInitialLeft + dx;
-      const newTop = dockInitialTop + dy;
-      
-      const constrainedLeft = Math.max(8, Math.min(window.innerWidth - rect.width - 8, newLeft));
-      const constrainedTop = Math.max(8, Math.min(window.innerHeight - rect.height - 8, newTop));
-      
-      dock.style.left = `${constrainedLeft}px`;
-      dock.style.top = `${constrainedTop}px`;
-      dock.style.bottom = 'auto';
-      dock.style.transform = 'none';
-    };
-
-    const handleDragEnd = (e: PointerEvent) => {
-      if (!isDraggingDock) return;
-      isDraggingDock = false;
-      
-      if (dragHandle) {
-        try {
-          dragHandle.releasePointerCapture(e.pointerId);
-        } catch (err) {}
-        dragHandle.style.cursor = 'grab';
-      }
-      document.body.classList.remove("scribble-active-drawing");
-    };
-
-    if (dragHandle) {
-      dragHandle.addEventListener("pointerdown", handleDragStart);
-      dragHandle.addEventListener("pointermove", handleDragMove);
-      dragHandle.addEventListener("pointerup", handleDragEnd);
-      dragHandle.addEventListener("pointercancel", handleDragEnd);
-    }
-
     // Clean-up hook for page transitions / hot reload
     return () => {
       resizeObserver.disconnect();
       themeObserver.disconnect();
       window.removeEventListener("keydown", handleKeydown);
-      if (dragHandle) {
-        dragHandle.removeEventListener("pointerdown", handleDragStart);
-        dragHandle.removeEventListener("pointermove", handleDragMove);
-        dragHandle.removeEventListener("pointerup", handleDragEnd);
-        dragHandle.removeEventListener("pointercancel", handleDragEnd);
-      }
     };
   }
 
