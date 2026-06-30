@@ -16,12 +16,10 @@
 <style>
   .hamburger-btn {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -29,33 +27,37 @@
     color: inherit;
     position: relative;
     z-index: 1;
-    transition: opacity 0.12s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
   }
 
-  /* When open, visually hide the hamburger without removing it from flow to avoid layout jumps */
+  /* When open, visually hide the hamburger and rotate it */
   .hamburger-btn[aria-expanded="true"] {
     pointer-events: none;
     opacity: 0.01;
-    transform: scale(0.98);
+    transform: scale(0.98) rotate(135deg);
   }
 
   .h-bar {
-    display: block;
-    width: 18px;
-    height: 1.5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
     background: currentColor;
     border-radius: 2px;
-    transition:
-      transform 0.12s ease,
-      opacity 0.12s ease;
-    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
   }
 
-  .hamburger-btn[aria-expanded="true"] .h-bar:nth-child(1) {
-    transform: translateY(3.25px) rotate(45deg);
+  /* Horizontal bar of the + */
+  .h-bar:nth-child(1) {
+    width: 16px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
   }
-  .hamburger-btn[aria-expanded="true"] .h-bar:nth-child(2) {
-    transform: translateY(-3.25px) rotate(-45deg);
+
+  /* Vertical bar of the + */
+  .h-bar:nth-child(2) {
+    width: 1.5px;
+    height: 16px;
+    transform: translate(-50%, -50%);
   }
 </style>
 
@@ -123,32 +125,41 @@
       /* Close X — positioned by JS to overlay the hamburger */
       .mo-close {
         position: fixed;
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 5px;
         background: transparent;
         border: none;
         cursor: pointer;
         padding: 0;
         z-index: 10001;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
       }
       .mc-bar {
-        display: block;
-        width: 18px;
-        height: 1.5px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
         background: #111;
         border-radius: 2px;
-        transform-origin: center;
-        transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
       html.dark .mc-bar { background: #e4e4e7; }
-      /* Bars start horizontal, animate to X when active */
-      .mo-close.active .mc-bar:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
-      .mo-close.active .mc-bar:nth-child(2) { transform: translateY(-3.25px) rotate(-45deg); }
+      
+      .mo-close .mc-bar:nth-child(1) {
+        width: 16px;
+        height: 1.5px;
+        transform: translate(-50%, -50%);
+      }
+      .mo-close .mc-bar:nth-child(2) {
+        width: 1.5px;
+        height: 16px;
+        transform: translate(-50%, -50%);
+      }
+      .mo-close.active {
+        transform: rotate(135deg);
+      }
 
       .mo-inner {
         width: 100%;
@@ -235,8 +246,6 @@
         align-items: flex-start;
         gap: 0;
       }
-      /* Theme label: compositing hints to avoid sub-pixel movement/jitter on iOS
-         and ensure font-weight/smoothing matches the surrounding links */
       .mo-action-btn {
         background: transparent;
         border: none;
@@ -275,7 +284,6 @@
     document.head.appendChild(style);
     document.body.appendChild(overlay);
 
-
     // Init flashlight effect for the menu nav
     const flashContainer = overlay.querySelector(
       ".mo-inner.flashlight-hover",
@@ -301,7 +309,19 @@
         "#menu-close",
       ) as HTMLElement | null;
       if (!closeBtn || !btn) return;
+      
+      // Temporarily strip transform by toggling aria-expanded to get clean layout bounds
+      const isExpanded = btn.getAttribute("aria-expanded") === "true";
+      if (isExpanded) {
+        btn.setAttribute("aria-expanded", "false");
+      }
+      
       const r = btn.getBoundingClientRect();
+      
+      if (isExpanded) {
+        btn.setAttribute("aria-expanded", "true");
+      }
+      
       // position: fixed uses viewport coordinates, so r.top/left are correct
       closeBtn.style.top = r.top + "px";
       closeBtn.style.left = r.left + "px";
@@ -350,6 +370,9 @@
       overlay.querySelectorAll<HTMLElement>(".mo-link, .mo-action-btn");
 
     function openMenu() {
+      // Position the close button synchronously before we apply any transformation
+      positionCloseBtn();
+
       updateThemeLabel();
       updateSoundLabel();
       // Clear any inline overrides from a previous session and apply stagger delays
@@ -365,8 +388,7 @@
       document.body.style.overflow = "hidden";
       overlay.classList.remove("closing");
       overlay.classList.add("open");
-      // Positioning is handled by CSS; keep a no-op call for safety
-      requestAnimationFrame(() => positionCloseBtn());
+      
       // After the menu settles, strip inline animation fill so hover transitions work freely
       setTimeout(() => {
         menuEls().forEach((el) => {
@@ -451,4 +473,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", initHamburger);
+  // Support Astro view transitions
+  document.addEventListener("astro:after-swap", initHamburger);
 </script>
