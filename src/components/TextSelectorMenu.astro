@@ -244,35 +244,56 @@
     updateResetButtonVisibility();
   }
 
-  function applyHighlighters() {
-    // Clean up any handles whose elements are no longer in the DOM
-    for (const [el, handle] of activeHighlighters.entries()) {
-      if (!document.body.contains(el)) {
-        try { handle.remove(); } catch (e) {}
-        activeHighlighters.delete(el);
+  function blendColors(activeClasses: string[], isDark: boolean): string {
+    const colorsMap: Record<string, { r: number, g: number, b: number }> = isDark ? {
+      'format-hl-pink': { r: 255, g: 142, b: 187 },
+      'format-hl-yellow': { r: 255, g: 224, b: 102 },
+      'format-hl-blue': { r: 124, g: 208, b: 255 },
+      'format-hl-green': { r: 170, g: 226, b: 123 }
+    } : {
+      'format-hl-pink': { r: 255, g: 107, b: 171 },
+      'format-hl-yellow': { r: 255, g: 205, b: 77 },
+      'format-hl-blue': { r: 91, g: 187, b: 255 },
+      'format-hl-green': { r: 145, g: 214, b: 91 }
+    };
+
+    const activeRGBs = activeClasses
+      .map(cls => colorsMap[cls])
+      .filter(Boolean);
+
+    if (activeRGBs.length === 0) return '#ffcd4d'; // fallback
+    if (activeRGBs.length === 1) {
+      const { r, g, b } = activeRGBs[0];
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    let r = activeRGBs[0].r;
+    let g = activeRGBs[0].g;
+    let b = activeRGBs[0].b;
+
+    for (let i = 1; i < activeRGBs.length; i++) {
+      const next = activeRGBs[i];
+      if (isDark) {
+        r = Math.round(255 - ((255 - r) * (255 - next.r) / 255));
+        g = Math.round(255 - ((255 - g) * (255 - next.g) / 255));
+        b = Math.round(255 - ((255 - b) * (255 - next.b) / 255));
+      } else {
+        r = Math.round((r * next.r) / 255);
+        g = Math.round((g * next.g) / 255);
+        b = Math.round((b * next.b) / 255);
       }
     }
 
-    const pinkSpans = document.querySelectorAll('.format-hl-pink');
-    const yellowSpans = document.querySelectorAll('.format-hl-yellow');
-    const blueSpans = document.querySelectorAll('.format-hl-blue');
-    const greenSpans = document.querySelectorAll('.format-hl-green');
+    return `rgb(${r}, ${g}, ${b})`;
+  }
 
+  function applyHighlighters() {
     const isDark = document.documentElement.classList.contains('dark');
     const blendMode = isDark ? ("screen" as const) : ("multiply" as const);
     
     const highlightOptions = (colorValue: string) => {
-      // Adjust colors to be more saturated/vibrant in dark mode to prevent washing out
-      let finalColor = colorValue;
-      if (isDark) {
-        if (colorValue === '#ff6bab') finalColor = '#ff8ebb'; // Pink
-        else if (colorValue === '#ffcd4d') finalColor = '#ffe066'; // Yellow
-        else if (colorValue === '#5bbbff') finalColor = '#7cd0ff'; // Blue
-        else if (colorValue === '#91d65b') finalColor = '#aae27b'; // Green
-      }
-
       return {
-        color: finalColor,
+        color: colorValue,
         opacity: isDark ? 0.92 : 0.74,
         blendMode: blendMode,
         glow: {
@@ -319,26 +340,33 @@
       };
     };
 
-    pinkSpans.forEach(el => {
-      if (activeHighlighters.has(el)) return;
-      const handle = highlight(el as HTMLElement, highlightOptions('#ff6bab'));
-      activeHighlighters.set(el, handle);
+    const highlightClasses = ['format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green'];
+    const spans = document.querySelectorAll(highlightClasses.map(cls => `.${cls}`).join(','));
+
+    // Keep track of elements processed in this run
+    const currentElements = new Set<Element>();
+
+    spans.forEach(el => {
+      currentElements.add(el);
+      const activeClasses = highlightClasses.filter(cls => el.classList.contains(cls));
+      const blendedColor = blendColors(activeClasses, isDark);
+
+      const existingHandle = activeHighlighters.get(el);
+      if (existingHandle) {
+        existingHandle.update(highlightOptions(blendedColor));
+      } else {
+        const handle = highlight(el as HTMLElement, highlightOptions(blendedColor));
+        activeHighlighters.set(el, handle);
+      }
     });
-    yellowSpans.forEach(el => {
-      if (activeHighlighters.has(el)) return;
-      const handle = highlight(el as HTMLElement, highlightOptions('#ffcd4d'));
-      activeHighlighters.set(el, handle);
-    });
-    blueSpans.forEach(el => {
-      if (activeHighlighters.has(el)) return;
-      const handle = highlight(el as HTMLElement, highlightOptions('#5bbbff'));
-      activeHighlighters.set(el, handle);
-    });
-    greenSpans.forEach(el => {
-      if (activeHighlighters.has(el)) return;
-      const handle = highlight(el as HTMLElement, highlightOptions('#91d65b'));
-      activeHighlighters.set(el, handle);
-    });
+
+    // Clean up any handles whose elements are no longer in the DOM or no longer have highlight classes
+    for (const [el, handle] of activeHighlighters.entries()) {
+      if (!currentElements.has(el) || !document.body.contains(el)) {
+        try { handle.remove(); } catch (e) {}
+        activeHighlighters.delete(el);
+      }
+    }
   }
 
   // Setup selector paths
@@ -699,11 +727,10 @@
     });
 
     const range = currentRange;
-    // Strip all highlight classes first (mutually exclusive)
-    const hlClasses = ['format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green'];
-    hlClasses.forEach(cls => removeFormatClassInRange(range, cls));
-
-    if (!hasClassAll) {
+    // DO NOT strip other highlight classes to allow overlapping highlights/blend colors
+    if (hasClassAll) {
+      removeFormatClassInRange(range, className);
+    } else {
       wrapRangeInSpan(range, className);
     }
 
