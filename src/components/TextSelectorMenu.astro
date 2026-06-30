@@ -59,6 +59,12 @@
     display: flex;
   }
 
+  @media (max-width: 768px) {
+    .text-format-popup {
+      display: none !important;
+    }
+  }
+
   :global(html.dark) .text-format-popup {
     background: rgba(24, 24, 27, 0.85);
     border-color: rgba(255, 255, 255, 0.08);
@@ -183,33 +189,21 @@
     color: rgb(252, 165, 165);
   }
 
-  /* Spring transitions for formatting removal during reset action */
-  :global(.format-bold),
-  :global(.format-italic),
-  :global(.format-size-h1),
-  :global(.format-size-h2),
-  :global(.format-size-h3) {
-    transition: font-weight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                font-size 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                font-style 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                line-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Smooth transitions for all formatted spans */
+  :global(.tf-span) {
+    transition: font-weight 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+                font-size 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+                font-style 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+                line-height 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+                opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+                background-color 0.25s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  :global(.format-resetting-active .format-bold) {
+  :global(.format-resetting-active .tf-span) {
     font-weight: inherit !important;
-  }
-
-  :global(.format-resetting-active .format-italic) {
     font-style: inherit !important;
-  }
-
-  :global(.format-resetting-active .format-size-h1),
-  :global(.format-resetting-active .format-size-h2),
-  :global(.format-resetting-active .format-size-h3) {
     font-size: inherit !important;
-    font-weight: inherit !important;
     line-height: inherit !important;
     transform: scale(0.96) translateY(2px) !important;
     opacity: 0.7 !important;
@@ -532,6 +526,35 @@
     return textNodes;
   }
 
+  // Trigger a smooth loop to reflow highlighters during transitions
+  function triggerSmoothHighlightReflow() {
+    const startTime = performance.now();
+    const duration = 400; // slightly longer than transition to ensure it settles
+
+    function step() {
+      for (const handle of activeHighlighters.values()) {
+        try {
+          handle.update({});
+        } catch (e) {
+          // ignore
+        }
+      }
+      const elapsed = performance.now() - startTime;
+      if (elapsed < duration) {
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Finalize formatting changes by saving and updating highlighters
+  function finalizeFormatChanges(range: Range) {
+    saveModifiedBlocks(range);
+    applyHighlighters();
+    clearActiveSelection();
+    triggerSmoothHighlightReflow();
+  }
+
   // Wrap selections
   function wrapRangeInSpan(range: Range, styleClass: string) {
     const textNodes = getTextNodesInRange(range);
@@ -541,6 +564,8 @@
     const startOffset = range.startOffset;
     const endContainer = range.endContainer;
     const endOffset = range.endOffset;
+
+    const spansToAnimate: HTMLSpanElement[] = [];
 
     textNodes.forEach(node => {
       const val = node.nodeValue || '';
@@ -560,8 +585,19 @@
       const parent = node.parentNode;
       if (!parent) return;
 
+      // Optimize: if parent is already a tf-span covering the selection, update it in-place
+      if (
+        (parent as HTMLElement).classList.contains('tf-span') &&
+        start === 0 &&
+        end === val.length &&
+        parent.childNodes.length === 1
+      ) {
+        (parent as HTMLElement).classList.add(styleClass);
+        return;
+      }
+
       const span = document.createElement('span');
-      span.className = styleClass;
+      span.className = `tf-span ${styleClass}`;
       span.textContent = selectedText;
 
       const beforeText = document.createTextNode(val.substring(0, start));
@@ -576,7 +612,13 @@
       }
 
       parent.removeChild(node);
+      spansToAnimate.push(span);
     });
+
+    // Force layout reflow to trigger transition
+    if (spansToAnimate.length > 0) {
+      spansToAnimate[0].offsetHeight;
+    }
   }
 
   // Remove styling class from range
@@ -589,19 +631,21 @@
     spans.forEach(span => {
       if (range.intersectsNode(span)) {
         span.classList.remove(className);
-        // If it has no styling class and no styling left, unwrap it
-        if (span.className === '' && !span.getAttribute('style')) {
-          const parent = span.parentNode;
-          if (parent) {
-            while (span.firstChild) {
-              parent.insertBefore(span.firstChild, span);
+        // If it has no styling class and no styling left, unwrap it after transition completes
+        if (span.className === 'tf-span' && !span.getAttribute('style')) {
+          setTimeout(() => {
+            if (span.className === 'tf-span' && !span.getAttribute('style') && span.parentNode) {
+              const parent = span.parentNode;
+              while (span.firstChild) {
+                parent.insertBefore(span.firstChild, span);
+              }
+              parent.removeChild(span);
+              parent.normalize();
             }
-            parent.removeChild(span);
-          }
+          }, 250);
         }
       }
     });
-    root.normalize();
   }
 
   // Toggle bold/italic format
@@ -624,15 +668,14 @@
       return false;
     });
 
+    const range = currentRange;
     if (hasClassAll) {
-      removeFormatClassInRange(currentRange, className);
+      removeFormatClassInRange(range, className);
     } else {
-      wrapRangeInSpan(currentRange, className);
+      wrapRangeInSpan(range, className);
     }
 
-    saveModifiedBlocks(currentRange);
-    applyHighlighters();
-    clearActiveSelection();
+    finalizeFormatChanges(range);
   }
 
   // Toggle highlighter highlight color
@@ -655,17 +698,16 @@
       return false;
     });
 
+    const range = currentRange;
     // Strip all highlight classes first (mutually exclusive)
     const hlClasses = ['format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green'];
-    hlClasses.forEach(cls => removeFormatClassInRange(currentRange!, cls));
+    hlClasses.forEach(cls => removeFormatClassInRange(range, cls));
 
     if (!hasClassAll) {
-      wrapRangeInSpan(currentRange, className);
+      wrapRangeInSpan(range, className);
     }
 
-    saveModifiedBlocks(currentRange);
-    applyHighlighters();
-    clearActiveSelection();
+    finalizeFormatChanges(range);
   }
 
   // Change font sizing class
@@ -674,17 +716,16 @@
 
     captureOriginalsBeforeEdit(currentRange);
 
+    const range = currentRange;
     // Strip existing sizes
     const sizeClasses = ['format-size-h1', 'format-size-h2', 'format-size-h3'];
-    sizeClasses.forEach(cls => removeFormatClassInRange(currentRange!, cls));
+    sizeClasses.forEach(cls => removeFormatClassInRange(range, cls));
 
     if (sizeClass) {
-      wrapRangeInSpan(currentRange, sizeClass);
+      wrapRangeInSpan(range, sizeClass);
     }
 
-    saveModifiedBlocks(currentRange);
-    applyHighlighters();
-    clearActiveSelection();
+    finalizeFormatChanges(range);
   }
 
   // Clear all formatting in range
@@ -693,16 +734,15 @@
 
     captureOriginalsBeforeEdit(currentRange);
 
+    const range = currentRange;
     const allFormatClasses = [
       'format-bold', 'format-italic',
       'format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green',
       'format-size-h1', 'format-size-h2', 'format-size-h3'
     ];
 
-    allFormatClasses.forEach(cls => removeFormatClassInRange(currentRange!, cls));
-    saveModifiedBlocks(currentRange);
-    applyHighlighters();
-    clearActiveSelection();
+    allFormatClasses.forEach(cls => removeFormatClassInRange(range, cls));
+    finalizeFormatChanges(range);
   }
 
   function clearActiveSelection() {
@@ -757,6 +797,12 @@
 
   // Selection detection triggers
   function handleSelectionCheck() {
+    // Disable on mobile/tablet screen sizes to avoid conflicting with native browser text selection popups
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      hidePopup();
+      return;
+    }
+
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
       hidePopup();
