@@ -448,6 +448,7 @@
     let opacities = new Float32Array(0);
     let lastFrameTime = 0;
     let lastSimulationTime = 0;
+    let lastNoiseTime = 0;
     let fillColor = "";
     let isVisible = false;
     let stopTimeout: any = null;
@@ -542,58 +543,69 @@
       const total = grid.length;
       if (total === 0) return;
 
-      if (rows < 4 || columns < 4) {
-        const numToSpawn = Math.max(1, Math.floor(total * 0.12));
-        for (let i = 0; i < numToSpawn; i++) {
-          const idx = Math.floor(Math.random() * total);
-          grid[idx] = 1;
-          opacities[idx] = Math.max(opacities[idx], 0.8);
+      const numShapes = Math.max(2, Math.floor(columns / 15));
+      for (let s = 0; s < numShapes; s++) {
+        if (rows < 4 || columns < 4) {
+          const numToSpawn = Math.max(1, Math.floor(total * 0.12));
+          for (let i = 0; i < numToSpawn; i++) {
+            const idx = Math.floor(Math.random() * total);
+            grid[idx] = 1;
+            opacities[idx] = Math.max(opacities[idx], 0.8);
+          }
+          continue;
         }
-        return;
+
+        const r = Math.floor(Math.random() * (rows - 3));
+        const c = Math.floor(Math.random() * (columns - 3));
+        const shapeIdx = Math.floor(Math.random() * 3);
+
+        if (shapeIdx === 0) {
+          // Glider
+          const rot = Math.floor(Math.random() * 4);
+          const gliders = [
+            [[0, 1], [1, 2], [2, 0], [2, 1], [2, 2]],
+            [[0, 1], [1, 0], [2, 0], [2, 1], [2, 2]],
+            [[0, 1], [1, 2], [2, 2], [2, 1], [2, 0]],
+            [[0, 1], [1, 0], [2, 2], [2, 1], [2, 0]]
+          ];
+          const shape = gliders[rot];
+          for (const [dr, dc] of shape) {
+            const idx = (r + dr) * columns + (c + dc);
+            if (idx >= 0 && idx < total) {
+              grid[idx] = 1;
+              opacities[idx] = Math.max(opacities[idx], 0.8);
+            }
+          }
+        } else if (shapeIdx === 1) {
+          // Blinker (oscillator)
+          const rot = Math.random() < 0.5;
+          const shape = rot ? [[0, 1], [1, 1], [2, 1]] : [[1, 0], [1, 1], [1, 2]];
+          for (const [dr, dc] of shape) {
+            const idx = (r + dr) * columns + (c + dc);
+            if (idx >= 0 && idx < total) {
+              grid[idx] = 1;
+              opacities[idx] = Math.max(opacities[idx], 0.8);
+            }
+          }
+        } else {
+          // Beacon (oscillator)
+          const shape = [[0, 0], [0, 1], [1, 0], [1, 1], [2, 2], [2, 3], [3, 2], [3, 3]];
+          for (const [dr, dc] of shape) {
+            const idx = ((r + dr) % rows) * columns + ((c + dc) % columns);
+            if (idx >= 0 && idx < total) {
+              grid[idx] = 1;
+              opacities[idx] = Math.max(opacities[idx], 0.8);
+            }
+          }
+        }
       }
 
-      const r = Math.floor(Math.random() * (rows - 3));
-      const c = Math.floor(Math.random() * (columns - 3));
-      const shapeIdx = Math.floor(Math.random() * 3);
-
-      if (shapeIdx === 0) {
-        // Glider
-        const rot = Math.floor(Math.random() * 4);
-        const gliders = [
-          [[0, 1], [1, 2], [2, 0], [2, 1], [2, 2]],
-          [[0, 1], [1, 0], [2, 0], [2, 1], [2, 2]],
-          [[0, 1], [1, 2], [2, 2], [2, 1], [2, 0]],
-          [[0, 1], [1, 0], [2, 2], [2, 1], [2, 0]]
-        ];
-        const shape = gliders[rot];
-        for (const [dr, dc] of shape) {
-          const idx = (r + dr) * columns + (c + dc);
-          if (idx >= 0 && idx < total) {
-            grid[idx] = 1;
-            opacities[idx] = Math.max(opacities[idx], 0.8);
-          }
-        }
-      } else if (shapeIdx === 1) {
-        // Blinker (oscillator)
-        const rot = Math.random() < 0.5;
-        const shape = rot ? [[0, 1], [1, 1], [2, 1]] : [[1, 0], [1, 1], [1, 2]];
-        for (const [dr, dc] of shape) {
-          const idx = (r + dr) * columns + (c + dc);
-          if (idx >= 0 && idx < total) {
-            grid[idx] = 1;
-            opacities[idx] = Math.max(opacities[idx], 0.8);
-          }
-        }
-      } else {
-        // Beacon (oscillator)
-        const shape = [[0, 0], [0, 1], [1, 0], [1, 1], [2, 2], [2, 3], [3, 2], [3, 3]];
-        for (const [dr, dc] of shape) {
-          const idx = ((r + dr) % rows) * columns + ((c + dc) % columns);
-          if (idx >= 0 && idx < total) {
-            grid[idx] = 1;
-            opacities[idx] = Math.max(opacities[idx], 0.8);
-          }
-        }
+      // Also spawn extra random individual cells (8% density) so the simulation remains full of squares
+      const extraSpawns = Math.floor(total * 0.08);
+      for (let i = 0; i < extraSpawns; i++) {
+        const idx = Math.floor(Math.random() * total);
+        grid[idx] = 1;
+        opacities[idx] = Math.max(opacities[idx], 0.8);
       }
     }
 
@@ -740,8 +752,11 @@
             if (grid[i] === 1) liveCount++;
           }
           const densityVal = liveCount / (grid.length || 1);
-          if (densityVal < 0.08) {
+          
+          // Inject noise if density is too low OR periodically every 1.5 seconds to keep it dynamic
+          if (densityVal < 0.08 || (time - lastNoiseTime > 1500)) {
             injectNoise();
+            lastNoiseTime = time;
           }
 
           lastSimulationTime = time;
@@ -810,11 +825,20 @@
             }
           }
         } else {
-          // Normal start: seed grid with current SVG blocks
+          // Normal start: seed grid with current SVG blocks and lots of random cells
           const targets = getSVGTargets();
+          grid.fill(0);
+          opacities.fill(0);
+
+          // Seed random cells first to make it look full of squares (30% density)
+          for (let i = 0; i < grid.length; i++) {
+            if (Math.random() < 0.3) {
+              grid[i] = 1;
+              opacities[i] = 1.0;
+            }
+          }
+
           if (targets.length > 0 && columns > 0 && rows > 0) {
-            grid.fill(0);
-            opacities.fill(0);
             for (const target of targets) {
               const col = Math.floor(target.x / cellSize);
               const row = Math.floor(target.y / cellSize);

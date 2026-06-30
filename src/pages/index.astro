@@ -1,7 +1,6 @@
 ---
 import { SITE_DESCRIPTION } from "../consts";
 import IndexLayout from "../layouts/IndexLayout.astro";
-import GradientShimmer from "../components/GradientShimmer.astro";
 ---
 
 <IndexLayout title="Farooq Q." description={SITE_DESCRIPTION}>
@@ -23,7 +22,8 @@ import GradientShimmer from "../components/GradientShimmer.astro";
           target="_blank"
           rel="noopener">Halifax-class Modernization</a
         > effort.
-        <p data-stagger="2">
+      </p>
+      <p data-stagger="2">
           Before this, I led the team behind <a
             href="https://2026.uottahack.ca/"
             target="_blank"
@@ -36,9 +36,9 @@ import GradientShimmer from "../components/GradientShimmer.astro";
           mixed-signal systems and signal conditioning circuits.
         </p>
         <p data-stagger="4">
-          In my free time, I <a href="/other/books">read</a>, <a href="/writing"
+          In my free time, I <a href="/other/books" target="_blank" rel="noopener">read</a>, <a href="/writing" target="_blank" rel="noopener"
             >write</a
-          > and love <GradientShimmer duration={2.2} angle={135}>design engineering</GradientShimmer>.
+          > and love design engineering.
         </p>
         <p data-stagger="5">
           I'm currently reading <em>The Fifth Risk</em> by Michael Lewis. I last
@@ -65,7 +65,6 @@ import GradientShimmer from "../components/GradientShimmer.astro";
         <p data-stagger="7">
           This page was last updated on May 20. Thank you for stopping by.
         </p>
-      </p>
     </article>
 
     <style>

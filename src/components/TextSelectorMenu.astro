@@ -54,9 +54,13 @@
     -webkit-backdrop-filter: blur(16px);
     transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     transform: scale(0.96) translateY(4px);
-    pointer-events: auto;
+    pointer-events: none;
     opacity: 0;
     display: flex;
+  }
+
+  .text-format-popup.hidden {
+    display: none !important;
   }
 
   @media (max-width: 768px) {
@@ -77,6 +81,7 @@
   .text-format-popup.visible {
     opacity: 1;
     transform: scale(1) translateY(0);
+    pointer-events: auto;
   }
 
   .tf-row {
@@ -205,8 +210,9 @@
     font-style: inherit !important;
     font-size: inherit !important;
     line-height: inherit !important;
-    transform: scale(0.96) translateY(2px) !important;
-    opacity: 0.7 !important;
+    transform: none !important;
+    opacity: 1 !important;
+    background-color: transparent !important;
   }
 </style>
 
@@ -229,6 +235,26 @@
 
     const pageAnnotations = annotations[pathname];
     if (!pageAnnotations) return;
+
+    // Proactive Cache Sanitization: If saved HTML has pointer-events: none or GradientShimmer, discard and clear the cache
+    let hasCorruptedCache = false;
+    Object.values(pageAnnotations).forEach(html => {
+      if (html.includes('pointer-events: none') || html.includes('GradientShimmer') || html.includes('data-gradient-shimmer')) {
+        hasCorruptedCache = true;
+      }
+    });
+
+    if (hasCorruptedCache) {
+      delete annotations[pathname];
+      try {
+        localStorage.setItem('text-annotations:v1', JSON.stringify(annotations));
+        let originals = JSON.parse(localStorage.getItem('text-annotations-originals:v1') || '{}');
+        delete originals[pathname];
+        localStorage.setItem('text-annotations-originals:v1', JSON.stringify(originals));
+      } catch (e) {}
+      updateResetButtonVisibility();
+      return;
+    }
 
     Object.keys(pageAnnotations).forEach(selector => {
       try {
@@ -911,6 +937,7 @@
       resetBtn.addEventListener('click', () => {
         // 1. Add active class to initiate spring-based text shrink/fade animations
         document.body.classList.add('format-resetting-active');
+        triggerSmoothHighlightReflow();
 
         // 2. Locate and smoothly wipe/fade out the @highlighters/core overlays
         const overlays = document.querySelectorAll('[data-highlighters-overlay]');
