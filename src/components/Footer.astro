@@ -2,7 +2,7 @@
 
 ---
 
-<footer class="mt-8 pt-4 pb-6 px-0 relative overflow-hidden group rounded-xl">
+<footer class="mt-8 pt-4 pb-6 px-0 relative overflow-hidden group">
   <canvas id="footer-game-of-life-canvas" class="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-0 transition-opacity duration-300"></canvas>
   <p class="text-sm text-zinc-500 dark:text-zinc-400 relative z-10 m-0">
     It's <span
@@ -434,13 +434,11 @@
 
     const cellSize = 8;
     const gap = 1;
-    const cellRadius = 1.5;
     const density = 0.32;
     const stepInterval = 140;
     const fadeDuration = 220;
     const maxOpacity = 0.16;
 
-    let animationFrameId = 0;
     let columns = 0;
     let rows = 0;
     let grid = new Uint8Array(0);
@@ -460,6 +458,7 @@
     const gatherDuration = 350;
 
     const svg = canvas.closest("footer")?.querySelector("#footer-svg-icon") as HTMLElement | null;
+    const footer = canvas.closest("footer");
 
     const drawSize = Math.max(1, cellSize - gap);
 
@@ -637,14 +636,9 @@
             ctx.globalAlpha = opacity * maxOpacity;
             const x = c * cellSize;
             const y = r * cellSize;
-            const radius = Math.min(cellRadius, drawSize / 2);
-            if (radius > 0 && "roundRect" in ctx) {
-              ctx.beginPath();
-              ctx.roundRect(x, y, drawSize, drawSize, radius);
-              ctx.fill();
-            } else {
-              ctx.fillRect(x, y, drawSize, drawSize);
-            }
+            
+            // Draw clean sharp squares instead of rounded rectangles
+            ctx.fillRect(x, y, drawSize, drawSize);
           }
           idx++;
         }
@@ -668,14 +662,9 @@
             ctx.globalAlpha = opacity * maxOpacity * (1 - t);
             const x = c * cellSize;
             const y = r * cellSize;
-            const radius = Math.min(cellRadius, drawSize / 2);
-            if (radius > 0 && "roundRect" in ctx) {
-              ctx.beginPath();
-              ctx.roundRect(x, y, drawSize, drawSize, radius);
-              ctx.fill();
-            } else {
-              ctx.fillRect(x, y, drawSize, drawSize);
-            }
+            
+            // Draw clean sharp squares
+            ctx.fillRect(x, y, drawSize, drawSize);
           }
           idx++;
         }
@@ -688,14 +677,9 @@
         const py = p.startY + (p.targetY - p.startY) * t;
         const x = px - drawSize / 2;
         const y = py - drawSize / 2;
-        const radius = Math.min(cellRadius, drawSize / 2);
-        if (radius > 0 && "roundRect" in ctx) {
-          ctx.beginPath();
-          ctx.roundRect(x, y, drawSize, drawSize, radius);
-          ctx.fill();
-        } else {
-          ctx.fillRect(x, y, drawSize, drawSize);
-        }
+        
+        // Draw clean sharp squares
+        ctx.fillRect(x, y, drawSize, drawSize);
       }
       ctx.globalAlpha = 1;
     }
@@ -718,10 +702,7 @@
     }
 
     function loop(time: number) {
-      if (!isVisible) {
-        animationFrameId = 0;
-        return;
-      }
+      if (!isVisible || !canvas.isConnected) return;
       if (!lastFrameTime) {
         lastFrameTime = time;
         lastSimulationTime = time;
@@ -753,7 +734,6 @@
           }
           const densityVal = liveCount / (grid.length || 1);
           
-          // Inject noise if density is too low OR periodically every 1.5 seconds to keep it dynamic
           if (densityVal < 0.08 || (time - lastNoiseTime > 1500)) {
             injectNoise();
             lastNoiseTime = time;
@@ -764,20 +744,49 @@
         updateOpacities(deltaTime);
         draw();
       }
-      animationFrameId = window.requestAnimationFrame(loop);
+      window.requestAnimationFrame(loop);
     }
 
     function startLoop() {
-      if (animationFrameId || !isVisible) return;
+      if (!isVisible) return;
       lastFrameTime = 0;
       lastSimulationTime = 0;
-      animationFrameId = window.requestAnimationFrame(loop);
+      window.requestAnimationFrame(loop);
     }
 
     function stopLoop() {
-      if (animationFrameId) {
-        window.cancelAnimationFrame(animationFrameId);
-        animationFrameId = 0;
+      // Checked dynamically in loop via isVisible flag
+    }
+
+    // Pointer Draw Handler
+    function handlePointerDraw(clientX: number, clientY: number) {
+      if (!isVisible || isGathering || columns === 0 || rows === 0) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx = clientX - rect.left;
+      const my = clientY - rect.top;
+
+      const col = Math.floor(mx / cellSize);
+      const row = Math.floor(my / cellSize);
+
+      if (col >= 0 && col < columns && row >= 0 && row < rows) {
+        // Spawn active cluster
+        const idx = row * columns + col;
+        grid[idx] = 1;
+        opacities[idx] = 1.0;
+
+        // Spawn 4 immediate neighbors to ensure cluster survival
+        const neighbors = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+        for (const [dr, dc] of neighbors) {
+          const r = row + dr;
+          const c = col + dc;
+          if (r >= 0 && r < rows && c >= 0 && c < columns) {
+            const nIdx = r * columns + c;
+            if (Math.random() < 0.65) {
+              grid[nIdx] = 1;
+              opacities[nIdx] = 1.0;
+            }
+          }
+        }
       }
     }
 
@@ -796,6 +805,18 @@
       }
     });
     observer.observe(document.documentElement, { attributeFilter: ["class", "style"] });
+
+    // Attach Pointer drawing event listeners to footer element
+    if (footer) {
+      footer.addEventListener("mousemove", (e) => {
+        handlePointerDraw(e.clientX, e.clientY);
+      });
+      footer.addEventListener("touchmove", (e) => {
+        if (e.touches && e.touches[0]) {
+          handlePointerDraw(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: true });
+    }
 
     return {
       start: () => {
@@ -912,7 +933,6 @@
           }
         }
 
-        // Clear grid active state so only the morphing cells show at their dynamic positions
         grid.fill(0);
 
         if (svg) svg.style.opacity = "0.6";
@@ -948,4 +968,6 @@
   } else {
     init();
   }
+
+  document.addEventListener("astro:after-swap", init);
 </script>

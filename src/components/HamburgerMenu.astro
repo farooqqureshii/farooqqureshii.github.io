@@ -27,14 +27,16 @@
     color: inherit;
     position: relative;
     z-index: 1;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
+    transition:
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.12s ease;
   }
 
   /* When open, visually hide the hamburger and rotate it */
   .hamburger-btn[aria-expanded="true"] {
     pointer-events: none;
     opacity: 0.01;
-    transform: scale(0.98) rotate(135deg);
+    transform: scale(0.98) rotate(-45deg);
   }
 
   .h-bar {
@@ -43,7 +45,9 @@
     left: 50%;
     background: currentColor;
     border-radius: 2px;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    transition:
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.25s ease;
   }
 
   /* Horizontal bar of the + */
@@ -62,11 +66,28 @@
 </style>
 
 <script>
+  let currentToggleHandler: ((e: Event) => void) | null = null;
+
   function initHamburger() {
+    // If there's an existing handler from a previous page view, clean it up
+    if (currentToggleHandler) {
+      document.removeEventListener(
+        "toggle-hamburger-menu",
+        currentToggleHandler,
+      );
+      currentToggleHandler = null;
+    }
+
     const btn = document.getElementById(
       "hamburger-btn",
     ) as HTMLButtonElement | null;
     if (!btn) return;
+
+    // Clean up any existing overlay to prevent duplicates
+    const existingOverlay = document.getElementById("menu-overlay");
+    if (existingOverlay) {
+      existingOverlay.remove();
+    }
 
     const overlay = document.createElement("div");
     overlay.id = "menu-overlay";
@@ -94,194 +115,201 @@
       </div>
     `;
 
-    const style = document.createElement("style");
-    style.textContent = `
-      #menu-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 10000;
-        background: inherit;
-        color: #e4e4e7;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.12s ease, visibility 0s linear 0.12s;
-      }
-      html:not(.dark) #menu-overlay {
-        color: #111111;
-      }
-      #menu-overlay.open {
-        opacity: 1;
-        visibility: visible;
-        transition: opacity 0.12s ease, visibility 0s linear 0s;
-      }
-      #menu-overlay.closing {
-        opacity: 0;
-        transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0.04s, visibility 0s linear 0.24s;
-      }
+    // Avoid appending duplicate style tags to the head
+    if (!document.getElementById("hamburger-menu-styles")) {
+      const style = document.createElement("style");
+      style.id = "hamburger-menu-styles";
+      style.textContent = `
+        #menu-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 10000;
+          background: #ffffff;
+          color: #e4e4e7;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.12s ease, visibility 0s linear 0.12s;
+        }
+        html:not(.dark) #menu-overlay {
+          color: #111111;
+        }
+        html.dark #menu-overlay {
+          background: #1a1a1a;
+        }
+        #menu-overlay.open {
+          opacity: 1;
+          visibility: visible;
+          transition: opacity 0.12s ease, visibility 0s linear 0s;
+        }
+        #menu-overlay.closing {
+          opacity: 0;
+          transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0.04s, visibility 0s linear 0.24s;
+        }
 
-      /* Close X — positioned by JS to overlay the hamburger */
-      .mo-close {
-        position: fixed;
-        width: 18px;
-        height: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        z-index: 10001;
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
-      }
-      .mc-bar {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        background: #111;
-        border-radius: 2px;
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      html.dark .mc-bar { background: #e4e4e7; }
-      
-      .mo-close .mc-bar:nth-child(1) {
-        width: 16px;
-        height: 1.5px;
-        transform: translate(-50%, -50%);
-      }
-      .mo-close .mc-bar:nth-child(2) {
-        width: 1.5px;
-        height: 16px;
-        transform: translate(-50%, -50%);
-      }
-      .mo-close.active {
-        transform: rotate(135deg);
-      }
+        /* Close X — positioned by JS to overlay the hamburger */
+        .mo-close {
+          position: fixed;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          z-index: 10001;
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
+        }
+        .mc-bar {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          background: #111;
+          border-radius: 2px;
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        html.dark .mc-bar { background: #e4e4e7; }
+        
+        .mo-close .mc-bar:nth-child(1) {
+          width: 16px;
+          height: 1.5px;
+          transform: translate(-50%, -50%);
+        }
+        .mo-close .mc-bar:nth-child(2) {
+          width: 1.5px;
+          height: 16px;
+          transform: translate(-50%, -50%);
+        }
+        .mo-close.active {
+          transform: rotate(-45deg);
+        }
 
-      .mo-inner {
-        width: 100%;
-        max-width: 600px;
-        padding: 2.5rem 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2rem;
-        transform: translateY(0) scale(1);
-        opacity: 1;
-        transition:
-          transform 0.24s cubic-bezier(0.23, 1, 0.32, 1),
-          opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-      }
-      .mo-nav {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-      }
-      .mo-link {
-        font-size: 2.25rem;
-        font-weight: 400;
-        letter-spacing: -0.03em;
-        color: inherit;
-        text-decoration: none;
-        line-height: 1.35;
-        opacity: 0;
-        position: relative;
-        will-change: opacity, transform;
-        transform: translateY(6px);
-        transition:
-          opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1),
-          transform 0.18s cubic-bezier(0.23, 1, 0.32, 1);
-      }
-      .mo-link::after,
-      .mo-action-btn::after {
-        display: none !important;
-      }
+        .mo-inner {
+          width: 100%;
+          max-width: 600px;
+          padding: 2.5rem 2rem;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 2rem;
+          transform: translateY(0) scale(1);
+          opacity: 1;
+          transition:
+            transform 0.24s cubic-bezier(0.23, 1, 0.32, 1),
+            opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .mo-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+        }
+        .mo-link {
+          font-size: 2.25rem;
+          font-weight: 400;
+          letter-spacing: -0.03em;
+          color: inherit;
+          text-decoration: none;
+          line-height: 1.35;
+          opacity: 0;
+          position: relative;
+          will-change: opacity, transform;
+          transform: translateY(6px);
+          transition:
+            opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1),
+            transform 0.18s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .mo-link::after,
+        .mo-action-btn::after {
+          display: none !important;
+        }
 
-      /* Enter: one clean composed motion */
-      #menu-overlay.open .mo-inner {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      #menu-overlay.open .mo-link,
-      #menu-overlay.open .mo-action-btn {
-        opacity: 1;
-        transform: translateY(0);
-      }
+        /* Enter: one clean composed motion */
+        #menu-overlay.open .mo-inner {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        #menu-overlay.open .mo-link,
+        #menu-overlay.open .mo-action-btn {
+          opacity: 1;
+          transform: translateY(0);
+        }
 
-      #menu-overlay.closing .mo-inner {
-        transform: translateY(8px) scale(0.988);
-        opacity: 0;
-      }
-      #menu-overlay.closing .mo-link,
-      #menu-overlay.closing .mo-action-btn {
-        opacity: 0;
-        transform: translateY(6px);
-      }
+        #menu-overlay.closing .mo-inner {
+          transform: translateY(8px) scale(0.988);
+          opacity: 0;
+        }
+        #menu-overlay.closing .mo-link,
+        #menu-overlay.closing .mo-action-btn {
+          opacity: 0;
+          transform: translateY(6px);
+        }
 
-      #menu-overlay:not(.open):not(.closing) .mo-link,
-      #menu-overlay:not(.open):not(.closing) .mo-action-btn {
-        opacity: 0 !important;
-        animation: none !important;
-        transform: translateY(6px) !important;
-      }
+        #menu-overlay:not(.open):not(.closing) .mo-link,
+        #menu-overlay:not(.open):not(.closing) .mo-action-btn {
+          opacity: 0 !important;
+          animation: none !important;
+          transform: translateY(6px) !important;
+        }
 
-      /* Flashlight effect overrides — ensure smooth opacity transition beats animation fill */
-      .mo-inner.flashlight-hover .flashlight-item {
-        transition: opacity 0.18s ease-out, transform 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
-      }
-      .mo-inner.flashlight-hover.active .flashlight-item {
-        opacity: 0.25 !important;
-      }
-      .mo-inner.flashlight-hover.active .flashlight-item.hovered {
-        opacity: 1 !important;
-        transform: translateX(6px) !important;
-      }
+        /* Flashlight effect overrides — ensure smooth opacity transition beats animation fill */
+        .mo-inner.flashlight-hover .flashlight-item {
+          transition: opacity 0.18s ease-out, transform 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .mo-inner.flashlight-hover.active .flashlight-item {
+          opacity: 0.25 !important;
+        }
+        .mo-inner.flashlight-hover.active .flashlight-item.hovered {
+          opacity: 1 !important;
+          transform: translateX(6px) !important;
+        }
 
-      .mo-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-      }
-      .mo-action-btn {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        color: inherit;
-        font-size: 2.25rem;
-        font-weight: 400;
-        letter-spacing: -0.03em;
-        font-family: inherit;
-        padding: 0;
-        line-height: 1.35;
-        display: block;
-        text-align: left;
-        position: relative;
-        opacity: 0;
-        will-change: opacity, transform;
-        transform: translateY(6px);
-        transition:
-          opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1),
-          transform 0.18s cubic-bezier(0.23, 1, 0.32, 1);
-        -webkit-font-smoothing: antialiased;
-      }
-      #menu-theme-label,
-      #menu-sound-label {
-        display: inline-block;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        will-change: opacity, transform;
-        font-weight: 400;
-        color: inherit;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-      }
-    `;
+        .mo-actions {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0;
+        }
+        .mo-action-btn {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          color: inherit;
+          font-size: 2.25rem;
+          font-weight: 400;
+          letter-spacing: -0.03em;
+          font-family: inherit;
+          padding: 0;
+          line-height: 1.35;
+          display: block;
+          text-align: left;
+          position: relative;
+          opacity: 0;
+          will-change: opacity, transform;
+          transform: translateY(6px);
+          transition:
+            opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1),
+            transform 0.18s cubic-bezier(0.23, 1, 0.32, 1);
+          -webkit-font-smoothing: antialiased;
+        }
+        #menu-theme-label,
+        #menu-sound-label {
+          display: inline-block;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+          will-change: opacity, transform;
+          font-weight: 400;
+          color: inherit;
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
+        }
+      `;
+      document.head.appendChild(style);
+    }
 
-    document.head.appendChild(style);
     document.body.appendChild(overlay);
 
     // Init flashlight effect for the menu nav
@@ -309,19 +337,19 @@
         "#menu-close",
       ) as HTMLElement | null;
       if (!closeBtn || !btn) return;
-      
+
       // Temporarily strip transform by toggling aria-expanded to get clean layout bounds
       const isExpanded = btn.getAttribute("aria-expanded") === "true";
       if (isExpanded) {
         btn.setAttribute("aria-expanded", "false");
       }
-      
+
       const r = btn.getBoundingClientRect();
-      
+
       if (isExpanded) {
         btn.setAttribute("aria-expanded", "true");
       }
-      
+
       // position: fixed uses viewport coordinates, so r.top/left are correct
       closeBtn.style.top = r.top + "px";
       closeBtn.style.left = r.left + "px";
@@ -363,11 +391,32 @@
     function updateSoundLabel() {
       const label = document.getElementById("menu-sound-label");
       if (!label) return;
-      label.textContent = localStorage.sound === "off" ? "Sound: Off" : "Sound: On";
+      label.textContent =
+        localStorage.sound === "off" ? "Sound: Off" : "Sound: On";
     }
 
     const menuEls = () =>
       overlay.querySelectorAll<HTMLElement>(".mo-link, .mo-action-btn");
+
+    // Dynamic global listener cleanup/setup to prevent memory leaks and duplicate listeners
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu();
+    };
+
+    const handleResize = () => {
+      requestAnimationFrame(() => positionCloseBtn());
+    };
+
+    const handleOrientation = () => {
+      requestAnimationFrame(() => positionCloseBtn());
+    };
+
+    function cleanupGlobalListeners() {
+      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleOrientation);
+      document.removeEventListener("astro:before-swap", cleanupGlobalListeners);
+    }
 
     function openMenu() {
       // Position the close button synchronously before we apply any transformation
@@ -383,12 +432,20 @@
         el.style.transitionDelay = `${index * 30}ms`;
       });
       // Prevent layout shift by locking scroll and compensating for scrollbar width
-      const scrollBarComp = window.innerWidth - document.documentElement.clientWidth;
-      if (scrollBarComp > 0) document.body.style.paddingRight = scrollBarComp + "px";
+      const scrollBarComp =
+        window.innerWidth - document.documentElement.clientWidth;
+      if (scrollBarComp > 0)
+        document.body.style.paddingRight = scrollBarComp + "px";
       document.body.style.overflow = "hidden";
       overlay.classList.remove("closing");
       overlay.classList.add("open");
-      
+
+      // Add global listeners when menu is opened
+      document.addEventListener("keydown", handleKeyDown);
+      window.addEventListener("resize", handleResize);
+      window.addEventListener("orientationchange", handleOrientation);
+      document.addEventListener("astro:before-swap", cleanupGlobalListeners);
+
       // After the menu settles, strip inline animation fill so hover transitions work freely
       setTimeout(() => {
         menuEls().forEach((el) => {
@@ -430,6 +487,9 @@
       btn?.setAttribute("aria-expanded", "false");
       overlay.setAttribute("aria-hidden", "true");
 
+      // Clean up global listeners when menu is closed
+      cleanupGlobalListeners();
+
       // Step 3: cleanup once the panel transition has finished
       setTimeout(() => {
         overlay.classList.remove("closing");
@@ -460,19 +520,29 @@
       .querySelector("#menu-sound-toggle")
       ?.addEventListener("click", toggleSound);
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && overlay.classList.contains("open")) closeMenu();
-    });
-    // Reposition the close button if viewport changes while open (orientation/resize)
-    window.addEventListener("resize", () => {
-      if (overlay.classList.contains("open")) requestAnimationFrame(() => positionCloseBtn());
-    });
-    window.addEventListener("orientationchange", () => {
-      if (overlay.classList.contains("open")) requestAnimationFrame(() => positionCloseBtn());
-    });
+    // Set up custom event trigger handler for the hamburger menu
+    currentToggleHandler = (e: Event) => {
+      const customEvent = e as CustomEvent<{
+        action?: "open" | "close" | "toggle";
+      }>;
+      const action = customEvent.detail?.action;
+      if (action === "open") {
+        openMenu();
+      } else if (action === "close") {
+        closeMenu();
+      } else {
+        overlay.classList.contains("open") ? closeMenu() : openMenu();
+      }
+    };
+    document.addEventListener("toggle-hamburger-menu", currentToggleHandler);
   }
 
-  document.addEventListener("DOMContentLoaded", initHamburger);
+  // Use defensive readyState check to ensure init runs immediately if DOMContentLoaded has already fired
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHamburger);
+  } else {
+    initHamburger();
+  }
   // Support Astro view transitions
   document.addEventListener("astro:after-swap", initHamburger);
 </script>

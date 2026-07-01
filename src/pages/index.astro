@@ -24,47 +24,53 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         > effort.
       </p>
       <p data-stagger="2">
-          Before this, I led the team behind <a
-            href="https://2026.uottahack.ca/"
-            target="_blank"
-            rel="noopener">uOttaHack</a
-          >. Before that, I debated competitively internationally and now coach.
-        </p>
-        <p data-stagger="3">
-          I'm interested in analog IC and semiconductor device design.
-          Particularly CMOS technology, transistor-level circuit design,
-          mixed-signal systems and signal conditioning circuits.
-        </p>
-        <p data-stagger="4">
-          In my free time, I <a href="/other/books" target="_blank" rel="noopener">read</a>, <a href="/writing" target="_blank" rel="noopener"
-            >write</a
-          > and love design engineering.
-        </p>
-        <p data-stagger="5">
-          I'm currently reading <em>The Fifth Risk</em> by Michael Lewis. I last
-          listened to <a
-            href="#"
-            id="spotify-last-song-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            ><span id="spotify-last-song">a song</span></a
-          > by <span id="spotify-last-artist">an artist</span>.
-        </p>
-        <p data-stagger="6">
-          Please feel free to <a href="#" id="look-around-btn">look around</a>,
-          say <a href="mailto:farooq.qureshi@outlook.com">hi</a>, browse my <a
-            href="https://www.cosmos.so/farooqqureshi"
-            target="_blank"
-            rel="noopener">saves</a
-          >, or view my <a
-            href="https://linkedin.com/in/farooqq"
-            target="_blank"
-            rel="noopener">experience</a
-          >.
-        </p>
-        <p data-stagger="7">
-          This page was last updated on May 20. Thank you for stopping by.
-        </p>
+        Before this, I led the team behind <a
+          href="https://2026.uottahack.ca/"
+          target="_blank"
+          rel="noopener">uOttaHack</a
+        >. Before that, I debated competitively internationally and now coach.
+      </p>
+      <p data-stagger="3">
+        I'm interested in power electronics and energy conversion systems.
+        Particularly DC-DC and AC-DC converter design and switching regulator
+        topologies.
+      </p>
+      <p data-stagger="4">
+        In my free time, I <a href="/other/books" target="_blank" rel="noopener"
+          >read</a
+        >, <a href="/writing" target="_blank" rel="noopener">write</a> and love design
+        engineering.
+      </p>
+      <p data-stagger="5">
+        I'm currently reading <em>The Fifth Risk</em> by Michael Lewis. I last listened
+        to <a
+          href="#"
+          id="spotify-last-song-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span id="spotify-last-song">a song</span></a
+        > by <span id="spotify-last-artist">an artist</span>.
+      </p>
+      <p data-stagger="6">
+        Please feel free to <a href="#" id="look-around-btn">look around</a>,
+        say <span class="email-revealer"
+          ><a href="mailto:farooq.qureshi@outlook.com" id="say-hi-btn">hi</a
+          ><span class="email-tooltip" id="email-tooltip"
+            >farooq.qureshi@outlook.com</span
+          ></span
+        >, browse my <a
+          href="https://www.cosmos.so/farooqqureshi"
+          target="_blank"
+          rel="noopener">saves</a
+        >, or view my <a
+          href="https://linkedin.com/in/farooqq"
+          target="_blank"
+          rel="noopener">experience</a
+        >.
+      </p>
+      <p data-stagger="7">
+        This page was last updated on May 20. Thank you for stopping by.
+      </p>
     </article>
 
     <style>
@@ -105,6 +111,73 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       }
       .index-content [data-stagger="7"] {
         animation-delay: 400ms;
+      }
+
+      .email-revealer {
+        position: relative;
+        display: inline-block;
+      }
+
+      #say-hi-btn {
+        display: inline-block;
+        transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+        transform-origin: center;
+      }
+
+      #say-hi-btn:active {
+        transform: scale(0.92);
+      }
+
+      .email-tooltip {
+        position: absolute;
+        bottom: 140%;
+        left: 50%;
+        transform: translateX(-50%) translateY(4px) scale(0.96);
+        background: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: #18181b; /* zinc-900 */
+        padding: 6px 10px;
+        border-radius: 8px; /* Rounded corners */
+        font-size: 0.76rem;
+        font-family: inherit; /* Same font as page body */
+        font-weight: 500;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 150ms cubic-bezier(0.16, 1, 0.3, 1),
+          transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+        white-space: nowrap;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        z-index: 100;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-sizing: border-box;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      html.dark .email-tooltip {
+        background: rgba(24, 24, 27, 0.76);
+        color: #f4f4f5; /* zinc-100 */
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      /* Hover states on devices that support hover */
+      @media (hover: hover) and (pointer: fine) {
+        .email-revealer:hover .email-tooltip {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0) scale(1);
+        }
+      }
+
+      .email-tooltip.show-active {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+
+      .email-tooltip.fade-out {
+        opacity: 0 !important;
+        transform: translateX(-50%) translateY(4px) scale(0.96) !important;
       }
     </style>
     <script>
@@ -152,14 +225,84 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         }
       }
 
-      document
-        .getElementById("look-around-btn")
-        ?.addEventListener("click", (e) => {
-          e.preventDefault();
-          document.getElementById("hamburger-btn")?.click();
-        });
+      function initIndexPage() {
+        // Look Around Button Handler
+        const lookAroundBtn = document.getElementById("look-around-btn");
+        if (lookAroundBtn) {
+          const handleLookAround = (e: Event) => {
+            e.preventDefault();
+            if (document.getElementById("menu-overlay")) {
+              document.dispatchEvent(
+                new CustomEvent("toggle-hamburger-menu", {
+                  detail: { action: "open" },
+                }),
+              );
+            } else {
+              const burger = document.getElementById("hamburger-btn");
+              if (burger) {
+                burger.click();
+              }
+            }
+          };
 
-      updateSpotifyTrack();
+          lookAroundBtn.addEventListener("click", handleLookAround);
+          lookAroundBtn.addEventListener("touchstart", handleLookAround, {
+            passive: false,
+          });
+        }
+
+        // Say Hi Copy Tooltip Handler
+        const sayHiBtn = document.getElementById("say-hi-btn");
+        const tooltip = document.getElementById("email-tooltip");
+        const email = "farooq.qureshi@outlook.com";
+        let isTransitioning = false;
+
+        if (sayHiBtn && tooltip) {
+          sayHiBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            // 1. Attempt clipboard copy
+            try {
+              await navigator.clipboard.writeText(email);
+            } catch (err) {
+              console.error("Could not copy email:", err);
+            }
+
+            // 2. Trigger visual transition (fade out, swap text, fade in)
+            tooltip.classList.add("fade-out");
+            tooltip.classList.add("show-active");
+
+            setTimeout(() => {
+              tooltip.textContent = "Copied!";
+              tooltip.classList.remove("fade-out");
+            }, 150);
+
+            // 3. Restore back to email text after delay
+            setTimeout(() => {
+              tooltip.classList.add("fade-out");
+
+              setTimeout(() => {
+                tooltip.textContent = email;
+                tooltip.classList.remove("fade-out");
+                tooltip.classList.remove("show-active");
+                isTransitioning = false;
+              }, 150);
+            }, 2000);
+          });
+        }
+
+        updateSpotifyTrack();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initIndexPage);
+      } else {
+        initIndexPage();
+      }
+
+      document.addEventListener("astro:after-swap", initIndexPage);
     </script>
   </main>
 </IndexLayout>

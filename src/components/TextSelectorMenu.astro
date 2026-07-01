@@ -11,28 +11,77 @@
     <button type="button" class="tf-btn" id="tf-btn-italic" title="Italic">
       <span style="font-style: italic; font-family: Georgia, serif;">I</span>
     </button>
-    
+
     <div class="tf-divider"></div>
-    
+
     <!-- Color Swatches -->
-    <button type="button" class="tf-swatch tf-swatch-pink" id="tf-swatch-pink" title="Pink highlight" data-color="pink"></button>
-    <button type="button" class="tf-swatch tf-swatch-yellow" id="tf-swatch-yellow" title="Yellow highlight" data-color="yellow"></button>
-    <button type="button" class="tf-swatch tf-swatch-blue" id="tf-swatch-blue" title="Blue highlight" data-color="blue"></button>
-    <button type="button" class="tf-swatch tf-swatch-green" id="tf-swatch-green" title="Green highlight" data-color="green"></button>
-    
+    <button
+      type="button"
+      class="tf-swatch tf-swatch-pink"
+      id="tf-swatch-pink"
+      title="Pink highlight"
+      data-color="pink"></button>
+    <button
+      type="button"
+      class="tf-swatch tf-swatch-yellow"
+      id="tf-swatch-yellow"
+      title="Yellow highlight"
+      data-color="yellow"></button>
+    <button
+      type="button"
+      class="tf-swatch tf-swatch-blue"
+      id="tf-swatch-blue"
+      title="Blue highlight"
+      data-color="blue"></button>
+    <button
+      type="button"
+      class="tf-swatch tf-swatch-green"
+      id="tf-swatch-green"
+      title="Green highlight"
+      data-color="green"></button>
+
     <div class="tf-divider"></div>
-    
+
     <!-- Sizing buttons -->
-    <button type="button" class="tf-btn tf-size-btn" id="tf-btn-h1" title="Heading 1 size">H1</button>
-    <button type="button" class="tf-btn tf-size-btn" id="tf-btn-h2" title="Heading 2 size">H2</button>
-    <button type="button" class="tf-btn tf-size-btn" id="tf-btn-h3" title="Heading 3 size">H3</button>
-    
+    <button
+      type="button"
+      class="tf-btn tf-size-btn"
+      id="tf-btn-h1"
+      title="Heading 1 size">H1</button
+    >
+    <button
+      type="button"
+      class="tf-btn tf-size-btn"
+      id="tf-btn-h2"
+      title="Heading 2 size">H2</button
+    >
+    <button
+      type="button"
+      class="tf-btn tf-size-btn"
+      id="tf-btn-h3"
+      title="Heading 3 size">H3</button
+    >
+
     <div class="tf-divider"></div>
-    
+
     <!-- Clear formatting button -->
-    <button type="button" class="tf-btn tf-btn-clear" id="tf-btn-clear" title="Clear formatting">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-        <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 13M17 17L20 20" />
+    <button
+      type="button"
+      class="tf-btn tf-btn-clear"
+      id="tf-btn-clear"
+      title="Clear formatting"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-4 w-4"
+      >
+        <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 13M17 17L20 20"
+        ></path>
       </svg>
     </button>
   </div>
@@ -46,13 +95,15 @@
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     padding: 6px;
-    box-shadow: 
+    box-shadow:
       0 12px 32px -4px rgba(0, 0, 0, 0.1),
       0 4px 12px -2px rgba(0, 0, 0, 0.05),
       0 0 0 1px rgba(0, 0, 0, 0.02);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     transform: scale(0.96) translateY(4px);
     pointer-events: none;
     opacity: 0;
@@ -72,7 +123,7 @@
   :global(html.dark) .text-format-popup {
     background: rgba(24, 24, 27, 0.85);
     border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 
+    box-shadow:
       0 12px 32px -4px rgba(0, 0, 0, 0.28),
       0 4px 12px -2px rgba(0, 0, 0, 0.16),
       0 0 0 1px rgba(255, 255, 255, 0.02);
@@ -104,7 +155,7 @@
     font-weight: 500;
     cursor: pointer;
     user-select: none;
-    transition: 
+    transition:
       background-color 0.12s ease,
       color 0.12s ease,
       transform 0.08s ease;
@@ -154,7 +205,9 @@
     cursor: pointer;
     margin: 0 3px;
     padding: 0;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    transition:
+      transform 0.12s ease,
+      box-shadow 0.12s ease;
     position: relative;
   }
 
@@ -171,15 +224,23 @@
     transform: scale(0.95);
   }
 
-  .tf-swatch-pink { background: #ff6bab; }
-  .tf-swatch-yellow { background: #ffcd4d; }
-  .tf-swatch-blue { background: #5bbbff; }
-  .tf-swatch-green { background: #91d65b; }
+  .tf-swatch-pink {
+    background: #ff6bab;
+  }
+  .tf-swatch-yellow {
+    background: #ffcd4d;
+  }
+  .tf-swatch-blue {
+    background: #5bbbff;
+  }
+  .tf-swatch-green {
+    background: #91d65b;
+  }
 
   .tf-btn-clear {
     color: rgb(239, 68, 68);
   }
-  
+
   :global(html.dark) .tf-btn-clear {
     color: rgb(248, 113, 113);
   }
@@ -196,13 +257,14 @@
 
   /* Smooth transitions for all formatted spans */
   :global(.tf-span) {
-    transition: font-weight 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-                font-size 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-                font-style 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-                line-height 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-                transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-                opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-                background-color 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+    transition:
+      font-weight 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      font-size 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      font-style 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      line-height 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 0.25s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   :global(.format-resetting-active .tf-span) {
@@ -228,7 +290,9 @@
     const pathname = window.location.pathname;
     let annotations: Record<string, Record<string, string>> = {};
     try {
-      annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
+      annotations = JSON.parse(
+        localStorage.getItem("text-annotations:v1") || "{}",
+      );
     } catch (e) {
       return;
     }
@@ -238,8 +302,12 @@
 
     // Proactive Cache Sanitization: If saved HTML has pointer-events: none or GradientShimmer, discard and clear the cache
     let hasCorruptedCache = false;
-    Object.values(pageAnnotations).forEach(html => {
-      if (html.includes('pointer-events: none') || html.includes('GradientShimmer') || html.includes('data-gradient-shimmer')) {
+    Object.values(pageAnnotations).forEach((html) => {
+      if (
+        html.includes("pointer-events: none") ||
+        html.includes("GradientShimmer") ||
+        html.includes("data-gradient-shimmer")
+      ) {
         hasCorruptedCache = true;
       }
     });
@@ -247,16 +315,24 @@
     if (hasCorruptedCache) {
       delete annotations[pathname];
       try {
-        localStorage.setItem('text-annotations:v1', JSON.stringify(annotations));
-        let originals = JSON.parse(localStorage.getItem('text-annotations-originals:v1') || '{}');
+        localStorage.setItem(
+          "text-annotations:v1",
+          JSON.stringify(annotations),
+        );
+        let originals = JSON.parse(
+          localStorage.getItem("text-annotations-originals:v1") || "{}",
+        );
         delete originals[pathname];
-        localStorage.setItem('text-annotations-originals:v1', JSON.stringify(originals));
+        localStorage.setItem(
+          "text-annotations-originals:v1",
+          JSON.stringify(originals),
+        );
       } catch (e) {}
       updateResetButtonVisibility();
       return;
     }
 
-    Object.keys(pageAnnotations).forEach(selector => {
+    Object.keys(pageAnnotations).forEach((selector) => {
       try {
         const el = document.querySelector(selector);
         if (el) {
@@ -271,23 +347,26 @@
   }
 
   function blendColors(activeClasses: string[], isDark: boolean): string {
-    const colorsMap: Record<string, { r: number, g: number, b: number }> = isDark ? {
-      'format-hl-pink': { r: 255, g: 142, b: 187 },
-      'format-hl-yellow': { r: 255, g: 224, b: 102 },
-      'format-hl-blue': { r: 124, g: 208, b: 255 },
-      'format-hl-green': { r: 170, g: 226, b: 123 }
-    } : {
-      'format-hl-pink': { r: 255, g: 107, b: 171 },
-      'format-hl-yellow': { r: 255, g: 205, b: 77 },
-      'format-hl-blue': { r: 91, g: 187, b: 255 },
-      'format-hl-green': { r: 145, g: 214, b: 91 }
-    };
+    const colorsMap: Record<string, { r: number; g: number; b: number }> =
+      isDark
+        ? {
+            "format-hl-pink": { r: 255, g: 142, b: 187 },
+            "format-hl-yellow": { r: 255, g: 224, b: 102 },
+            "format-hl-blue": { r: 124, g: 208, b: 255 },
+            "format-hl-green": { r: 170, g: 226, b: 123 },
+          }
+        : {
+            "format-hl-pink": { r: 255, g: 107, b: 171 },
+            "format-hl-yellow": { r: 255, g: 205, b: 77 },
+            "format-hl-blue": { r: 91, g: 187, b: 255 },
+            "format-hl-green": { r: 145, g: 214, b: 91 },
+          };
 
     const activeRGBs = activeClasses
-      .map(cls => colorsMap[cls])
+      .map((cls) => colorsMap[cls])
       .filter(Boolean);
 
-    if (activeRGBs.length === 0) return '#ffcd4d'; // fallback
+    if (activeRGBs.length === 0) return "#ffcd4d"; // fallback
     if (activeRGBs.length === 1) {
       const { r, g, b } = activeRGBs[0];
       return `rgb(${r}, ${g}, ${b})`;
@@ -300,9 +379,9 @@
     for (let i = 1; i < activeRGBs.length; i++) {
       const next = activeRGBs[i];
       if (isDark) {
-        r = Math.round(255 - ((255 - r) * (255 - next.r) / 255));
-        g = Math.round(255 - ((255 - g) * (255 - next.g) / 255));
-        b = Math.round(255 - ((255 - b) * (255 - next.b) / 255));
+        r = Math.round(255 - ((255 - r) * (255 - next.r)) / 255);
+        g = Math.round(255 - ((255 - g) * (255 - next.g)) / 255);
+        b = Math.round(255 - ((255 - b) * (255 - next.b)) / 255);
       } else {
         r = Math.round((r * next.r) / 255);
         g = Math.round((g * next.g) / 255);
@@ -314,9 +393,9 @@
   }
 
   function applyHighlighters() {
-    const isDark = document.documentElement.classList.contains('dark');
+    const isDark = document.documentElement.classList.contains("dark");
     const blendMode = isDark ? ("screen" as const) : ("multiply" as const);
-    
+
     const highlightOptions = (colorValue: string) => {
       return {
         color: colorValue,
@@ -366,22 +445,34 @@
       };
     };
 
-    const highlightClasses = ['format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green'];
-    const spans = document.querySelectorAll(highlightClasses.map(cls => `.${cls}`).join(','));
+    const highlightClasses = [
+      "format-hl-pink",
+      "format-hl-yellow",
+      "format-hl-blue",
+      "format-hl-green",
+    ];
+    const spans = document.querySelectorAll(
+      highlightClasses.map((cls) => `.${cls}`).join(","),
+    );
 
     // Keep track of elements processed in this run
     const currentElements = new Set<Element>();
 
-    spans.forEach(el => {
+    spans.forEach((el) => {
       currentElements.add(el);
-      const activeClasses = highlightClasses.filter(cls => el.classList.contains(cls));
+      const activeClasses = highlightClasses.filter((cls) =>
+        el.classList.contains(cls),
+      );
       const blendedColor = blendColors(activeClasses, isDark);
 
       const existingHandle = activeHighlighters.get(el);
       if (existingHandle) {
         existingHandle.update(highlightOptions(blendedColor));
       } else {
-        const handle = highlight(el as HTMLElement, highlightOptions(blendedColor));
+        const handle = highlight(
+          el as HTMLElement,
+          highlightOptions(blendedColor),
+        );
         activeHighlighters.set(el, handle);
       }
     });
@@ -389,7 +480,9 @@
     // Clean up any handles whose elements are no longer in the DOM or no longer have highlight classes
     for (const [el, handle] of activeHighlighters.entries()) {
       if (!currentElements.has(el) || !document.body.contains(el)) {
-        try { handle.remove(); } catch (e) {}
+        try {
+          handle.remove();
+        } catch (e) {}
         activeHighlighters.delete(el);
       }
     }
@@ -403,8 +496,8 @@
     const parts: string[] = [];
     let current: HTMLElement | null = el;
     while (current && current.nodeType === Node.ELEMENT_NODE) {
-      if (current.tagName === 'BODY') {
-        parts.unshift('body');
+      if (current.tagName === "BODY") {
+        parts.unshift("body");
         break;
       }
       if (current.id) {
@@ -416,7 +509,10 @@
       const parent = current.parentNode;
       if (parent) {
         for (let sib = parent.firstChild; sib; sib = sib.nextSibling) {
-          if (sib.nodeType === Node.ELEMENT_NODE && (sib as HTMLElement).tagName === current.tagName) {
+          if (
+            sib.nodeType === Node.ELEMENT_NODE &&
+            (sib as HTMLElement).tagName === current.tagName
+          ) {
             if (sib === current) {
               sibIndex = sibCount;
             }
@@ -432,29 +528,32 @@
       }
       current = parent as HTMLElement | null;
     }
-    return parts.join(' > ');
+    return parts.join(" > ");
   }
 
   // Update visibility of the header reset button
   function updateResetButtonVisibility() {
-    const btn = document.getElementById('reset-annotations-btn');
+    const btn = document.getElementById("reset-annotations-btn");
     if (!btn) return;
 
     let hasEdits = false;
     try {
-      const annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
+      const annotations = JSON.parse(
+        localStorage.getItem("text-annotations:v1") || "{}",
+      );
       const pathname = window.location.pathname;
-      hasEdits = annotations[pathname] && Object.keys(annotations[pathname]).length > 0;
+      hasEdits =
+        annotations[pathname] && Object.keys(annotations[pathname]).length > 0;
     } catch (e) {
       // ignore
     }
 
     if (hasEdits) {
-      btn.classList.remove('hidden');
-      btn.classList.add('flex');
+      btn.classList.remove("hidden");
+      btn.classList.add("flex");
     } else {
-      btn.classList.add('hidden');
-      btn.classList.remove('flex');
+      btn.classList.add("hidden");
+      btn.classList.remove("flex");
     }
   }
 
@@ -462,11 +561,28 @@
     const textNodes = getTextNodesInRange(range);
     const blocks = new Set<HTMLElement>();
 
-    textNodes.forEach(node => {
+    textNodes.forEach((node) => {
       let parent = node.parentNode as HTMLElement | null;
       while (parent) {
         const tag = parent.tagName.toLowerCase();
-        if (['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'figcaption', 'header', 'div', 'section'].includes(tag)) {
+        if (
+          [
+            "p",
+            "li",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "blockquote",
+            "pre",
+            "figcaption",
+            "header",
+            "div",
+            "section",
+          ].includes(tag)
+        ) {
           blocks.add(parent);
           break;
         }
@@ -476,14 +592,17 @@
 
     if (blocks.size === 0) {
       let parent = range.commonAncestorContainer as HTMLElement;
-      if (parent.nodeType !== Node.ELEMENT_NODE) parent = parent.parentNode as HTMLElement;
+      if (parent.nodeType !== Node.ELEMENT_NODE)
+        parent = parent.parentNode as HTMLElement;
       blocks.add(parent);
     }
 
     const pathname = window.location.pathname;
     let originals: Record<string, Record<string, string>> = {};
     try {
-      originals = JSON.parse(localStorage.getItem('text-annotations-originals:v1') || '{}');
+      originals = JSON.parse(
+        localStorage.getItem("text-annotations-originals:v1") || "{}",
+      );
     } catch (e) {
       // ignore
     }
@@ -492,7 +611,7 @@
       originals[pathname] = {};
     }
 
-    blocks.forEach(block => {
+    blocks.forEach((block) => {
       const selector = getUniqueSelector(block);
       if (selector) {
         // Save original HTML ONLY if it wasn't saved before
@@ -502,7 +621,10 @@
       }
     });
 
-    localStorage.setItem('text-annotations-originals:v1', JSON.stringify(originals));
+    localStorage.setItem(
+      "text-annotations-originals:v1",
+      JSON.stringify(originals),
+    );
   }
 
   // Save modified block elements in localStorage
@@ -510,11 +632,28 @@
     const textNodes = getTextNodesInRange(range);
     const blocks = new Set<HTMLElement>();
 
-    textNodes.forEach(node => {
+    textNodes.forEach((node) => {
       let parent = node.parentNode as HTMLElement | null;
       while (parent) {
         const tag = parent.tagName.toLowerCase();
-        if (['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'figcaption', 'header', 'div', 'section'].includes(tag)) {
+        if (
+          [
+            "p",
+            "li",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "blockquote",
+            "pre",
+            "figcaption",
+            "header",
+            "div",
+            "section",
+          ].includes(tag)
+        ) {
           blocks.add(parent);
           break;
         }
@@ -524,14 +663,17 @@
 
     if (blocks.size === 0) {
       let parent = range.commonAncestorContainer as HTMLElement;
-      if (parent.nodeType !== Node.ELEMENT_NODE) parent = parent.parentNode as HTMLElement;
+      if (parent.nodeType !== Node.ELEMENT_NODE)
+        parent = parent.parentNode as HTMLElement;
       blocks.add(parent);
     }
 
     const pathname = window.location.pathname;
     let annotations: Record<string, Record<string, string>> = {};
     try {
-      annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
+      annotations = JSON.parse(
+        localStorage.getItem("text-annotations:v1") || "{}",
+      );
     } catch (e) {
       // ignore
     }
@@ -540,14 +682,14 @@
       annotations[pathname] = {};
     }
 
-    blocks.forEach(block => {
+    blocks.forEach((block) => {
       const selector = getUniqueSelector(block);
       if (selector) {
         annotations[pathname][selector] = block.innerHTML;
       }
     });
 
-    localStorage.setItem('text-annotations:v1', JSON.stringify(annotations));
+    localStorage.setItem("text-annotations:v1", JSON.stringify(annotations));
     updateResetButtonVisibility();
   }
 
@@ -555,19 +697,23 @@
   function getTextNodesInRange(range: Range): Text[] {
     const textNodes: Text[] = [];
     const container = range.commonAncestorContainer;
-    const root = container.nodeType === Node.ELEMENT_NODE ? container : container.parentNode;
+    const root =
+      container.nodeType === Node.ELEMENT_NODE
+        ? container
+        : container.parentNode;
     if (!root) return [];
 
-    const walker = document.createTreeWalker(
-      root,
-      NodeFilter.SHOW_TEXT,
-      null
-    );
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
 
     while (walker.nextNode()) {
       const node = walker.currentNode as Text;
       if (range.intersectsNode(node)) {
-        if (node.nodeValue && (node.nodeValue.trim().length > 0 || node === range.startContainer || node === range.endContainer)) {
+        if (
+          node.nodeValue &&
+          (node.nodeValue.trim().length > 0 ||
+            node === range.startContainer ||
+            node === range.endContainer)
+        ) {
           textNodes.push(node);
         }
       }
@@ -621,8 +767,8 @@
 
     const spansToAnimate: HTMLSpanElement[] = [];
 
-    textNodes.forEach(node => {
-      const val = node.nodeValue || '';
+    textNodes.forEach((node) => {
+      const val = node.nodeValue || "";
       let start = 0;
       let end = val.length;
 
@@ -641,7 +787,7 @@
 
       // Optimize: if parent is already a tf-span covering the selection, update it in-place
       if (
-        (parent as HTMLElement).classList.contains('tf-span') &&
+        (parent as HTMLElement).classList.contains("tf-span") &&
         start === 0 &&
         end === val.length &&
         parent.childNodes.length === 1
@@ -650,7 +796,7 @@
         return;
       }
 
-      const span = document.createElement('span');
+      const span = document.createElement("span");
       span.className = `tf-span ${styleClass}`;
       span.textContent = selectedText;
 
@@ -678,17 +824,24 @@
   // Remove styling class from range
   function removeFormatClassInRange(range: Range, className: string) {
     const container = range.commonAncestorContainer;
-    const root = container.nodeType === Node.ELEMENT_NODE ? container : container.parentNode;
+    const root =
+      container.nodeType === Node.ELEMENT_NODE
+        ? container
+        : container.parentNode;
     if (!root) return;
 
     const spans = (root as HTMLElement).querySelectorAll(`span.${className}`);
-    spans.forEach(span => {
+    spans.forEach((span) => {
       if (range.intersectsNode(span)) {
         span.classList.remove(className);
         // If it has no styling class and no styling left, unwrap it after transition completes
-        if (span.className === 'tf-span' && !span.getAttribute('style')) {
+        if (span.className === "tf-span" && !span.getAttribute("style")) {
           setTimeout(() => {
-            if (span.className === 'tf-span' && !span.getAttribute('style') && span.parentNode) {
+            if (
+              span.className === "tf-span" &&
+              !span.getAttribute("style") &&
+              span.parentNode
+            ) {
               const parent = span.parentNode;
               while (span.firstChild) {
                 parent.insertBefore(span.firstChild, span);
@@ -711,9 +864,12 @@
 
     captureOriginalsBeforeEdit(currentRange);
 
-    const hasClassAll = textNodes.every(node => {
+    const hasClassAll = textNodes.every((node) => {
       let parent = node.parentNode as HTMLElement | null;
-      while (parent && parent !== currentRange!.commonAncestorContainer.parentNode) {
+      while (
+        parent &&
+        parent !== currentRange!.commonAncestorContainer.parentNode
+      ) {
         if (parent.classList && parent.classList.contains(className)) {
           return true;
         }
@@ -741,9 +897,12 @@
 
     captureOriginalsBeforeEdit(currentRange);
 
-    const hasClassAll = textNodes.every(node => {
+    const hasClassAll = textNodes.every((node) => {
       let parent = node.parentNode as HTMLElement | null;
-      while (parent && parent !== currentRange!.commonAncestorContainer.parentNode) {
+      while (
+        parent &&
+        parent !== currentRange!.commonAncestorContainer.parentNode
+      ) {
         if (parent.classList && parent.classList.contains(className)) {
           return true;
         }
@@ -771,8 +930,8 @@
 
     const range = currentRange;
     // Strip existing sizes
-    const sizeClasses = ['format-size-h1', 'format-size-h2', 'format-size-h3'];
-    sizeClasses.forEach(cls => removeFormatClassInRange(range, cls));
+    const sizeClasses = ["format-size-h1", "format-size-h2", "format-size-h3"];
+    sizeClasses.forEach((cls) => removeFormatClassInRange(range, cls));
 
     if (sizeClass) {
       wrapRangeInSpan(range, sizeClass);
@@ -789,12 +948,18 @@
 
     const range = currentRange;
     const allFormatClasses = [
-      'format-bold', 'format-italic',
-      'format-hl-pink', 'format-hl-yellow', 'format-hl-blue', 'format-hl-green',
-      'format-size-h1', 'format-size-h2', 'format-size-h3'
+      "format-bold",
+      "format-italic",
+      "format-hl-pink",
+      "format-hl-yellow",
+      "format-hl-blue",
+      "format-hl-green",
+      "format-size-h1",
+      "format-size-h2",
+      "format-size-h3",
     ];
 
-    allFormatClasses.forEach(cls => removeFormatClassInRange(range, cls));
+    allFormatClasses.forEach((cls) => removeFormatClassInRange(range, cls));
     finalizeFormatChanges(range);
   }
 
@@ -805,26 +970,33 @@
   }
 
   // Popup visibility helpers
-  const popup = document.getElementById('text-format-popup');
+  const popup = document.getElementById("text-format-popup");
 
   function showPopup(rect: DOMRect) {
     if (!popup) return;
-    popup.classList.remove('hidden');
-    
+    popup.classList.remove("hidden");
+
     // Force a reflow for transition animation
     popup.getBoundingClientRect();
-    popup.classList.add('visible');
+    popup.classList.add("visible");
 
     const popupWidth = popup.offsetWidth;
     const popupHeight = popup.offsetHeight;
 
-    const parentRect = popup.offsetParent ? popup.offsetParent.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth };
+    const parentRect = popup.offsetParent
+      ? popup.offsetParent.getBoundingClientRect()
+      : { left: 0, top: 0, width: window.innerWidth };
     const left = rect.left - parentRect.left + rect.width / 2 - popupWidth / 2;
     const top = rect.top - parentRect.top - popupHeight - 12;
 
     // Boundary constraints relative to offsetParent
     const minLeft = 8;
-    const maxLeft = (popup.offsetParent ? (popup.offsetParent as HTMLElement).offsetWidth : window.innerWidth) - popupWidth - 8;
+    const maxLeft =
+      (popup.offsetParent
+        ? (popup.offsetParent as HTMLElement).offsetWidth
+        : window.innerWidth) -
+      popupWidth -
+      8;
 
     // Flip to bottom if there's not enough room above the selection
     let finalTop = top;
@@ -838,11 +1010,11 @@
 
   function hidePopup() {
     if (!popup) return;
-    popup.classList.remove('visible');
+    popup.classList.remove("visible");
     // Hide completely after transition finish
     setTimeout(() => {
-      if (!popup.classList.contains('visible')) {
-        popup.classList.add('hidden');
+      if (!popup.classList.contains("visible")) {
+        popup.classList.add("hidden");
       }
     }, 150);
     currentRange = null;
@@ -851,7 +1023,7 @@
   // Selection detection triggers
   function handleSelectionCheck() {
     // Disable on mobile/tablet screen sizes to avoid conflicting with native browser text selection popups
-    if (window.matchMedia('(max-width: 768px)').matches) {
+    if (window.matchMedia("(max-width: 768px)").matches) {
       hidePopup();
       return;
     }
@@ -864,16 +1036,23 @@
 
     const range = selection.getRangeAt(0);
     const ancestor = range.commonAncestorContainer;
-    const parent = ancestor.nodeType === Node.ELEMENT_NODE ? ancestor as HTMLElement : ancestor.parentNode as HTMLElement;
+    const parent =
+      ancestor.nodeType === Node.ELEMENT_NODE
+        ? (ancestor as HTMLElement)
+        : (ancestor.parentNode as HTMLElement);
 
     // Check scope boundaries
-    if (!parent || !parent.closest('main, article, header')) {
+    if (!parent || !parent.closest("main, article, header")) {
       hidePopup();
       return;
     }
 
     // Exclude components/inputs
-    if (parent.closest('button, input, textarea, select, [role="button"], #menu-overlay, #text-format-popup, .hamburger-btn')) {
+    if (
+      parent.closest(
+        'button, input, textarea, select, [role="button"], #menu-overlay, #text-format-popup, .hamburger-btn',
+      )
+    ) {
       hidePopup();
       return;
     }
@@ -896,120 +1075,164 @@
     applyHighlighters();
 
     // Event listeners for selection detection
-    document.addEventListener('mouseup', () => {
+    document.addEventListener("mouseup", () => {
       // Delay slightly to allow selection to finalize
       setTimeout(handleSelectionCheck, 10);
     });
 
-    document.addEventListener('touchend', () => {
+    document.addEventListener("touchend", () => {
       setTimeout(handleSelectionCheck, 50);
     });
 
     // Dismiss popup when clicking elsewhere
-    document.addEventListener('mousedown', (e) => {
+    document.addEventListener("mousedown", (e) => {
       if (popup && !popup.contains(e.target as Node)) {
         // Only hide if the user isn't clicking to start a new selection in text
         const target = e.target as HTMLElement;
-        if (!target.closest('main, article') || target.closest('button, #text-format-popup')) {
+        if (
+          !target.closest("main, article") ||
+          target.closest("button, #text-format-popup")
+        ) {
           hidePopup();
         }
       }
     });
 
     // Setup action button click handlers
-    document.getElementById('tf-btn-bold')?.addEventListener('click', () => toggleFormatClass('format-bold'));
-    document.getElementById('tf-btn-italic')?.addEventListener('click', () => toggleFormatClass('format-italic'));
-    
-    document.getElementById('tf-swatch-pink')?.addEventListener('click', () => toggleHighlightClass('format-hl-pink'));
-    document.getElementById('tf-swatch-yellow')?.addEventListener('click', () => toggleHighlightClass('format-hl-yellow'));
-    document.getElementById('tf-swatch-blue')?.addEventListener('click', () => toggleHighlightClass('format-hl-blue'));
-    document.getElementById('tf-swatch-green')?.addEventListener('click', () => toggleHighlightClass('format-hl-green'));
+    document
+      .getElementById("tf-btn-bold")
+      ?.addEventListener("click", () => toggleFormatClass("format-bold"));
+    document
+      .getElementById("tf-btn-italic")
+      ?.addEventListener("click", () => toggleFormatClass("format-italic"));
 
-    document.getElementById('tf-btn-h1')?.addEventListener('click', () => setSizeClass('format-size-h1'));
-    document.getElementById('tf-btn-h2')?.addEventListener('click', () => setSizeClass('format-size-h2'));
-    document.getElementById('tf-btn-h3')?.addEventListener('click', () => setSizeClass('format-size-h3'));
+    document
+      .getElementById("tf-swatch-pink")
+      ?.addEventListener("click", () => toggleHighlightClass("format-hl-pink"));
+    document
+      .getElementById("tf-swatch-yellow")
+      ?.addEventListener("click", () =>
+        toggleHighlightClass("format-hl-yellow"),
+      );
+    document
+      .getElementById("tf-swatch-blue")
+      ?.addEventListener("click", () => toggleHighlightClass("format-hl-blue"));
+    document
+      .getElementById("tf-swatch-green")
+      ?.addEventListener("click", () =>
+        toggleHighlightClass("format-hl-green"),
+      );
 
-    document.getElementById('tf-btn-clear')?.addEventListener('click', clearAllFormatting);
+    document
+      .getElementById("tf-btn-h1")
+      ?.addEventListener("click", () => setSizeClass("format-size-h1"));
+    document
+      .getElementById("tf-btn-h2")
+      ?.addEventListener("click", () => setSizeClass("format-size-h2"));
+    document
+      .getElementById("tf-btn-h3")
+      ?.addEventListener("click", () => setSizeClass("format-size-h3"));
+
+    document
+      .getElementById("tf-btn-clear")
+      ?.addEventListener("click", clearAllFormatting);
 
     // Header Reset Button logic
-    const resetBtn = document.getElementById('reset-annotations-btn');
+    const resetBtn = document.getElementById("reset-annotations-btn");
     if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        // 1. Add active class to initiate spring-based text shrink/fade animations
-        document.body.classList.add('format-resetting-active');
-        triggerSmoothHighlightReflow();
+      resetBtn.addEventListener("click", () => {
+        const pathname = window.location.pathname;
+        let originals: Record<string, Record<string, string>> = {};
+        try {
+          originals = JSON.parse(
+            localStorage.getItem("text-annotations-originals:v1") || "{}",
+          );
+        } catch (e) {
+          // ignore
+        }
 
-        // 2. Locate and smoothly wipe/fade out the @highlighters/core overlays
-        const overlays = document.querySelectorAll('[data-highlighters-overlay]');
-        overlays.forEach(el => {
-          (el as HTMLElement).style.transition = 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-          (el as HTMLElement).style.opacity = '0';
-        });
-
-        // 3. Wait for the transitions to complete before swapping the innerHTML back
-        setTimeout(() => {
-          const pathname = window.location.pathname;
-          let originals: Record<string, Record<string, string>> = {};
-          try {
-            originals = JSON.parse(localStorage.getItem('text-annotations-originals:v1') || '{}');
-          } catch (e) {
-            // ignore
-          }
-          
-          const pageOriginals = originals[pathname];
-          if (pageOriginals) {
-            Object.keys(pageOriginals).forEach(selector => {
-              try {
-                const el = document.querySelector(selector);
-                if (el) {
-                  el.innerHTML = pageOriginals[selector];
-                }
-              } catch (err) {
-                console.error(`Failed to restore selector "${selector}":`, err);
+        const pageOriginals = originals[pathname];
+        if (pageOriginals) {
+          Object.keys(pageOriginals).forEach((selector) => {
+            try {
+              const el = document.querySelector(selector);
+              if (el) {
+                el.innerHTML = pageOriginals[selector];
               }
-            });
-          }
+            } catch (err) {
+              console.error(`Failed to restore selector "${selector}":`, err);
+            }
+          });
+        }
 
-          // Clear active highlighters
-          for (const handle of activeHighlighters.values()) {
-            try { handle.remove(); } catch (e) {}
-          }
-          activeHighlighters.clear();
-
-          // Remove page annotations from localStorage
-          let annotations: Record<string, Record<string, string>> = {};
+        // Clear active highlighters
+        for (const handle of activeHighlighters.values()) {
           try {
-            annotations = JSON.parse(localStorage.getItem('text-annotations:v1') || '{}');
-          } catch (e) {
-            // ignore
-          }
-          delete annotations[pathname];
-          localStorage.setItem('text-annotations:v1', JSON.stringify(annotations));
+            handle.remove();
+          } catch (e) {}
+        }
+        activeHighlighters.clear();
 
-          delete originals[pathname];
-          localStorage.setItem('text-annotations-originals:v1', JSON.stringify(originals));
+        // Remove page annotations from localStorage
+        let annotations: Record<string, Record<string, string>> = {};
+        try {
+          annotations = JSON.parse(
+            localStorage.getItem("text-annotations:v1") || "{}",
+          );
+        } catch (e) {
+          // ignore
+        }
+        delete annotations[pathname];
+        localStorage.setItem(
+          "text-annotations:v1",
+          JSON.stringify(annotations),
+        );
 
-          // Clean up formatting classes
-          document.body.classList.remove('format-resetting-active');
-          updateResetButtonVisibility();
-        }, 380); // fits transition timing perfectly
+        delete originals[pathname];
+        localStorage.setItem(
+          "text-annotations-originals:v1",
+          JSON.stringify(originals),
+        );
+
+        // Wipe any highlighter overlays immediately
+        const overlays = document.querySelectorAll(
+          "[data-highlighters-overlay]",
+        );
+        overlays.forEach((el) => el.remove());
+
+        updateResetButtonVisibility();
       });
       updateResetButtonVisibility();
     }
 
     // Event delegation to restore homepage click listeners broken by DOM edits
-    document.addEventListener('click', (e) => {
+    const handleLookAroundDelegate = (e: Event) => {
       const target = e.target as HTMLElement | null;
-      if (target && (target.id === 'look-around-btn' || target.closest('#look-around-btn'))) {
+      if (
+        target &&
+        (target.id === "look-around-btn" || target.closest("#look-around-btn"))
+      ) {
         e.preventDefault();
-        document.getElementById('hamburger-btn')?.click();
+        if (document.getElementById("menu-overlay")) {
+          document.dispatchEvent(
+            new CustomEvent("toggle-hamburger-menu", {
+              detail: { action: "open" },
+            }),
+          );
+        } else {
+          document.getElementById("hamburger-btn")?.click();
+        }
       }
+    };
+    document.addEventListener("click", handleLookAroundDelegate);
+    document.addEventListener("touchstart", handleLookAroundDelegate, {
+      passive: false,
     });
 
     // Watch for theme changes to automatically refresh highlighters
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'class') {
+        if (mutation.attributeName === "class") {
           applyHighlighters();
         }
       });
@@ -1018,8 +1241,8 @@
   }
 
   // Run on page load
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTextSelector);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initTextSelector);
   } else {
     initTextSelector();
   }

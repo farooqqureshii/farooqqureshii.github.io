@@ -1,4 +1,4 @@
-const getSpotifyAccessToken = async () => {
+export const getSpotifyAccessToken = async () => {
   const client_id = import.meta.env.SPOTIFY_CLIENT_ID;
   const client_secret = import.meta.env.SPOTIFY_CLIENT_SECRET;
   const creds = btoa(`${client_id}:${client_secret}`);

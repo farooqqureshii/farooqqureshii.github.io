@@ -1,63 +1,62 @@
 import type { APIRoute } from 'astro';
+import { getSpotifyAccessToken } from '../../lib/spotify';
 
-const GENIUS_DEBUG = !!process.env.GENIUS_DEBUG;
-
-const slugify = (value: string) =>
-  value
-    .normalize('NFKD')
-    .toLowerCase()
-    .replace(/&/g, ' and ')
-    .replace(/['’]/g, '')
-    .replace(/\([^)]*\)/g, ' ')
-    .replace(/\[[^\]]*\]/g, ' ')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-const buildGeniusCandidates = (songName: string, artistName: string) => {
-  const songSlug = slugify(songName.replace(/\s*-\s*remaster(ed)?\s*\d{4}?/gi, ''));
-  const artistSlug = slugify(artistName);
-
-  return [
-    `https://genius.com/${artistSlug}-${songSlug}-lyrics`,
-    `https://genius.com/${songSlug}-lyrics`,
-    `https://genius.com/${artistSlug}-${songSlug}`,
-    `https://genius.com/${songSlug}`,
-  ].filter((url, index, urls) => urls.indexOf(url) === index);
-};
-
-const resolveGeniusSongUrl = async (songName: string, artistName: string) => {
-  const headers = {
-    'User-Agent':
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36',
-    Accept: 'text/html',
-  };
-
-  const candidates = buildGeniusCandidates(songName, artistName);
-  if (GENIUS_DEBUG) console.error('Genius candidates:', candidates);
-
-  for (const candidate of candidates) {
+const resolveSpotifySongUrl = async (songName: string, artistName: string, lastFmTrackUrl?: string): Promise<string> => {
+  if (lastFmTrackUrl) {
     try {
-      const response = await fetch(candidate, {
-        method: 'GET',
-        headers,
-        redirect: 'follow',
+      const response = await fetch(lastFmTrackUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36',
+        },
       });
 
-      if (GENIUS_DEBUG) console.error('Genius probe:', candidate, 'status=', response.status, 'final=', response.url);
-
       if (response.ok) {
-        const finalUrl = response.url || candidate;
-        if (GENIUS_DEBUG) console.error('Genius resolved to:', finalUrl);
-        return finalUrl;
+        const html = await response.text();
+        const match = html.match(/href="(https:\/\/open\.spotify\.com\/track\/[a-zA-Z0-9]+)"/);
+        if (match && match[1]) {
+          return match[1];
+        }
       }
-    } catch (err: any) {
-      if (GENIUS_DEBUG) console.error('Genius probe error for', candidate, err && err.message);
-      // Try the next candidate on error.
+    } catch (err) {
+      console.error('Error resolving Spotify track URL from Last.fm:', err);
     }
   }
 
-  if (GENIUS_DEBUG) console.error('Genius resolver falling back to search for', songName, '—', artistName);
-  return `https://genius.com/search?q=${encodeURIComponent(`${songName} ${artistName}`)}`;
+  const client_id = import.meta.env.SPOTIFY_CLIENT_ID;
+  const client_secret = import.meta.env.SPOTIFY_CLIENT_SECRET;
+
+  if (client_id && client_secret) {
+    try {
+      const accessToken = await getSpotifyAccessToken();
+      const cleanSongName = songName
+        .replace(/\s*-\s*remaster(ed)?\s*\d{4}?/gi, '')
+        .replace(/\([^)]*\)/g, ' ')
+        .replace(/\[[^\]]*\]/g, ' ')
+        .trim();
+
+      const query = `track:${cleanSongName} artist:${artistName}`;
+      const searchUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=1`;
+      
+      const res = await fetch(searchUrl, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const track = data?.tracks?.items?.[0];
+        if (track?.external_urls?.spotify) {
+          return track.external_urls.spotify;
+        }
+      }
+    } catch (err) {
+      console.error('Error resolving Spotify URL via search API:', err);
+    }
+  }
+
+  // Fallback to Spotify search page
+  return `https://open.spotify.com/search/${encodeURIComponent(`${songName} ${artistName}`)}`;
 };
 
 export const GET: APIRoute = async () => {
@@ -115,7 +114,7 @@ export const GET: APIRoute = async () => {
 
     const artistName = track.artist?.['#text'] || track.artist?.name || 'Unknown artist';
     const songName = track.name || 'Unknown song';
-  const songUrl = await resolveGeniusSongUrl(songName, artistName);
+    const songUrl = await resolveSpotifySongUrl(songName, artistName, track.url);
 
     return new Response(
       JSON.stringify({

@@ -190,7 +190,7 @@
     left: 24px;
     transform: translateY(-50%);
     z-index: 10001;
-    transition: transform 180ms ease-out, opacity 180ms ease-out;
+    transition: transform 240ms var(--ease-out-cubic), opacity 240ms var(--ease-out-cubic);
     will-change: transform, opacity;
   }
 
@@ -198,7 +198,7 @@
     transform: translateY(-50%) translateX(-8px) !important;
     opacity: 0 !important;
     pointer-events: none !important;
-    transition: transform 150ms ease-in, opacity 150ms ease-in !important;
+    transition: transform 180ms var(--ease-out-cubic), opacity 180ms var(--ease-out-cubic) !important;
   }
 
   .scribble-dock-inner {
@@ -698,7 +698,18 @@
       } else {
         fab.classList.remove("active");
         dock.classList.add("scribble-dock-hidden");
-        setTool('navigate');
+        
+        // Snap drawing interactions off immediately
+        currentTool = 'navigate';
+        canvas.style.pointerEvents = 'none';
+        document.body.classList.remove("scribble-mode-pen", "scribble-mode-highlighter", "scribble-mode-eraser");
+        
+        // Delay resetting selectors to avoid visual glitches while parent is fading out (180ms transition)
+        setTimeout(() => {
+          if (!isDrawingMode) {
+            setTool('navigate');
+          }
+        }, 220);
       }
     }
 
