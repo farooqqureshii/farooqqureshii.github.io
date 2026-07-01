@@ -276,6 +276,10 @@
     opacity: 1 !important;
     background-color: transparent !important;
   }
+
+  :global([data-highlighters-overlay]) {
+    pointer-events: none !important;
+  }
 </style>
 
 <script>
@@ -284,6 +288,7 @@
   // Core implementation of the highlighter popup menu
   let currentRange: Range | null = null;
   let activeHighlighters = new Map<Element, any>();
+  let resizeObserver: ResizeObserver | null = null;
 
   // Restore edits immediately upon script evaluation/DOMContentLoaded
   function applySavedAnnotations() {
@@ -707,6 +712,9 @@
 
     while (walker.nextNode()) {
       const node = walker.currentNode as Text;
+      if (node.parentElement?.closest(".email-tooltip, .tooltip, script, style")) {
+        continue;
+      }
       if (range.intersectsNode(node)) {
         if (
           node.nodeValue &&
@@ -720,7 +728,10 @@
     }
 
     if (container.nodeType === Node.TEXT_NODE) {
-      textNodes.push(container as Text);
+      const parentEl = container.parentElement;
+      if (!parentEl?.closest(".email-tooltip, .tooltip, script, style")) {
+        textNodes.push(container as Text);
+      }
     }
 
     return textNodes;
@@ -1073,6 +1084,24 @@
   function initTextSelector() {
     applySavedAnnotations();
     applyHighlighters();
+
+    if (resizeObserver) {
+      resizeObserver.disconnect();
+    }
+
+    resizeObserver = new ResizeObserver(() => {
+      for (const handle of activeHighlighters.values()) {
+        try {
+          handle.update({});
+        } catch (e) {
+          // ignore
+        }
+      }
+    });
+
+    if (document.body) {
+      resizeObserver.observe(document.body);
+    }
 
     // Event listeners for selection detection
     document.addEventListener("mouseup", () => {

@@ -9,23 +9,16 @@
 
     <!-- Section 1: Interaction Mode Tools -->
     <div class="scribble-tool-group" role="radiogroup" aria-label="Drawing tool selection">
-      <button class="scribble-tool-btn active" data-tool="navigate" role="radio" aria-checked="true" title="Navigate & Scroll (Mouse)">
+      <button class="scribble-tool-btn" data-tool="navigate" role="radio" aria-checked="false" title="Navigate & Scroll (Mouse)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
           <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51Z"></path>
           <path d="m13 13 6 6"></path>
         </svg>
       </button>
-      <button class="scribble-tool-btn" data-tool="pen" role="radio" aria-checked="false" title="Pen (Draw)">
+      <button class="scribble-tool-btn active" data-tool="pen" role="radio" aria-checked="true" title="Pen (Draw)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
           <path d="M12 20h9"></path>
           <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
-        </svg>
-      </button>
-      <button class="scribble-tool-btn" data-tool="highlighter" role="radio" aria-checked="false" title="Highlighter (Highlight)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-          <path d="m9 11-6 6v3h3l6-6Z"></path>
-          <path d="m14 6 4 4"></path>
-          <path d="m21 3-3 3-4-4 3-3a2.1 2.1 0 0 1 3 0Z"></path>
         </svg>
       </button>
       <button class="scribble-tool-btn" data-tool="eraser" role="radio" aria-checked="false" title="Eraser">
@@ -80,25 +73,7 @@
           <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path>
         </svg>
       </button>
-      <button id="scribble-visibility-btn" class="scribble-action-btn" title="Hide drawings" aria-label="Toggle Drawings Visibility">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" id="scribble-eye-open">
-          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 hidden" id="scribble-eye-closed">
-          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-          <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-          <line x1="2" x2="22" y1="2" y2="22"></line>
-        </svg>
-      </button>
-      <button id="scribble-export-btn" class="scribble-action-btn" title="Download drawings (PNG)" aria-label="Export Drawings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" x2="12" y1="15" y2="3"></line>
-        </svg>
-      </button>
+
       <button id="scribble-clear-btn" class="scribble-action-btn animate-trash" title="Clear all drawings" aria-label="Clear All Drawings">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
           <path d="M3 6h18"></path>
@@ -153,17 +128,23 @@
     background: transparent;
   }
 
-  /* Custom Cursors */
-  :global(body.scribble-mode-pen) #scribble-canvas {
-    cursor: crosshair;
+  /* Custom Cursors on Body to Prevent Flickering */
+  :global(body.scribble-mode-pen) {
+    cursor: crosshair !important;
   }
 
-  :global(body.scribble-mode-highlighter) #scribble-canvas {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,107,171,0.5)" stroke="black" stroke-width="1"><circle cx="12" cy="12" r="10"/></svg>') 10 10, crosshair;
+  :global(body.scribble-mode-eraser) {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg>') 12 12, pointer !important;
   }
 
-  :global(body.scribble-mode-eraser) #scribble-canvas {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg>') 12 12, pointer;
+  /* Maintain standard pointer cursor on interactive elements */
+  :global(body.scribble-mode-pen) #scribble-dock,
+  :global(body.scribble-mode-pen) #scribble-dock *,
+  :global(body.scribble-mode-pen) #scribble-trigger,
+  :global(body.scribble-mode-eraser) #scribble-dock,
+  :global(body.scribble-mode-eraser) #scribble-dock *,
+  :global(body.scribble-mode-eraser) #scribble-trigger {
+    cursor: pointer !important;
   }
 
   /* Minimal Drawing Trigger Button in Header */
@@ -186,16 +167,15 @@
   /* Whiteboard Dock (Default: Vertical Left Dock) */
   #scribble-dock {
     position: fixed;
-    top: 50%;
+    top: 20%; /* Stable top anchor to prevent vertical jumping when height changes */
     left: 24px;
-    transform: translateY(-50%);
     z-index: 10001;
     transition: transform 240ms var(--ease-out-cubic), opacity 240ms var(--ease-out-cubic);
     will-change: transform, opacity;
   }
 
   .scribble-dock-hidden {
-    transform: translateY(-50%) translateX(-8px) !important;
+    transform: translateX(-8px) !important;
     opacity: 0 !important;
     pointer-events: none !important;
     transition: transform 180ms var(--ease-out-cubic), opacity 180ms var(--ease-out-cubic) !important;
@@ -375,7 +355,7 @@
       transition: opacity 150ms ease-out !important;
     }
     .scribble-dock-hidden {
-      transform: translateY(-50%) translateX(0) scale(1) !important;
+      transform: translateX(0) scale(1) !important;
     }
   }
 
@@ -526,7 +506,7 @@
     // State Variables
     let isDrawingMode = false;
     let isDrawing = false;
-    let currentTool: 'navigate' | 'pen' | 'highlighter' | 'eraser' = 'navigate';
+    let currentTool: 'navigate' | 'pen' | 'eraser' = 'navigate';
     let currentColor = 'default';
     let currentSize: 'thin' | 'medium' | 'thick' = 'medium';
     let isVisible = true;
@@ -585,10 +565,6 @@
         if (size === 'thin') return 2;
         if (size === 'medium') return 5;
         if (size === 'thick') return 9;
-      } else if (tool === 'highlighter') {
-        if (size === 'thin') return 14;
-        if (size === 'medium') return 24;
-        if (size === 'thick') return 40;
       } else if (tool === 'eraser') {
         if (size === 'thin') return 18;
         if (size === 'medium') return 36;
@@ -622,11 +598,7 @@
           ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
         } else {
           ctx.globalCompositeOperation = 'source-over';
-          if (stroke.type === 'highlighter') {
-            ctx.globalAlpha = 0.45;
-          } else {
-            ctx.globalAlpha = 1.0;
-          }
+          ctx.globalAlpha = 1.0;
           ctx.strokeStyle = stroke.color === 'default' ? themeDefaultColor : stroke.color;
         }
 
@@ -702,7 +674,7 @@
         // Snap drawing interactions off immediately
         currentTool = 'navigate';
         canvas.style.pointerEvents = 'none';
-        document.body.classList.remove("scribble-mode-pen", "scribble-mode-highlighter", "scribble-mode-eraser");
+        document.body.classList.remove("scribble-mode-pen", "scribble-mode-eraser");
         
         // Delay resetting selectors to avoid visual glitches while parent is fading out (180ms transition)
         setTimeout(() => {
@@ -714,11 +686,11 @@
     }
 
     // Set active drawing or navigate tool
-    function setTool(tool: 'navigate' | 'pen' | 'highlighter' | 'eraser') {
+    function setTool(tool: 'navigate' | 'pen' | 'eraser') {
       currentTool = tool;
 
       // Set class on body for pointer-event overlays and custom cursors
-      document.body.classList.remove("scribble-mode-pen", "scribble-mode-highlighter", "scribble-mode-eraser");
+      document.body.classList.remove("scribble-mode-pen", "scribble-mode-eraser");
       
       const colorsGroup = document.getElementById("scribble-colors-group");
       const colorsDivider = document.getElementById("scribble-divider-colors");
@@ -805,7 +777,7 @@
           ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
         } else {
           ctx.globalCompositeOperation = 'source-over';
-          if (currentTool === 'highlighter') ctx.globalAlpha = 0.45;
+          ctx.globalAlpha = 1.0;
           ctx.strokeStyle = currentColor === 'default' ? getThemeColor() : currentColor;
         }
 
@@ -838,7 +810,7 @@
           ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
         } else {
           ctx.globalCompositeOperation = 'source-over';
-          if (currentTool === 'highlighter') ctx.globalAlpha = 0.45;
+          ctx.globalAlpha = 1.0;
           ctx.strokeStyle = currentColor === 'default' ? getThemeColor() : currentColor;
         }
 
@@ -938,40 +910,9 @@
       redraw();
     }
 
-    // Toggle Drawings Visibility
-    function toggleVisibility() {
-      isVisible = !isVisible;
-      redraw();
 
-      const eyeOpen = document.getElementById("scribble-eye-open");
-      const eyeClosed = document.getElementById("scribble-eye-closed");
-      const visBtn = document.getElementById("scribble-visibility-btn");
 
-      if (isVisible) {
-        eyeOpen?.classList.remove("hidden");
-        eyeClosed?.classList.add("hidden");
-        if (visBtn) visBtn.title = "Hide drawings";
-      } else {
-        eyeOpen?.classList.add("hidden");
-        eyeClosed?.classList.remove("hidden");
-        if (visBtn) visBtn.title = "Show drawings";
-      }
-    }
 
-    // Export drawings as transparent PNG file
-    function exportDrawing() {
-      if (strokes.length === 0) {
-        alert("There are no drawings on the page to download.");
-        return;
-      }
-
-      const link = document.createElement("a");
-      const pageTitle = document.title.split(" | ")[0] || "page";
-      const cleanTitle = pageTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      link.download = `drawings-${cleanTitle}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    }
 
     // Event Bindings
     fab.addEventListener("click", () => {
@@ -1027,8 +968,6 @@
     // History and Action buttons
     document.getElementById("scribble-undo-btn")?.addEventListener("click", undo);
     document.getElementById("scribble-redo-btn")?.addEventListener("click", redo);
-    document.getElementById("scribble-visibility-btn")?.addEventListener("click", toggleVisibility);
-    document.getElementById("scribble-export-btn")?.addEventListener("click", exportDrawing);
     document.getElementById("scribble-clear-btn")?.addEventListener("click", clearCanvas);
     
     document.getElementById("scribble-close-btn")?.addEventListener("click", () => {
