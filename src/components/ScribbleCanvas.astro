@@ -144,13 +144,23 @@
     transition: transform 160ms var(--ease-out-cubic), color 160ms ease;
   }
 
-  :global(#reset-annotations-btn) {
+  :global(header) {
     position: relative;
-    z-index: 10001;
+    z-index: 10000;
   }
 
-  :global(#scribble-trigger:active) {
-    transform: scale(0.95);
+  /* Disable header links and other buttons (like hamburger menu) when drawing mode is active, while keeping the trigger/reset buttons clickable */
+  :global(body.scribble-active) :global(header a),
+  :global(body.scribble-active) :global(header button:not(#scribble-trigger):not(#reset-annotations-btn)) {
+    pointer-events: none !important;
+  }
+
+  :global(#scribble-trigger:active svg) {
+    transform: scale(0.82);
+  }
+
+  :global(#scribble-trigger svg) {
+    transition: transform 160ms var(--ease-out-cubic);
   }
 
   :global(#scribble-trigger.active) {
@@ -654,6 +664,7 @@
         isDrawingMode = false;
         if (fab) fab.classList.remove("active");
         if (dock) dock.classList.add("scribble-dock-hidden");
+        document.body.classList.remove("scribble-active");
         setTool('navigate');
         return;
       }
@@ -662,11 +673,13 @@
       if (isDrawingMode) {
         fab.classList.add("active");
         dock.classList.remove("scribble-dock-hidden");
+        document.body.classList.add("scribble-active");
         // Default to Pen tool when activated
         setTool('pen');
       } else {
         fab.classList.remove("active");
         dock.classList.add("scribble-dock-hidden");
+        document.body.classList.remove("scribble-active");
         
         // Snap drawing interactions off immediately
         currentTool = 'navigate';
@@ -700,7 +713,7 @@
       }
 
       // Hide colors group for eraser
-      if (tool === 'eraser' || tool === 'navigate') {
+      if (tool === 'eraser' || (tool === 'navigate' && isDrawingMode)) {
         colorsGroup?.classList.add("collapsed");
         colorsDivider?.classList.add("collapsed");
       } else {
