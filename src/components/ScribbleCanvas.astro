@@ -128,28 +128,25 @@
     background: transparent;
   }
 
-  /* Custom Cursors on Body to Prevent Flickering */
-  :global(body.scribble-mode-pen) {
+  /* Custom Cursors on Canvas */
+  #scribble-canvas.tool-pen {
     cursor: crosshair !important;
   }
 
-  :global(body.scribble-mode-eraser) {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg>') 12 12, pointer !important;
+  #scribble-canvas.tool-eraser {
+    cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9InJlZCIgc3Ryb2tlLXdpZHRoPSIxLjUiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+PC9zdmc+') 12 12, pointer !important;
   }
 
-  /* Maintain standard pointer cursor on interactive elements */
-  :global(body.scribble-mode-pen) #scribble-dock,
-  :global(body.scribble-mode-pen) #scribble-dock *,
-  :global(body.scribble-mode-pen) #scribble-trigger,
-  :global(body.scribble-mode-eraser) #scribble-dock,
-  :global(body.scribble-mode-eraser) #scribble-dock *,
-  :global(body.scribble-mode-eraser) #scribble-trigger {
-    cursor: pointer !important;
-  }
-
-  /* Minimal Drawing Trigger Button in Header */
+  /* Minimal Drawing Trigger Button and Reset Button in Header (Stacked above canvas to avoid pointer-event blocking and cursor flickering) */
   :global(#scribble-trigger) {
+    position: relative;
+    z-index: 10001;
     transition: transform 160ms var(--ease-out-cubic), color 160ms ease;
+  }
+
+  :global(#reset-annotations-btn) {
+    position: relative;
+    z-index: 10001;
   }
 
   :global(#scribble-trigger:active) {
@@ -674,7 +671,7 @@
         // Snap drawing interactions off immediately
         currentTool = 'navigate';
         canvas.style.pointerEvents = 'none';
-        document.body.classList.remove("scribble-mode-pen", "scribble-mode-eraser");
+        canvas.classList.remove("tool-pen", "tool-eraser");
         
         // Delay resetting selectors to avoid visual glitches while parent is fading out (180ms transition)
         setTimeout(() => {
@@ -689,8 +686,8 @@
     function setTool(tool: 'navigate' | 'pen' | 'eraser') {
       currentTool = tool;
 
-      // Set class on body for pointer-event overlays and custom cursors
-      document.body.classList.remove("scribble-mode-pen", "scribble-mode-eraser");
+      // Set class on canvas for pointer-event overlays and custom cursors
+      canvas.classList.remove("tool-pen", "tool-eraser");
       
       const colorsGroup = document.getElementById("scribble-colors-group");
       const colorsDivider = document.getElementById("scribble-divider-colors");
@@ -699,7 +696,7 @@
         canvas.style.pointerEvents = 'none';
       } else {
         canvas.style.pointerEvents = 'auto';
-        document.body.classList.add(`scribble-mode-${tool}`);
+        canvas.classList.add(`tool-${tool}`);
       }
 
       // Hide colors group for eraser

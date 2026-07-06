@@ -42,27 +42,6 @@
 
     <div class="tf-divider"></div>
 
-    <!-- Sizing buttons -->
-    <button
-      type="button"
-      class="tf-btn tf-size-btn"
-      id="tf-btn-h1"
-      title="Heading 1 size">H1</button
-    >
-    <button
-      type="button"
-      class="tf-btn tf-size-btn"
-      id="tf-btn-h2"
-      title="Heading 2 size">H2</button
-    >
-    <button
-      type="button"
-      class="tf-btn tf-size-btn"
-      id="tf-btn-h3"
-      title="Heading 3 size">H3</button
-    >
-
-    <div class="tf-divider"></div>
 
     <!-- Clear formatting button -->
     <button
@@ -1152,15 +1131,6 @@
         toggleHighlightClass("format-hl-green"),
       );
 
-    document
-      .getElementById("tf-btn-h1")
-      ?.addEventListener("click", () => setSizeClass("format-size-h1"));
-    document
-      .getElementById("tf-btn-h2")
-      ?.addEventListener("click", () => setSizeClass("format-size-h2"));
-    document
-      .getElementById("tf-btn-h3")
-      ?.addEventListener("click", () => setSizeClass("format-size-h3"));
 
     document
       .getElementById("tf-btn-clear")
