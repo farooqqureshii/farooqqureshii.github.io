@@ -65,7 +65,7 @@ const {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-    <style>
+    <style is:global>
       body {
         font-family:
           "Inter",
@@ -77,6 +77,26 @@ const {
         font-size: 15px;
         line-height: 1.6;
         margin: 0;
+      }
+
+      @keyframes layoutFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      /* Fade-in for navbar (header) and footer without vertical movement */
+      header,
+      footer {
+        opacity: 0;
+      }
+      header {
+        animation: layoutFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0ms forwards;
+      }
+      footer {
+        animation: layoutFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 380ms forwards;
       }
     </style>
     <script is:inline>
@@ -107,29 +127,6 @@ const {
       <FlashlightScript />
       <TextSelectorMenu />
     </div>
-    <style is:global>
-      @keyframes indexFadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      /* Fade-in for navbar (header) and footer without vertical movement */
-      body > div.index-page > header,
-      body > div.index-page > footer {
-        opacity: 0;
-        animation: indexFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-      body > div.index-page > header {
-        animation-duration: 0.55s;
-        animation-delay: 0ms;
-      }
-      body > div.index-page > footer {
-        animation-delay: 300ms;
-      }
-    </style>
     <AudioEffects />
   </body>
 </html>
