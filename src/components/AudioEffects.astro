@@ -96,5 +96,12 @@
         playSound("release", true);
       }
     }, { capture: true });
+
+    // Unblock/resume Web Audio context on mobile touch start gesture
+    const unlockMobileAudio = () => {
+      play("tick");
+      document.removeEventListener("touchstart", unlockMobileAudio);
+    };
+    document.addEventListener("touchstart", unlockMobileAudio, { once: true, passive: true });
   }
 </script>
