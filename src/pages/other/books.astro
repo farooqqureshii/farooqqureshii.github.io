@@ -1247,7 +1247,7 @@ const books = [
       });
     })();
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("astro:page-load", function () {
       const modal = document.getElementById("book-modal");
       const modalTitle = document.getElementById("book-modal-title");
       const modalAuthor = document.getElementById("book-modal-author");
@@ -1260,6 +1260,8 @@ const books = [
       const modalBackdrop = document.querySelector(".book-modal-backdrop");
       const bookButtons = document.querySelectorAll(".book-cover-btn");
       const searchInput = document.getElementById("books-search");
+
+      if (!modal || !modalTitle || !modalAuthor || !modalRating || !modalDescription || !modalCover || !modalClose || !modalBackdrop || !searchInput) return;
 
       function showModal(book) {
         modalTitle.textContent = book.title;
@@ -1299,11 +1301,17 @@ const books = [
       modalBackdrop.addEventListener("click", function (e) {
         if (e.target === modalBackdrop) hideModal();
       });
-      document.addEventListener("keydown", function (e) {
+
+      function handleKeyDown(e) {
+        if (!document.body.contains(modal)) {
+          document.removeEventListener("keydown", handleKeyDown);
+          return;
+        }
         if (e.key === "Escape" && modal.classList.contains("show")) {
           hideModal();
         }
-      });
+      }
+      document.addEventListener("keydown", handleKeyDown);
 
       function filterBooks() {
         const q = (searchInput.value || "").toLowerCase().trim();

@@ -17,12 +17,13 @@ for (let i = 0; i < cols; i++) {
 }
 ---
 
-<footer class="relative select-none">
+<footer class="relative select-none" transition:name="footer">
   <svg
     id="footer-svg-icon"
     class="text-zinc-500 dark:text-zinc-400"
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
+    data-positioned="false"
   >
     <defs>
       <pattern id="dot-pattern" width="14" height="14" patternUnits="userSpaceOnUse" viewBox="0 0 105 105">
@@ -74,13 +75,17 @@ for (let i = 0; i < cols; i++) {
     position: absolute;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.6;
+    opacity: 0;
     transition:
       left 450ms cubic-bezier(0.23, 1, 0.32, 1),
       top 450ms cubic-bezier(0.23, 1, 0.32, 1),
       width 450ms cubic-bezier(0.23, 1, 0.32, 1),
       height 450ms cubic-bezier(0.23, 1, 0.32, 1),
       opacity 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  #footer-svg-icon[data-positioned="true"] {
+    opacity: 0.6;
   }
 
   #footer-svg-icon .bg-rect {
@@ -92,7 +97,7 @@ for (let i = 0; i < cols; i++) {
     transition: opacity 150ms ease-out; /* fast fade in on leave */
   }
 
-  footer.is-hovered #footer-svg-icon {
+  footer.is-hovered #footer-svg-icon[data-positioned="true"] {
     opacity: 0.22;
   }
   footer.is-hovered #footer-svg-icon .bg-rect {
@@ -104,7 +109,7 @@ for (let i = 0; i < cols; i++) {
     transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1); /* smooth fade out on enter */
   }
 
-  html.dark footer.is-hovered #footer-svg-icon {
+  html.dark footer.is-hovered #footer-svg-icon[data-positioned="true"] {
     opacity: 0.15;
   }
 
@@ -171,19 +176,31 @@ for (let i = 0; i < cols; i++) {
 
     let isHovered = false;
 
-    const updateSvgPosition = () => {
+    const updateSvgPosition = (immediate = false) => {
       if (isHovered) return;
       const anchorRect = anchor.getBoundingClientRect();
       const footerRect = footer.getBoundingClientRect();
+
+      if (immediate) {
+        svg.style.transition = "none";
+      }
 
       svg.style.left = `${anchorRect.left - footerRect.left}px`;
       svg.style.top = `${anchorRect.top - footerRect.top}px`;
       svg.style.width = `${anchorRect.width}px`;
       svg.style.height = `${anchorRect.height}px`;
+
+      if (immediate) {
+        svg.offsetHeight; // Force reflow
+        svg.style.removeProperty("transition");
+        svg.setAttribute("data-positioned", "true");
+      }
     };
 
-    // Calculate initial coordinates once view settles
-    setTimeout(updateSvgPosition, 250);
+    // Calculate initial coordinates immediately once layout is rendered
+    requestAnimationFrame(() => {
+      updateSvgPosition(true);
+    });
 
     const onMouseEnter = () => {
       isHovered = true;
@@ -206,7 +223,7 @@ for (let i = 0; i < cols; i++) {
     footer.addEventListener("mouseleave", onMouseLeave);
 
     // Refresh boundaries on resizing
-    window.addEventListener("resize", updateSvgPosition);
+    window.addEventListener("resize", () => updateSvgPosition(false));
   }
 
   function init() {
@@ -221,12 +238,7 @@ for (let i = 0; i < cols; i++) {
     initFooterInteraction();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-
-  document.addEventListener("astro:after-swap", init);
+  // Support Astro view transitions and page loads
+  document.addEventListener("astro:page-load", init);
 </script>
 

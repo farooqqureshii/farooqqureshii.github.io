@@ -7,6 +7,7 @@ import AudioEffects from "../components/AudioEffects.astro";
 import TextSelectorMenu from "../components/TextSelectorMenu.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -78,26 +79,6 @@ const {
         line-height: 1.6;
         margin: 0;
       }
-
-      @keyframes layoutFadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      /* Fade-in for navbar (header) and footer without vertical movement */
-      header,
-      footer {
-        opacity: 0;
-      }
-      header {
-        animation: layoutFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0ms forwards;
-      }
-      footer {
-        animation: layoutFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 380ms forwards;
-      }
     </style>
     <script is:inline>
       if (
@@ -109,7 +90,15 @@ const {
       } else {
         document.documentElement.classList.remove("dark");
       }
+
+      if (!window.__transition_listener_setup__) {
+        window.__transition_listener_setup__ = true;
+        document.addEventListener("astro:after-swap", () => {
+          document.documentElement.setAttribute("data-transitioned", "true");
+        });
+      }
     </script>
+    <ClientRouter />
   </head>
   <body
     class="bg-white text-[#111111] antialiased dark:bg-[#1a1a1a] dark:text-[#e4e4e7]"

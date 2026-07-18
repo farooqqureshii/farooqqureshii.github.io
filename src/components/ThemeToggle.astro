@@ -21,11 +21,17 @@
 </button>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const toggle = document.getElementById("theme-toggle");
-    if (!toggle) return;
+  let themeToggleSetup = false;
 
-    toggle.addEventListener("click", function () {
+  function initThemeToggle() {
+    if (themeToggleSetup) return;
+    themeToggleSetup = true;
+
+    document.addEventListener("click", function (e) {
+      const target = e.target as HTMLElement | null;
+      const toggle = target?.closest("#theme-toggle");
+      if (!toggle) return;
+
       const html = document.documentElement;
       html.classList.add("theme-transition");
       const isDark = html.classList.contains("dark");
@@ -42,5 +48,7 @@
         html.classList.remove("theme-transition");
       }, 320);
     });
-  });
+  }
+
+  document.addEventListener("astro:page-load", initThemeToggle);
 </script>

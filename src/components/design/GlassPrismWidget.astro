@@ -172,10 +172,6 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initPrism);
-  } else {
-    initPrism();
-  }
-  document.addEventListener("astro:after-swap", initPrism);
+  // Support Astro view transitions and page loads
+  document.addEventListener("astro:page-load", initPrism);
 </script>

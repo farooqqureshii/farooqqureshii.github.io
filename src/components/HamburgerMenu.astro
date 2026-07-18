@@ -546,12 +546,6 @@
     document.addEventListener("toggle-hamburger-menu", currentToggleHandler);
   }
 
-  // Use defensive readyState check to ensure init runs immediately if DOMContentLoaded has already fired
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initHamburger);
-  } else {
-    initHamburger();
-  }
-  // Support Astro view transitions
-  document.addEventListener("astro:after-swap", initHamburger);
+  // Support Astro view transitions and page loads
+  document.addEventListener("astro:page-load", initHamburger);
 </script>

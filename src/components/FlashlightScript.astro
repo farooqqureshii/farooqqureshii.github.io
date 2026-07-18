@@ -3,13 +3,17 @@
 // data-flashlight-pinnable: click to pin item (stays raised); unpin via custom event 'flashlight-unpin'
 ---
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     document.querySelectorAll(".flashlight-hover").forEach((container) => {
       const items = container.querySelectorAll(".flashlight-item");
       if (!items.length) return;
       const pinnable = container.hasAttribute("data-flashlight-pinnable");
 
       function unpin() {
+        if (!document.body.contains(container)) {
+          document.removeEventListener("flashlight-unpin", unpin);
+          return;
+        }
         items.forEach((el) => el.classList.remove("pinned"));
         container.classList.remove("active");
       }
@@ -21,7 +25,7 @@
           container.classList.add("active");
         });
         if (pinnable) {
-          item.addEventListener("click", (e) => {
+          item.addEventListener("click", () => {
             items.forEach((el) => el.classList.remove("pinned"));
             item.classList.add("pinned");
             container.classList.add("active");

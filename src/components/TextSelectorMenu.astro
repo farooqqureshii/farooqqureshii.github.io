@@ -1060,13 +1060,11 @@
   }
 
   // Initialize listeners
-  function initTextSelector() {
-    applySavedAnnotations();
-    applyHighlighters();
+  let globalTextSelectorInitialized = false;
 
-    if (resizeObserver) {
-      resizeObserver.disconnect();
-    }
+  function initGlobalTextSelector() {
+    if (globalTextSelectorInitialized) return;
+    globalTextSelectorInitialized = true;
 
     resizeObserver = new ResizeObserver(() => {
       for (const handle of activeHighlighters.values()) {
@@ -1106,111 +1104,28 @@
       }
     });
 
-    // Setup action button click handlers
-    document
-      .getElementById("tf-btn-bold")
-      ?.addEventListener("click", () => toggleFormatClass("format-bold"));
-    document
-      .getElementById("tf-btn-italic")
-      ?.addEventListener("click", () => toggleFormatClass("format-italic"));
-
-    document
-      .getElementById("tf-swatch-pink")
-      ?.addEventListener("click", () => toggleHighlightClass("format-hl-pink"));
-    document
-      .getElementById("tf-swatch-yellow")
-      ?.addEventListener("click", () =>
-        toggleHighlightClass("format-hl-yellow"),
-      );
-    document
-      .getElementById("tf-swatch-blue")
-      ?.addEventListener("click", () => toggleHighlightClass("format-hl-blue"));
-    document
-      .getElementById("tf-swatch-green")
-      ?.addEventListener("click", () =>
-        toggleHighlightClass("format-hl-green"),
-      );
-
-
-    document
-      .getElementById("tf-btn-clear")
-      ?.addEventListener("click", clearAllFormatting);
-
-    // Header Reset Button logic
-    const resetBtn = document.getElementById("reset-annotations-btn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        const pathname = window.location.pathname;
-        let originals: Record<string, Record<string, string>> = {};
-        try {
-          originals = JSON.parse(
-            localStorage.getItem("text-annotations-originals:v1") || "{}",
-          );
-        } catch (e) {
-          // ignore
-        }
-
-        const pageOriginals = originals[pathname];
-        if (pageOriginals) {
-          Object.keys(pageOriginals).forEach((selector) => {
-            try {
-              const el = document.querySelector(selector);
-              if (el) {
-                el.innerHTML = pageOriginals[selector];
-              }
-            } catch (err) {
-              console.error(`Failed to restore selector "${selector}":`, err);
-            }
-          });
-        }
-
-        // Clear active highlighters
-        for (const handle of activeHighlighters.values()) {
-          try {
-            handle.remove();
-          } catch (e) {}
-        }
-        activeHighlighters.clear();
-
-        // Remove page annotations from localStorage
-        let annotations: Record<string, Record<string, string>> = {};
-        try {
-          annotations = JSON.parse(
-            localStorage.getItem("text-annotations:v1") || "{}",
-          );
-        } catch (e) {
-          // ignore
-        }
-        delete annotations[pathname];
-        localStorage.setItem(
-          "text-annotations:v1",
-          JSON.stringify(annotations),
-        );
-
-        delete originals[pathname];
-        localStorage.setItem(
-          "text-annotations-originals:v1",
-          JSON.stringify(originals),
-        );
-
-        // Wipe any highlighter overlays immediately
-        const overlays = document.querySelectorAll(
-          "[data-highlighters-overlay]",
-        );
-        overlays.forEach((el) => el.remove());
-
-        updateResetButtonVisibility();
-      });
-      updateResetButtonVisibility();
-    }
-
-    // Event delegation to restore homepage click listeners broken by DOM edits
-    const handleLookAroundDelegate = (e: Event) => {
+    // Global Delegated click listener for text formatting controls and reset button
+    document.addEventListener("click", (e) => {
       const target = e.target as HTMLElement | null;
-      if (
-        target &&
-        (target.id === "look-around-btn" || target.closest("#look-around-btn"))
-      ) {
+      if (!target) return;
+
+      if (target.closest("#tf-btn-bold")) {
+        toggleFormatClass("format-bold");
+      } else if (target.closest("#tf-btn-italic")) {
+        toggleFormatClass("format-italic");
+      } else if (target.closest("#tf-swatch-pink")) {
+        toggleHighlightClass("format-hl-pink");
+      } else if (target.closest("#tf-swatch-yellow")) {
+        toggleHighlightClass("format-hl-yellow");
+      } else if (target.closest("#tf-swatch-blue")) {
+        toggleHighlightClass("format-hl-blue");
+      } else if (target.closest("#tf-swatch-green")) {
+        toggleHighlightClass("format-hl-green");
+      } else if (target.closest("#tf-btn-clear")) {
+        clearAllFormatting();
+      } else if (target.closest("#reset-annotations-btn")) {
+        handleResetAnnotations();
+      } else if (target.closest("#look-around-btn")) {
         e.preventDefault();
         if (document.getElementById("menu-overlay")) {
           document.dispatchEvent(
@@ -1222,11 +1137,23 @@
           document.getElementById("hamburger-btn")?.click();
         }
       }
-    };
-    document.addEventListener("click", handleLookAroundDelegate);
-    document.addEventListener("touchstart", handleLookAroundDelegate, {
-      passive: false,
     });
+
+    document.addEventListener("touchstart", (e) => {
+      const target = e.target as HTMLElement | null;
+      if (target && target.closest("#look-around-btn")) {
+        e.preventDefault();
+        if (document.getElementById("menu-overlay")) {
+          document.dispatchEvent(
+            new CustomEvent("toggle-hamburger-menu", {
+              detail: { action: "open" },
+            }),
+          );
+        } else {
+          document.getElementById("hamburger-btn")?.click();
+        }
+      }
+    }, { passive: false });
 
     // Watch for theme changes to automatically refresh highlighters
     const observer = new MutationObserver((mutations) => {
@@ -1239,10 +1166,79 @@
     observer.observe(document.documentElement, { attributes: true });
   }
 
-  // Run on page load
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initTextSelector);
-  } else {
-    initTextSelector();
+  // Refactored Reset annotations action logic to a helper
+  function handleResetAnnotations() {
+    const pathname = window.location.pathname;
+    let originals: Record<string, Record<string, string>> = {};
+    try {
+      originals = JSON.parse(
+        localStorage.getItem("text-annotations-originals:v1") || "{}",
+      );
+    } catch (e) {
+      // ignore
+    }
+
+    const pageOriginals = originals[pathname];
+    if (pageOriginals) {
+      Object.keys(pageOriginals).forEach((selector) => {
+        try {
+          const el = document.querySelector(selector);
+          if (el) {
+            el.innerHTML = pageOriginals[selector];
+          }
+        } catch (err) {
+          console.error(`Failed to restore selector "${selector}":`, err);
+        }
+      });
+    }
+
+    // Clear active highlighters
+    for (const handle of activeHighlighters.values()) {
+      try {
+        handle.remove();
+      } catch (e) {}
+    }
+    activeHighlighters.clear();
+
+    // Remove page annotations from localStorage
+    let annotations: Record<string, Record<string, string>> = {};
+    try {
+      annotations = JSON.parse(
+        localStorage.getItem("text-annotations:v1") || "{}",
+      );
+    } catch (e) {
+      // ignore
+    }
+    delete annotations[pathname];
+    localStorage.setItem(
+      "text-annotations:v1",
+      JSON.stringify(annotations),
+    );
+
+    delete originals[pathname];
+    localStorage.setItem(
+      "text-annotations-originals:v1",
+      JSON.stringify(originals),
+    );
+
+    // Wipe any highlighter overlays immediately
+    const overlays = document.querySelectorAll(
+      "[data-highlighters-overlay]",
+    );
+    overlays.forEach((el) => el.remove());
+
+    updateResetButtonVisibility();
   }
+
+  function initTextSelector() {
+    initGlobalTextSelector();
+    
+    // Page-specific initialization runs on every swap
+    applySavedAnnotations();
+    applyHighlighters();
+    updateResetButtonVisibility();
+  }
+
+  // Run on page transitions
+  document.addEventListener("astro:page-load", initTextSelector);
 </script>

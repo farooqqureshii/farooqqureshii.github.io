@@ -253,10 +253,6 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initLattice);
-  } else {
-    initLattice();
-  }
-  document.addEventListener("astro:after-swap", initLattice);
+  // Support Astro view transitions and page loads
+  document.addEventListener("astro:page-load", initLattice);
 </script>

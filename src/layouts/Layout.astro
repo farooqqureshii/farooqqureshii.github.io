@@ -7,6 +7,7 @@ import AudioEffects from "../components/AudioEffects.astro";
 import TextSelectorMenu from "../components/TextSelectorMenu.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -89,19 +90,29 @@ const {
       } else {
         document.documentElement.classList.remove("dark");
       }
+
+      if (!window.__transition_listener_setup__) {
+        window.__transition_listener_setup__ = true;
+        document.addEventListener("astro:after-swap", () => {
+          document.documentElement.setAttribute("data-transitioned", "true");
+        });
+      }
     </script>
+    <ClientRouter />
   </head>
   <body
     class="bg-white text-[#111111] antialiased dark:bg-[#1a1a1a] dark:text-[#e4e4e7]"
   >
     <div
       class={cn(
-        "page-enter max-w-[600px] mx-auto px-6 py-12 sm:px-8",
+        "max-w-[600px] mx-auto px-6 py-12 sm:px-8",
         className,
       )}
     >
       <Header />
-      <slot />
+      <div class="page-enter">
+        <slot />
+      </div>
       <Footer />
       {/* <CommandMenu /> */}
       <FlashlightScript />
