@@ -74,59 +74,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
     </article>
 
     <style>
-      @keyframes indexFadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
 
-      .index-content [data-stagger] {
-        opacity: 0;
-        transform: translateY(10px);
-        animation: indexFadeIn 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-
-      .index-content [data-stagger="1"] {
-        animation-delay: 80ms;
-      }
-      .index-content [data-stagger="2"] {
-        animation-delay: 120ms;
-      }
-      .index-content [data-stagger="3"] {
-        animation-delay: 160ms;
-      }
-      .index-content [data-stagger="4"] {
-        animation-delay: 200ms;
-      }
-      .index-content [data-stagger="5"] {
-        animation-delay: 240ms;
-      }
-      .index-content [data-stagger="6"] {
-        animation-delay: 280ms;
-      }
-      .index-content [data-stagger="7"] {
-        animation-delay: 320ms;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .index-content [data-stagger] {
-          transform: none;
-          animation: indexFadeInSimple 200ms ease forwards;
-        }
-        @keyframes indexFadeInSimple {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-      }
 
       .email-revealer {
         position: relative;

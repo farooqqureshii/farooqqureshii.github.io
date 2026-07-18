@@ -90,15 +90,8 @@ const {
       } else {
         document.documentElement.classList.remove("dark");
       }
-
-      if (!window.__transition_listener_setup__) {
-        window.__transition_listener_setup__ = true;
-        document.addEventListener("astro:after-swap", () => {
-          document.documentElement.setAttribute("data-transitioned", "true");
-        });
-      }
     </script>
-    <ClientRouter />
+    <ClientRouter transition:animate="none" />
   </head>
   <body
     class="bg-white text-[#111111] antialiased dark:bg-[#1a1a1a] dark:text-[#e4e4e7]"
