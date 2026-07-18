@@ -1,0 +1,98 @@
+---
+// MagnetButtonsWidget.astro - Tactile Spring Magnet Buttons
+interface Props {
+  showControls?: boolean;
+}
+const { showControls = false } = Astro.props;
+---
+
+<div class="magnet-widget relative w-full flex flex-col md:flex-row bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl select-none">
+  <!-- Interactive canvas section -->
+  <div class="flex-1 aspect-[16/10] sm:aspect-[16/9] relative min-h-[280px] flex items-center justify-center">
+    <!-- Blueprint grid background -->
+    <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:20px_20px] opacity-15 pointer-events-none"></div>
+
+    <!-- The interactive buttons stage -->
+    <div class="button-stage flex items-center justify-center gap-6 relative z-10 w-full h-full">
+      <button class="magnet-btn shape-pill px-6 py-3 bg-zinc-100 text-zinc-900 font-medium text-xs tracking-tight rounded-full shadow-md active:scale-95 cursor-pointer select-none transition-shadow duration-150 hover:shadow-lg" data-strength="0.4">
+        Pull Me
+      </button>
+
+      <button class="magnet-btn shape-pill px-6 py-3 border border-zinc-800 bg-zinc-900 text-zinc-100 font-medium text-xs tracking-tight rounded-lg active:scale-95 cursor-pointer select-none" data-strength="0.55">
+        Elastic
+      </button>
+
+      <button class="magnet-btn shape-pill w-12 h-12 flex items-center justify-center border border-zinc-800 bg-zinc-900/60 backdrop-blur-md text-zinc-300 rounded-full active:scale-95 cursor-pointer select-none" data-strength="0.7">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Instruction badge -->
+    <div class="absolute bottom-4 left-4 z-20 pointer-events-none px-2.5 py-1 bg-zinc-900/80 backdrop-blur-md border border-zinc-800/80 rounded-full text-[9px] font-mono text-zinc-400 tracking-tight shadow-sm">
+      HOVER CURSOR NEAR PILLS TO ENGAGE PHYSICS PULL
+    </div>
+  </div>
+
+  <!-- Customization Panel sidebar -->
+  {showControls && (
+    <div class="w-full md:w-64 p-5 border-t md:border-t-0 md:border-l border-zinc-800 bg-zinc-950 text-zinc-200 flex flex-col gap-4.5 z-10 font-sans text-xs">
+      <div class="font-semibold text-zinc-100 tracking-tight uppercase text-[10px] font-mono border-b border-zinc-800 pb-2">
+        Spring Playground
+      </div>
+      
+      <label class="flex flex-col gap-1.5">
+        <span class="text-[10px] text-zinc-400 font-mono uppercase">Button Shapes</span>
+        <select class="shape-selector px-2 py-1.5 bg-zinc-900 border border-zinc-800 rounded text-zinc-100 outline-none focus:border-purple-500 font-mono">
+          <option value="pill">Pills</option>
+          <option value="square">Squares</option>
+          <option value="circle">Circles</option>
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1">
+        <div class="flex justify-between font-mono text-[10px] text-zinc-400">
+          <span>STIFFNESS (K)</span>
+          <span class="stiffness-val">120</span>
+        </div>
+        <input type="range" class="stiffness-slider w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" min="40" max="240" value="120" />
+      </label>
+
+      <label class="flex flex-col gap-1">
+        <div class="flex justify-between font-mono text-[10px] text-zinc-400">
+          <span>DAMPING (D)</span>
+          <span class="damping-val">12</span>
+        </div>
+        <input type="range" class="damping-slider w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" min="4" max="30" value="12" />
+      </label>
+
+      <label class="flex flex-col gap-1">
+        <div class="flex justify-between font-mono text-[10px] text-zinc-400">
+          <span>MAGNETIC RANGE</span>
+          <span class="range-val">120px</span>
+        </div>
+        <input type="range" class="range-slider w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" min="60" max="200" value="120" />
+      </label>
+    </div>
+  )}
+</div>
+
+<style>
+  .magnet-btn {
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #c084fc;
+    cursor: pointer;
+  }
+</style>
+
+<script src="/static/js/magnet-buttons.js" is:inline></script>

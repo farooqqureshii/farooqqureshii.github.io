@@ -1,0 +1,77 @@
+---
+// HalftoneWidget.astro - Interactive Halftone Screen Rasterizer
+interface Props {
+  showControls?: boolean;
+}
+const { showControls = false } = Astro.props;
+---
+
+<div class="halftone-widget relative w-full flex flex-col md:flex-row bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl select-none">
+  <!-- Interactive canvas section -->
+  <div class="flex-1 aspect-[16/10] sm:aspect-[16/9] relative min-h-[280px]">
+    <!-- Blueprint background grid -->
+    <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none"></div>
+
+    <canvas class="halftone-canvas absolute inset-0 w-full h-full cursor-pointer"></canvas>
+
+    <!-- Instruction badge -->
+    <div class="absolute bottom-4 left-4 z-20 pointer-events-none px-2.5 py-1 bg-zinc-900/80 backdrop-blur-md border border-zinc-800/80 rounded-full text-[9px] font-mono text-zinc-400 tracking-tight shadow-sm">
+      MOVE CURSOR TO WARP THE HALFTONE GRID
+    </div>
+  </div>
+
+  <!-- Customization Panel sidebar -->
+  {showControls && (
+    <div class="w-full md:w-64 p-5 border-t md:border-t-0 md:border-l border-zinc-800 bg-zinc-950 text-zinc-200 flex flex-col gap-4.5 z-10 font-sans text-xs">
+      <div class="font-semibold text-zinc-100 tracking-tight uppercase text-[10px] font-mono border-b border-zinc-800 pb-2">
+        Raster Playground
+      </div>
+      
+      <label class="flex flex-col gap-1.5">
+        <span class="text-[10px] text-zinc-400 font-mono uppercase">Raster Shape</span>
+        <select class="style-selector px-2 py-1.5 bg-zinc-900 border border-zinc-800 rounded text-zinc-100 outline-none focus:border-purple-500 font-mono">
+          <option value="dot">Circles</option>
+          <option value="square">Squares</option>
+          <option value="ascii">ASCII Glyphs</option>
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1">
+        <div class="flex justify-between font-mono text-[10px] text-zinc-400">
+          <span>GRID SPACING</span>
+          <span class="spacing-val">16px</span>
+        </div>
+        <input type="range" class="spacing-slider w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" min="10" max="28" value="16" />
+      </label>
+
+      <label class="flex flex-col gap-1">
+        <div class="flex justify-between font-mono text-[10px] text-zinc-400">
+          <span>LENS DISTORTION RADIUS</span>
+          <span class="radius-val">120px</span>
+        </div>
+        <input type="range" class="radius-slider w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" min="60" max="220" value="120" />
+      </label>
+
+      <label class="flex flex-col gap-1">
+        <div class="flex justify-between font-mono text-[10px] text-zinc-400">
+          <span>MAGNET DIRECTION / FORCE</span>
+          <span class="force-val">-0.35 (Push)</span>
+        </div>
+        <input type="range" class="force-slider w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" min="-0.8" max="0.8" step="0.05" value="-0.35" />
+      </label>
+    </div>
+  )}
+</div>
+
+<style>
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #c084fc;
+    cursor: pointer;
+  }
+</style>
+
+<script src="/static/js/halftone.js" is:inline></script>

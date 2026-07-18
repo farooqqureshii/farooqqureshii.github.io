@@ -6,11 +6,12 @@ const segment = path.split("/").filter(Boolean)[0];
 const pageName = segment
   ? segment.charAt(0).toUpperCase() + segment.slice(1)
   : null;
+const isHomePage = path === "/" || path === "";
 ---
 
 <header class="mb-6 flex items-center justify-between">
   <div class="flex items-center gap-2 text-sm">
-    <a href="/" class="nav-brand no-underline">Farooq Qureshi</a>
+    <a href="/" class={isHomePage ? "nav-brand home-title no-underline" : "nav-brand no-underline"}>Farooq Qureshi</a>
     {
       pageName && (
         <>
@@ -37,17 +38,7 @@ const pageName = segment
         <path d="M3 3v5h5" />
       </svg>
     </button>
-    <button
-      id="scribble-trigger"
-      class="hidden md:flex items-center justify-center w-[18px] h-[18px] text-[#111111] dark:text-[#e4e4e7] transition-all cursor-pointer"
-      title="Draw on website (Alt + D)"
-      aria-label="Toggle Drawing Mode"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-[15px] h-[15px]">
-        <path d="M12 20h9"></path>
-        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
-      </svg>
-    </button>
+
     <HamburgerMenu />
   </div>
 </header>

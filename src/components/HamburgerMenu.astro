@@ -162,6 +162,11 @@
           cursor: pointer;
           padding: 0;
           z-index: 10001;
+          outline: none !important;
+          -webkit-tap-highlight-color: transparent !important;
+          will-change: transform, opacity;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
           transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
         }
         .mc-bar {
@@ -170,17 +175,20 @@
           left: 50%;
           background: #111;
           border-radius: 2px;
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
           transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         html.dark .mc-bar { background: #e4e4e7; }
         
         .mo-close .mc-bar:nth-child(1) {
           width: 16px;
-          height: 1.5px;
+          height: 2px;
           transform: translate(-50%, -50%);
         }
         .mo-close .mc-bar:nth-child(2) {
-          width: 1.5px;
+          width: 2px;
           height: 16px;
           transform: translate(-50%, -50%);
         }
@@ -386,6 +394,7 @@
         localStorage.sound = "off";
       }
       updateSoundLabel();
+      window.dispatchEvent(new CustomEvent("sound-toggled"));
     }
 
     function updateSoundLabel() {

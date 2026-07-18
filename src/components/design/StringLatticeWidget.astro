@@ -1,0 +1,262 @@
+---
+// StringLatticeWidget.astro - Elastic Vector String Lattice with physical audio ticks
+---
+
+<div class="string-lattice-widget relative w-full aspect-[16/9] min-h-[340px] sm:min-h-[420px] bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center select-none">
+  <!-- Instruction badge -->
+  <div class="absolute bottom-4 left-4 z-20 pointer-events-none px-2.5 py-1 bg-zinc-900/80 backdrop-blur-md border border-zinc-800/80 rounded-full text-[9px] font-mono text-zinc-400 tracking-tight shadow-sm">
+    SWIPE TO PLUCK STRINGS & GENERATE HARMONICS (CLICK TO INITIALIZE AUDIO)
+  </div>
+
+  <canvas class="lattice-canvas absolute inset-0 w-full h-full cursor-crosshair"></canvas>
+</div>
+
+<script>
+  function initLattice() {
+    const containers = document.querySelectorAll(".string-lattice-widget");
+    
+    containers.forEach((container) => {
+      const canvas = container.querySelector(".lattice-canvas") as HTMLCanvasElement;
+      if (!canvas) return;
+
+      const ctx = canvas.getContext("2d")!;
+      let w = canvas.width = container.clientWidth;
+      let h = canvas.height = container.clientHeight;
+
+      const resize = () => {
+        w = canvas.width = container.clientWidth;
+        h = canvas.height = container.clientHeight;
+        setupNodes();
+      };
+      
+      const ro = new ResizeObserver(resize);
+      ro.observe(container);
+
+      // Node structure for 2D wave equations
+      const cols = 12;
+      const rows = 8;
+      interface Node {
+        x: number;
+        y: number;
+        z: number;  // current wave vertical displacement
+        pz: number; // previous vertical displacement for wave equations
+      }
+
+      let nodes: Node[][] = [];
+
+      function setupNodes() {
+        nodes = [];
+        for (let r = 0; r <= rows; r++) {
+          const rowNodes: Node[] = [];
+          for (let c = 0; c <= cols; c++) {
+            rowNodes.push({
+              x: (w / cols) * c,
+              y: (h / rows) * r,
+              z: 0,
+              pz: 0
+            });
+          }
+          nodes.push(rowNodes);
+        }
+      }
+
+      setupNodes();
+
+      // Web Audio API Synthesizer setup
+      let audioCtx: AudioContext | null = null;
+      
+      const initAudio = () => {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+      };
+
+      // Pentatonic scale frequency mapping for perfect harmonics
+      const PENTATONIC = [130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+      
+      const playPluck = (pitchFactor: number) => {
+        if (!audioCtx) return;
+        
+        // Map vertical position to pentatonic scale frequencies
+        const noteIdx = Math.floor(pitchFactor * PENTATONIC.length);
+        const freq = PENTATONIC[Math.min(noteIdx, PENTATONIC.length - 1)];
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        // Synthesizer tuning: Triangle wave creates a warmer acoustic string timber
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        
+        // Envelope: Fast attack, exponential acoustic decay
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.55);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.6);
+      };
+
+      container.addEventListener("click", initAudio);
+
+      let prevMouse = { x: -9999, y: -9999, active: false };
+
+      const handleMove = (mx: number, my: number) => {
+        initAudio();
+        if (prevMouse.active) {
+          // Detect which grid sections the pointer intersects
+          for (let r = 0; r <= rows; r++) {
+            for (let c = 0; c <= cols; c++) {
+              const node = nodes[r][c];
+              const dist = Math.hypot(mx - node.x, my - node.y);
+              
+              // Pluck intersection checks
+              if (dist < 28) {
+                // Determine plucking speed/impact
+                const speed = Math.hypot(mx - prevMouse.x, my - prevMouse.y);
+                if (speed > 1.5 && Math.abs(node.z) < 1) {
+                  node.z = Math.min(speed * 0.9, 45); // Set wave peak amplitude
+                  playPluck(node.y / h);
+                }
+              }
+            }
+          }
+        }
+        prevMouse.x = mx;
+        prevMouse.y = my;
+        prevMouse.active = true;
+      };
+
+      canvas.addEventListener("mousemove", (e) => {
+        const rect = canvas.getBoundingClientRect();
+        handleMove(e.clientX - rect.left, e.clientY - rect.top);
+      });
+
+      canvas.addEventListener("mouseleave", () => {
+        prevMouse.active = false;
+      });
+
+      // Mobile Touch events support
+      canvas.addEventListener("touchmove", (e) => {
+        if (e.touches[0]) {
+          const rect = canvas.getBoundingClientRect();
+          handleMove(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+        }
+      });
+      canvas.addEventListener("touchend", () => {
+        prevMouse.active = false;
+      });
+
+      let raf = 0;
+      const waveDamping = 0.96;
+
+      function update() {
+        ctx.fillStyle = "#09090b";
+        ctx.fillRect(0, 0, w, h);
+
+        // 1. Solve 2D Wave Equations (Finite Difference Method)
+        for (let r = 1; r < rows; r++) {
+          for (let c = 1; c < cols; c++) {
+            const current = nodes[r][c];
+            
+            // Average vertical displacements of neighboring nodes
+            const left = nodes[r][c - 1].z;
+            const right = nodes[r][c + 1].z;
+            const top = nodes[r - 1][c].z;
+            const bottom = nodes[r + 1][c].z;
+
+            // Wave dynamic integration
+            const nextZ = (left + right + top + bottom) / 2 - current.pz;
+            current.pz = current.z;
+            current.z = nextZ * waveDamping;
+          }
+        }
+
+        // 2. Render Lattice Lines with hardware blending
+        ctx.lineWidth = 1;
+        ctx.shadowBlur = 0;
+
+        for (let r = 0; r <= rows; r++) {
+          for (let c = 0; c <= cols; c++) {
+            const current = nodes[r][c];
+
+            // Horizontal strings
+            if (c < cols) {
+              const next = nodes[r][c + 1];
+              const avgZ = Math.abs(current.z + next.z) / 2;
+              
+              ctx.strokeStyle = `rgba(124, 77, 255, ${0.15 + avgZ * 0.04})`; // Glowing purple
+              
+              ctx.beginPath();
+              ctx.moveTo(current.x, current.y + current.z);
+              // Draw curvature using quadratic Bezier for elastic bending looks
+              ctx.quadraticCurveTo(
+                (current.x + next.x) / 2,
+                ((current.y + next.y) / 2) + ((current.z + next.z) * 1.2),
+                next.x,
+                next.y + next.z
+              );
+              ctx.stroke();
+            }
+
+            // Vertical strings
+            if (r < rows) {
+              const next = nodes[r + 1][c];
+              const avgZ = Math.abs(current.z + next.z) / 2;
+              
+              ctx.strokeStyle = `rgba(16, 185, 129, ${0.15 + avgZ * 0.04})`; // Glowing emerald
+              
+              ctx.beginPath();
+              ctx.moveTo(current.x + current.z, current.y);
+              ctx.quadraticCurveTo(
+                ((current.x + next.x) / 2) + ((current.z + next.z) * 1.2),
+                (current.y + next.y) / 2,
+                next.x + next.z,
+                next.y
+              );
+              ctx.stroke();
+            }
+          }
+        }
+
+        // 3. Render glowing intersection nodes
+        for (let r = 0; r <= rows; r++) {
+          for (let c = 0; c <= cols; c++) {
+            const node = nodes[r][c];
+            if (Math.abs(node.z) > 1.5) {
+              ctx.fillStyle = "#fff";
+              ctx.beginPath();
+              // Offset node rendering dot position by z displacement
+              ctx.arc(node.x, node.y + node.z, Math.min(2 + Math.abs(node.z) * 0.12, 6), 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+
+        raf = requestAnimationFrame(update);
+      }
+
+      update();
+
+      (container as any).__destroy = () => {
+        ro.disconnect();
+        cancelAnimationFrame(raf);
+        if (audioCtx) {
+          audioCtx.close();
+        }
+      };
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLattice);
+  } else {
+    initLattice();
+  }
+  document.addEventListener("astro:after-swap", initLattice);
+</script>

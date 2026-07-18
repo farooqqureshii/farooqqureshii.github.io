@@ -2,267 +2,99 @@
 ---
 
 <script>
-  class AudioSynth {
-    private ctx: AudioContext | null = null;
-    private initialized = false;
-    private activeHoverOsc: OscillatorNode | null = null;
-    private activeHoverGain: GainNode | null = null;
-    private lastClickTime = 0;
-    private onSuspendedCallbacks: (() => void)[] = [];
+  import { play, setEnabled } from "cuelume";
 
-    private init() {
-      if (this.initialized) return;
-      try {
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-        if (AudioContextClass) {
-          this.ctx = new AudioContextClass();
-          this.initialized = true;
+  // Prevent multiple setup executions during runtime hot-reloads
+  const globalKey = "__audio_effects_setup__";
+  if (!(window as any)[globalKey]) {
+    (window as any)[globalKey] = true;
 
-          // Apply iOS silent switch safeguard if available (Safari 16.4+)
-          if (typeof navigator !== "undefined" && "audioSession" in navigator) {
-            try {
-              (navigator as any).audioSession.type = "playback";
-            } catch (err) {
-              console.warn("Failed to set audioSession type:", err);
-            }
-          }
+    // Track timestamps for throttling and overlap control
+    let lastPlayTime = 0;
+    let lastClickTime = 0;
+    let lastHoverTime = 0;
 
-          // Listen for state changes to detect if context is auto-suspended by browser
-          this.ctx.addEventListener("statechange", () => {
-            if (this.ctx && this.ctx.state === "suspended") {
-              this.onSuspendedCallbacks.forEach((cb) => cb());
-            }
-          });
-        }
-      } catch (e) {
-        console.warn("Web Audio API is not supported in this browser:", e);
-      }
-    }
-
-    public onSuspended(callback: () => void) {
-      this.onSuspendedCallbacks.push(callback);
-    }
-
-    public getContextState(): string {
-      return this.ctx ? this.ctx.state : "uninitialized";
-    }
-
-    public resume() {
-      this.init();
-      if (this.ctx) {
-        if (this.ctx.state === "suspended") {
-          this.ctx.resume().catch(() => {});
-        }
-        // Unlock Web Audio API on iOS by playing a silent buffer source
-        try {
-          const buffer = this.ctx.createBuffer(1, 1, 22050);
-          const source = this.ctx.createBufferSource();
-          source.buffer = buffer;
-          source.connect(this.ctx.destination);
-          source.start(0);
-        } catch (e) {
-          console.warn("Failed to play silent buffer for unlocking:", e);
-        }
-      }
-    }
-
-    private stopActiveHover() {
-      if (this.activeHoverOsc) {
-        try {
-          // Instantly ramp down volume to avoid clicks/pops when cutting off sound
-          if (this.ctx && this.activeHoverGain) {
-            const now = this.ctx.currentTime;
-            this.activeHoverGain.gain.cancelScheduledValues(now);
-            this.activeHoverGain.gain.setValueAtTime(this.activeHoverGain.gain.value, now);
-            this.activeHoverGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.01);
-            
-            const osc = this.activeHoverOsc;
-            setTimeout(() => {
-              try { osc.stop(); } catch(err) {}
-            }, 10);
-          } else {
-            this.activeHoverOsc.stop();
-          }
-        } catch (e) {}
-        this.activeHoverOsc = null;
-      }
-      this.activeHoverGain = null;
-    }
-
-    public playHover() {
-      this.init();
-      if (!this.ctx) return;
-      if (localStorage.sound === "off") return;
-
-      // Suppress hover sounds immediately after clicks to prevent overlap in transitions
-      if (Date.now() - this.lastClickTime < 350) {
-        return;
-      }
-
-      // Ignore if audio context is suspended
-      if (this.ctx.state === "suspended") {
-        this.ctx.resume().catch(() => {});
-        return;
-      }
-
-      // Stop any existing hover to prevent overlapping mechanical ticks
-      this.stopActiveHover();
-
-      const now = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-
-      osc.type = "sine";
-      
-      // Extremely quick and soft high frequency sweep (pleasant mechanical click/tick sound)
-      osc.frequency.setValueAtTime(1000, now);
-      osc.frequency.exponentialRampToValueAtTime(700, now + 0.035);
-
-      gain.gain.setValueAtTime(0.006, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
-
-      osc.start(now);
-      osc.stop(now + 0.035);
-
-      this.activeHoverOsc = osc;
-      this.activeHoverGain = gain;
-    }
-
-    public playClick() {
-      this.init();
-      if (!this.ctx) return;
-      if (localStorage.sound === "off") return;
-      
-      if (this.ctx.state === "suspended") {
-        this.ctx.resume().catch(() => {});
-      }
-
-      // Record click time to suppress subsequent synthetic hovers during layouts/transitions
-      this.lastClickTime = Date.now();
-
-      // Cut off any active hover sound immediately on click
-      this.stopActiveHover();
-
-      const now = this.ctx.currentTime;
-
-      // Crispy double-beep boop pluck
-      // Beep 1
-      const osc1 = this.ctx.createOscillator();
-      const gain1 = this.ctx.createGain();
-      osc1.connect(gain1);
-      gain1.connect(this.ctx.destination);
-      osc1.type = "sine";
-      osc1.frequency.setValueAtTime(600, now);
-      osc1.frequency.exponentialRampToValueAtTime(500, now + 0.04);
-      gain1.gain.setValueAtTime(0.012, now);
-      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
-      osc1.start(now);
-      osc1.stop(now + 0.04);
-
-      // Beep 2 (offset by 25ms)
-      const osc2 = this.ctx.createOscillator();
-      const gain2 = this.ctx.createGain();
-      osc2.connect(gain2);
-      gain2.connect(this.ctx.destination);
-      osc2.type = "sine";
-      osc2.frequency.setValueAtTime(780, now + 0.025);
-      osc2.frequency.exponentialRampToValueAtTime(620, now + 0.07);
-      gain2.gain.setValueAtTime(0.009, now + 0.025);
-      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
-      osc2.start(now + 0.025);
-      osc2.stop(now + 0.07);
-    }
-  }
-
-  // Reuse existing instance on window if it exists to prevent browser AudioContext limits
-  const globalKey = "__audio_synth__";
-  const audioSynth: AudioSynth = (window as any)[globalKey] || new AudioSynth();
-  (window as any)[globalKey] = audioSynth;
-
-  const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-
-  function setupAudioListeners() {
-    let listenersAdded = false;
-
-    const resumeAudio = () => {
-      audioSynth.resume();
-      removeResumeListeners();
+    // Synchronize mute status with client preference
+    const syncMuteState = () => {
+      const isMuted = localStorage.sound === "off";
+      setEnabled(!isMuted);
     };
 
-    function addResumeListeners() {
-      if (listenersAdded) return;
-      ["click", "keydown", "touchstart", "mousedown"].forEach((event) => {
-        document.addEventListener(event, resumeAudio, { once: true, capture: true });
-      });
-      listenersAdded = true;
-    }
+    // Initialize state on load
+    syncMuteState();
 
-    function removeResumeListeners() {
-      if (!listenersAdded) return;
-      ["click", "keydown", "touchstart", "mousedown"].forEach((event) => {
-        document.removeEventListener(event, resumeAudio, { capture: true });
-      });
-      listenersAdded = false;
-    }
+    // Listen for sound toggling changes from settings menu
+    window.addEventListener("sound-toggled", syncMuteState);
 
-    // Register initial listeners
-    addResumeListeners();
+    // Safeguard to only trigger hover effects on fine pointer devices (mouse/trackpad)
+    const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
 
-    // Listen for context state changes to re-add gesture listeners if it gets suspended
-    audioSynth.onSuspended(() => {
-      addResumeListeners();
-    });
-
-    // Listen for visibility change as a fallback to re-add gesture listeners
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible" && audioSynth.getContextState() === "suspended") {
-        addResumeListeners();
+    function playSound(soundName: any, ignoreThrottle = false) {
+      if (localStorage.sound === "off") return;
+      const now = Date.now();
+      // Enforce clean acoustic separations: avoid overlapping sound bursts
+      if (!ignoreThrottle && now - lastPlayTime < 80) {
+        return;
       }
-    });
+      lastPlayTime = now;
+      play(soundName);
+    }
 
-    // 1. Hover Listener (Gated to avoid mobile issues)
+    // Delegated Hover Listener
     document.addEventListener("mouseover", (e) => {
       if (!hoverQuery.matches) return;
-      
+
       const targetEl = e.target as HTMLElement;
-      
-      // Do not play hover sound if hovering over the design engineering shimmer text
-      if (targetEl.closest("[data-gradient-shimmer]")) {
+      if (!targetEl) return;
+
+      // Do not play hover sounds over high-frequency animated elements like shimmers
+      if (targetEl.closest("[data-gradient-shimmer]")) return;
+
+      const interactive = targetEl.closest("a, button, [role='button'], .flashlight-item");
+      if (!interactive) return;
+
+      // Prevent redundant hover plays when crossing internal element borders
+      if (e.relatedTarget && interactive.contains(e.relatedTarget as Node)) {
         return;
       }
 
-      const target = targetEl.closest("a, button, [role=button], .flashlight-item, #spotify-last-song-link");
-      if (!target) return;
+      const now = Date.now();
+      // Suppress hover triggers immediately after clicking to allow clean navigation and page transitions
+      if (now - lastClickTime < 350) return;
+      // Impose menu-sweeping throttle limit
+      if (now - lastHoverTime < 120) return;
+      lastHoverTime = now;
 
-      // Prevent triggers on minor mouse movement within the same parent target
-      if (e.relatedTarget && target.contains(e.relatedTarget as Node)) {
-        return;
-      }
-
-      audioSynth.playHover();
+      // links, buttons, headers, footers, swatches, formats, tabs: clean click-like tick
+      playSound("tick");
     });
 
-    // 2. Click Listener (using capture phase to intercept clicked elements that call stopPropagation)
+    // Delegated Click/Press Listener
     document.addEventListener("click", (e) => {
-      const target = (e.target as HTMLElement).closest("a, button, [role=button], .flashlight-item, #spotify-last-song-link");
-      if (target) {
-        audioSynth.playClick();
+      const targetEl = e.target as HTMLElement;
+      if (!targetEl) return;
+
+      const interactive = targetEl.closest("a, button, [role='button'], .flashlight-item");
+      if (!interactive) return;
+
+      lastClickTime = Date.now();
+
+      // Check if action corresponds to a success outcome (e.g. copying email)
+      if (interactive.matches("#email-copy-btn, .copy-btn")) {
+        playSound("success", true);
+        return;
+      }
+
+      // Check if this action behaves as a toggle / state change
+      const isToggle = interactive.matches("#theme-toggle, #menu-theme-toggle, #menu-sound-toggle, .project-tab, .artifact-tab, #hamburger-btn, #menu-close, .tf-swatch, .tf-btn");
+
+      if (isToggle) {
+        // tab switches, settings toggles, and format swatches: mechanical click-clack
+        playSound("toggle", true);
+      } else {
+        // general link routing and presses: bright release click
+        playSound("release", true);
       }
     }, { capture: true });
-  }
-
-  // Ensure listeners are only attached once per window lifecycle to prevent duplicates & leaks
-  if (!(window as any).__audio_listeners_setup__) {
-    (window as any).__audio_listeners_setup__ = true;
-    
-    // Initialize listeners on DOM load & Astro Page Transition load
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", setupAudioListeners);
-    } else {
-      setupAudioListeners();
-    }
   }
 </script>

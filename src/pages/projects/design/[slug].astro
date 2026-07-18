@@ -1,0 +1,106 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import MetaballsWidget from "../../../components/design/MetaballsWidget.astro";
+import MagnetButtonsWidget from "../../../components/design/MagnetButtonsWidget.astro";
+import HalftoneWidget from "../../../components/design/HalftoneWidget.astro";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return [
+    {
+      params: { slug: "liquid-metaballs" },
+      props: {
+        title: "Liquid Metaball Typography",
+        description: "Text characters composed of fluid liquid droplets that tear, merge, and flow in response to pointer drag forces.",
+        technologies: ["CSS Contrast Filters", "Astro", "Damped Springs", "Canvas Scan"],
+        type: "metaballs"
+      }
+    },
+    {
+      params: { slug: "magnet-buttons" },
+      props: {
+        title: "Tactile Magnet Buttons",
+        description: "A set of tactile floating button elements that pull dynamically towards the cursor based on distance offsets.",
+        technologies: ["Spring Equations", "Damped Integrators", "Tactile Physics", "Astro"],
+        type: "magnet-buttons"
+      }
+    },
+    {
+      params: { slug: "halftone-rasterizer" },
+      props: {
+        title: "Interactive Halftone Rasterizer",
+        description: "A print-halftone screen that rasterizes coordinate offsets in real-time, warping and springing back to home anchors.",
+        technologies: ["Rasterization Matrix", "Inertia Physics", "Verlet Springs", "Canvas"],
+        type: "halftone"
+      }
+    }
+  ];
+}
+
+const { title, description, technologies, type } = Astro.props;
+---
+
+<Layout title={`Farooq Q. | ${title}`} description={description}>
+  <main class="no-link-underline max-w-[960px] mx-auto px-4 py-8">
+    <!-- Meta details similar to writing articles -->
+    <header class="mb-6">
+      <h1 class="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-105 mb-1.5">{title}</h1>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+        <span>Design Experiment</span>
+        <span>•</span>
+        <span>{technologies.join(", ")}</span>
+      </div>
+    </header>
+
+    <!-- The Interactive Playground wrapper -->
+    <div class="interactive-stage-container w-full mb-8">
+      {type === "metaballs" && <MetaballsWidget showControls={true} />}
+      {type === "magnet-buttons" && <MagnetButtonsWidget showControls={true} />}
+      {type === "halftone" && <HalftoneWidget showControls={true} />}
+    </div>
+
+    <!-- Description writing -->
+    <article class="max-w-[720px] text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 space-y-4 font-sans">
+      <p>{description}</p>
+      
+      {type === "metaballs" && (
+        <div class="space-y-4">
+          <p>
+            This experiment scans glyph outline coordinates from a standard system font and populates them with local particle physics. Moving the cursor pulls particles within a dynamic radius, while holding down the mouse captures droplets in a strong magnetic attractor field.
+          </p>
+          <p>
+            To achieve organic fluid fusion (metaballs) without heavy pixel loops, it utilizes a hardware-accelerated CSS filter combination of high contrast and Gaussian blur, blending separate overlapping vector paths into singular cohesive liquid shapes.
+          </p>
+        </div>
+      )}
+
+      {type === "magnet-buttons" && (
+        <div class="space-y-4">
+          <p>
+            A physical simulation of buttons mounted on elastic springs. When the cursor passes near the buttons, they lean and accelerate towards the pointer coordinates based on their proximity.
+          </p>
+          <p>
+            The controls on the right allow adjusting the stiffness of the spring ($k$) and the damping coefficient ($d$). A higher stiffness makes the button snap faster, while a lower damping allows it to oscilate and wobble longer when released.
+          </p>
+        </div>
+      )}
+
+      {type === "halftone" && (
+        <div class="space-y-4">
+          <p>
+            Inspired by classic printing raster screens, this halftone grid distorts locally based on pointer forces. The coordinates of the dots are mapped to separate particles, which are pushed away or pulled towards the mouse, generating elastic physical waves.
+          </p>
+          <p>
+            You can swap the raster styles between circles, solid grid blocks, or ASCII letter symbols. The slider values dynamically update grid spacing, repulsion range, and elastic coefficients.
+          </p>
+        </div>
+      )}
+    </article>
+
+    <!-- Navigation footer matching the writing slug page footer -->
+    <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 text-sm text-zinc-500 dark:text-zinc-400 flex items-center justify-between">
+      <a href="/projects" class="hover:text-zinc-900 dark:hover:text-zinc-150 transition-colors">← All Projects</a>
+    </div>
+  </main>
+</Layout>

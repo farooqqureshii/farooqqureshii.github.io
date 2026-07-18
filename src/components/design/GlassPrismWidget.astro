@@ -1,0 +1,181 @@
+---
+// GlassPrismWidget.astro - 3D Refractive Glass Prism with chromatic aberration offsets
+---
+
+<div class="glass-prism-widget relative w-full aspect-[16/9] min-h-[340px] sm:min-h-[420px] bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center select-none" style="perspective: 1000px;">
+  <!-- Backdrop alignment mesh -->
+  <div class="absolute inset-0 bg-[radial-gradient(#27272a_1.2px,transparent_1.2px)] [background-size:24px_24px] opacity-50 pointer-events-none"></div>
+
+  <!-- Instruction badge -->
+  <div class="absolute bottom-4 left-4 z-20 pointer-events-none px-2.5 py-1 bg-zinc-950/80 backdrop-blur-md border border-zinc-800/80 rounded-full text-[9px] font-mono text-zinc-400 tracking-tight shadow-sm">
+    MOVE CURSOR TO ROTATE GLASS & BEND COLOR CHANNELS
+  </div>
+
+  <!-- Interactive Canvas + 3D Glass Card Container -->
+  <div class="prism-stage relative w-[280px] h-[180px] sm:w-[360px] sm:h-[220px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl overflow-hidden transition-transform duration-100 ease-out cursor-pointer" style="transform-style: preserve-3d; transform: rotateX(0deg) rotateY(0deg);">
+    <!-- Specular glare sheen overlay -->
+    <div class="specular-glare absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-300"></div>
+
+    <canvas class="prism-canvas absolute inset-0 w-full h-full"></canvas>
+  </div>
+</div>
+
+<style>
+  .glass-prism-widget {
+    background: radial-gradient(circle at center, #18181b 0%, #09090b 100%);
+  }
+  .specular-glare {
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.22) 0%, transparent 60%);
+    mix-blend-mode: overlay;
+  }
+</style>
+
+<script>
+  function initPrism() {
+    const containers = document.querySelectorAll(".glass-prism-widget");
+    
+    containers.forEach((container) => {
+      const stage = container.querySelector(".prism-stage") as HTMLElement;
+      const canvas = container.querySelector(".prism-canvas") as HTMLCanvasElement;
+      const glare = container.querySelector(".specular-glare") as HTMLElement;
+      if (!stage || !canvas) return;
+
+      const ctx = canvas.getContext("2d")!;
+      let w = canvas.width = stage.clientWidth;
+      let h = canvas.height = stage.clientHeight;
+
+      const resize = () => {
+        w = canvas.width = stage.clientWidth;
+        h = canvas.height = stage.clientHeight;
+      };
+      
+      const ro = new ResizeObserver(resize);
+      ro.observe(stage);
+
+      let targetRotX = 0;
+      let targetRotY = 0;
+      let curRotX = 0;
+      let curRotY = 0;
+      
+      let mouseX = 0;
+      let mouseY = 0;
+      let isInside = false;
+
+      container.addEventListener("mousemove", (e: Event) => {
+        const mouseEvent = e as MouseEvent;
+        const rect = container.getBoundingClientRect();
+        
+        // Relative mouse coordinates
+        const rx = (mouseEvent.clientX - rect.left) / rect.width - 0.5;
+        const ry = (mouseEvent.clientY - rect.top) / rect.height - 0.5;
+        
+        targetRotX = -ry * 32; // max tilt degrees
+        targetRotY = rx * 32;
+        
+        // Glare highlights coordinates inside card stage
+        const stageRect = stage.getBoundingClientRect();
+        mouseX = mouseEvent.clientX - stageRect.left;
+        mouseY = mouseEvent.clientY - stageRect.top;
+        isInside = true;
+      });
+
+      container.addEventListener("mouseleave", () => {
+        targetRotX = 0;
+        targetRotY = 0;
+        isInside = false;
+      });
+
+      let raf = 0;
+      
+      function draw() {
+        // Linear interpolation for smooth springy rotational transitions
+        curRotX += (targetRotX - curRotX) * 0.12;
+        curRotY += (targetRotY - curRotY) * 0.12;
+        
+        stage.style.transform = `perspective(1000px) rotateX(${curRotX.toFixed(2)}deg) rotateY(${curRotY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+
+        if (isInside) {
+          glare.style.opacity = "1";
+          glare.style.setProperty("--mx", `${(mouseX / w) * 100}%`);
+          glare.style.setProperty("--my", `${(mouseY / h) * 100}%`);
+        } else {
+          glare.style.opacity = "0";
+        }
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Draw the background index coordinates grid inside the glass lens
+        const rows = 6;
+        const cols = 8;
+        const dx = curRotY * 0.45; // Refractive horizontal displacement
+        const dy = -curRotX * 0.45; // Refractive vertical displacement
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "800 11px monospace";
+
+        // Render RGB split copies to simulate high-fidelity lens chromatic aberration
+        for (let r = 0; r <= rows; r++) {
+          for (let c = 0; c <= cols; c++) {
+            const px = (w / cols) * c;
+            const py = (h / rows) * r;
+            const label = `${r * cols + c}`;
+
+            // 1. Draw Red Channel copy
+            ctx.fillStyle = "rgba(239, 68, 68, 0.75)";
+            ctx.fillText(label, px + dx - 1.2, py + dy - 0.6);
+
+            // 2. Draw Cyan Channel copy
+            ctx.fillStyle = "rgba(6, 182, 212, 0.75)";
+            ctx.fillText(label, px - dx + 1.2, py - dy + 0.6);
+
+            // 3. Draw Green/White overlapping core copy
+            ctx.fillStyle = "rgba(244, 244, 245, 0.85)";
+            ctx.fillText(label, px, py);
+          }
+        }
+
+        // Draw a central floating vector geometric element
+        const cx = w / 2;
+        const cy = h / 2;
+        const radius = Math.min(w, h) * 0.18;
+        
+        ctx.lineWidth = 1.5;
+        
+        // Red geometric ring
+        ctx.strokeStyle = "rgba(239, 68, 68, 0.8)";
+        ctx.beginPath();
+        ctx.arc(cx + dx * 1.5, cy + dy * 1.5, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Cyan geometric ring
+        ctx.strokeStyle = "rgba(6, 182, 212, 0.8)";
+        ctx.beginPath();
+        ctx.arc(cx - dx * 1.5, cy - dy * 1.5, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // White base ring
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        raf = requestAnimationFrame(draw);
+      }
+
+      draw();
+
+      (container as any).__destroy = () => {
+        ro.disconnect();
+        cancelAnimationFrame(raf);
+      };
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPrism);
+  } else {
+    initPrism();
+  }
+  document.addEventListener("astro:after-swap", initPrism);
+</script>

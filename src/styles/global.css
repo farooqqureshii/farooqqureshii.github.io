@@ -134,10 +134,32 @@
   header {
   }
 
-  .nav-brand {
+  .nav-brand.home-title {
+    font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
+    font-weight: normal;
+    font-size: 1.7rem;
+    letter-spacing: 0.02em;
+    transform: none;
+    display: inline-block;
+    color: #111111;
+    transition: transform 200ms ease, opacity 200ms ease;
+    line-height: 1.1;
+  }
+  html.dark .nav-brand.home-title {
+    color: #e4e4e7;
+  }
+  .nav-brand.home-title:hover {
+    opacity: 0.85;
+  }
+  .nav-brand.home-title:active {
+  }
+
+  .nav-brand:not(.home-title) {
     font-family: inherit;
     font-weight: 460;
     letter-spacing: 0;
+    transform: none;
+    display: inline;
   }
 
   /* Section headings */

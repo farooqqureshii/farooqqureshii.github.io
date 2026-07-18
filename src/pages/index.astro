@@ -77,7 +77,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       @keyframes indexFadeIn {
         from {
           opacity: 0;
-          transform: translateY(8px);
+          transform: translateY(3px);
         }
         to {
           opacity: 1;
@@ -87,30 +87,30 @@ import IndexLayout from "../layouts/IndexLayout.astro";
 
       .index-content [data-stagger] {
         opacity: 0;
-        transform: translateY(8px);
-        animation: indexFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transform: translateY(3px);
+        animation: indexFadeIn 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
       }
 
       .index-content [data-stagger="1"] {
-        animation-delay: 100ms;
+        animation-delay: 40ms;
       }
       .index-content [data-stagger="2"] {
-        animation-delay: 150ms;
+        animation-delay: 75ms;
       }
       .index-content [data-stagger="3"] {
-        animation-delay: 200ms;
+        animation-delay: 110ms;
       }
       .index-content [data-stagger="4"] {
-        animation-delay: 250ms;
+        animation-delay: 145ms;
       }
       .index-content [data-stagger="5"] {
-        animation-delay: 300ms;
+        animation-delay: 180ms;
       }
       .index-content [data-stagger="6"] {
-        animation-delay: 350ms;
+        animation-delay: 215ms;
       }
       .index-content [data-stagger="7"] {
-        animation-delay: 400ms;
+        animation-delay: 250ms;
       }
 
       .email-revealer {

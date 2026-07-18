@@ -1,401 +1,137 @@
 ---
+// Generate randomized dot positions and delay values for a 6x6 background pattern
+const cols = 6;
+const rows = 6;
+const spacing = 5.333;
+const radius = 1.667;
 
+const bgDots = [];
+for (let i = 0; i < cols; i++) {
+  for (let j = 0; j < rows; j++) {
+    const cx = 2.667 + i * spacing;
+    const cy = 2.667 + j * spacing;
+    const delay = Math.floor(Math.random() * 1000);
+    const minOpacity = (Math.random() * 0.4 + 0.15).toFixed(2);
+    bgDots.push({ cx, cy, delay, minOpacity });
+  }
+}
 ---
 
-<footer class="mt-8 pt-4 pb-6 px-0 relative overflow-hidden group">
-  <canvas id="footer-game-of-life-canvas" class="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-0 transition-opacity duration-300"></canvas>
-  <p class="text-sm text-zinc-500 dark:text-zinc-400 relative z-10 m-0">
-    It's <span
-      id="ottawa-time"
-      class="inline-block tabular-nums"
-      style="min-width:5.5ch;">--:--:--</span
-    >
-    and <span id="ottawa-weather">--°C</span> in Ottawa, Ontario.<svg
-      id="footer-svg-icon"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 36 36"
-      width="14"
-      height="14"
-      fill="none"
-      aria-hidden="true"
-      class="inline-block align-middle ml-[0.35em] opacity-60 transition-opacity duration-300"
-    >
-      <style>
-        .box5532 {
-          fill: currentColor;
-          transform-origin: 50% 50%;
-        }
-        @keyframes box5532-1 {
-          9.0909090909% {
-            transform: translate(-12px, 0);
-          }
-          18.1818181818% {
-            transform: translate(0px, 0);
-          }
-          27.2727272727% {
-            transform: translate(0px, 0);
-          }
-          36.3636363636% {
-            transform: translate(12px, 0);
-          }
-          45.4545454545% {
-            transform: translate(12px, 12px);
-          }
-          54.5454545455% {
-            transform: translate(12px, 12px);
-          }
-          63.6363636364% {
-            transform: translate(12px, 12px);
-          }
-          72.7272727273% {
-            transform: translate(12px, 0px);
-          }
-          81.8181818182% {
-            transform: translate(0px, 0px);
-          }
-          90.9090909091% {
-            transform: translate(-12px, 0px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(1) {
-          animation: box5532-1 4s infinite;
-        }
+<footer class="relative select-none">
+  <svg
+    id="footer-svg-icon"
+    class="text-zinc-500 dark:text-zinc-400"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <defs>
+      <pattern id="dot-pattern" width="14" height="14" patternUnits="userSpaceOnUse" viewBox="0 0 105 105">
+        <circle cx="12.5" cy="12.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -0ms;"/>
+        <circle cx="12.5" cy="52.5" r="12.5" fill="currentColor" fill-opacity=".5" class="pulse-circle-icon" style="animation-delay: -100ms;"/>
+        <circle cx="52.5" cy="12.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -300ms;"/>
+        <circle cx="52.5" cy="52.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -600ms;"/>
+        <circle cx="92.5" cy="12.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -800ms;"/>
+        <circle cx="92.5" cy="52.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -400ms;"/>
+        <circle cx="12.5" cy="92.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -700ms;"/>
+        <circle cx="52.5" cy="92.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -500ms;"/>
+        <circle cx="92.5" cy="92.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -200ms;"/>
+      </pattern>
+      <pattern id="random-dot-pattern" width="32" height="32" patternUnits="userSpaceOnUse" viewBox="0 0 32 32">
+        {bgDots.map(dot => (
+          <circle 
+            cx={dot.cx} 
+            cy={dot.cy} 
+            r={radius} 
+            fill="currentColor"
+            class="pulse-circle"
+            style={`animation-delay: -${dot.delay}ms; --pulse-opacity: ${dot.minOpacity};`}
+          />
+        ))}
+      </pattern>
+    </defs>
+    <rect class="icon-rect" width="100%" height="100%" fill="url(#dot-pattern)" />
+    <rect class="bg-rect" width="100%" height="100%" fill="url(#random-dot-pattern)" />
+  </svg>
 
-        @keyframes box5532-2 {
-          9.0909090909% {
-            transform: translate(0, 0);
-          }
-          18.1818181818% {
-            transform: translate(12px, 0);
-          }
-          27.2727272727% {
-            transform: translate(0px, 0);
-          }
-          36.3636363636% {
-            transform: translate(12px, 0);
-          }
-          45.4545454545% {
-            transform: translate(12px, 12px);
-          }
-          54.5454545455% {
-            transform: translate(12px, 12px);
-          }
-          63.6363636364% {
-            transform: translate(12px, 12px);
-          }
-          72.7272727273% {
-            transform: translate(12px, 12px);
-          }
-          81.8181818182% {
-            transform: translate(0px, 12px);
-          }
-          90.9090909091% {
-            transform: translate(0px, 12px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(2) {
-          animation: box5532-2 4s infinite;
-        }
-
-        @keyframes box5532-3 {
-          9.0909090909% {
-            transform: translate(-12px, 0);
-          }
-          18.1818181818% {
-            transform: translate(-12px, 0);
-          }
-          27.2727272727% {
-            transform: translate(0px, 0);
-          }
-          36.3636363636% {
-            transform: translate(-12px, 0);
-          }
-          45.4545454545% {
-            transform: translate(-12px, 0);
-          }
-          54.5454545455% {
-            transform: translate(-12px, 0);
-          }
-          63.6363636364% {
-            transform: translate(-12px, 0);
-          }
-          72.7272727273% {
-            transform: translate(-12px, 0);
-          }
-          81.8181818182% {
-            transform: translate(-12px, -12px);
-          }
-          90.9090909091% {
-            transform: translate(0px, -12px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(3) {
-          animation: box5532-3 4s infinite;
-        }
-
-        @keyframes box5532-4 {
-          9.0909090909% {
-            transform: translate(-12px, 0);
-          }
-          18.1818181818% {
-            transform: translate(-12px, 0);
-          }
-          27.2727272727% {
-            transform: translate(-12px, -12px);
-          }
-          36.3636363636% {
-            transform: translate(0px, -12px);
-          }
-          45.4545454545% {
-            transform: translate(0px, 0px);
-          }
-          54.5454545455% {
-            transform: translate(0px, -12px);
-          }
-          63.6363636364% {
-            transform: translate(0px, -12px);
-          }
-          72.7272727273% {
-            transform: translate(0px, -12px);
-          }
-          81.8181818182% {
-            transform: translate(-12px, -12px);
-          }
-          90.9090909091% {
-            transform: translate(-12px, 0px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(4) {
-          animation: box5532-4 4s infinite;
-        }
-
-        @keyframes box5532-5 {
-          9.0909090909% {
-            transform: translate(0, 0);
-          }
-          18.1818181818% {
-            transform: translate(0, 0);
-          }
-          27.2727272727% {
-            transform: translate(0, 0);
-          }
-          36.3636363636% {
-            transform: translate(12px, 0);
-          }
-          45.4545454545% {
-            transform: translate(12px, 0);
-          }
-          54.5454545455% {
-            transform: translate(12px, 0);
-          }
-          63.6363636364% {
-            transform: translate(12px, 0);
-          }
-          72.7272727273% {
-            transform: translate(12px, 0);
-          }
-          81.8181818182% {
-            transform: translate(12px, -12px);
-          }
-          90.9090909091% {
-            transform: translate(0px, -12px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(5) {
-          animation: box5532-5 4s infinite;
-        }
-
-        @keyframes box5532-6 {
-          9.0909090909% {
-            transform: translate(0, 0);
-          }
-          18.1818181818% {
-            transform: translate(-12px, 0);
-          }
-          27.2727272727% {
-            transform: translate(-12px, 0);
-          }
-          36.3636363636% {
-            transform: translate(0px, 0);
-          }
-          45.4545454545% {
-            transform: translate(0px, 0);
-          }
-          54.5454545455% {
-            transform: translate(0px, 0);
-          }
-          63.6363636364% {
-            transform: translate(0px, 0);
-          }
-          72.7272727273% {
-            transform: translate(0px, 12px);
-          }
-          81.8181818182% {
-            transform: translate(-12px, 12px);
-          }
-          90.9090909091% {
-            transform: translate(-12px, 0px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(6) {
-          animation: box5532-6 4s infinite;
-        }
-
-        @keyframes box5532-7 {
-          9.0909090909% {
-            transform: translate(12px, 0);
-          }
-          18.1818181818% {
-            transform: translate(12px, 0);
-          }
-          27.2727272727% {
-            transform: translate(12px, 0);
-          }
-          36.3636363636% {
-            transform: translate(0px, 0);
-          }
-          45.4545454545% {
-            transform: translate(0px, -12px);
-          }
-          54.5454545455% {
-            transform: translate(12px, -12px);
-          }
-          63.6363636364% {
-            transform: translate(0px, -12px);
-          }
-          72.7272727273% {
-            transform: translate(0px, -12px);
-          }
-          81.8181818182% {
-            transform: translate(0px, 0px);
-          }
-          90.9090909091% {
-            transform: translate(12px, 0px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(7) {
-          animation: box5532-7 4s infinite;
-        }
-
-        @keyframes box5532-8 {
-          9.0909090909% {
-            transform: translate(0, 0);
-          }
-          18.1818181818% {
-            transform: translate(-12px, 0);
-          }
-          27.2727272727% {
-            transform: translate(-12px, -12px);
-          }
-          36.3636363636% {
-            transform: translate(0px, -12px);
-          }
-          45.4545454545% {
-            transform: translate(0px, -12px);
-          }
-          54.5454545455% {
-            transform: translate(0px, -12px);
-          }
-          63.6363636364% {
-            transform: translate(0px, -12px);
-          }
-          72.7272727273% {
-            transform: translate(0px, -12px);
-          }
-          81.8181818182% {
-            transform: translate(12px, -12px);
-          }
-          90.9090909091% {
-            transform: translate(12px, 0px);
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-        .box5532:nth-child(8) {
-          animation: box5532-8 4s infinite;
-        }
-
-        @keyframes box5532-9 {
-          9.0909090909% {
-            transform: translate(-12px, 0);
-          }
-          18.1818181818% {
-            transform: translate(-12px, 0);
-          }
-          27.2727272727% {
-            transform: translate(0px, 0);
-          }
-          36.3636363636% {
-            transform: translate(-12px, 0);
-          }
-          45.4545454545% {
-            transform: translate(0px, 0);
-          }
-          54.5454545455% {
-            transform: translate(0px, 0);
-          }
-          63.6363636364% {
-            transform: translate(-12px, 0);
-          }
-          72.7272727273% {
-            transform: translate(-12px, 0);
-          }
-          81.8181818182% {
-            transform: translate(-24px, 0);
-          }
-          90.9090909091% {
-            transform: translate(-12px, 0);
-          }
-          100% {
-            transform: translate(0px, 0);
-          }
-        }
-        .box5532:nth-child(9) {
-          animation: box5532-9 4s infinite;
-        }
-      </style>
-      <g>
-        <rect class="box5532" x="13" y="1" rx="1" width="10" height="10"></rect>
-        <rect class="box5532" x="13" y="1" rx="1" width="10" height="10"></rect>
-        <rect class="box5532" x="25" y="25" rx="1" width="10" height="10"
-        ></rect>
-        <rect class="box5532" x="13" y="13" rx="1" width="10" height="10"
-        ></rect>
-        <rect class="box5532" x="13" y="13" rx="1" width="10" height="10"
-        ></rect>
-        <rect class="box5532" x="25" y="13" rx="1" width="10" height="10"
-        ></rect>
-        <rect class="box5532" x="1" y="25" rx="1" width="10" height="10"></rect>
-        <rect class="box5532" x="13" y="25" rx="1" width="10" height="10"
-        ></rect>
-        <rect class="box5532" x="25" y="25" rx="1" width="10" height="10"
-        ></rect>
-      </g>
-    </svg>
+  <p class="footer-text text-sm text-zinc-500 dark:text-zinc-400 relative z-10 m-0 leading-relaxed">
+    It's <span id="ottawa-time" class="inline-block tabular-nums" style="min-width:5.5ch;">--:--:--</span> and <span id="ottawa-weather">--°C</span> in Ottawa, Ontario.
+    <span id="footer-icon-anchor" class="inline-block w-[14px] h-[14px] ml-1.5 align-middle"></span>
   </p>
 </footer>
+
+<style>
+  footer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    margin-top: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  #footer-svg-icon {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+    transition:
+      left 450ms cubic-bezier(0.23, 1, 0.32, 1),
+      top 450ms cubic-bezier(0.23, 1, 0.32, 1),
+      width 450ms cubic-bezier(0.23, 1, 0.32, 1),
+      height 450ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  #footer-svg-icon .bg-rect {
+    opacity: 0;
+    transition: opacity 150ms ease-out; /* fast fade out on leave */
+  }
+  #footer-svg-icon .icon-rect {
+    opacity: 1;
+    transition: opacity 150ms ease-out; /* fast fade in on leave */
+  }
+
+  footer.is-hovered #footer-svg-icon {
+    opacity: 0.22;
+  }
+  footer.is-hovered #footer-svg-icon .bg-rect {
+    opacity: 1;
+    transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1); /* smooth fade in on enter */
+  }
+  footer.is-hovered #footer-svg-icon .icon-rect {
+    opacity: 0;
+    transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1); /* smooth fade out on enter */
+  }
+
+  html.dark footer.is-hovered #footer-svg-icon {
+    opacity: 0.15;
+  }
+
+  @keyframes pulse-icon {
+    0%, 100% {
+      fill-opacity: 1;
+    }
+    50% {
+      fill-opacity: 0.2;
+    }
+  }
+  .pulse-circle-icon {
+    animation: pulse-icon 1s infinite linear;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% {
+      fill-opacity: 1;
+    }
+    50% {
+      fill-opacity: var(--pulse-opacity, 0.2);
+    }
+  }
+  .pulse-circle {
+    animation: pulse-dot 1s infinite linear;
+  }
+</style>
 
 <script>
   const OTTAWA = { lat: 45.4215, lon: -75.6972 };
@@ -427,540 +163,62 @@
     }
   }
 
-  function initFooterGameOfLife(canvas: HTMLCanvasElement) {
-    const context = canvas.getContext("2d", { alpha: true });
-    if (!context) return null;
-    const ctx: CanvasRenderingContext2D = context;
+  function initFooterInteraction() {
+    const footer = document.querySelector("footer");
+    const anchor = document.getElementById("footer-icon-anchor");
+    const svg = document.getElementById("footer-svg-icon");
+    if (!footer || !anchor || !svg) return;
 
-    const cellSize = 8;
-    const gap = 1;
-    const density = 0.32;
-    const stepInterval = 140;
-    const fadeDuration = 220;
-    const maxOpacity = 0.16;
+    let isHovered = false;
 
-    let columns = 0;
-    let rows = 0;
-    let grid = new Uint8Array(0);
-    let nextGrid = new Uint8Array(0);
-    let opacities = new Float32Array(0);
-    let lastFrameTime = 0;
-    let lastSimulationTime = 0;
-    let lastNoiseTime = 0;
-    let fillColor = "";
-    let isVisible = false;
-    let stopTimeout: any = null;
+    const updateSvgPosition = () => {
+      if (isHovered) return;
+      const anchorRect = anchor.getBoundingClientRect();
+      const footerRect = footer.getBoundingClientRect();
 
-    // Gather state variables
-    let isGathering = false;
-    let gatherStartTime = 0;
-    let gatheringParticles: any[] = [];
-    const gatherDuration = 350;
-
-    const svg = canvas.closest("footer")?.querySelector("#footer-svg-icon") as HTMLElement | null;
-    const footer = canvas.closest("footer");
-
-    const drawSize = Math.max(1, cellSize - gap);
-
-    function resolveFillColor() {
-      const computedStyle = window.getComputedStyle(canvas);
-      return computedStyle.color || "rgb(120, 128, 138)";
-    }
-
-    function resizeGrid(width: number, height: number) {
-      const nextColumns = Math.max(1, Math.ceil(width / cellSize));
-      const nextRows = Math.max(1, Math.ceil(height / cellSize));
-      if (nextColumns === columns && nextRows === rows) return;
-
-      const resizedGrid = new Uint8Array(nextColumns * nextRows);
-      const resizedOpacities = new Float32Array(nextColumns * nextRows);
-
-      for (let r = 0; r < nextRows; r++) {
-        for (let c = 0; c < nextColumns; c++) {
-          const nextIdx = r * nextColumns + c;
-          if (c < columns && r < rows) {
-            const currentIdx = r * columns + c;
-            resizedGrid[nextIdx] = grid[currentIdx] || 0;
-            resizedOpacities[nextIdx] = opacities[currentIdx] || 0;
-          } else {
-            resizedGrid[nextIdx] = Math.random() < density ? 1 : 0;
-            resizedOpacities[nextIdx] = resizedGrid[nextIdx];
-          }
-        }
-      }
-      columns = nextColumns;
-      rows = nextRows;
-      grid = resizedGrid;
-      nextGrid = new Uint8Array(resizedGrid.length);
-      opacities = resizedOpacities;
-    }
-
-    function stepSimulation() {
-      if (columns === 0 || rows === 0) return;
-      for (let r = 0; r < rows; r++) {
-        const rAbove = r === 0 ? rows - 1 : r - 1;
-        const rBelow = r === rows - 1 ? 0 : r + 1;
-        for (let c = 0; c < columns; c++) {
-          const cLeft = c === 0 ? columns - 1 : c - 1;
-          const cRight = c === columns - 1 ? 0 : c + 1;
-          const idx = r * columns + c;
-          const liveNeighbors =
-            grid[rAbove * columns + cLeft] +
-            grid[rAbove * columns + c] +
-            grid[rAbove * columns + cRight] +
-            grid[r * columns + cLeft] +
-            grid[r * columns + cRight] +
-            grid[rBelow * columns + cLeft] +
-            grid[rBelow * columns + c] +
-            grid[rBelow * columns + cRight];
-
-          nextGrid[idx] =
-            grid[idx] === 1
-              ? (liveNeighbors === 2 || liveNeighbors === 3 ? 1 : 0)
-              : (liveNeighbors === 3 ? 1 : 0);
-        }
-      }
-      const temp = grid;
-      grid = nextGrid;
-      nextGrid = temp;
-    }
-
-    function updateOpacities(deltaTime: number) {
-      const change = deltaTime / fadeDuration;
-      for (let idx = 0; idx < opacities.length; idx++) {
-        const target = grid[idx] || 0;
-        const current = opacities[idx] || 0;
-        if (current < target) {
-          opacities[idx] = Math.min(target, current + change);
-        } else if (current > target) {
-          opacities[idx] = Math.max(target, current - change);
-        }
-      }
-    }
-
-    function injectNoise() {
-      const total = grid.length;
-      if (total === 0) return;
-
-      const numShapes = Math.max(2, Math.floor(columns / 15));
-      for (let s = 0; s < numShapes; s++) {
-        if (rows < 4 || columns < 4) {
-          const numToSpawn = Math.max(1, Math.floor(total * 0.12));
-          for (let i = 0; i < numToSpawn; i++) {
-            const idx = Math.floor(Math.random() * total);
-            grid[idx] = 1;
-            opacities[idx] = Math.max(opacities[idx], 0.8);
-          }
-          continue;
-        }
-
-        const r = Math.floor(Math.random() * (rows - 3));
-        const c = Math.floor(Math.random() * (columns - 3));
-        const shapeIdx = Math.floor(Math.random() * 3);
-
-        if (shapeIdx === 0) {
-          // Glider
-          const rot = Math.floor(Math.random() * 4);
-          const gliders = [
-            [[0, 1], [1, 2], [2, 0], [2, 1], [2, 2]],
-            [[0, 1], [1, 0], [2, 0], [2, 1], [2, 2]],
-            [[0, 1], [1, 2], [2, 2], [2, 1], [2, 0]],
-            [[0, 1], [1, 0], [2, 2], [2, 1], [2, 0]]
-          ];
-          const shape = gliders[rot];
-          for (const [dr, dc] of shape) {
-            const idx = (r + dr) * columns + (c + dc);
-            if (idx >= 0 && idx < total) {
-              grid[idx] = 1;
-              opacities[idx] = Math.max(opacities[idx], 0.8);
-            }
-          }
-        } else if (shapeIdx === 1) {
-          // Blinker (oscillator)
-          const rot = Math.random() < 0.5;
-          const shape = rot ? [[0, 1], [1, 1], [2, 1]] : [[1, 0], [1, 1], [1, 2]];
-          for (const [dr, dc] of shape) {
-            const idx = (r + dr) * columns + (c + dc);
-            if (idx >= 0 && idx < total) {
-              grid[idx] = 1;
-              opacities[idx] = Math.max(opacities[idx], 0.8);
-            }
-          }
-        } else {
-          // Beacon (oscillator)
-          const shape = [[0, 0], [0, 1], [1, 0], [1, 1], [2, 2], [2, 3], [3, 2], [3, 3]];
-          for (const [dr, dc] of shape) {
-            const idx = ((r + dr) % rows) * columns + ((c + dc) % columns);
-            if (idx >= 0 && idx < total) {
-              grid[idx] = 1;
-              opacities[idx] = Math.max(opacities[idx], 0.8);
-            }
-          }
-        }
-      }
-
-      // Also spawn extra random individual cells (8% density) so the simulation remains full of squares
-      const extraSpawns = Math.floor(total * 0.08);
-      for (let i = 0; i < extraSpawns; i++) {
-        const idx = Math.floor(Math.random() * total);
-        grid[idx] = 1;
-        opacities[idx] = Math.max(opacities[idx], 0.8);
-      }
-    }
-
-    function getSVGTargets() {
-      if (!svg) return [];
-      const rects = svg.querySelectorAll("rect");
-      const canvasRect = canvas.getBoundingClientRect();
-      return Array.from(rects).map((rect) => {
-        const rectRect = rect.getBoundingClientRect();
-        return {
-          x: rectRect.left - canvasRect.left + rectRect.width / 2,
-          y: rectRect.top - canvasRect.top + rectRect.height / 2,
-        };
-      });
-    }
-
-    function draw() {
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = fillColor;
-
-      let idx = 0;
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns; c++) {
-          const opacity = opacities[idx] || 0;
-          if (opacity > 0.001) {
-            ctx.globalAlpha = opacity * maxOpacity;
-            const x = c * cellSize;
-            const y = r * cellSize;
-            
-            // Draw clean sharp squares instead of rounded rectangles
-            ctx.fillRect(x, y, drawSize, drawSize);
-          }
-          idx++;
-        }
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    function drawGathering(t: number) {
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = fillColor;
-
-      // 1. Draw other fading out cells
-      let idx = 0;
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns; c++) {
-          const opacity = opacities[idx] || 0;
-          if (opacity > 0.001) {
-            ctx.globalAlpha = opacity * maxOpacity * (1 - t);
-            const x = c * cellSize;
-            const y = r * cellSize;
-            
-            // Draw clean sharp squares
-            ctx.fillRect(x, y, drawSize, drawSize);
-          }
-          idx++;
-        }
-      }
-
-      // 2. Draw the gathering particles
-      ctx.globalAlpha = maxOpacity + (0.6 - maxOpacity) * t;
-      for (const p of gatheringParticles) {
-        const px = p.startX + (p.targetX - p.startX) * t;
-        const py = p.startY + (p.targetY - p.startY) * t;
-        const x = px - drawSize / 2;
-        const y = py - drawSize / 2;
-        
-        // Draw clean sharp squares
-        ctx.fillRect(x, y, drawSize, drawSize);
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    function resizeCanvas(width: number, height: number) {
-      const cssWidth = Math.max(1, Math.floor(width));
-      const cssHeight = Math.max(1, Math.floor(height));
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      const canvasWidth = Math.max(1, Math.floor(cssWidth * dpr));
-      const canvasHeight = Math.max(1, Math.floor(cssHeight * dpr));
-      if (canvas.width !== canvasWidth || canvas.height !== canvasHeight) {
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-      }
-      resizeGrid(cssWidth, cssHeight);
-      fillColor = resolveFillColor();
-      if (!isGathering) {
-        draw();
-      }
-    }
-
-    function loop(time: number) {
-      if (!isVisible || !canvas.isConnected) return;
-      if (!lastFrameTime) {
-        lastFrameTime = time;
-        lastSimulationTime = time;
-      }
-      const deltaTime = Math.min(100, time - lastFrameTime);
-      lastFrameTime = time;
-
-      if (isGathering) {
-        const progress = Math.min(1, (time - gatherStartTime) / gatherDuration);
-        const t = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-
-        updateOpacities(deltaTime);
-        drawGathering(t);
-
-        if (progress >= 1) {
-          isGathering = false;
-          isVisible = false;
-          stopLoop();
-          return;
-        }
-      } else {
-        if (time - lastSimulationTime >= stepInterval) {
-          stepSimulation();
-
-          // Maintain density
-          let liveCount = 0;
-          for (let i = 0; i < grid.length; i++) {
-            if (grid[i] === 1) liveCount++;
-          }
-          const densityVal = liveCount / (grid.length || 1);
-          
-          if (densityVal < 0.08 || (time - lastNoiseTime > 1500)) {
-            injectNoise();
-            lastNoiseTime = time;
-          }
-
-          lastSimulationTime = time;
-        }
-        updateOpacities(deltaTime);
-        draw();
-      }
-      window.requestAnimationFrame(loop);
-    }
-
-    function startLoop() {
-      if (!isVisible) return;
-      lastFrameTime = 0;
-      lastSimulationTime = 0;
-      window.requestAnimationFrame(loop);
-    }
-
-    function stopLoop() {
-      // Checked dynamically in loop via isVisible flag
-    }
-
-    // Pointer Draw Handler
-    function handlePointerDraw(clientX: number, clientY: number) {
-      if (!isVisible || isGathering || columns === 0 || rows === 0) return;
-      const rect = canvas.getBoundingClientRect();
-      const mx = clientX - rect.left;
-      const my = clientY - rect.top;
-
-      const col = Math.floor(mx / cellSize);
-      const row = Math.floor(my / cellSize);
-
-      if (col >= 0 && col < columns && row >= 0 && row < rows) {
-        // Spawn active cluster
-        const idx = row * columns + col;
-        grid[idx] = 1;
-        opacities[idx] = 1.0;
-
-        // Spawn 4 immediate neighbors to ensure cluster survival
-        const neighbors = [[0, 1], [0, -1], [1, 0], [-1, 0]];
-        for (const [dr, dc] of neighbors) {
-          const r = row + dr;
-          const c = col + dc;
-          if (r >= 0 && r < rows && c >= 0 && c < columns) {
-            const nIdx = r * columns + c;
-            if (Math.random() < 0.65) {
-              grid[nIdx] = 1;
-              opacities[nIdx] = 1.0;
-            }
-          }
-        }
-      }
-    }
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      const entry = entries[0];
-      if (!entry) return;
-      resizeCanvas(entry.contentRect.width, entry.contentRect.height);
-      startLoop();
-    });
-    resizeObserver.observe(canvas);
-
-    const observer = new MutationObserver(() => {
-      fillColor = resolveFillColor();
-      if (!isGathering) {
-        draw();
-      }
-    });
-    observer.observe(document.documentElement, { attributeFilter: ["class", "style"] });
-
-    // Attach Pointer drawing event listeners to footer element
-    if (footer) {
-      footer.addEventListener("mousemove", (e) => {
-        handlePointerDraw(e.clientX, e.clientY);
-      });
-      footer.addEventListener("touchmove", (e) => {
-        if (e.touches && e.touches[0]) {
-          handlePointerDraw(e.touches[0].clientX, e.touches[0].clientY);
-        }
-      }, { passive: true });
-    }
-
-    return {
-      start: () => {
-        if (stopTimeout) {
-          clearTimeout(stopTimeout);
-          stopTimeout = null;
-        }
-
-        // Handle re-entering mid-gather
-        if (isGathering) {
-          isGathering = false;
-          const elapsed = performance.now() - gatherStartTime;
-          const progress = Math.min(1, elapsed / gatherDuration);
-          const t = 1 - Math.pow(1 - progress, 3);
-
-          grid.fill(0);
-          opacities.fill(0);
-          for (const p of gatheringParticles) {
-            const px = p.startX + (p.targetX - p.startX) * t;
-            const py = p.startY + (p.targetY - p.startY) * t;
-            const col = Math.floor(px / cellSize);
-            const row = Math.floor(py / cellSize);
-            if (col >= 0 && col < columns && row >= 0 && row < rows) {
-              const idx = row * columns + col;
-              grid[idx] = 1;
-              opacities[idx] = 1.0;
-            }
-          }
-        } else {
-          // Normal start: seed grid with current SVG blocks and lots of random cells
-          const targets = getSVGTargets();
-          grid.fill(0);
-          opacities.fill(0);
-
-          // Seed random cells first to make it look full of squares (30% density)
-          for (let i = 0; i < grid.length; i++) {
-            if (Math.random() < 0.3) {
-              grid[i] = 1;
-              opacities[i] = 1.0;
-            }
-          }
-
-          if (targets.length > 0 && columns > 0 && rows > 0) {
-            for (const target of targets) {
-              const col = Math.floor(target.x / cellSize);
-              const row = Math.floor(target.y / cellSize);
-              if (col >= 0 && col < columns && row >= 0 && row < rows) {
-                const idx = row * columns + col;
-                grid[idx] = 1;
-                opacities[idx] = 1.0;
-              }
-            }
-          }
-        }
-
-        if (svg) svg.style.opacity = "0";
-        canvas.style.opacity = "1";
-        isVisible = true;
-        startLoop();
-      },
-      stop: () => {
-        if (stopTimeout) {
-          clearTimeout(stopTimeout);
-          stopTimeout = null;
-        }
-
-        // Prepare gathering particles
-        const targets = getSVGTargets();
-        const activeCells = [];
-        let idx = 0;
-        for (let r = 0; r < rows; r++) {
-          for (let c = 0; c < columns; c++) {
-            if (grid[idx] === 1 || opacities[idx] > 0.05) {
-              activeCells.push({
-                x: c * cellSize + drawSize / 2,
-                y: r * cellSize + drawSize / 2,
-              });
-            }
-            idx++;
-          }
-        }
-
-        gatheringParticles = [];
-        const assignedIndices = new Set();
-        for (const target of targets) {
-          let closestCell = null;
-          let minDistance = Infinity;
-          let closestIndex = -1;
-          for (let i = 0; i < activeCells.length; i++) {
-            if (assignedIndices.has(i)) continue;
-            const cell = activeCells[i];
-            const dist = Math.hypot(cell.x - target.x, cell.y - target.y);
-            if (dist < minDistance) {
-              minDistance = dist;
-              closestCell = cell;
-              closestIndex = i;
-            }
-          }
-          if (closestCell) {
-            assignedIndices.add(closestIndex);
-            gatheringParticles.push({
-              startX: closestCell.x,
-              startY: closestCell.y,
-              targetX: target.x,
-              targetY: target.y,
-            });
-          } else {
-            gatheringParticles.push({
-              startX: target.x,
-              startY: target.y,
-              targetX: target.x,
-              targetY: target.y,
-            });
-          }
-        }
-
-        grid.fill(0);
-
-        if (svg) svg.style.opacity = "0.6";
-        canvas.style.opacity = "0";
-
-        isGathering = true;
-        gatherStartTime = performance.now();
-        isVisible = true;
-        startLoop();
-      }
+      svg.style.left = `${anchorRect.left - footerRect.left}px`;
+      svg.style.top = `${anchorRect.top - footerRect.top}px`;
+      svg.style.width = `${anchorRect.width}px`;
+      svg.style.height = `${anchorRect.height}px`;
     };
+
+    // Calculate initial coordinates once view settles
+    setTimeout(updateSvgPosition, 250);
+
+    const onMouseEnter = () => {
+      isHovered = true;
+      footer.classList.add("is-hovered");
+      
+      // Transition to full background container
+      svg.style.left = "0px";
+      svg.style.top = "0px";
+      svg.style.width = "100%";
+      svg.style.height = "100%";
+    };
+
+    const onMouseLeave = () => {
+      isHovered = false;
+      footer.classList.remove("is-hovered");
+      updateSvgPosition();
+    };
+
+    footer.addEventListener("mouseenter", onMouseEnter);
+    footer.addEventListener("mouseleave", onMouseLeave);
+
+    // Refresh boundaries on resizing
+    window.addEventListener("resize", updateSvgPosition);
   }
 
   function init() {
     updateTime();
-    setInterval(updateTime, 1000);
-    updateWeather();
-    setInterval(updateWeather, 30 * 60 * 1000);
-
-    const canvas = document.getElementById("footer-game-of-life-canvas") as HTMLCanvasElement | null;
-    const footer = canvas?.closest("footer");
-    if (canvas && footer) {
-      const gol = initFooterGameOfLife(canvas);
-      if (gol) {
-        footer.addEventListener("mouseenter", () => gol.start());
-        footer.addEventListener("mouseleave", () => gol.stop());
-      }
+    // Protect interval duplicates
+    if (!(window as any).__footer_intervals_setup__) {
+      (window as any).__footer_intervals_setup__ = true;
+      setInterval(updateTime, 1000);
+      updateWeather();
+      setInterval(updateWeather, 30 * 60 * 1000);
     }
+    initFooterInteraction();
   }
 
   if (document.readyState === "loading") {
@@ -971,3 +229,4 @@
 
   document.addEventListener("astro:after-swap", init);
 </script>
+
