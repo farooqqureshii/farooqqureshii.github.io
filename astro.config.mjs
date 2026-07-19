@@ -16,7 +16,7 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [mdx(), react(), sitemap(), tailwind()],
   prefetch: {
-    prefetchAll: false,
+    prefetchAll: true,
     defaultStrategy: 'hover'
   },
   compressHTML: true,

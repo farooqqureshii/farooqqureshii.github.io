@@ -960,7 +960,7 @@
   }
 
   // Popup visibility helpers
-  const popup = document.getElementById("text-format-popup");
+  let popup: HTMLElement | null = null;
 
   function showPopup(rect: DOMRect) {
     if (!popup) return;
@@ -1001,9 +1001,8 @@
   function hidePopup() {
     if (!popup) return;
     popup.classList.remove("visible");
-    // Hide completely after transition finish
     setTimeout(() => {
-      if (!popup.classList.contains("visible")) {
+      if (popup && !popup.classList.contains("visible")) {
         popup.classList.add("hidden");
       }
     }, 150);
@@ -1231,7 +1230,12 @@
   }
 
   function initTextSelector() {
+    popup = document.getElementById("text-format-popup");
     initGlobalTextSelector();
+
+    if (resizeObserver && document.body) {
+      resizeObserver.observe(document.body);
+    }
     
     // Page-specific initialization runs on every swap
     applySavedAnnotations();
