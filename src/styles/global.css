@@ -154,12 +154,30 @@
   .nav-brand.home-title:active {
   }
 
-  .nav-brand:not(.home-title) {
-    font-family: inherit;
-    font-weight: 460;
-    letter-spacing: 0;
-    transform: none;
-    display: inline;
+  .breadcrumb-title {
+    font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
+    font-size: 1.7rem;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    display: inline-block;
+  }
+
+  .breadcrumb-separator {
+    font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
+    font-size: 1.7rem;
+    font-weight: normal;
+    line-height: 1.1;
+    display: inline-block;
+    opacity: 0.8;
+  }
+
+  .font-handwritten {
+    font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
+    font-size: 1.8rem;
+    line-height: 1.2;
+    font-weight: normal;
+    letter-spacing: 0.01em;
   }
 
   /* Section headings */
