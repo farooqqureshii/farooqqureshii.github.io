@@ -81,14 +81,36 @@ const {
       }
     </style>
     <script is:inline>
-      if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
+      const setTheme = () => {
+        if (
+          localStorage.theme === "dark" ||
+          (!("theme" in localStorage) &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      };
+      setTheme();
+
+      if (!document.documentElement.hasAttribute("data-direction")) {
+        document.documentElement.setAttribute("data-direction", "forward");
+      }
+
+      if (!window.__themeAndTransitionListenersAttached) {
+        let currentDirection = "forward";
+
+        document.addEventListener("astro:before-preparation", (event) => {
+          currentDirection = event.direction || "forward";
+        });
+
+        document.addEventListener("astro:after-swap", () => {
+          setTheme();
+          document.documentElement.setAttribute("data-direction", currentDirection);
+        });
+
+        window.__themeAndTransitionListenersAttached = true;
       }
     </script>
     <ClientRouter transition:animate="none" />

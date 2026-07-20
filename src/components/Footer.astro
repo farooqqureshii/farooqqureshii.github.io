@@ -157,14 +157,37 @@ for (let i = 0; i < cols; i++) {
   async function updateWeather() {
     const el = document.getElementById("ottawa-weather");
     if (!el) return;
+
+    // Check localStorage cache first
+    const cachedTemp = localStorage.getItem("ottawa_temp");
+    const cachedTime = localStorage.getItem("ottawa_temp_time");
+    const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+
+    if (cachedTemp && cachedTime) {
+      const age = Date.now() - parseInt(cachedTime, 10);
+      if (age < CACHE_DURATION) {
+        el.textContent = `${cachedTemp}°C`;
+        return; // Cache is fresh, skip fetch
+      } else {
+        // Show stale cache temporarily while we fetch fresh data
+        el.textContent = `${cachedTemp}°C`;
+      }
+    }
+
     try {
       const res = await fetch(WEATHER_URL);
       if (!res.ok) throw new Error();
       const data = await res.json();
       const t = Math.round(data.current.temperature_2m);
       el.textContent = `${t}°C`;
+      
+      // Update cache
+      localStorage.setItem("ottawa_temp", t.toString());
+      localStorage.setItem("ottawa_temp_time", Date.now().toString());
     } catch {
-      el.textContent = "—°C";
+      if (!el.textContent || el.textContent === "--°C") {
+        el.textContent = "—°C";
+      }
     }
   }
 
@@ -228,11 +251,12 @@ for (let i = 0; i < cols; i++) {
 
   function init() {
     updateTime();
+    updateWeather(); // Run on every page load/transition
+    
     // Protect interval duplicates
     if (!(window as any).__footer_intervals_setup__) {
       (window as any).__footer_intervals_setup__ = true;
       setInterval(updateTime, 1000);
-      updateWeather();
       setInterval(updateWeather, 30 * 60 * 1000);
     }
     initFooterInteraction();
