@@ -4,6 +4,9 @@
 ---
 <script>
   document.addEventListener("astro:page-load", () => {
+    // Skip on touch/mobile — no hover support, prevents jank
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
     document.querySelectorAll(".flashlight-hover").forEach((container) => {
       const items = container.querySelectorAll(".flashlight-item");
       if (!items.length) return;

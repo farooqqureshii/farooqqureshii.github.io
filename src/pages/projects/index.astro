@@ -130,18 +130,18 @@ const categories = [
 
 <Layout title="Farooq Q. | Projects" description={SITE_DESCRIPTION}>
   <main class="no-link-underline">
-    <header class="mb-10">
-      <div class="mt-4 inline-flex items-center gap-1 relative p-0.5 max-w-full overflow-x-auto no-scrollbar bg-zinc-100/80 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/30 rounded-full select-none whitespace-nowrap" style="-webkit-overflow-scrolling: touch; touch-action: pan-x;">
-        <div class="tabs-indicator" id="projects-indicator"></div>
-        {
-          categories.map((category) => (
-            <button type="button" class="project-tab" data-tab={category.value}>
+    <nav class="filter-nav mt-4" aria-label="Filter projects">
+      {
+        categories.map((category, i) => (
+          <>
+            {i > 0 && <span class="filter-sep">/</span>}
+            <button type="button" class="filter-link" data-tab={category.value}>
               {category.label}
             </button>
-          ))
-        }
-      </div>
-    </header>
+          </>
+        ))
+      }
+    </nav>
 
     <div class="flashlight-hover space-y-12">
       {
@@ -218,66 +218,51 @@ const categories = [
   </main>
 
   <style>
-    .tabs-indicator {
-      position: absolute;
-      background: rgb(24 24 27);
-      border-radius: 9999px;
-      transition:
-        left 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        width 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        top 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        height 220ms cubic-bezier(0.23, 1, 0.32, 1);
-      pointer-events: none;
-      z-index: 0;
+    .filter-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2.5rem;
     }
-    html.dark .tabs-indicator {
-      background: rgb(244 244 245);
-    }
-    .project-tab {
-      position: relative;
-      z-index: 10;
-      padding: 6px 12px;
-      font-size: 12px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      border-radius: 9999px;
-      border: 1px solid transparent;
-      color: rgb(113 113 122);
-      background: transparent;
-      transition:
-        color 150ms ease,
-        transform 100ms ease;
-      cursor: pointer;
-    }
-
-    html.dark .project-tab {
+    .filter-link {
+      font-size: 13px;
       color: rgb(161 161 170);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: color 150ms ease;
     }
-
-    .project-tab:hover {
+    html.dark .filter-link {
+      color: rgb(113 113 122);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .filter-link:hover {
+        color: rgb(24 24 27);
+      }
+      html.dark .filter-link:hover {
+        color: rgb(228 228 231);
+      }
+    }
+    .filter-link.is-active {
       color: rgb(24 24 27);
     }
-
-    html.dark .project-tab:hover {
-      color: rgb(244 244 245);
+    html.dark .filter-link.is-active {
+      color: rgb(228 228 231);
     }
-
-    .project-tab:active {
-      transform: scale(0.96);
+    .filter-sep {
+      font-size: 13px;
+      color: rgb(212 212 216);
+      user-select: none;
     }
-
-    .project-tab.is-active {
-      color: #fff;
-    }
-
-    html.dark .project-tab.is-active {
-      color: rgb(24 24 27);
+    html.dark .filter-sep {
+      color: rgb(63 63 70);
     }
   </style>
 
   <script is:inline>
     (() => {
-      const tabs = Array.from(document.querySelectorAll(".project-tab"));
+      const tabs = Array.from(document.querySelectorAll(".filter-link"));
       const cards = Array.from(document.querySelectorAll(".project-item"));
 
       const imgEls = Array.from(document.querySelectorAll(".project-item img"));
@@ -312,22 +297,10 @@ const categories = [
         );
       });
 
-      const indicator = document.getElementById("projects-indicator");
-      const updateIndicator = (activeTab) => {
-        if (!indicator || !activeTab) return;
-        indicator.style.left = `${activeTab.offsetLeft}px`;
-        indicator.style.width = `${activeTab.offsetWidth}px`;
-        indicator.style.top = `${activeTab.offsetTop}px`;
-        indicator.style.height = `${activeTab.offsetHeight}px`;
-      };
-
       const setActive = (name) => {
         tabs.forEach((tab) => {
           const isAct = tab.dataset.tab === name;
           tab.classList.toggle("is-active", isAct);
-          if (isAct) {
-            updateIndicator(tab);
-          }
         });
 
         cards.forEach((card) => {
@@ -340,15 +313,10 @@ const categories = [
         tab.addEventListener("click", () => setActive(tab.dataset.tab));
       });
 
-      // Initialize slider positioning layout safely
+      // Initialize
       setTimeout(() => {
         setActive("engineering");
       }, 60);
-
-      window.addEventListener("resize", () => {
-        const activeTab = tabs.find((t) => t.classList.contains("is-active"));
-        if (activeTab) updateIndicator(activeTab);
-      });
 
       const lazyVideos = document.querySelectorAll(".lazy-video");
       const videoObserver = new IntersectionObserver(

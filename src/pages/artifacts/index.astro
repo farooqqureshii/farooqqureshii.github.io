@@ -53,15 +53,15 @@ while (byType.image.length || byType.link.length || byType.video.length) {
   className="max-w-5xl"
 >
   <main class="no-link-underline">
-    <header class="mb-10">
-      <div class="mt-4 inline-flex items-center gap-1 relative p-0.5 max-w-full overflow-x-auto no-scrollbar bg-zinc-100/80 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/30 rounded-full select-none whitespace-nowrap" style="-webkit-overflow-scrolling: touch; touch-action: pan-x;">
-        <div class="tabs-indicator" id="artifacts-indicator"></div>
-        <button type="button" class="artifact-tab" data-tab="all">All</button>
-        <button type="button" class="artifact-tab" data-tab="link">Links</button>
-        <button type="button" class="artifact-tab" data-tab="image">Images</button>
-        <button type="button" class="artifact-tab" data-tab="video">Videos</button>
-      </div>
-    </header>
+      <nav class="filter-nav mt-4" aria-label="Filter artifacts">
+        <button type="button" class="filter-link" data-tab="all">All</button>
+        <span class="filter-sep">/</span>
+        <button type="button" class="filter-link" data-tab="link">Links</button>
+        <span class="filter-sep">/</span>
+        <button type="button" class="filter-link" data-tab="image">Images</button>
+        <span class="filter-sep">/</span>
+        <button type="button" class="filter-link" data-tab="video">Videos</button>
+      </nav>
 
     <div
       id="artifact-loader"
@@ -119,54 +119,45 @@ while (byType.image.length || byType.link.length || byType.video.length) {
   </main>
 
   <style>
-    .tabs-indicator {
-      position: absolute;
-      background: rgb(24 24 27);
-      border-radius: 9999px;
-      transition:
-        left 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        width 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        top 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        height 220ms cubic-bezier(0.23, 1, 0.32, 1);
-      pointer-events: none;
-      z-index: 0;
+    .filter-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2rem;
     }
-    html.dark .tabs-indicator {
-      background: rgb(244 244 245);
-    }
-    .artifact-tab {
-      position: relative;
-      z-index: 10;
-      padding: 6px 12px;
-      font-size: 12px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      border-radius: 9999px;
-      border: 1px solid transparent;
-      color: rgb(113 113 122);
-      background: transparent;
-      transition:
-        color 150ms ease,
-        transform 100ms ease;
-      cursor: pointer;
-    }
-    html.dark .artifact-tab {
+    .filter-link {
+      font-size: 13px;
       color: rgb(161 161 170);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: color 150ms ease;
     }
-    .artifact-tab:hover {
+    html.dark .filter-link {
+      color: rgb(113 113 122);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .filter-link:hover {
+        color: rgb(24 24 27);
+      }
+      html.dark .filter-link:hover {
+        color: rgb(228 228 231);
+      }
+    }
+    .filter-link.is-active {
       color: rgb(24 24 27);
     }
-    html.dark .artifact-tab:hover {
-      color: rgb(244 244 245);
+    html.dark .filter-link.is-active {
+      color: rgb(228 228 231);
     }
-    .artifact-tab:active {
-      transform: scale(0.96);
+    .filter-sep {
+      font-size: 13px;
+      color: rgb(212 212 216);
+      user-select: none;
     }
-    .artifact-tab.is-active {
-      color: #fff;
-    }
-    html.dark .artifact-tab.is-active {
-      color: rgb(24 24 27);
+    html.dark .filter-sep {
+      color: rgb(63 63 70);
     }
     .artifact-grid {
       column-fill: balance;
@@ -195,7 +186,7 @@ while (byType.image.length || byType.link.length || byType.video.length) {
 
   <script is:inline>
     (() => {
-      const tabs = Array.from(document.querySelectorAll(".artifact-tab"));
+      const tabs = Array.from(document.querySelectorAll(".filter-link"));
       const cards = Array.from(document.querySelectorAll(".artifact-card"));
 
       // Fallback broken images (hotlinking / CDN issues) to a nice placeholder.
@@ -233,22 +224,10 @@ while (byType.image.length || byType.link.length || byType.video.length) {
         );
       });
 
-      const indicator = document.getElementById("artifacts-indicator");
-      const updateIndicator = (activeTab) => {
-        if (!indicator || !activeTab) return;
-        indicator.style.left = `${activeTab.offsetLeft}px`;
-        indicator.style.width = `${activeTab.offsetWidth}px`;
-        indicator.style.top = `${activeTab.offsetTop}px`;
-        indicator.style.height = `${activeTab.offsetHeight}px`;
-      };
-
       const setActive = (name) => {
         tabs.forEach((t) => {
           const isAct = t.dataset.tab === name;
           t.classList.toggle("is-active", isAct);
-          if (isAct) {
-            updateIndicator(t);
-          }
         });
         cards.forEach((c) => {
           const type = c.dataset.type;
@@ -261,15 +240,10 @@ while (byType.image.length || byType.link.length || byType.video.length) {
         t.addEventListener("click", () => setActive(t.dataset.tab)),
       );
       
-      // Initialize slider positioning layout safely
+      // Initialize
       setTimeout(() => {
         setActive("all");
       }, 60);
-
-      window.addEventListener("resize", () => {
-        const activeTab = tabs.find((t) => t.classList.contains("is-active"));
-        if (activeTab) updateIndicator(activeTab);
-      });
 
       const grid = document.querySelector(".artifact-grid");
       const loader = document.getElementById("artifact-loader");

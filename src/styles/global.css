@@ -81,24 +81,28 @@
     text-decoration-thickness: 1px;
     transition: text-decoration-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  a:hover {
-    text-decoration-color: #737373;
-  }
   /* Article links: underline always visible for readability */
   article a {
     text-decoration-color: #d4d4d4;
   }
-  article a:hover {
-    text-decoration-color: #737373;
-  }
-  html.dark a:hover {
-    text-decoration-color: #a1a1aa;
-  }
   html.dark article a {
     text-decoration-color: #3f3f46;
   }
-  html.dark article a:hover {
-    text-decoration-color: #a1a1aa;
+
+  /* Hover-dependent underline transitions — desktop only */
+  @media (hover: hover) and (pointer: fine) {
+    a:hover {
+      text-decoration-color: #737373;
+    }
+    article a:hover {
+      text-decoration-color: #737373;
+    }
+    html.dark a:hover {
+      text-decoration-color: #a1a1aa;
+    }
+    html.dark article a:hover {
+      text-decoration-color: #a1a1aa;
+    }
   }
   .no-link-underline a {
     text-decoration: none;
@@ -124,18 +128,20 @@
     min-width: 0;
   }
 
-  /* Project card media - subtle lift on hover */
-  .flashlight-item .media-section video,
-  .flashlight-item .media-section img {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .flashlight-item:hover .media-section video,
-  .flashlight-item:hover .media-section img,
-  .flashlight-item.hovered .media-section video,
-  .flashlight-item.hovered .media-section img,
-  .flashlight-item.pinned .media-section video,
-  .flashlight-item.pinned .media-section img {
-    transform: translateY(-2px);
+  /* Project card media - subtle lift on hover (desktop only) */
+  @media (hover: hover) and (pointer: fine) {
+    .flashlight-item .media-section video,
+    .flashlight-item .media-section img {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .flashlight-item:hover .media-section video,
+    .flashlight-item:hover .media-section img,
+    .flashlight-item.hovered .media-section video,
+    .flashlight-item.hovered .media-section img,
+    .flashlight-item.pinned .media-section video,
+    .flashlight-item.pinned .media-section img {
+      transform: translateY(-2px);
+    }
   }
   header a {
     text-decoration: none;
@@ -385,23 +391,25 @@ html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
 
-/* Flashlight hover effect - isolate hovered item, dim others (like quotes page) */
-.flashlight-hover .flashlight-item {
-  transition:
-    opacity 0.2s ease-out,
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.flashlight-hover .flashlight-item:hover,
-.flashlight-hover .flashlight-item.hovered,
-.flashlight-hover .flashlight-item.pinned {
-  transform: translateX(4px);
-}
-.flashlight-hover.active .flashlight-item {
-  opacity: 0.35 !important;
-}
-.flashlight-hover.active .flashlight-item.hovered,
-.flashlight-hover.active .flashlight-item.pinned {
-  opacity: 1 !important;
+/* Flashlight hover effect - desktop only (no touch devices) */
+@media (hover: hover) and (pointer: fine) {
+  .flashlight-hover .flashlight-item {
+    transition:
+      opacity 0.2s ease-out,
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .flashlight-hover .flashlight-item:hover,
+  .flashlight-hover .flashlight-item.hovered,
+  .flashlight-hover .flashlight-item.pinned {
+    transform: translateX(4px);
+  }
+  .flashlight-hover.active .flashlight-item {
+    opacity: 0.35 !important;
+  }
+  .flashlight-hover.active .flashlight-item.hovered,
+  .flashlight-hover.active .flashlight-item.pinned {
+    opacity: 1 !important;
+  }
 }
 
 /* Footnote refs and back-links: no underline */
