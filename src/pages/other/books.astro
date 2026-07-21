@@ -913,29 +913,11 @@ const displayBooks = [...books].sort((a, b) => {
   className="max-w-5xl"
 >
   <main class="books-main no-link-underline">
-    <!-- Filter Pills (Matches Site Tabs System) -->
-    <div class="mb-8 inline-flex items-center gap-1 relative p-1 max-w-full overflow-x-auto no-scrollbar bg-zinc-100/80 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/30 rounded-full select-none whitespace-nowrap" style="-webkit-overflow-scrolling: touch; touch-action: pan-x;">
-      <div class="tabs-indicator" id="books-indicator"></div>
-      <button type="button" class="book-tab is-active" data-filter="all">All</button>
-      <button type="button" class="book-tab" data-filter="favs">Five Stars</button>
-      <button type="button" class="book-tab" data-filter="fiction">Fiction</button>
-      <button type="button" class="book-tab" data-filter="non-fiction">Non-Fiction</button>
-      <button type="button" class="book-tab" data-filter="sci-fi">Sci-Fi</button>
-      <button type="button" class="book-tab" data-filter="memoir">Memoir</button>
-    </div>
-
-    <!-- Books Grid with Flashlight Hover Effect -->
-    <div class="flashlight-hover books-grid" id="books-grid" data-flashlight-pinnable>
+    <!-- Books Grid -->
+    <div class="books-grid" id="books-grid">
       {
         displayBooks.map((book, index) => (
-          <div
-            class="flashlight-item book-card"
-            data-book-index={index}
-            data-rating={book.rating}
-            data-genre={book.genre || ""}
-            role="button"
-            tabindex="0"
-          >
+          <div class="book-card">
             <div class="cover-wrapper">
               <img
                 src={book.image}
@@ -950,6 +932,11 @@ const displayBooks = [...books].sort((a, b) => {
             <div class="card-meta">
               <span class="card-title">{book.title}</span>
               <span class="card-author">{book.author}</span>
+              <div class="card-stars" aria-label={`${book.rating} stars`}>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <span class={i < book.rating ? "star filled" : "star empty"}>★</span>
+                ))}
+              </div>
             </div>
           </div>
         ))
@@ -957,97 +944,16 @@ const displayBooks = [...books].sort((a, b) => {
     </div>
   </main>
 
-  <!-- Compact Micro-Popup for Book Details -->
-  <div id="book-modal" class="book-modal-overlay" aria-hidden="true">
-    <div id="modal-backdrop" class="modal-backdrop"></div>
-    <div id="modal-card" class="modal-card" role="dialog" aria-modal="true">
-      <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal">✕</button>
-
-      <div class="modal-card-body">
-        <div class="modal-cover-wrap">
-          <img id="modal-cover-img" src="" alt="" class="modal-cover-img" />
-        </div>
-        
-        <div class="modal-meta">
-          <h2 id="modal-title" class="modal-title"></h2>
-          <p id="modal-author" class="modal-author"></p>
-          <div id="modal-rating" class="modal-rating"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <style is:global>
     .books-main {
       max-width: none;
-    }
-
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Tab Indicator System */
-    .tabs-indicator {
-      position: absolute;
-      border-radius: 9999px;
-      background: #18181b;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-      transition:
-        left 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        width 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        top 220ms cubic-bezier(0.23, 1, 0.32, 1),
-        height 220ms cubic-bezier(0.23, 1, 0.32, 1);
-      pointer-events: none;
-      z-index: 0;
-    }
-    html.dark .tabs-indicator {
-      background: rgb(244, 244, 245);
-    }
-
-    .book-tab {
-      position: relative;
-      z-index: 10;
-      padding: 6px 12px;
-      font-size: 12px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      border-radius: 9999px;
-      border: 1px solid transparent;
-      color: rgb(113, 113, 122);
-      background: transparent;
-      transition:
-        color 150ms ease,
-        transform 100ms ease;
-      cursor: pointer;
-    }
-    html.dark .book-tab {
-      color: rgb(161, 161, 170);
-    }
-    .book-tab:hover {
-      color: rgb(24, 24, 27);
-    }
-    html.dark .book-tab:hover {
-      color: rgb(244, 244, 245);
-    }
-    .book-tab:active {
-      transform: scale(0.96);
-    }
-    .book-tab.is-active {
-      color: #fff;
-    }
-    html.dark .book-tab.is-active {
-      color: rgb(24, 24, 27);
     }
 
     /* Grid Styles */
     .books-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 1.25rem 1rem;
+      gap: 1.5rem 1rem;
     }
 
     @media (max-width: 900px) {
@@ -1068,7 +974,6 @@ const displayBooks = [...books].sort((a, b) => {
       background: transparent;
       border: none;
       padding: 0;
-      cursor: pointer;
       text-align: left;
       display: flex;
       flex-direction: column;
@@ -1076,11 +981,18 @@ const displayBooks = [...books].sort((a, b) => {
       outline: none;
     }
 
-    .book-card.hidden {
-      display: none !important;
-    }
+    .card-author {
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #71717a;
+}
 
-    /* Square Edges for Covers */
+.dark .card-author {
+  color: #a1a1aa;
+}
+
+    /* Clean Cover Wrapper */
     .cover-wrapper {
       position: relative;
       width: 100%;
@@ -1088,42 +1000,11 @@ const displayBooks = [...books].sort((a, b) => {
       border-radius: 0;
       overflow: hidden;
       background: #e5e5e5;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     .dark .cover-wrapper {
       background: #27272a;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Override global translateX for grid card hover & pinned state */
-    .flashlight-hover .book-card:hover,
-    .flashlight-hover .book-card.hovered,
-    .flashlight-hover .book-card.pinned {
-      transform: none !important;
-    }
-
-    .flashlight-hover .book-card:hover .cover-wrapper,
-    .flashlight-hover .book-card.hovered .cover-wrapper,
-    .flashlight-hover .book-card.pinned .cover-wrapper {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.22);
-    }
-    .dark .flashlight-hover .book-card:hover .cover-wrapper,
-    .dark .flashlight-hover .book-card.hovered .cover-wrapper,
-    .dark .flashlight-hover .book-card.pinned .cover-wrapper {
-      box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Modal dimming state for background cards */
-    .flashlight-hover.modal-active .book-card,
-    .flashlight-hover.active .book-card {
-      opacity: 0.35 !important;
-    }
-
-    .flashlight-hover.modal-active .book-card.pinned,
-    .flashlight-hover.active .book-card.pinned {
-      opacity: 1 !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
 
     .book-cover-img {
@@ -1160,313 +1041,21 @@ const displayBooks = [...books].sort((a, b) => {
       color: #f4f4f5;
     }
 
-    .card-author {
+    .card-stars {
+      display: flex;
+      gap: 1.5px;
+      margin-top: 1px;
       font-size: 0.72rem;
-      color: #71717a;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .dark .card-author {
-      color: #a1a1aa;
-    }
-
-    /* Minimal Compact Modal Styles */
-    .book-modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      will-change: opacity;
-    }
-
-    .book-modal-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transform: translateZ(0);
-    }
-
-    .modal-card {
-      position: relative;
-      width: 100%;
-      max-width: 320px;
-      background: #ffffff;
-      color: #18181b;
-      border-radius: 12px;
-      padding: 1.15rem;
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      transform: scale(0.95) translateY(4px);
-      transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform;
-    }
-
-    .dark .modal-card {
-      background: #18181b;
-      color: #f4f4f5;
-      border-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
-    }
-
-    .book-modal-overlay.open .modal-card {
-      transform: scale(1) translateY(0);
-    }
-
-    .modal-close-btn {
-      position: absolute;
-      top: 0.75rem;
-      right: 0.75rem;
-      background: none;
-      border: none;
-      color: inherit;
-      font-size: 1rem;
       line-height: 1;
-      cursor: pointer;
-      opacity: 0.5;
-      padding: 0.25rem;
-      transition: opacity 150ms ease;
     }
-    .modal-close-btn:hover {
-      opacity: 1;
-    }
-
-    .modal-card-body {
-      display: flex;
-      gap: 0.85rem;
-      align-items: center;
-    }
-
-    .modal-cover-wrap {
-      flex-shrink: 0;
-      width: 80px;
-      aspect-ratio: 2 / 3;
-      border-radius: 0;
-      overflow: hidden;
-      background: #e5e5e5;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    .dark .modal-cover-wrap {
-      background: #27272a;
-    }
-
-    .modal-cover-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 0;
-    }
-
-    .modal-meta {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .modal-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      line-height: 1.25;
-      margin: 0;
-      padding-right: 1rem;
-    }
-
-    .modal-author {
-      font-size: 0.78rem;
-      color: #71717a;
-      margin: 0 0 0.25rem 0;
-    }
-    .dark .modal-author {
-      color: #a1a1aa;
-    }
-
-    .modal-rating {
-      display: flex;
-      gap: 2px;
-    }
-    .modal-rating .star {
+    .card-stars .star.filled {
       color: #fbbf24;
-      font-size: 0.85rem;
     }
-    .modal-rating .star.empty {
+    .card-stars .star.empty {
       color: #d4d4d8;
     }
-    .dark .modal-rating .star.empty {
+    html.dark .card-stars .star.empty {
       color: #3f3f46;
     }
   </style>
-
-  <script define:vars={{ books }} is:inline>
-    document.addEventListener("astro:page-load", function () {
-      const modalOverlay = document.getElementById("book-modal");
-      const modalBackdrop = document.getElementById("modal-backdrop");
-      const modalCloseBtn = document.getElementById("modal-close-btn");
-      const modalCoverImg = document.getElementById("modal-cover-img");
-      const modalTitle = document.getElementById("modal-title");
-      const modalAuthor = document.getElementById("modal-author");
-      const modalRating = document.getElementById("modal-rating");
-
-      const bookCards = Array.from(document.querySelectorAll(".book-card"));
-      const tabs = Array.from(document.querySelectorAll(".book-tab"));
-      const indicator = document.getElementById("books-indicator");
-      const booksGrid = document.getElementById("books-grid");
-
-      if (!modalOverlay || !modalCloseBtn || !modalCoverImg) return;
-
-      // Teleport modal to body for viewport-fixed positioning
-      if (modalOverlay.parentNode !== document.body) {
-        document.body.appendChild(modalOverlay);
-      }
-
-      function updateModalContent(index) {
-        const book = books[index];
-        if (!book) return;
-
-        modalTitle.textContent = book.title;
-        modalAuthor.textContent = book.author;
-        modalCoverImg.src = book.image;
-        modalCoverImg.alt = book.title;
-
-        // Star Rating
-        if (modalRating) {
-          modalRating.innerHTML = "";
-          for (let i = 0; i < 5; i++) {
-            const star = document.createElement("span");
-            star.className = "star " + (i < book.rating ? "" : "empty");
-            star.textContent = "★";
-            modalRating.appendChild(star);
-          }
-        }
-      }
-
-      let closeTimeout;
-
-      function openModal(index) {
-        clearTimeout(closeTimeout);
-        updateModalContent(index);
-
-        // Pin clicked book & activate dimming on background grid
-        bookCards.forEach((c) => c.classList.remove("pinned"));
-        const clickedCard = bookCards[index];
-        if (clickedCard) {
-          clickedCard.classList.add("pinned");
-        }
-        if (booksGrid) {
-          booksGrid.classList.add("modal-active");
-          booksGrid.classList.add("active");
-        }
-
-        modalOverlay.classList.add("open");
-        modalOverlay.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-      }
-
-      function closeModal() {
-        modalOverlay.classList.remove("open");
-        modalOverlay.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
-
-        // Unpin book & remove grid dimming ONLY after modal fade out finishes
-        clearTimeout(closeTimeout);
-        closeTimeout = setTimeout(() => {
-          if (!modalOverlay.classList.contains("open")) {
-            bookCards.forEach((c) => c.classList.remove("pinned"));
-            if (booksGrid) {
-              booksGrid.classList.remove("modal-active");
-              booksGrid.classList.remove("active");
-            }
-          }
-        }, 220);
-      }
-
-      bookCards.forEach((card) => {
-        card.addEventListener("click", () => {
-          const idx = parseInt(card.getAttribute("data-book-index"), 10);
-          openModal(idx);
-        });
-      });
-
-      modalCloseBtn.addEventListener("click", closeModal);
-      modalBackdrop.addEventListener("click", closeModal);
-
-      function handleKeyDown(e) {
-        if (!modalOverlay.classList.contains("open")) return;
-        if (e.key === "Escape") closeModal();
-      }
-      document.addEventListener("keydown", handleKeyDown);
-
-      // Sliding Indicator Logic
-      const updateIndicator = (activeTab) => {
-        if (!indicator || !activeTab) return;
-        indicator.style.left = `${activeTab.offsetLeft}px`;
-        indicator.style.width = `${activeTab.offsetWidth}px`;
-        indicator.style.top = `${activeTab.offsetTop}px`;
-        indicator.style.height = `${activeTab.offsetHeight}px`;
-      };
-
-      const setActive = (name) => {
-        const activeTab = tabs.find((t) => t.dataset.filter === name);
-        tabs.forEach((t) => {
-          const isAct = t.dataset.filter === name;
-          t.classList.toggle("is-active", isAct);
-        });
-        if (activeTab) {
-          updateIndicator(activeTab);
-        }
-
-        bookCards.forEach((card) => {
-          const rating = parseInt(card.getAttribute("data-rating"), 10);
-          const genre = (card.getAttribute("data-genre") || "").toLowerCase();
-
-          let match = false;
-          if (name === "all") match = true;
-          else if (name === "favs") match = rating === 5;
-          else if (name === "fiction") match = genre.includes("fiction") && !genre.includes("non-fiction");
-          else if (name === "non-fiction") match = genre.includes("non-fiction");
-          else if (name === "sci-fi") match = genre.includes("sci-fi");
-          else if (name === "memoir") match = genre.includes("memoir") || genre.includes("essay");
-
-          card.classList.toggle("hidden", !match);
-        });
-      };
-
-      tabs.forEach((t) => {
-        t.addEventListener("click", () => setActive(t.dataset.filter));
-      });
-
-      setTimeout(() => {
-        setActive("all");
-      }, 60);
-
-      window.addEventListener("resize", () => {
-        const activeTab = tabs.find((t) => t.classList.contains("is-active"));
-        if (activeTab) updateIndicator(activeTab);
-      });
-
-      // View transition cleanup
-      document.addEventListener("astro:before-swap", function cleanupModal() {
-        closeModal();
-        if (modalOverlay && modalOverlay.parentNode) {
-          modalOverlay.parentNode.removeChild(modalOverlay);
-        }
-        document.removeEventListener("keydown", handleKeyDown);
-        document.removeEventListener("astro:before-swap", cleanupModal);
-      });
-    });
-  </script>
 </Layout>
