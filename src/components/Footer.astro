@@ -1,62 +1,68 @@
 ---
-// Generate randomized dot positions and delay values for a 6x6 background pattern
-const cols = 6;
-const rows = 6;
-const spacing = 5.333;
-const radius = 1.667;
-
-const bgDots = [];
-for (let i = 0; i < cols; i++) {
-  for (let j = 0; j < rows; j++) {
-    const cx = 2.667 + i * spacing;
-    const cy = 2.667 + j * spacing;
-    const delay = Math.floor(Math.random() * 1000);
-    const minOpacity = (Math.random() * 0.4 + 0.15).toFixed(2);
-    bgDots.push({ cx, cy, delay, minOpacity });
-  }
-}
+// Minimal Line-Art Cat Footer Icon with Proximity-Based Eye Tracking
 ---
 
 <footer class="relative select-none">
-  <svg
-    id="footer-svg-icon"
-    class="text-zinc-500 dark:text-zinc-400"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-    data-positioned="false"
-  >
-    <defs>
-      <pattern id="dot-pattern" width="14" height="14" patternUnits="userSpaceOnUse" viewBox="0 0 105 105">
-        <circle cx="12.5" cy="12.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -0ms;"/>
-        <circle cx="12.5" cy="52.5" r="12.5" fill="currentColor" fill-opacity=".5" class="pulse-circle-icon" style="animation-delay: -100ms;"/>
-        <circle cx="52.5" cy="12.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -300ms;"/>
-        <circle cx="52.5" cy="52.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -600ms;"/>
-        <circle cx="92.5" cy="12.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -800ms;"/>
-        <circle cx="92.5" cy="52.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -400ms;"/>
-        <circle cx="12.5" cy="92.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -700ms;"/>
-        <circle cx="52.5" cy="92.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -500ms;"/>
-        <circle cx="92.5" cy="92.5" r="12.5" fill="currentColor" class="pulse-circle-icon" style="animation-delay: -200ms;"/>
-      </pattern>
-      <pattern id="random-dot-pattern" width="32" height="32" patternUnits="userSpaceOnUse" viewBox="0 0 32 32">
-        {bgDots.map(dot => (
-          <circle 
-            cx={dot.cx} 
-            cy={dot.cy} 
-            r={radius} 
-            fill="currentColor"
-            class="pulse-circle"
-            style={`animation-delay: -${dot.delay}ms; --pulse-opacity: ${dot.minOpacity};`}
-          />
-        ))}
-      </pattern>
-    </defs>
-    <rect class="icon-rect" width="100%" height="100%" fill="url(#dot-pattern)" />
-    <rect class="bg-rect" width="100%" height="100%" fill="url(#random-dot-pattern)" />
-  </svg>
+  <p class="footer-text text-sm text-zinc-500 dark:text-zinc-400 relative z-10 m-0 leading-relaxed inline-flex items-center flex-wrap">
+    <span>It's <span id="ottawa-time" class="inline-block tabular-nums" style="min-width:5.5ch;">--:--:--</span> and <span id="ottawa-weather">--°C</span> in Ottawa, Ontario.</span>
+    <button 
+      id="footer-cat-btn" 
+      type="button" 
+      aria-label="Minimal line-art cat mascot"
+      title="Click me!"
+      class="footer-cat-btn inline-flex items-center justify-center align-middle ml-2 p-0 bg-transparent border-0 cursor-pointer rounded focus:outline-none text-inherit -translate-y-[2px]"
+    >
+      <span class="shape-icon-container relative inline-block w-[22px] h-[22px]">
+        <svg 
+          id="footer-cat-svg" 
+          viewBox="0 0 24 24" 
+          class="w-full h-full text-zinc-500 dark:text-zinc-400 overflow-visible cat-ambient-twitch"
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- Left Cat Ear / \ -->
+          <path id="cat-ear-left" d="M 4.8 9.8 L 7.2 4.2 L 9.6 9.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          
+          <!-- Right Cat Ear / \ -->
+          <path id="cat-ear-right" d="M 14.4 9.8 L 16.8 4.2 L 19.2 9.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 
-  <p class="footer-text text-sm text-zinc-500 dark:text-zinc-400 relative z-10 m-0 leading-relaxed">
-    It's <span id="ottawa-time" class="inline-block tabular-nums" style="min-width:5.5ch;">--:--:--</span> and <span id="ottawa-weather">--°C</span> in Ottawa, Ontario.
-    <span id="footer-icon-anchor" class="inline-block w-[14px] h-[14px] ml-1.5 align-middle"></span>
+          <!-- Left Face Arc ( -->
+          <path d="M 5.2 11.5 C 3.8 14.2 3.8 17.5 5.2 20.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+
+          <!-- Right Face Arc ) -->
+          <path d="M 18.8 11.5 C 20.2 14.2 20.2 17.5 18.8 20.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+
+          <!-- Minimal Whiskers -->
+          <path d="M 1.8 15.5 L 4.2 15.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.75" />
+          <path d="M 22.2 15.5 L 19.8 15.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.75" />
+
+          <!-- Cat Mouth ω -->
+          <path d="M 10.6 17.2 C 11.3 17.8 12 17.8 12 17.2 C 12 17.8 12.7 17.8 13.4 17.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+
+          <!-- Eye Dots -->
+          <g id="cat-eyes-normal">
+            <g id="cat-eye-l-group" transform="translate(0, 0)">
+              <circle cx="9.2" cy="14.8" r="1.4" fill="currentColor" />
+            </g>
+            <g id="cat-eye-r-group" transform="translate(0, 0)">
+              <circle cx="14.8" cy="14.8" r="1.4" fill="currentColor" />
+            </g>
+          </g>
+
+          <!-- Blink Lines (Shown on blink) -->
+          <g id="cat-eyes-blink" opacity="0">
+            <path d="M 7.5 14.8 L 10.8 14.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            <path d="M 13.2 14.8 L 16.5 14.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </g>
+
+          <!-- Happy Eyes ^ ^ (Shown on click/tap) -->
+          <g id="cat-eyes-happy" opacity="0">
+            <path d="M 7.5 15.2 L 9.2 13.6 L 10.8 15.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M 13.2 15.2 L 14.8 13.6 L 16.5 15.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        </svg>
+      </span>
+    </button>
   </p>
 </footer>
 
@@ -67,74 +73,36 @@ for (let i = 0; i < cols; i++) {
     align-items: center;
     padding: 12px 0;
     margin-top: 24px;
-    overflow: hidden;
     width: 100%;
   }
 
-  #footer-svg-icon {
-    position: absolute;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0;
-    transition:
-      left 450ms cubic-bezier(0.23, 1, 0.32, 1),
-      top 450ms cubic-bezier(0.23, 1, 0.32, 1),
-      width 450ms cubic-bezier(0.23, 1, 0.32, 1),
-      height 450ms cubic-bezier(0.23, 1, 0.32, 1),
-      opacity 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  .footer-cat-btn {
+    line-height: 1;
+    color: inherit;
+    transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  #footer-svg-icon[data-positioned="true"] {
-    opacity: 0.6;
+  .footer-cat-btn:hover {
+    transform: translateY(-2px) scale(1.08);
   }
 
-  #footer-svg-icon .bg-rect {
-    opacity: 0;
-    transition: opacity 150ms ease-out; /* fast fade out on leave */
-  }
-  #footer-svg-icon .icon-rect {
-    opacity: 1;
-    transition: opacity 150ms ease-out; /* fast fade in on leave */
+  .footer-cat-btn:active {
+    transform: translateY(-1px) scale(0.92);
   }
 
-  footer.is-hovered #footer-svg-icon[data-positioned="true"] {
-    opacity: 0.22;
-  }
-  footer.is-hovered #footer-svg-icon .bg-rect {
-    opacity: 1;
-    transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1); /* smooth fade in on enter */
-  }
-  footer.is-hovered #footer-svg-icon .icon-rect {
-    opacity: 0;
-    transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1); /* smooth fade out on enter */
+  #footer-cat-svg {
+    transform-origin: center;
   }
 
-  html.dark footer.is-hovered #footer-svg-icon[data-positioned="true"] {
-    opacity: 0.15;
+  @keyframes cat-ear-twitch {
+    0%, 86%, 100% { transform: rotate(0deg); }
+    89% { transform: rotate(-6deg); }
+    92% { transform: rotate(5deg); }
+    95% { transform: rotate(0deg); }
   }
 
-  @keyframes pulse-icon {
-    0%, 100% {
-      fill-opacity: 1;
-    }
-    50% {
-      fill-opacity: 0.2;
-    }
-  }
-  .pulse-circle-icon {
-    animation: pulse-icon 1s infinite linear;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% {
-      fill-opacity: 1;
-    }
-    50% {
-      fill-opacity: var(--pulse-opacity, 0.2);
-    }
-  }
-  .pulse-circle {
-    animation: pulse-dot 1s infinite linear;
+  .cat-ambient-twitch {
+    animation: cat-ear-twitch 6.5s infinite cubic-bezier(0.77, 0, 0.175, 1);
   }
 </style>
 
@@ -158,18 +126,16 @@ for (let i = 0; i < cols; i++) {
     const el = document.getElementById("ottawa-weather");
     if (!el) return;
 
-    // Check localStorage cache first
     const cachedTemp = localStorage.getItem("ottawa_temp");
     const cachedTime = localStorage.getItem("ottawa_temp_time");
-    const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+    const CACHE_DURATION = 15 * 60 * 1000;
 
     if (cachedTemp && cachedTime) {
       const age = Date.now() - parseInt(cachedTime, 10);
       if (age < CACHE_DURATION) {
         el.textContent = `${cachedTemp}°C`;
-        return; // Cache is fresh, skip fetch
+        return;
       } else {
-        // Show stale cache temporarily while we fetch fresh data
         el.textContent = `${cachedTemp}°C`;
       }
     }
@@ -181,7 +147,6 @@ for (let i = 0; i < cols; i++) {
       const t = Math.round(data.current.temperature_2m);
       el.textContent = `${t}°C`;
       
-      // Update cache
       localStorage.setItem("ottawa_temp", t.toString());
       localStorage.setItem("ottawa_temp_time", Date.now().toString());
     } catch {
@@ -191,78 +156,160 @@ for (let i = 0; i < cols; i++) {
     }
   }
 
-  function initFooterInteraction() {
-    const footer = document.querySelector("footer");
-    const anchor = document.getElementById("footer-icon-anchor");
-    const svg = document.getElementById("footer-svg-icon");
-    if (!footer || !anchor || !svg) return;
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let lastMouseMoveTime = 0;
+  let curLx = 0, curLy = 0;
+  let curRx = 0, curRy = 0;
+  let rafId: number | null = null;
+  let blinkTimer: number | null = null;
+  let glanceTimer: number | null = null;
+  let isInteractingState = false;
 
-    let isHovered = false;
+  const ambientGlances = [
+    { x: 0, y: 0 },
+    { x: -1.9, y: 0 },
+    { x: -1.9, y: 0 },
+    { x: 0, y: 0 },
+    { x: 1.9, y: -0.9 },
+    { x: 1.9, y: -0.9 },
+    { x: -1.2, y: 1.1 },
+    { x: 0, y: 0 }
+  ];
+  let currentGlanceIndex = 0;
+  let ambientTargetX = 0;
+  let ambientTargetY = 0;
 
-    const updateSvgPosition = (immediate = false) => {
-      if (isHovered) return;
-      const anchorRect = anchor.getBoundingClientRect();
-      const footerRect = footer.getBoundingClientRect();
+  function scheduleAmbientGlance() {
+    if (glanceTimer) clearTimeout(glanceTimer);
+    const delay = Math.random() * 2000 + 1500;
+    glanceTimer = window.setTimeout(() => {
+      currentGlanceIndex = (currentGlanceIndex + 1) % ambientGlances.length;
+      ambientTargetX = ambientGlances[currentGlanceIndex].x;
+      ambientTargetY = ambientGlances[currentGlanceIndex].y;
+      scheduleAmbientGlance();
+    }, delay);
+  }
 
-      if (immediate) {
-        svg.style.transition = "none";
+  function onMouseMove(e: MouseEvent) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    lastMouseMoveTime = Date.now();
+  }
+
+  function animatePupils() {
+    const catSvg = document.getElementById("footer-cat-svg");
+    const pupilLGroup = document.getElementById("cat-eye-l-group");
+    const pupilRGroup = document.getElementById("cat-eye-r-group");
+
+    if (catSvg && pupilLGroup && pupilRGroup && !isInteractingState) {
+      let targetX = 0;
+      let targetY = 0;
+      const rect = catSvg.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const dx = mouseX - centerX;
+      const dy = mouseY - centerY;
+      const dist = Math.hypot(dx, dy);
+      const timeSinceMouse = Date.now() - lastMouseMoveTime;
+
+      // Proximity threshold: only track cursor when mouse gets within ~260px of the cat
+      const PROXIMITY_RADIUS = 260;
+
+      if (lastMouseMoveTime > 0 && timeSinceMouse < 3000 && dist < PROXIMITY_RADIUS) {
+        const angle = Math.atan2(dy, dx);
+        const maxOffset = 2.2;
+        // Tracking intensity increases smoothly as cursor gets closer
+        const closeness = 1 - (dist / PROXIMITY_RADIUS);
+        const factor = Math.min(Math.max(closeness * 1.3, 0.25), 1);
+        targetX = Math.cos(angle) * maxOffset * factor;
+        targetY = Math.sin(angle) * maxOffset * factor;
+      } else {
+        // Relaxed ambient glance mode when cursor is far away or idle
+        targetX = ambientTargetX;
+        targetY = ambientTargetY;
       }
 
-      svg.style.left = `${anchorRect.left - footerRect.left}px`;
-      svg.style.top = `${anchorRect.top - footerRect.top}px`;
-      svg.style.width = `${anchorRect.width}px`;
-      svg.style.height = `${anchorRect.height}px`;
+      curLx += (targetX - curLx) * 0.22;
+      curLy += (targetY - curLy) * 0.22;
+      curRx += (targetX - curRx) * 0.22;
+      curRy += (targetY - curRy) * 0.22;
 
-      if (immediate) {
-        svg.offsetHeight; // Force reflow
-        svg.style.removeProperty("transition");
-        svg.setAttribute("data-positioned", "true");
-      }
-    };
+      pupilLGroup.setAttribute("transform", `translate(${curLx.toFixed(2)}, ${curLy.toFixed(2)})`);
+      pupilRGroup.setAttribute("transform", `translate(${curRx.toFixed(2)}, ${curRy.toFixed(2)})`);
+    }
 
-    // Calculate initial coordinates immediately once layout is rendered
-    requestAnimationFrame(() => {
-      updateSvgPosition(true);
-    });
+    rafId = requestAnimationFrame(animatePupils);
+  }
 
-    const onMouseEnter = () => {
-      isHovered = true;
-      footer.classList.add("is-hovered");
-      
-      // Transition to full background container
-      svg.style.left = "0px";
-      svg.style.top = "0px";
-      svg.style.width = "100%";
-      svg.style.height = "100%";
-    };
+  function setEyeState(state: "normal" | "blink" | "happy") {
+    const normal = document.getElementById("cat-eyes-normal");
+    const blink = document.getElementById("cat-eyes-blink");
+    const happy = document.getElementById("cat-eyes-happy");
 
-    const onMouseLeave = () => {
-      isHovered = false;
-      footer.classList.remove("is-hovered");
-      updateSvgPosition();
-    };
+    if (!normal || !blink || !happy) return;
 
-    footer.addEventListener("mouseenter", onMouseEnter);
-    footer.addEventListener("mouseleave", onMouseLeave);
+    normal.setAttribute("opacity", state === "normal" ? "1" : "0");
+    blink.setAttribute("opacity", state === "blink" ? "1" : "0");
+    happy.setAttribute("opacity", state === "happy" ? "1" : "0");
+  }
 
-    // Refresh boundaries on resizing
-    window.addEventListener("resize", () => updateSvgPosition(false));
+  function triggerBlink() {
+    if (isInteractingState) return;
+    setEyeState("blink");
+    setTimeout(() => {
+      if (!isInteractingState) setEyeState("normal");
+    }, 150);
+  }
+
+  function scheduleRandomBlink() {
+    if (blinkTimer) clearTimeout(blinkTimer);
+    const delay = Math.random() * 4000 + 2500;
+    blinkTimer = window.setTimeout(() => {
+      triggerBlink();
+      scheduleRandomBlink();
+    }, delay);
+  }
+
+  function initCatTracking() {
+    window.removeEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(animatePupils);
+
+    scheduleRandomBlink();
+    scheduleAmbientGlance();
+
+    const btn = document.getElementById("footer-cat-btn");
+    if (btn) {
+      const handleTap = (e: Event) => {
+        e.preventDefault();
+        isInteractingState = true;
+        setEyeState("happy");
+        setTimeout(() => {
+          setEyeState("normal");
+          isInteractingState = false;
+        }, 650);
+      };
+
+      btn.onclick = handleTap;
+    }
   }
 
   function init() {
     updateTime();
-    updateWeather(); // Run on every page load/transition
-    
-    // Protect interval duplicates
+    updateWeather();
+
     if (!(window as any).__footer_intervals_setup__) {
       (window as any).__footer_intervals_setup__ = true;
       setInterval(updateTime, 1000);
       setInterval(updateWeather, 30 * 60 * 1000);
     }
-    initFooterInteraction();
+
+    initCatTracking();
   }
 
-  // Support Astro view transitions and page loads
   document.addEventListener("astro:page-load", init);
 </script>
-

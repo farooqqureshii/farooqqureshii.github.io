@@ -94,23 +94,9 @@ const {
       };
       setTheme();
 
-      if (!document.documentElement.hasAttribute("data-direction")) {
-        document.documentElement.setAttribute("data-direction", "forward");
-      }
-
-      if (!window.__themeAndTransitionListenersAttached) {
-        let currentDirection = "forward";
-
-        document.addEventListener("astro:before-preparation", (event) => {
-          currentDirection = event.direction || "forward";
-        });
-
-        document.addEventListener("astro:after-swap", () => {
-          setTheme();
-          document.documentElement.setAttribute("data-direction", currentDirection);
-        });
-
-        window.__themeAndTransitionListenersAttached = true;
+      if (!window.__themeListenerAttached) {
+        document.addEventListener("astro:after-swap", setTheme);
+        window.__themeListenerAttached = true;
       }
     </script>
     <ClientRouter transition:animate="none" />

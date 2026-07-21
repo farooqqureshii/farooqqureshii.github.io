@@ -528,21 +528,10 @@ a[href^="#fn"],
 
 /* Sleek, minimal hardware-accelerated page entrance animation */
 @media (prefers-reduced-motion: no-preference) {
-  @keyframes pageFadeInForward {
+  @keyframes pageFadeIn {
     from {
       opacity: 0;
       transform: translateY(4px) scale(0.988);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  @keyframes pageFadeInBackward {
-    from {
-      opacity: 0;
-      transform: translateY(-4px) scale(1.012);
     }
     to {
       opacity: 1;
@@ -554,15 +543,62 @@ a[href^="#fn"],
     will-change: transform, opacity;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    animation: pageFadeInForward 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: pageFadeIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  html[data-direction="forward"] .page-container {
-    animation: pageFadeInForward 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
+  /* Mobile specific animation rules */
+  @media (max-width: 768px) {
+    /* All subpages load instantly on mobile */
+    .page-container:not(.index-page) {
+      animation: none !important;
+    }
 
-  html[data-direction="back"] .page-container {
-    animation: pageFadeInBackward 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    /* Main page has a prominent, noticeable entrance animation on mobile */
+    @keyframes prominentMobileFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes prominentMobileStagger {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-container.index-page header {
+      opacity: 0;
+      animation: prominentMobileStagger 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 0ms;
+    }
+
+    .index-page p[data-stagger] {
+      opacity: 0;
+      animation: prominentMobileStagger 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .index-page p[data-stagger="1"] { animation-delay: 40ms; }
+    .index-page p[data-stagger="2"] { animation-delay: 80ms; }
+    .index-page p[data-stagger="3"] { animation-delay: 120ms; }
+    .index-page p[data-stagger="4"] { animation-delay: 160ms; }
+    .index-page p[data-stagger="5"] { animation-delay: 200ms; }
+    .index-page p[data-stagger="6"] { animation-delay: 240ms; }
+    .index-page p[data-stagger="7"] { animation-delay: 280ms; }
+
+    .page-container.index-page footer {
+      opacity: 0;
+      animation: prominentMobileStagger 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 320ms;
+    }
   }
 }
 
