@@ -898,6 +898,13 @@ const books = [
     image: "https://covers.openlibrary.org/b/isbn/9780679760801-M.jpg",
   },
 ];
+
+// Shuffle books deterministically so a fresh, diverse selection appears at the top
+const displayBooks = [...books].sort((a, b) => {
+  const hashA = (a.title.charCodeAt(0) * 31 + a.author.charCodeAt(0) * 17) % 97;
+  const hashB = (b.title.charCodeAt(0) * 31 + b.author.charCodeAt(0) * 17) % 97;
+  return hashA - hashB;
+});
 ---
 
 <Layout
@@ -907,7 +914,7 @@ const books = [
 >
   <main class="books-main no-link-underline">
     <!-- Filter Pills (Matches Site Tabs System) -->
-    <div class="mb-8 flex flex-wrap gap-1.5 relative p-1 bg-zinc-100/80 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/30 rounded-2xl sm:rounded-full select-none">
+    <div class="mb-8 inline-flex items-center gap-1 relative p-1 max-w-full overflow-x-auto no-scrollbar bg-zinc-100/80 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/30 rounded-full select-none whitespace-nowrap" style="-webkit-overflow-scrolling: touch; touch-action: pan-x;">
       <div class="tabs-indicator" id="books-indicator"></div>
       <button type="button" class="book-tab is-active" data-filter="all">All</button>
       <button type="button" class="book-tab" data-filter="favs">Five Stars</button>
@@ -920,7 +927,7 @@ const books = [
     <!-- Books Grid with Flashlight Hover Effect -->
     <div class="flashlight-hover books-grid" id="books-grid" data-flashlight-pinnable>
       {
-        books.map((book, index) => (
+        displayBooks.map((book, index) => (
           <div
             class="flashlight-item book-card"
             data-book-index={index}
@@ -934,7 +941,7 @@ const books = [
                 src={book.image}
                 alt={book.title}
                 class="book-cover-img"
-                loading={index < 12 ? "eager" : "lazy"}
+                loading={index < 4 ? "eager" : "lazy"}
                 decoding="async"
                 onload="this.classList.add('loaded')"
                 onerror="this.style.display='none'"
@@ -1007,6 +1014,7 @@ const books = [
       padding: 6px 12px;
       font-size: 12px;
       white-space: nowrap;
+      flex-shrink: 0;
       border-radius: 9999px;
       border: 1px solid transparent;
       color: rgb(113, 113, 122);

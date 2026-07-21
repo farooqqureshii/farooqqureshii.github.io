@@ -131,7 +131,7 @@ const categories = [
 <Layout title="Farooq Q. | Projects" description={SITE_DESCRIPTION}>
   <main class="no-link-underline">
     <header class="mb-10">
-      <div class="mt-4 inline-flex relative p-0.5 bg-zinc-100/80 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/30 rounded-full select-none">
+      <div class="mt-4 inline-flex items-center gap-1 relative p-0.5 max-w-full overflow-x-auto no-scrollbar bg-zinc-100/80 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/30 rounded-full select-none whitespace-nowrap" style="-webkit-overflow-scrolling: touch; touch-action: pan-x;">
         <div class="tabs-indicator" id="projects-indicator"></div>
         {
           categories.map((category) => (
@@ -238,6 +238,8 @@ const categories = [
       z-index: 10;
       padding: 6px 12px;
       font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
       border-radius: 9999px;
       border: 1px solid transparent;
       color: rgb(113 113 122);

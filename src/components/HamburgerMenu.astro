@@ -27,9 +27,13 @@
     color: inherit;
     position: relative;
     z-index: 1;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
     transition:
-      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.12s ease;
+      transform 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.15s ease;
   }
 
   /* When open, visually hide the hamburger and rotate it */
@@ -131,7 +135,7 @@
           justify-content: center;
           opacity: 0;
           visibility: hidden;
-          transition: opacity 0.12s ease, visibility 0s linear 0.12s;
+          transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 0.2s;
         }
         html:not(.dark) #menu-overlay {
           color: #111111;
@@ -142,11 +146,11 @@
         #menu-overlay.open {
           opacity: 1;
           visibility: visible;
-          transition: opacity 0.12s ease, visibility 0s linear 0s;
+          transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 0s;
         }
         #menu-overlay.closing {
           opacity: 0;
-          transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0.04s, visibility 0s linear 0.24s;
+          transition: opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 0.18s;
         }
 
         /* Close X — positioned by JS to overlay the hamburger */
@@ -167,7 +171,8 @@
           will-change: transform, opacity;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
+          transform: translateZ(0);
+          transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.15s ease;
         }
         .mc-bar {
           position: absolute;
@@ -178,7 +183,8 @@
           will-change: transform;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          transform: translateZ(0);
+          transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
         }
         html.dark .mc-bar { background: #e4e4e7; }
         
@@ -204,11 +210,6 @@
           flex-direction: column;
           align-items: flex-start;
           gap: 2rem;
-          transform: translateY(0) scale(1);
-          opacity: 1;
-          transition:
-            transform 0.24s cubic-bezier(0.23, 1, 0.32, 1),
-            opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .mo-nav {
           display: flex;
@@ -222,48 +223,14 @@
           color: inherit;
           text-decoration: none;
           line-height: 1.35;
-          opacity: 0;
           position: relative;
-          will-change: opacity, transform;
-          transform: translateY(6px);
-          transition:
-            opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1),
-            transform 0.18s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .mo-link::after,
         .mo-action-btn::after {
           display: none !important;
         }
 
-        /* Enter: one clean composed motion */
-        #menu-overlay.open .mo-inner {
-          transform: translateY(0) scale(1);
-          opacity: 1;
-        }
-        #menu-overlay.open .mo-link,
-        #menu-overlay.open .mo-action-btn {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        #menu-overlay.closing .mo-inner {
-          transform: translateY(8px) scale(0.988);
-          opacity: 0;
-        }
-        #menu-overlay.closing .mo-link,
-        #menu-overlay.closing .mo-action-btn {
-          opacity: 0;
-          transform: translateY(6px);
-        }
-
-        #menu-overlay:not(.open):not(.closing) .mo-link,
-        #menu-overlay:not(.open):not(.closing) .mo-action-btn {
-          opacity: 0 !important;
-          animation: none !important;
-          transform: translateY(6px) !important;
-        }
-
-        /* Flashlight effect overrides — ensure smooth opacity transition beats animation fill */
+        /* Flashlight effect overrides — ensure smooth opacity transition */
         .mo-inner.flashlight-hover .flashlight-item {
           transition: opacity 0.18s ease-out, transform 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
@@ -295,12 +262,6 @@
           display: block;
           text-align: left;
           position: relative;
-          opacity: 0;
-          will-change: opacity, transform;
-          transform: translateY(6px);
-          transition:
-            opacity 0.18s cubic-bezier(0.23, 1, 0.32, 1),
-            transform 0.18s cubic-bezier(0.23, 1, 0.32, 1);
           -webkit-font-smoothing: antialiased;
         }
         #menu-theme-label,
@@ -433,13 +394,14 @@
 
       updateThemeLabel();
       updateSoundLabel();
-      // Clear any inline overrides from a previous session and apply stagger delays
-      menuEls().forEach((el, index) => {
+      
+      menuEls().forEach((el) => {
         el.style.removeProperty("animation");
         el.style.removeProperty("opacity");
         el.style.removeProperty("transform");
-        el.style.transitionDelay = `${index * 30}ms`;
+        el.style.removeProperty("transition-delay");
       });
+
       // Prevent layout shift by locking scroll and compensating for scrollbar width
       const scrollBarComp =
         window.innerWidth - document.documentElement.clientWidth;
@@ -455,15 +417,6 @@
       window.addEventListener("orientationchange", handleOrientation);
       document.addEventListener("astro:before-swap", cleanupGlobalListeners);
 
-      // After the menu settles, strip inline animation fill so hover transitions work freely
-      setTimeout(() => {
-        menuEls().forEach((el) => {
-          el.style.opacity = "1";
-          el.style.transform = "none";
-          el.style.animation = "none";
-          el.style.removeProperty("transition-delay");
-        });
-      }, 550);
       btn?.setAttribute("aria-expanded", "true");
       overlay.setAttribute("aria-hidden", "false");
       // Animate X button bars from horizontal → X (ensure positioned first)
@@ -507,7 +460,7 @@
         menuEls().forEach((el) => {
           el.style.removeProperty("transition-delay");
         });
-      }, 300);
+      }, 200);
     }
 
     btn.addEventListener("click", () => {
