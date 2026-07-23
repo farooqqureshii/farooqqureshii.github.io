@@ -546,76 +546,32 @@ a[href^="#fn"],
 
 /* Sleek, minimal hardware-accelerated page entrance animation */
 @media (prefers-reduced-motion: no-preference) {
+  /* ── Page entrance animation ── */
+  /* Desktop: subtle fade + tiny lift. Fast, clean. */
   @keyframes pageFadeIn {
     from {
       opacity: 0;
-      transform: translateY(4px) scale(0.988);
+      transform: translateY(6px);
     }
     to {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0);
     }
+  }
+
+  /* Mobile: pure opacity fade — no transforms, no jitter. */
+  @keyframes pageFadeInMobile {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   .page-container {
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    animation: pageFadeIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: pageFadeIn 200ms cubic-bezier(0.25, 1, 0.5, 1) both;
   }
 
-  /* Mobile specific animation rules */
   @media (max-width: 768px) {
-    /* All subpages load instantly on mobile */
-    .page-container:not(.index-page) {
-      animation: none !important;
-    }
-
-    /* Main page has a prominent, noticeable entrance animation on mobile */
-    @keyframes prominentMobileFadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(16px) scale(0.96);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes prominentMobileStagger {
-      0% {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .page-container.index-page header {
-      opacity: 0;
-      animation: prominentMobileStagger 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 0ms;
-    }
-
-    .index-page p[data-stagger] {
-      opacity: 0;
-      animation: prominentMobileStagger 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .index-page p[data-stagger="1"] { animation-delay: 40ms; }
-    .index-page p[data-stagger="2"] { animation-delay: 80ms; }
-    .index-page p[data-stagger="3"] { animation-delay: 120ms; }
-    .index-page p[data-stagger="4"] { animation-delay: 160ms; }
-    .index-page p[data-stagger="5"] { animation-delay: 200ms; }
-    .index-page p[data-stagger="6"] { animation-delay: 240ms; }
-    .index-page p[data-stagger="7"] { animation-delay: 280ms; }
-
-    .page-container.index-page footer {
-      opacity: 0;
-      animation: prominentMobileStagger 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 320ms;
+    .page-container {
+      animation: pageFadeInMobile 150ms ease-out both;
     }
   }
 }
