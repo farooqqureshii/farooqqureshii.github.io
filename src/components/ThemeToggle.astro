@@ -14,7 +14,7 @@
       height: 16px;
       border-radius: 9999px;
       background: currentColor;
-      transition: background-color 180ms ease;
+      transition: background-color var(--duration-base) ease;
     }
   </style>
   <span class="toggle-dot" aria-hidden="true"></span>
@@ -46,7 +46,7 @@
 
       window.setTimeout(() => {
         html.classList.remove("theme-transition");
-      }, 320);
+      }, 180);
     });
   }
 

@@ -719,7 +719,7 @@
   // Trigger a smooth loop to reflow highlighters during transitions
   function triggerSmoothHighlightReflow() {
     const startTime = performance.now();
-    const duration = 400; // slightly longer than transition to ensure it settles
+    const duration = 200; // match transition duration, avoid excess CPU
 
     function step() {
       for (const handle of activeHighlighters.values()) {

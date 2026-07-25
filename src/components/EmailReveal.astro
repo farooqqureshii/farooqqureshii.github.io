@@ -2,7 +2,7 @@
 import { EMAIL_UOTTAWA } from "../consts";
 ---
 
-<div class="email-reveal flashlight-item mt-4">
+<div class="email-reveal mt-4">
   <div class="email-reveal-inner">
     <span class="email-default">Email</span>
     <span class="email-hover">
@@ -54,14 +54,14 @@ import { EMAIL_UOTTAWA } from "../consts";
 
   .email-reveal-inner {
     opacity: 0;
-    animation: emailRevealIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    animation-delay: 355ms;
+    animation: emailRevealIn var(--duration-moderate) var(--ease-out) forwards;
+    animation-delay: var(--duration-base);
   }
 
   .email-default,
   .email-hover {
     display: inline-block;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--duration-base) ease;
   }
 
   .email-default {
@@ -113,7 +113,7 @@ import { EMAIL_UOTTAWA } from "../consts";
     cursor: pointer;
     background: rgb(228 228 231);
     color: rgb(82 82 91);
-    transition: background 0.2s, color 0.2s, transform 0.2s;
+    transition: transform var(--duration-fast) ease-out, background-color var(--duration-base) ease, color var(--duration-base) ease;
     vertical-align: middle;
   }
 
@@ -151,8 +151,7 @@ import { EMAIL_UOTTAWA } from "../consts";
   }
 
   @keyframes checkPop {
-    0% { transform: scale(0.5); opacity: 0; }
-    70% { transform: scale(1.1); }
+    0% { transform: scale(0.8); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
   }
 

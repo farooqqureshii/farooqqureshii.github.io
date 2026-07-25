@@ -5,10 +5,10 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout title="Farooq Q. | Quotes" description="Quotes I find meaningful">
   <main>
-    <div class="flashlight-hover quotes-container">
+    <div class="quotes-container">
       {
         quotes.map((quote) => (
-          <blockquote class="flashlight-item quote-item">
+          <blockquote class="quote-item">
             <p class="quote-text">"{quote.text}"</p>
             <cite class="quote-author">— {quote.author}</cite>
           </blockquote>

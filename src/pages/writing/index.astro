@@ -11,10 +11,10 @@ const sortedPosts = posts
 
 <Layout title="Farooq Q. | Writing" description={SITE_DESCRIPTION}>
   <main class="no-link-underline">
-    <div class="flashlight-hover space-y-2 text-sm">
+    <div class="space-y-2 text-sm">
       {
         sortedPosts.map((post) => (
-          <div class="flashlight-item flex items-baseline gap-2">
+          <div class="flex items-baseline gap-2">
             <a href={`/writing/${post.slug}`}>{post.data.title}</a>
           </div>
         ))

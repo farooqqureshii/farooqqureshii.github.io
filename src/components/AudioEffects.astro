@@ -50,7 +50,7 @@
       // Do not play hover sounds over high-frequency animated elements like shimmers
       if (targetEl.closest("[data-gradient-shimmer]")) return;
 
-      const interactive = targetEl.closest("a, button, [role='button'], .flashlight-item");
+      const interactive = targetEl.closest("a, button, [role='button']");
       if (!interactive) return;
 
       // Prevent redundant hover plays when crossing internal element borders
@@ -74,7 +74,7 @@
       const targetEl = e.target as HTMLElement;
       if (!targetEl) return;
 
-      const interactive = targetEl.closest("a, button, [role='button'], .flashlight-item");
+      const interactive = targetEl.closest("a, button, [role='button']");
       if (!interactive) return;
 
       lastClickTime = Date.now();

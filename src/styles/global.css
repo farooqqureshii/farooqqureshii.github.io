@@ -13,6 +13,14 @@
 }
 
 @layer base {
+  :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --duration-fast: 120ms;
+    --duration-base: 150ms;
+    --duration-moderate: 200ms;
+  }
+
   html {
     font-size: 15px;
   }
@@ -24,8 +32,8 @@
       transition-property:
         background-color, color, border-color, outline-color, fill, stroke,
         text-decoration-color;
-      transition-duration: 300ms;
-      transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition-duration: var(--duration-base);
+      transition-timing-function: var(--ease-out);
     }
 
     /* On mobile, text color compositing is CPU-bound and lags behind
@@ -33,7 +41,7 @@
     @media (max-width: 768px) {
       html.theme-transition,
       html.theme-transition * {
-        transition-duration: 120ms;
+        transition-duration: var(--duration-fast);
       }
     }
   }
@@ -72,49 +80,39 @@
     font-weight: 460;
   }
 
-  /* Links - soft underline (cmdk style) with grow-on-hover */
+  /* Links — color-only, no underlines */
   a {
     color: inherit;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-    transition: text-decoration-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--ease-out);
   }
-  /* Article links: underline always visible for readability */
+
+  /* Article/content links: muted color to signal clickability */
   article a {
-    text-decoration-color: #d4d4d4;
+    color: #71717a; /* zinc-500 */
   }
   html.dark article a {
-    text-decoration-color: #3f3f46;
+    color: #a1a1aa; /* zinc-400 */
   }
 
-  /* Hover-dependent underline transitions — desktop only */
+  /* Hover — desktop only */
   @media (hover: hover) and (pointer: fine) {
     a:hover {
-      text-decoration-color: #737373;
-    }
-    article a:hover {
-      text-decoration-color: #737373;
+      color: #52525b; /* zinc-600 */
     }
     html.dark a:hover {
-      text-decoration-color: #a1a1aa;
+      color: #d4d4d8; /* zinc-300 */
+    }
+    /* Article links brighten toward body text on hover */
+    article a:hover {
+      color: #18181b; /* zinc-900 */
     }
     html.dark article a:hover {
-      text-decoration-color: #a1a1aa;
+      color: #e4e4e7; /* zinc-200 — matches body */
     }
   }
-  .no-link-underline a {
-    text-decoration: none;
-  }
-  .no-link-underline .project-links a {
-    text-decoration: underline;
-    text-decoration-color: #d4d4d4;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-  }
 
-  /* Main page: keep links full-width (flashlight handles hover) */
+  /* Main page: keep links full-width */
   .index-page .hub-nav-link {
     display: flex;
     width: 100%;
@@ -130,16 +128,12 @@
 
   /* Project card media - subtle lift on hover (desktop only) */
   @media (hover: hover) and (pointer: fine) {
-    .flashlight-item .media-section video,
-    .flashlight-item .media-section img {
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .media-section video,
+    .media-section img {
+      transition: transform var(--duration-moderate) var(--ease-out);
     }
-    .flashlight-item:hover .media-section video,
-    .flashlight-item:hover .media-section img,
-    .flashlight-item.hovered .media-section video,
-    .flashlight-item.hovered .media-section img,
-    .flashlight-item.pinned .media-section video,
-    .flashlight-item.pinned .media-section img {
+    .project-item:hover .media-section video,
+    .project-item:hover .media-section img {
       transform: translateY(-2px);
     }
   }
@@ -158,7 +152,7 @@
     transform: none;
     display: inline-block;
     color: #111111;
-    transition: transform 200ms ease, opacity 200ms ease;
+    transition: transform var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
     line-height: 1.1;
   }
   html.dark .nav-brand.home-title {
@@ -391,28 +385,7 @@ html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
 
-/* Flashlight hover effect - desktop only (no touch devices) */
-@media (hover: hover) and (pointer: fine) {
-  .flashlight-hover .flashlight-item {
-    transition:
-      opacity 0.2s ease-out,
-      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .flashlight-hover .flashlight-item:hover,
-  .flashlight-hover .flashlight-item.hovered,
-  .flashlight-hover .flashlight-item.pinned {
-    transform: translateX(4px);
-  }
-  .flashlight-hover.active .flashlight-item {
-    opacity: 0.35 !important;
-  }
-  .flashlight-hover.active .flashlight-item.hovered,
-  .flashlight-hover.active .flashlight-item.pinned {
-    opacity: 1 !important;
-  }
-}
 
-/* Footnote refs and back-links: no underline */
 a[href^="#fn"],
 .footnote-back,
 .footnotes a {
@@ -448,8 +421,7 @@ a[href^="#fn"],
   -webkit-text-fill-color: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, background-position;
+  transition: opacity var(--duration-moderate) var(--ease-out);
   white-space: nowrap;
 }
 .flow-gradient::before {
@@ -486,8 +458,8 @@ a[href^="#fn"],
   pointer-events: none;
   opacity: 0;
   transition:
-    opacity 0.22s ease,
-    transform 0.22s ease;
+    opacity var(--duration-base) ease,
+    transform var(--duration-base) ease;
 }
 .thank-wrap:hover .marquee {
   opacity: 1;
@@ -566,12 +538,12 @@ a[href^="#fn"],
   }
 
   .page-container {
-    animation: pageFadeIn 200ms cubic-bezier(0.25, 1, 0.5, 1) both;
+    animation: pageFadeIn var(--duration-base) var(--ease-out) both;
   }
 
   @media (max-width: 768px) {
     .page-container {
-      animation: pageFadeInMobile 150ms ease-out both;
+      animation: pageFadeInMobile var(--duration-fast) ease-out both;
     }
   }
 }

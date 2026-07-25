@@ -27,7 +27,7 @@
     color: inherit;
     position: relative;
     z-index: 1;
-    transition: opacity 0.15s ease;
+    transition: opacity var(--duration-fast) ease-out;
   }
 
   /* When open, visually hide the hamburger */
@@ -91,20 +91,20 @@
         <span class="mc-bar"></span>
         <span class="mc-bar"></span>
       </button>
-      <div class="mo-inner flashlight-hover">
+      <div class="mo-inner">
         <nav class="mo-nav">
-          <a href="/projects" class="mo-link flashlight-item" data-s="1">Projects</a>
-          <a href="/writing" class="mo-link flashlight-item" data-s="2">Writing</a>
-          <a href="/artifacts" class="mo-link flashlight-item" data-s="3">Artifacts</a>
-          <a href="/other" class="mo-link flashlight-item" data-s="4">Other</a>
-          <a href="https://www.cosmos.so/farooqqureshi" target="_blank" rel="noopener" class="mo-link flashlight-item" data-s="5">Cosmos</a>
-          <a href="https://linkedin.com/in/farooqq" target="_blank" rel="noopener" class="mo-link flashlight-item" data-s="6">LinkedIn</a>
-          <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="mo-link flashlight-item" data-s="7">GitHub</a>
-          <a href="mailto:farooq.qureshi@outlook.com" class="mo-link flashlight-item" data-s="8">Email</a>
+          <a href="/projects" class="mo-link" data-s="1">Projects</a>
+          <a href="/writing" class="mo-link" data-s="2">Writing</a>
+          <a href="/artifacts" class="mo-link" data-s="3">Artifacts</a>
+          <a href="/other" class="mo-link" data-s="4">Other</a>
+          <a href="https://www.cosmos.so/farooqqureshi" target="_blank" rel="noopener" class="mo-link" data-s="5">Cosmos</a>
+          <a href="https://linkedin.com/in/farooqq" target="_blank" rel="noopener" class="mo-link" data-s="6">LinkedIn</a>
+          <a href="https://github.com/farooqqureshii" target="_blank" rel="noopener" class="mo-link" data-s="7">GitHub</a>
+          <a href="mailto:farooq.qureshi@outlook.com" class="mo-link" data-s="8">Email</a>
         </nav>
         <div class="mo-actions">
-          <button id="menu-theme-toggle" class="mo-action-btn flashlight-item" data-s="9"><span id="menu-theme-label">Dark</span></button>
-          <button id="menu-sound-toggle" class="mo-action-btn flashlight-item" style="margin-top: 0.5rem;" data-s="10"><span id="menu-sound-label">Sound: On</span></button>
+          <button id="menu-theme-toggle" class="mo-action-btn" data-s="9"><span id="menu-theme-label">Dark</span></button>
+          <button id="menu-sound-toggle" class="mo-action-btn" style="margin-top: 0.5rem;" data-s="10"><span id="menu-sound-label">Sound: On</span></button>
         </div>
       </div>
     `;
@@ -125,7 +125,7 @@
           justify-content: center;
           opacity: 0;
           visibility: hidden;
-          transition: opacity 150ms ease-out, visibility 0s linear 150ms;
+          transition: opacity var(--duration-fast) ease-out, visibility 0s linear var(--duration-fast);
         }
         html:not(.dark) #menu-overlay {
           color: #111111;
@@ -136,11 +136,11 @@
         #menu-overlay.open {
           opacity: 1;
           visibility: visible;
-          transition: opacity 150ms ease-out, visibility 0s linear 0s;
+          transition: opacity var(--duration-fast) ease-out, visibility 0s linear 0s;
         }
         #menu-overlay.closing {
           opacity: 0;
-          transition: opacity 120ms ease-out, visibility 0s linear 120ms;
+          transition: opacity var(--duration-fast) ease-out, visibility 0s linear var(--duration-fast);
         }
 
         /* Close X — positioned by JS to overlay the hamburger */
@@ -158,7 +158,7 @@
           z-index: 10001;
           outline: none !important;
           -webkit-tap-highlight-color: transparent !important;
-          transition: transform 200ms ease-out;
+          transition: transform var(--duration-base) var(--ease-out);
         }
         .mc-bar {
           position: absolute;
@@ -166,7 +166,7 @@
           left: 50%;
           background: #111;
           border-radius: 2px;
-          transition: transform 200ms ease-out;
+          transition: transform var(--duration-base) var(--ease-out);
         }
         html.dark .mc-bar { background: #e4e4e7; }
         
@@ -212,16 +212,6 @@
           display: none !important;
         }
 
-        /* Flashlight effect overrides — clean opacity-only transitions */
-        .mo-inner.flashlight-hover .flashlight-item {
-          transition: opacity 150ms ease-out !important;
-        }
-        .mo-inner.flashlight-hover.active .flashlight-item {
-          opacity: 0.25 !important;
-        }
-        .mo-inner.flashlight-hover.active .flashlight-item.hovered {
-          opacity: 1 !important;
-        }
 
         .mo-actions {
           display: flex;
@@ -250,11 +240,8 @@
           display: inline-block;
           -webkit-transform: translateZ(0);
           transform: translateZ(0);
-          will-change: opacity, transform;
           font-weight: 400;
           color: inherit;
-          -webkit-font-smoothing: antialiased;
-          text-rendering: optimizeLegibility;
         }
       `;
       document.head.appendChild(style);
@@ -262,24 +249,6 @@
 
     document.body.appendChild(overlay);
 
-    // Init flashlight effect for the menu nav
-    const flashContainer = overlay.querySelector(
-      ".mo-inner.flashlight-hover",
-    ) as HTMLElement | null;
-    if (flashContainer) {
-      const flashItems = flashContainer.querySelectorAll(".flashlight-item");
-      flashItems.forEach((item) => {
-        item.addEventListener("mouseenter", () => {
-          flashItems.forEach((el) => el.classList.remove("hovered"));
-          item.classList.add("hovered");
-          flashContainer.classList.add("active");
-        });
-      });
-      flashContainer.addEventListener("mouseleave", () => {
-        flashItems.forEach((el) => el.classList.remove("hovered"));
-        flashContainer.classList.remove("active");
-      });
-    }
 
     // Place the X button exactly over the hamburger (restore JS positioning)
     function positionCloseBtn() {
@@ -316,7 +285,7 @@
         html.classList.add("dark");
         localStorage.theme = "dark";
       }
-      setTimeout(() => html.classList.remove("theme-transition"), 320);
+      setTimeout(() => html.classList.remove("theme-transition"), 180);
       updateThemeLabel();
     }
 
@@ -418,13 +387,6 @@
         el.style.opacity = "1";
         el.style.transform = "none";
       });
-      // Reset flashlight state before animating out
-      if (flashContainer) {
-        flashContainer
-          .querySelectorAll(".flashlight-item")
-          .forEach((el) => el.classList.remove("hovered"));
-        flashContainer.classList.remove("active");
-      }
       overlay.classList.add("closing");
       overlay.classList.remove("open");
       btn?.setAttribute("aria-expanded", "false");
@@ -441,7 +403,7 @@
         menuEls().forEach((el) => {
           el.style.removeProperty("transition-delay");
         });
-      }, 150);
+      }, 120);
     }
 
     btn.addEventListener("click", () => {

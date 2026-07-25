@@ -73,7 +73,7 @@ while (byType.image.length || byType.link.length || byType.video.length) {
     </div>
 
     <div
-      class="flashlight-hover artifact-grid column-gap-4 columns-2 sm:columns-3"
+      class="artifact-grid column-gap-4 columns-2 sm:columns-3"
       style="opacity:0;transition:opacity 250ms ease"
     >
       {
@@ -82,7 +82,7 @@ while (byType.image.length || byType.link.length || byType.video.length) {
             href={item.type === "image" ? item.image : item.url}
             target="_blank"
             rel="noopener"
-            class="flashlight-item artifact-card group mb-4 block break-inside-avoid overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 transition-colors hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-zinc-600"
+            class="artifact-card group mb-4 block break-inside-avoid overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 transition-colors hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-zinc-600"
             data-type={item.type}
           >
             {item.type === "image" ? (
