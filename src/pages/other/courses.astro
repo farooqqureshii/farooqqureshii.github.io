@@ -2,66 +2,50 @@
 import Layout from "../../layouts/Layout.astro";
 
 const courses: { title: string; detail: string }[] = [
-  {
-    title: "CHM 1311: Principles of Chemistry",
-    detail: "8/10 | Prof. Kathy-Sarah Focsaneanu",
-  },
-  { title: "GNG 1105: Engineering Mechanics", detail: "4/10 | N/A" },
-  { title: "ITI 1120: Introduction to Computing I", detail: "5/10 | N/A" },
-  {
-    title: "MAT 1341: Introduction to Linear Algebra",
-    detail: "6/10 | Prof. Elizabeth Maltais",
-  },
-  { title: "MAT 1320: Calculus I", detail: "8/10 | Prof. Elizabeth Maltais" },
-  { title: "MAT 1322: Calculus II", detail: "10/10 | Prof. Kianoosh Shokri" },
-  {
-    title: "GNG 1103: Introduction to Engineering Design",
-    detail: "7/10 | Prof. Martin Noel or Prof. Muslim Majeed",
-  },
-  {
-    title: "ENG 1112: Technical Report Writing",
-    detail: "8/10 | Prof. Miles Tittle",
-  },
-  {
-    title: "ITI 1100: Digital Systems I",
-    detail: "8/10 | Prof. Wassim El Ahmar",
-  },
-  {
-    title: "PHY 1124: Fundamentals of Physics for Engineers",
-    detail: "4/10 | N/A",
-  },
-  {
-    title: "PHI 2394: Scientific Thought and Social Values",
-    detail: "10/10 | Prof. Dean Laurer",
-  },
+  { title: "CHM 1311: Principles of Chemistry", detail: "5/10" },
+  { title: "GNG 1105: Engineering Mechanics", detail: "10/10" },
+  { title: "ITI 1120: Introduction to Computing I", detail: "9/10" },
+  { title: "MAT 1341: Introduction to Linear Algebra", detail: "7/10" },
+  { title: "MAT 1320: Calculus I", detail: "3/10" },
+  { title: "MAT 1322: Calculus II", detail: "4/10" },
+  { title: "GNG 1103: Introduction to Engineering Design", detail: "4/10" },
+  { title: "ENG 1112: Technical Report Writing", detail: "3/10" },
+  { title: "ITI 1100: Digital Systems I", detail: "4/10" },
+  { title: "PHY 1124: Fundamentals of Physics for Engineers", detail: "9/10" },
+  { title: "PHI 2394: Scientific Thought and Social Values", detail: "3/10" },
   {
     title:
       "MAT 2384: Ordinary Differential Equations, Laplace Transforms and Numerical Methods",
-    detail: "10/10 | Prof. Joseph Khoury",
+    detail: "3/10",
   },
-  { title: "MAT 2322: Calculus III for Engineers", detail: "8/10 | N/A" },
+  { title: "MAT 2322: Calculus III for Engineers", detail: "7/10" },
+  { title: "CEG 2136: Computer Architecture I", detail: "9/10" },
+  { title: "ADM 1100: Introduction to Business", detail: "4/10" },
+  { title: "ELG 2138: Circuit Theory I", detail: "6/10" },
+  { title: "ELG 2136: Electronics I", detail: "9/10" },
+  { title: "ELG 2137: Circuit Theory II", detail: "9/10" },
+  { title: "PHY 2323: Electricity & Magnetism", detail: "10/10" },
   {
-    title: "CEG 2136: Computer Architecture I",
-    detail: "8/10 | Prof. Wassim El Ahmar",
+    title:
+      "GNG 2101: Introduction to Product Development for Engineers and Computer Scientists",
+    detail: "8/10",
   },
-  { title: "ADM 1100: Introduction to Business", detail: "7/10 | N/A" },
   {
-    title: "ELG 2138: Circuit Theory I",
-    detail: "8/10 | Prof. Aneta George Traikova",
+    title: "ELG 2911: Professional Practice and Ethics in Engineering",
+    detail: "3/10",
   },
 ];
 ---
 
 <Layout
   title="Farooq Q. | Courses"
-  description="Course ratings and semester reviews by Farooq Qureshi"
+  description="Course difficulty ratings and semester reviews by Farooq Qureshi"
 >
   <main>
     <article class="text-sm leading-relaxed">
       <p>
         Here are all the courses I've taken in my degree. Assigned to each of
-        them is a rating out of 10 and my recommendations for professors for
-        each course.
+        them is a rating out of 10 based on how hard I found the course.
       </p>
       <p>
         I also write course reviews for each semester. Here's <a href="/writing/f24">Fall 2024</a>, <a href="/writing/w25">Winter 2025</a>, <a href="/writing/s25">Summer 2025</a>, <a href="/writing/f25">Fall 2025</a>, and <a href="/writing/w26">Winter 2026</a>.
@@ -70,9 +54,7 @@ const courses: { title: string; detail: string }[] = [
       {
         courses.map((c) => (
           <p>
-            {c.title}
-            <br />
-            {c.detail}
+            {c.title} - {c.detail}
           </p>
         ))
       }
