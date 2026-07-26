@@ -516,37 +516,7 @@ a[href^="#fn"],
   transition: none !important;
 }
 
-/* Sleek, minimal hardware-accelerated page entrance animation */
-@media (prefers-reduced-motion: no-preference) {
-  /* ── Page entrance animation ── */
-  /* Desktop: subtle fade + tiny lift. Fast, clean. */
-  @keyframes pageFadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 
-  /* Mobile: pure opacity fade — no transforms, no jitter. */
-  @keyframes pageFadeInMobile {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  .page-container {
-    animation: pageFadeIn var(--duration-base) var(--ease-out) both;
-  }
-
-  @media (max-width: 768px) {
-    .page-container {
-      animation: pageFadeInMobile var(--duration-fast) ease-out both;
-    }
-  }
-}
 
 
 

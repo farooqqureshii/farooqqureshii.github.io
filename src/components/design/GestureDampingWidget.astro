@@ -1,0 +1,298 @@
+---
+// GestureDampingWidget.astro
+// Design Engineering Experiment: Velocity-Aware Gesture Damping & Damped Springs
+interface Props {
+  compact?: boolean;
+  showControls?: boolean;
+}
+
+const { compact = false, showControls = true } = Astro.props;
+---
+
+<div
+  class={`gesture-damping-widget relative w-full ${
+    compact
+      ? "aspect-[4/3] max-h-80 p-4 flex flex-col justify-between"
+      : "p-6 sm:p-8"
+  } bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/80 rounded-2xl overflow-hidden select-none font-sans text-zinc-900 dark:text-zinc-100 transition-colors duration-150`}
+>
+  <!-- Top Bar: Title & Mode Toggle -->
+  <div class="flex items-center justify-between gap-2 mb-4">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></span>
+      <span class="text-xs font-mono tracking-tight text-zinc-600 dark:text-zinc-400">
+        Gesture Damping Lab
+      </span>
+    </div>
+
+    <!-- Mode Switcher -->
+    <div class="mode-toggle flex items-center p-0.5 bg-zinc-200/80 dark:bg-zinc-800/80 border border-zinc-300/60 dark:border-zinc-700/60 rounded-lg text-[11px]">
+      <button
+        type="button"
+        class="mode-btn mode-naive px-2.5 py-1 rounded-md text-zinc-600 dark:text-zinc-400 transition-colors font-medium cursor-pointer"
+        data-mode="naive"
+      >
+        Static Threshold
+      </button>
+      <button
+        type="button"
+        class="mode-btn mode-engineered active px-2.5 py-1 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm border border-zinc-200 dark:border-zinc-700/80 font-medium transition-all cursor-pointer"
+        data-mode="engineered"
+      >
+        Velocity + Damped
+      </button>
+    </div>
+  </div>
+
+  <!-- Interactive Stage Container -->
+  <div
+    class={`stage-area relative w-full ${
+      compact ? "h-44" : "h-64 sm:h-72"
+    } bg-white dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl overflow-hidden flex items-center justify-center p-4`}
+  >
+    <!-- Background Guide Lines -->
+    <div class="absolute inset-0 pointer-events-none opacity-30 dark:opacity-20 flex flex-col justify-between p-6">
+      <div class="border-b border-dashed border-zinc-400 dark:border-zinc-600 w-full flex justify-between text-[10px] font-mono text-zinc-400">
+        <span>Boundary Ceiling</span>
+        <span class="boundary-label">Logarithmic Damping Zone</span>
+      </div>
+      <div class="border-b border-zinc-300 dark:border-zinc-700 w-full flex justify-between text-[10px] font-mono text-zinc-400">
+        <span>Anchor Origin (0px)</span>
+        <span>Resting Pos</span>
+      </div>
+      <div class="border-b border-dashed border-zinc-400 dark:border-zinc-600 w-full flex justify-between text-[10px] font-mono text-zinc-400">
+        <span>Dismiss Threshold</span>
+        <span class="threshold-label">100px OR Flick Velocity</span>
+      </div>
+    </div>
+
+    <!-- Draggable Card -->
+    <div
+      class="draggable-card relative z-10 w-full max-w-xs bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded-xl p-4 shadow-xl border border-zinc-800 dark:border-zinc-200 cursor-grab active:cursor-grabbing touch-none transition-shadow duration-150"
+      style="transform: translateY(0px);"
+    >
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-1 bg-zinc-600 dark:bg-zinc-400 rounded-full mx-auto opacity-60"></div>
+        </div>
+        <span class="card-status-badge text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 dark:bg-zinc-200 dark:text-zinc-700">
+          Drag Up/Down
+        </span>
+      </div>
+      
+      <div class="text-xs font-semibold tracking-tight">Interactive Sheet Component</div>
+      <p class="text-[11px] opacity-75 mt-0.5 leading-snug">
+        Flick fast to dismiss, or drag up past boundary to feel physical resistance.
+      </p>
+    </div>
+  </div>
+
+  <!-- Telemetry Bar & Controls -->
+  {
+    showControls && (
+      <div class="mt-4 pt-3 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-zinc-500 dark:text-zinc-400">
+        <div class="flex items-center gap-4">
+          <div>
+            Offset: <span class="readout-offset font-semibold text-zinc-900 dark:text-zinc-100">0px</span>
+          </div>
+          <div>
+            Velocity: <span class="readout-velocity font-semibold text-zinc-900 dark:text-zinc-100">0.00 px/ms</span>
+          </div>
+          <div>
+            State: <span class="readout-state font-semibold text-zinc-900 dark:text-zinc-100">Idle</span>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-zinc-400">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>
+          Damped Spring Engine Active
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  function initGestureDamping() {
+    const widgets = document.querySelectorAll(".gesture-damping-widget");
+
+    widgets.forEach((widget) => {
+      const card = widget.querySelector(".draggable-card") as HTMLElement;
+      const stage = widget.querySelector(".stage-area") as HTMLElement;
+      const modeBtns = widget.querySelectorAll(".mode-btn");
+      
+      const readoutOffset = widget.querySelector(".readout-offset");
+      const readoutVelocity = widget.querySelector(".readout-velocity");
+      const readoutState = widget.querySelector(".readout-state");
+      const statusBadge = widget.querySelector(".card-status-badge");
+
+      if (!card || !stage) return;
+
+      let mode: "naive" | "engineered" = "engineered";
+      let isDragging = false;
+      let startY = 0;
+      let currentY = 0;
+      let lastY = 0;
+      let lastTime = 0;
+      let velocity = 0;
+      let animFrame = 0;
+
+      // Mode Switcher Handler
+      modeBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          modeBtns.forEach((b) => b.classList.remove("active", "bg-white", "dark:bg-zinc-900", "shadow-sm", "text-zinc-900", "dark:text-zinc-100"));
+          modeBtns.forEach((b) => b.classList.add("text-zinc-600", "dark:text-zinc-400"));
+          btn.classList.add("active", "bg-white", "dark:bg-zinc-900", "shadow-sm", "text-zinc-900", "dark:text-zinc-100");
+          btn.classList.remove("text-zinc-600", "dark:text-zinc-400");
+          
+          mode = (btn as HTMLElement).dataset.mode as "naive" | "engineered";
+          resetCardPosition();
+        });
+      });
+
+      function updateReadout(offset: number, vel: number, stateStr: string) {
+        if (readoutOffset) readoutOffset.textContent = `${Math.round(offset)}px`;
+        if (readoutVelocity) {
+          readoutVelocity.textContent = `${vel.toFixed(2)} px/ms`;
+          if (mode === "engineered" && Math.abs(vel) > 0.12) {
+            readoutVelocity.classList.add("text-emerald-500");
+          } else {
+            readoutVelocity.classList.remove("text-emerald-500");
+          }
+        }
+        if (readoutState) readoutState.textContent = stateStr;
+        if (statusBadge) statusBadge.textContent = stateStr;
+      }
+
+      function resetCardPosition() {
+        cancelAnimationFrame(animFrame);
+        card.style.transition = "transform 300ms cubic-bezier(0.23, 1, 0.32, 1)";
+        card.style.transform = "translateY(0px)";
+        currentY = 0;
+        updateReadout(0, 0, "Idle");
+      }
+
+      function applyLogDamping(dy: number): number {
+        // Logarithmic damping for boundary pull upward (negative dy)
+        if (dy < 0) {
+          const limit = 80;
+          return -limit * Math.log10(1 + Math.abs(dy) / limit);
+        }
+        return dy;
+      }
+
+      function onPointerDown(e: PointerEvent) {
+        isDragging = true;
+        startY = e.clientY - currentY;
+        lastY = e.clientY;
+        lastTime = performance.now();
+        velocity = 0;
+
+        card.style.transition = "none";
+        card.setPointerCapture(e.pointerId);
+        updateReadout(currentY, 0, "Dragging");
+      }
+
+      function onPointerMove(e: PointerEvent) {
+        if (!isDragging) return;
+
+        const now = performance.now();
+        const dt = now - lastTime;
+        const rawDy = e.clientY - startY;
+
+        if (dt > 0) {
+          const instantVel = (e.clientY - lastY) / dt;
+          velocity = velocity * 0.4 + instantVel * 0.6; // Low-pass filter for smooth velocity readout
+        }
+
+        lastY = e.clientY;
+        lastTime = now;
+
+        if (mode === "naive") {
+          // Naive mode: Linear 1:1 movement without boundary friction
+          currentY = rawDy;
+        } else {
+          // Engineered mode: Logarithmic damping when dragging upward past 0
+          currentY = applyLogDamping(rawDy);
+        }
+
+        card.style.transform = `translateY(${currentY}px)`;
+        updateReadout(currentY, velocity, mode === "engineered" && rawDy < 0 ? "Boundary Damping" : "Dragging");
+      }
+
+      function onPointerUp(e: PointerEvent) {
+        if (!isDragging) return;
+        isDragging = false;
+        try {
+          card.releasePointerCapture(e.pointerId);
+        } catch (_) {}
+
+        if (mode === "naive") {
+          // Naive mode: ignores velocity. Only dismisses if dragged > 100px
+          if (currentY > 100) {
+            // Dismiss down
+            card.style.transition = "transform 200ms ease-in";
+            card.style.transform = "translateY(240px)";
+            updateReadout(240, velocity, "Dismissed (Distance)");
+            setTimeout(resetCardPosition, 1000);
+          } else {
+            // Snap back
+            card.style.transition = "transform 200ms ease-in";
+            card.style.transform = "translateY(0px)";
+            currentY = 0;
+            updateReadout(0, 0, "Idle");
+          }
+        } else {
+          // Engineered mode: Velocity-aware + Spring snapback
+          const isFlick = velocity > 0.12 || currentY > 90;
+          
+          if (isFlick && currentY > 20) {
+            // Dismiss with momentum
+            card.style.transition = "transform 220ms cubic-bezier(0.32, 0.72, 0, 1)";
+            card.style.transform = "translateY(240px)";
+            updateReadout(240, velocity, "Dismissed (Velocity Flick)");
+            setTimeout(resetCardPosition, 1000);
+          } else {
+            // Damped spring snapback to 0
+            animateSpringSnapback(currentY, velocity);
+          }
+        }
+      }
+
+      function animateSpringSnapback(startPos: number, initialVel: number) {
+        let pos = startPos;
+        let vel = initialVel * 10; // scale velocity for frame updates
+        const stiffness = 0.15;
+        const damping = 0.72;
+
+        function step() {
+          const force = -stiffness * pos;
+          vel = (vel + force) * damping;
+          pos += vel;
+
+          card.style.transform = `translateY(${pos.toFixed(2)}px)`;
+          updateReadout(pos, vel / 10, "Spring Snapback");
+
+          if (Math.abs(pos) < 0.2 && Math.abs(vel) < 0.2) {
+            card.style.transform = "translateY(0px)";
+            currentY = 0;
+            updateReadout(0, 0, "Idle");
+          } else {
+            animFrame = requestAnimationFrame(step);
+          }
+        }
+
+        animFrame = requestAnimationFrame(step);
+      }
+
+      card.addEventListener("pointerdown", onPointerDown);
+      card.addEventListener("pointermove", onPointerMove);
+      card.addEventListener("pointerup", onPointerUp);
+      card.addEventListener("pointercancel", onPointerUp);
+    });
+  }
+
+  // Initialize on page load and Astro view transitions
+  initGestureDamping();
+  document.addEventListener("astro:after-swap", initGestureDamping);
+</script>

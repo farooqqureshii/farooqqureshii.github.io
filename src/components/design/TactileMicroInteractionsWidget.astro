@@ -1,0 +1,313 @@
+---
+// TactileMicroInteractionsWidget.astro
+// Interactive Design Engineering Playground: Comparing Flawed UI Motion vs Engineered Tactile Physics
+---
+
+<div class="tactile-widget relative w-full bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl p-4 sm:p-6 select-none font-sans text-zinc-100">
+  
+  <!-- Header Bar / Mode Selector -->
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-zinc-800/80">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <h3 class="text-sm font-semibold tracking-tight text-zinc-100">Interactive Motion Lab</h3>
+    </div>
+
+    <!-- Toggle Mode Switcher -->
+    <div class="mode-switcher flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-1 text-xs font-medium">
+      <button 
+        type="button" 
+        class="mode-btn mode-wrong px-3 py-1.5 rounded-md transition-all text-zinc-400 hover:text-zinc-200" 
+        data-mode="wrong"
+      >
+        ❌ Sluggish (Wrong)
+      </button>
+      <button 
+        type="button" 
+        class="mode-btn mode-right active px-3 py-1.5 rounded-md transition-all bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" 
+        data-mode="right"
+      >
+        ✨ Engineered (Right)
+      </button>
+    </div>
+  </div>
+
+  <!-- Stage: Demo Components Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    
+    <!-- Demo 1: Sliding Pill / Segmented Control -->
+    <div class="demo-card bg-zinc-900/60 border border-zinc-800 rounded-xl p-5 flex flex-col justify-between min-h-[220px]">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">01. Segmented Control</span>
+          <span class="mode-badge text-[10px] font-mono px-2 py-0.5 rounded text-emerald-400 bg-emerald-950/60 border border-emerald-800/50">Clip-Path Pill</span>
+        </div>
+        <p class="text-xs text-zinc-400 mb-4">
+          Compare layout-thrashing <code class="text-zinc-300">left/width</code> transitions vs hardware-accelerated <code class="text-zinc-300">clip-path</code> layout sliding.
+        </p>
+      </div>
+
+      <!-- Segmented Pill Control Target -->
+      <div class="pill-control-wrapper relative w-full bg-zinc-950/80 border border-zinc-800 rounded-xl p-1.5">
+        <!-- Background Indicator Pill (Engineered clip-path or Flawed left-animator) -->
+        <div class="pill-indicator absolute inset-1 bg-zinc-800 rounded-lg pointer-events-none transition-all"></div>
+        
+        <div class="relative z-10 grid grid-cols-3 text-center text-xs font-medium">
+          <button type="button" class="pill-tab px-3 py-2 rounded-lg text-zinc-100 transition-colors" data-pill-index="0">Overview</button>
+          <button type="button" class="pill-tab px-3 py-2 rounded-lg text-zinc-400 transition-colors" data-pill-index="1">Metrics</button>
+          <button type="button" class="pill-tab px-3 py-2 rounded-lg text-zinc-400 transition-colors" data-pill-index="2">Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 2: Tactile Button Press & Scale Emergence -->
+    <div class="demo-card bg-zinc-900/60 border border-zinc-800 rounded-xl p-5 flex flex-col justify-between min-h-[220px]">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">02. Press Feedback & Emergence</span>
+          <span class="mode-badge text-[10px] font-mono px-2 py-0.5 rounded text-emerald-400 bg-emerald-950/60 border border-emerald-800/50">scale(0.96) Press</span>
+        </div>
+        <p class="text-xs text-zinc-400 mb-4">
+          Test pressing the action button and toggling the popover card. Notice scale origin and feedback.
+        </p>
+      </div>
+
+      <!-- Button & Popover Container -->
+      <div class="relative flex items-center justify-between gap-3">
+        <button type="button" class="action-btn-demo px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs rounded-xl shadow-lg transition-all">
+          Trigger Action
+        </button>
+
+        <button type="button" class="popover-trigger-btn px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs rounded-xl transition-all">
+          Toggle Card ▾
+        </button>
+
+        <!-- Popover Card Emergence -->
+        <div class="popover-card-demo absolute bottom-12 right-0 z-30 w-56 p-3 bg-zinc-900 border border-zinc-700/80 rounded-xl shadow-2xl opacity-0 pointer-events-none transition-all">
+          <div class="text-xs font-semibold text-zinc-100 mb-1">Tactile Popover</div>
+          <div class="text-[11px] text-zinc-400 leading-snug">
+            Engineered popovers scale from their trigger (<code class="text-zinc-300">scale(0.95)</code>), never from <code class="text-zinc-300">scale(0)</code>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Interactive Controls & Spring Tweak Panel -->
+  <div class="physics-panel bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-4 sm:p-5">
+    <div class="flex items-center justify-between mb-4">
+      <span class="text-xs font-mono uppercase tracking-wider text-zinc-300">Physics & Timing Adjuster</span>
+      <span class="text-[11px] font-mono text-zinc-500" id="current-curve-readout">cubic-bezier(0.23, 1, 0.32, 1)</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+      <div>
+        <label class="flex justify-between text-zinc-400 mb-1.5">
+          <span>Duration ($t$)</span>
+          <span class="font-mono text-zinc-200" id="val-duration">150ms</span>
+        </label>
+        <input type="range" id="slider-duration" min="50" max="600" step="10" value="150" class="w-full accent-emerald-500 cursor-pointer">
+      </div>
+
+      <div>
+        <label class="flex justify-between text-zinc-400 mb-1.5">
+          <span>Spring Elasticity ($k$)</span>
+          <span class="font-mono text-zinc-200" id="val-stiffness">0.96</span>
+        </label>
+        <input type="range" id="slider-stiffness" min="0.80" max="1.00" step="0.01" value="0.96" class="w-full accent-emerald-500 cursor-pointer">
+      </div>
+
+      <div>
+        <label class="flex justify-between text-zinc-400 mb-1.5">
+          <span>Response Latency</span>
+          <span class="font-mono text-emerald-400" id="val-latency">0ms (Instant)</span>
+        </label>
+        <div class="h-2 bg-zinc-800 rounded-full overflow-hidden mt-2">
+          <div id="latency-bar" class="h-full bg-emerald-500 w-1/12 transition-all"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function initTactileWidget() {
+    const widgets = document.querySelectorAll(".tactile-widget");
+
+    widgets.forEach((widget) => {
+      let isRightMode = true;
+
+      const modeBtns = widget.querySelectorAll(".mode-btn");
+      const modeBadges = widget.querySelectorAll(".mode-badge");
+      const pillIndicator = widget.querySelector(".pill-indicator") as HTMLElement;
+      const pillTabs = widget.querySelectorAll(".pill-tab");
+      const actionBtn = widget.querySelector(".action-btn-demo") as HTMLElement;
+      const popoverTrigger = widget.querySelector(".popover-trigger-btn") as HTMLElement;
+      const popoverCard = widget.querySelector(".popover-card-demo") as HTMLElement;
+
+      const sliderDuration = widget.querySelector("#slider-duration") as HTMLInputElement;
+      const sliderStiffness = widget.querySelector("#slider-stiffness") as HTMLInputElement;
+      const valDuration = widget.querySelector("#val-duration");
+      const valStiffness = widget.querySelector("#val-stiffness");
+      const valLatency = widget.querySelector("#val-latency");
+      const latencyBar = widget.querySelector("#latency-bar");
+      const curveReadout = widget.querySelector("#current-curve-readout");
+
+      let currentPillIndex = 0;
+      let isPopoverOpen = false;
+
+      // Update Pill Position
+      function updatePillPosition(index: number) {
+        currentPillIndex = index;
+        const targetTab = pillTabs[index] as HTMLElement;
+        if (!targetTab || !pillIndicator) return;
+
+        pillTabs.forEach((tab, i) => {
+          if (i === index) {
+            tab.classList.remove("text-zinc-400");
+            tab.classList.add("text-zinc-100");
+          } else {
+            tab.classList.remove("text-zinc-100");
+            tab.classList.add("text-zinc-400");
+          }
+        });
+
+        if (isRightMode) {
+          // Engineered Mode: smooth transform translate, fast ease-out
+          const duration = sliderDuration ? `${sliderDuration.value}ms` : "150ms";
+          const scale = sliderStiffness ? sliderStiffness.value : "0.96";
+          
+          pillIndicator.style.transition = `transform ${duration} cubic-bezier(0.23, 1, 0.32, 1)`;
+          pillIndicator.style.transform = `translateX(${index * 100}%) scale(${scale})`;
+          
+          setTimeout(() => {
+            pillIndicator.style.transform = `translateX(${index * 100}%) scale(1)`;
+          }, parseFloat(duration) / 2);
+        } else {
+          // Wrong Mode: sluggish transition: all with layout delay
+          pillIndicator.style.transition = "all 450ms cubic-bezier(0.42, 0, 1, 1)";
+          pillIndicator.style.transform = `translateX(${index * 100}%) scale(1)`;
+        }
+      }
+
+      // Mode Switcher
+      modeBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const mode = btn.getAttribute("data-mode");
+          isRightMode = mode === "right";
+
+          modeBtns.forEach((b) => {
+            b.classList.remove("active", "bg-emerald-500/15", "text-emerald-400", "border-emerald-500/30", "bg-rose-500/15", "text-rose-400", "border-rose-500/30");
+            b.classList.add("text-zinc-400");
+          });
+
+          if (isRightMode) {
+            btn.classList.add("active", "bg-emerald-500/15", "text-emerald-400", "border-emerald-500/30");
+            btn.classList.remove("text-zinc-400");
+            if (curveReadout) curveReadout.textContent = "cubic-bezier(0.23, 1, 0.32, 1)";
+            if (valLatency) {
+              valLatency.textContent = "0ms (Instant)";
+              valLatency.className = "font-mono text-emerald-400";
+            }
+            if (latencyBar) {
+              latencyBar.className = "h-full bg-emerald-500 w-1/12 transition-all";
+            }
+            modeBadges.forEach(badge => {
+              badge.textContent = "Engineered";
+              badge.className = "mode-badge text-[10px] font-mono px-2 py-0.5 rounded text-emerald-400 bg-emerald-950/60 border border-emerald-800/50";
+            });
+          } else {
+            btn.classList.add("active", "bg-rose-500/15", "text-rose-400", "border-rose-500/30");
+            btn.classList.remove("text-zinc-400");
+            if (curveReadout) curveReadout.textContent = "ease-in (sluggish)";
+            if (valLatency) {
+              valLatency.textContent = "180ms Perceptual Delay";
+              valLatency.className = "font-mono text-rose-400";
+            }
+            if (latencyBar) {
+              latencyBar.className = "h-full bg-rose-500 w-8/12 transition-all";
+            }
+            modeBadges.forEach(badge => {
+              badge.textContent = "Sluggish";
+              badge.className = "mode-badge text-[10px] font-mono px-2 py-0.5 rounded text-rose-400 bg-rose-950/60 border border-rose-800/50";
+            });
+          }
+
+          updatePillPosition(currentPillIndex);
+        });
+      });
+
+      // Pill Tabs Click
+      pillTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const index = parseInt(tab.getAttribute("data-pill-index") || "0", 10);
+          updatePillPosition(index);
+        });
+      });
+
+      // Action Button Click Feedback
+      actionBtn?.addEventListener("mousedown", () => {
+        if (isRightMode) {
+          actionBtn.style.transition = "transform 100ms ease-out";
+          actionBtn.style.transform = `scale(${sliderStiffness ? sliderStiffness.value : 0.96})`;
+        } else {
+          // Wrong: no scale on active
+          actionBtn.style.transform = "scale(1)";
+        }
+      });
+
+      actionBtn?.addEventListener("mouseup", () => {
+        actionBtn.style.transition = "transform 150ms cubic-bezier(0.23, 1, 0.32, 1)";
+        actionBtn.style.transform = "scale(1)";
+      });
+
+      // Popover Trigger
+      popoverTrigger?.addEventListener("click", () => {
+        isPopoverOpen = !isPopoverOpen;
+
+        if (isPopoverOpen) {
+          popoverCard.style.pointerEvents = "auto";
+          if (isRightMode) {
+            popoverCard.style.transformOrigin = "bottom right";
+            popoverCard.style.transition = `transform ${sliderDuration.value}ms cubic-bezier(0.23, 1, 0.32, 1), opacity ${sliderDuration.value}ms ease-out`;
+            popoverCard.style.opacity = "1";
+            popoverCard.style.transform = "scale(1) translateY(0)";
+          } else {
+            // Wrong: scale from zero with ease-in
+            popoverCard.style.transformOrigin = "center";
+            popoverCard.style.transition = "transform 450ms ease-in, opacity 450ms ease-in";
+            popoverCard.style.opacity = "1";
+            popoverCard.style.transform = "scale(1) translateY(0)";
+          }
+        } else {
+          popoverCard.style.pointerEvents = "none";
+          if (isRightMode) {
+            popoverCard.style.opacity = "0";
+            popoverCard.style.transform = "scale(0.95) translateY(4px)";
+          } else {
+            popoverCard.style.opacity = "0";
+            popoverCard.style.transform = "scale(0) translateY(0)";
+          }
+        }
+      });
+
+      // Sliders Realtime Updates
+      sliderDuration?.addEventListener("input", () => {
+        if (valDuration) valDuration.textContent = `${sliderDuration.value}ms`;
+        updatePillPosition(currentPillIndex);
+      });
+
+      sliderStiffness?.addEventListener("input", () => {
+        if (valStiffness) valStiffness.textContent = sliderStiffness.value;
+        updatePillPosition(currentPillIndex);
+      });
+
+      // Initialize
+      updatePillPosition(0);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initTactileWidget);
+  document.addEventListener("astro:page-load", initTactileWidget);
+</script>

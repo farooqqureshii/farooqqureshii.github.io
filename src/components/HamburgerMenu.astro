@@ -1,16 +1,24 @@
 ---
-// Full-page hamburger menu overlay
+// Full-page menu overlay with instant static icon swap (zero morphing animation)
 ---
 
-<!-- Hamburger trigger button -->
+<!-- Single top-right button for open and close -->
 <button
   id="hamburger-btn"
   class="hamburger-btn"
-  aria-label="Open menu"
+  aria-label="Toggle menu"
   aria-expanded="false"
 >
-  <span class="h-bar"></span>
-  <span class="h-bar"></span>
+  <!-- Minimal 2-line icon when menu is closed -->
+  <svg class="icon-menu" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    <line x1="1" y1="5" x2="15" y2="5" />
+    <line x1="1" y1="11" x2="15" y2="11" />
+  </svg>
+  <!-- Crisp X icon when menu is open -->
+  <svg class="icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    <line x1="3" y1="3" x2="13" y2="13" />
+    <line x1="13" y1="3" x2="3" y2="13" />
+  </svg>
 </button>
 
 <style>
@@ -18,44 +26,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 18px;
-    height: 18px;
+    width: 44px;
+    height: 44px;
+    margin-right: -13px;
     background: transparent;
     border: none;
     cursor: pointer;
     padding: 0;
     color: inherit;
     position: relative;
-    z-index: 1;
-    transition: opacity var(--duration-fast) ease-out;
+    z-index: 10001;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transition: opacity 120ms ease-out;
   }
 
-  /* When open, visually hide the hamburger */
-  .hamburger-btn[aria-expanded="true"] {
-    pointer-events: none;
-    opacity: 0;
+  .hamburger-btn:active {
+    opacity: 0.6;
   }
 
-  .h-bar {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background: currentColor;
-    border-radius: 2px;
+  .icon-menu {
+    display: block;
   }
 
-  /* Horizontal bar of the + */
-  .h-bar:nth-child(1) {
-    width: 16px;
-    height: 1.5px;
-    transform: translate(-50%, -50%);
+  .icon-close {
+    display: none;
   }
 
-  /* Vertical bar of the + */
-  .h-bar:nth-child(2) {
-    width: 1.5px;
-    height: 16px;
-    transform: translate(-50%, -50%);
+  /* Instant static icon swap (zero rotation, zero morphing animation) */
+  .hamburger-btn[aria-expanded="true"] .icon-menu {
+    display: none;
+  }
+
+  .hamburger-btn[aria-expanded="true"] .icon-close {
+    display: block;
   }
 </style>
 
@@ -63,7 +67,6 @@
   let currentToggleHandler: ((e: Event) => void) | null = null;
 
   function initHamburger() {
-    // If there's an existing handler from a previous page view, clean it up
     if (currentToggleHandler) {
       document.removeEventListener(
         "toggle-hamburger-menu",
@@ -87,10 +90,6 @@
     overlay.id = "menu-overlay";
     overlay.setAttribute("aria-hidden", "true");
     overlay.innerHTML = `
-      <button id="menu-close" class="mo-close" aria-label="Close menu">
-        <span class="mc-bar"></span>
-        <span class="mc-bar"></span>
-      </button>
       <div class="mo-inner">
         <nav class="mo-nav">
           <a href="/projects" class="mo-link" data-s="1">Projects</a>
@@ -109,7 +108,6 @@
       </div>
     `;
 
-    // Avoid appending duplicate style tags to the head
     if (!document.getElementById("hamburger-menu-styles")) {
       const style = document.createElement("style");
       style.id = "hamburger-menu-styles";
@@ -119,69 +117,26 @@
           inset: 0;
           z-index: 10000;
           background: #ffffff;
-          color: #e4e4e7;
+          color: #111111;
           display: flex;
           align-items: center;
           justify-content: center;
           opacity: 0;
           visibility: hidden;
-          transition: opacity var(--duration-fast) ease-out, visibility 0s linear var(--duration-fast);
-        }
-        html:not(.dark) #menu-overlay {
-          color: #111111;
+          transition: opacity 160ms ease-out, visibility 0s linear 160ms;
         }
         html.dark #menu-overlay {
           background: #1a1a1a;
+          color: #e4e4e7;
         }
         #menu-overlay.open {
           opacity: 1;
           visibility: visible;
-          transition: opacity var(--duration-fast) ease-out, visibility 0s linear 0s;
+          transition: opacity 160ms ease-out, visibility 0s linear 0s;
         }
         #menu-overlay.closing {
           opacity: 0;
-          transition: opacity var(--duration-fast) ease-out, visibility 0s linear var(--duration-fast);
-        }
-
-        /* Close X — positioned by JS to overlay the hamburger */
-        .mo-close {
-          position: fixed;
-          width: 18px;
-          height: 18px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          z-index: 10001;
-          outline: none !important;
-          -webkit-tap-highlight-color: transparent !important;
-          transition: transform var(--duration-base) var(--ease-out);
-        }
-        .mc-bar {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          background: #111;
-          border-radius: 2px;
-          transition: transform var(--duration-base) var(--ease-out);
-        }
-        html.dark .mc-bar { background: #e4e4e7; }
-        
-        .mo-close .mc-bar:nth-child(1) {
-          width: 16px;
-          height: 2px;
-          transform: translate(-50%, -50%);
-        }
-        .mo-close .mc-bar:nth-child(2) {
-          width: 2px;
-          height: 16px;
-          transform: translate(-50%, -50%);
-        }
-        .mo-close.active {
-          transform: rotate(-45deg);
+          transition: opacity 140ms ease-out, visibility 0s linear 140ms;
         }
 
         .mo-inner {
@@ -211,7 +166,6 @@
         .mo-action-btn::after {
           display: none !important;
         }
-
 
         .mo-actions {
           display: flex;
@@ -248,31 +202,6 @@
     }
 
     document.body.appendChild(overlay);
-
-
-    // Place the X button exactly over the hamburger (restore JS positioning)
-    function positionCloseBtn() {
-      const closeBtn = overlay.querySelector(
-        "#menu-close",
-      ) as HTMLElement | null;
-      if (!closeBtn || !btn) return;
-
-      // Temporarily strip transform by toggling aria-expanded to get clean layout bounds
-      const isExpanded = btn.getAttribute("aria-expanded") === "true";
-      if (isExpanded) {
-        btn.setAttribute("aria-expanded", "false");
-      }
-
-      const r = btn.getBoundingClientRect();
-
-      if (isExpanded) {
-        btn.setAttribute("aria-expanded", "true");
-      }
-
-      // position: fixed uses viewport coordinates, so r.top/left are correct
-      closeBtn.style.top = r.top + "px";
-      closeBtn.style.left = r.left + "px";
-    }
 
     function toggleTheme() {
       const html = document.documentElement;
@@ -315,44 +244,14 @@
         localStorage.sound === "off" ? "Sound: Off" : "Sound: On";
     }
 
-    const menuEls = () =>
-      overlay.querySelectorAll<HTMLElement>(".mo-link, .mo-action-btn");
-
-    // Dynamic global listener cleanup/setup to prevent memory leaks and duplicate listeners
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeMenu();
     };
 
-    const handleResize = () => {
-      requestAnimationFrame(() => positionCloseBtn());
-    };
-
-    const handleOrientation = () => {
-      requestAnimationFrame(() => positionCloseBtn());
-    };
-
-    function cleanupGlobalListeners() {
-      document.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("orientationchange", handleOrientation);
-      document.removeEventListener("astro:before-swap", cleanupGlobalListeners);
-    }
-
     function openMenu() {
-      // Position the close button synchronously before we apply any transformation
-      positionCloseBtn();
-
       updateThemeLabel();
       updateSoundLabel();
-      
-      menuEls().forEach((el) => {
-        el.style.removeProperty("animation");
-        el.style.removeProperty("opacity");
-        el.style.removeProperty("transform");
-        el.style.removeProperty("transition-delay");
-      });
 
-      // Prevent layout shift by locking scroll and compensating for scrollbar width
       const scrollBarComp =
         window.innerWidth - document.documentElement.clientWidth;
       if (scrollBarComp > 0)
@@ -361,71 +260,49 @@
       overlay.classList.remove("closing");
       overlay.classList.add("open");
 
-      // Add global listeners when menu is opened
       document.addEventListener("keydown", handleKeyDown);
-      window.addEventListener("resize", handleResize);
-      window.addEventListener("orientationchange", handleOrientation);
-      document.addEventListener("astro:before-swap", cleanupGlobalListeners);
 
       btn?.setAttribute("aria-expanded", "true");
       overlay.setAttribute("aria-hidden", "false");
-      // Animate X button bars from horizontal → X (ensure positioned first)
-      const closeBtn = overlay.querySelector("#menu-close");
-      closeBtn?.classList.remove("reversing");
-      requestAnimationFrame(() => closeBtn?.classList.add("active"));
     }
 
     function closeMenu() {
       if (!overlay.classList.contains("open")) return;
 
-      // Step 1: animate X bars back to horizontal
-      const closeBtn = overlay.querySelector("#menu-close");
-      closeBtn?.classList.remove("active");
-
-      // Step 2: start a single clean exit transition
-      menuEls().forEach((el) => {
-        el.style.opacity = "1";
-        el.style.transform = "none";
-      });
       overlay.classList.add("closing");
       overlay.classList.remove("open");
       btn?.setAttribute("aria-expanded", "false");
       overlay.setAttribute("aria-hidden", "true");
 
-      // Clean up global listeners when menu is closed
-      cleanupGlobalListeners();
+      document.removeEventListener("keydown", handleKeyDown);
 
-      // Step 3: cleanup once the panel transition has finished
       setTimeout(() => {
         overlay.classList.remove("closing");
         document.body.style.overflow = "";
         document.body.style.paddingRight = "";
-        menuEls().forEach((el) => {
-          el.style.removeProperty("transition-delay");
-        });
-      }, 120);
+      }, 140);
     }
 
     btn.addEventListener("click", () => {
       overlay.classList.contains("open") ? closeMenu() : openMenu();
     });
 
-    overlay.querySelector("#menu-close")?.addEventListener("click", closeMenu);
-    // Close when clicking the overlay backdrop (outside the inner menu)
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeMenu();
     });
+
     overlay
       .querySelectorAll(".mo-link")
       .forEach((l) => l.addEventListener("click", closeMenu));
+
     overlay
       .querySelector("#menu-theme-toggle")
       ?.addEventListener("click", toggleTheme);
+
     overlay
       .querySelector("#menu-sound-toggle")
       ?.addEventListener("click", toggleSound);
 
-    // Set up custom event trigger handler for the hamburger menu
     currentToggleHandler = (e: Event) => {
       const customEvent = e as CustomEvent<{
         action?: "open" | "close" | "toggle";
@@ -442,6 +319,5 @@
     document.addEventListener("toggle-hamburger-menu", currentToggleHandler);
   }
 
-  // Support Astro view transitions and page loads
   document.addEventListener("astro:page-load", initHamburger);
 </script>
