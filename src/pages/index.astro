@@ -38,16 +38,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       <p data-stagger="4">
         I enjoy <a href="/other/books">reading</a> and <a href="/writing">writing</a>. I'm also passionate about design engineering.
       </p>
-      <p data-stagger="5">
-        I'm currently reading <em>The Fifth Risk</em> by Michael Lewis. I last listened
-        to <a
-          href="#"
-          id="spotify-last-song-link"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><span id="spotify-last-song">a song</span></a
-        > by <span id="spotify-last-artist">an artist</span>.
-      </p>
+
       <p data-stagger="6">
         Please feel free to <a href="#" id="look-around-btn">look around</a> or 
         <span class="email-revealer"
@@ -133,50 +124,6 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       }
     </style>
     <script>
-      async function updateSpotifyTrack() {
-        const songElement = document.getElementById("spotify-last-song");
-        const artistElement = document.getElementById("spotify-last-artist");
-        const linkElement = document.getElementById(
-          "spotify-last-song-link",
-        ) as HTMLAnchorElement | null;
-
-        if (!songElement || !artistElement || !linkElement) {
-          return;
-        }
-
-        try {
-          const response = await fetch("/api/spotify-now-playing/", {
-            cache: "no-store",
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const data = await response.json();
-
-          if (data?.title && data?.artist) {
-            songElement.textContent = data.title;
-            artistElement.textContent = data.artist;
-
-            if (data.songUrl) {
-              linkElement.href = data.songUrl;
-              linkElement.style.pointerEvents = "auto";
-            } else {
-              linkElement.href = "#";
-              linkElement.style.pointerEvents = "none";
-            }
-          } else {
-            songElement.textContent = "a song";
-            artistElement.textContent = "an artist";
-            linkElement.href = "#";
-            linkElement.style.pointerEvents = "none";
-          }
-        } catch (error) {
-          console.error("Error fetching Spotify data:", error);
-        }
-      }
-
       function initIndexPage() {
         // Look Around Button Handler
         const lookAroundBtn = document.getElementById("look-around-btn");
@@ -244,8 +191,6 @@ import IndexLayout from "../layouts/IndexLayout.astro";
             }, 2000);
           });
         }
-
-        updateSpotifyTrack();
       }
 
       document.addEventListener("astro:page-load", initIndexPage);

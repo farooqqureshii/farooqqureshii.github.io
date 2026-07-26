@@ -25,29 +25,36 @@ import Layout from "../../layouts/Layout.astro";
     .quotes-container {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 1.25rem;
       margin-top: 0.5rem;
     }
 
     .quote-item {
       margin: 0;
-      padding: 0.5rem 0;
+      padding: 0;
       border: none;
     }
 
     .quote-text {
-      font-size: 1.0625rem;
-      line-height: 1.55;
+      font-size: 0.9375rem;
+      line-height: 1.6;
       margin: 0 0 0.25rem 0;
-      font-style: italic;
-      color: inherit;
+      color: #111111;
+    }
+
+    :global(html.dark) .quote-text {
+      color: #e4e4e7;
     }
 
     .quote-author {
       font-size: 0.8125rem;
       font-style: normal;
-      opacity: 0.7;
+      color: #71717a;
       display: block;
+    }
+
+    :global(html.dark) .quote-author {
+      color: #a1a1aa;
     }
   </style>
 </Layout>

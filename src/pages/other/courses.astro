@@ -54,37 +54,28 @@ const courses: { title: string; detail: string }[] = [
 
 <Layout
   title="Farooq Q. | Courses"
-  description="Miscellaneous pages by Farooq Qureshi"
+  description="Course ratings and semester reviews by Farooq Qureshi"
 >
   <main>
-    <article class="space-y-8 text-sm leading-relaxed">
-      <div class="space-y-4">
-        <p>
-          Here are all the courses I've taken in my degree. Assigned to each of
-          them is a rating out of 10 and my recommendations for professors for
-          each course.
-        </p>
-        <p>
-          I also write course reviews for each semester. Here's <a
-            href="/writing/f25">Fall 2024</a
-          >, <a href="/writing/w25">Winter 2025</a>, and <a href="/writing/s25"
-            >Summer 2025</a
-          >.
-        </p>
-      </div>
+    <article class="text-sm leading-relaxed">
+      <p>
+        Here are all the courses I've taken in my degree. Assigned to each of
+        them is a rating out of 10 and my recommendations for professors for
+        each course.
+      </p>
+      <p>
+        I also write course reviews for each semester. Here's <a href="/writing/f24">Fall 2024</a>, <a href="/writing/w25">Winter 2025</a>, <a href="/writing/s25">Summer 2025</a>, <a href="/writing/f25">Fall 2025</a>, and <a href="/writing/w26">Winter 2026</a>.
+      </p>
 
-      <dl class="space-y-6">
-        {
-          courses.map((c) => (
-            <div class="space-y-1">
-              <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                {c.title}
-              </dt>
-              <dd class="m-0 text-zinc-600 dark:text-zinc-400">{c.detail}</dd>
-            </div>
-          ))
-        }
-      </dl>
+      {
+        courses.map((c) => (
+          <p>
+            {c.title}
+            <br />
+            {c.detail}
+          </p>
+        ))
+      }
     </article>
   </main>
 </Layout>

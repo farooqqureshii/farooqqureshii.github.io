@@ -1,8 +1,18 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
+interface BookItem {
+  title: string;
+  author: string;
+  rating: number;
+  genre: string;
+  description: string;
+  image: string;
+  isCurrentlyReading?: boolean;
+}
+
 // Book data with ratings, descriptions, images, and genres
-const books = [
+const books: BookItem[] = [
   {
     title: "For Whom the Bell Tolls",
     author: "Ernest Hemingway",
@@ -899,12 +909,24 @@ const books = [
   },
 ];
 
-// Shuffle books deterministically so a fresh, diverse selection appears at the top
-const displayBooks = [...books].sort((a, b) => {
+const currentlyReading = {
+  title: "The Fifth Risk",
+  author: "Michael Lewis",
+  rating: 5,
+  genre: "Non-Fiction, Politics",
+  description: "Fascinating look into the inner workings of government agencies and risks managed.",
+  image: "https://covers.openlibrary.org/b/isbn/9780393357455-M.jpg",
+  isCurrentlyReading: true,
+};
+
+// Shuffle other books deterministically
+const otherBooks = [...books].sort((a, b) => {
   const hashA = (a.title.charCodeAt(0) * 31 + a.author.charCodeAt(0) * 17) % 97;
   const hashB = (b.title.charCodeAt(0) * 31 + b.author.charCodeAt(0) * 17) % 97;
   return hashA - hashB;
 });
+
+const displayBooks = [currentlyReading, ...otherBooks];
 ---
 
 <Layout
@@ -930,6 +952,9 @@ const displayBooks = [...books].sort((a, b) => {
               />
             </div>
             <div class="card-meta">
+              {book.isCurrentlyReading && (
+                <span class="card-author text-zinc-500 dark:text-zinc-400">Currently reading</span>
+              )}
               <span class="card-title">{book.title}</span>
               <span class="card-author">{book.author}</span>
               <div class="card-stars" aria-label={`${book.rating} stars`}>
