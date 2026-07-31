@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import AudioEffects from "../components/AudioEffects.astro";
 import TextSelectorMenu from "../components/TextSelectorMenu.astro";
+
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
@@ -99,7 +100,7 @@ const {
         window.__themeListenerAttached = true;
       }
     </script>
-    <ClientRouter transition:animate="none" />
+    <ClientRouter />
   </head>
   <body
     class="bg-white text-[#111111] antialiased dark:bg-[#1a1a1a] dark:text-[#e4e4e7]"
@@ -113,10 +114,23 @@ const {
       <Header />
       <slot />
       <Footer />
-      {/* <CommandMenu /> */}
-
       <TextSelectorMenu />
     </div>
     <AudioEffects />
+
+    <script>
+      function releaseContainerStacking() {
+        const container = document.querySelector('.page-container') as HTMLElement | null;
+        if (!container) return;
+        const done = () => {
+          container.style.animation = 'none';
+          container.style.opacity = '1';
+          container.style.transform = '';
+        };
+        container.addEventListener('animationend', done, { once: true });
+        setTimeout(done, 850);
+      }
+      document.addEventListener('astro:page-load', releaseContainerStacking);
+    </script>
   </body>
 </html>

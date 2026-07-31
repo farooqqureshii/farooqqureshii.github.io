@@ -97,11 +97,15 @@
       }
     }, { capture: true });
 
-    // Unblock/resume Web Audio context on mobile touch start gesture
-    const unlockMobileAudio = () => {
-      play("tick");
-      document.removeEventListener("touchstart", unlockMobileAudio);
+    // Unblock/resume Web Audio context on user gesture
+    const unlockAudio = () => {
+      if (localStorage.sound !== "off") {
+        play("tick");
+      }
+      document.removeEventListener("pointerdown", unlockAudio);
+      document.removeEventListener("touchstart", unlockAudio);
     };
-    document.addEventListener("touchstart", unlockMobileAudio, { once: true, passive: true });
+    document.addEventListener("pointerdown", unlockAudio, { once: true, passive: true });
+    document.addEventListener("touchstart", unlockAudio, { once: true, passive: true });
   }
 </script>

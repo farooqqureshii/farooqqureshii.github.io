@@ -124,7 +124,8 @@
           opacity: 0;
           visibility: hidden;
           pointer-events: none;
-          transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 220ms;
+          transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 420ms;
+          will-change: opacity;
         }
         html.dark #menu-overlay {
           background: #1a1a1a;
@@ -134,13 +135,13 @@
           opacity: 1;
           visibility: visible;
           pointer-events: auto;
-          transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 0s;
+          transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0s;
         }
         #menu-overlay.closing {
           opacity: 0;
           visibility: hidden;
           pointer-events: none;
-          transition: opacity 140ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 0s;
+          transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 280ms;
         }
 
         .mo-inner {
@@ -151,6 +152,14 @@
           flex-direction: column;
           align-items: flex-start;
           gap: 2rem;
+          opacity: 0;
+          transform: translate3d(0, 14px, 0) scale(0.98);
+          transition: opacity 460ms cubic-bezier(0.16, 1, 0.3, 1), transform 460ms cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: opacity, transform;
+        }
+        #menu-overlay.open .mo-inner {
+          opacity: 1;
+          transform: translate3d(0, 0, 0) scale(1);
         }
         .mo-nav {
           display: flex;
@@ -286,7 +295,7 @@
         overlay.classList.remove("closing");
         document.body.style.overflow = "";
         document.body.style.paddingRight = "";
-      }, 100);
+      }, 280);
     }
 
     btn.addEventListener("click", () => {
@@ -297,9 +306,56 @@
       if (e.target === overlay) closeMenu();
     });
 
+    // Navigation links: fade overlay out while navigation begins, so the
+    // overlay acts as a smooth curtain rather than two competing animations.
+    function navigateFromMenu(href: string) {
+      // Restore body scroll immediately so the new page can scroll freely
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      btn?.setAttribute('aria-expanded', 'false');
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.classList.remove('open', 'closing');
+      document.removeEventListener('keydown', handleKeyDown);
+
+      // Fade the overlay out over 420ms
+      overlay.style.transition = 'opacity 420ms cubic-bezier(0.16, 1, 0.3, 1)';
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+
+      // Start navigation after a 160ms overlap so the overlay is already
+      // dissolving when the new page fades in — one fluid reveal.
+      setTimeout(() => {
+        overlay.style.visibility = 'hidden';
+        // Use Astro ClientRouter navigate for smooth SPA transition
+        import('astro:transitions/client').then(({ navigate }) => {
+          navigate(href);
+        }).catch(() => {
+          window.location.href = href;
+        });
+      }, 160);
+    }
+
     overlay
-      .querySelectorAll(".mo-link")
-      .forEach((l) => l.addEventListener("click", closeMenu));
+      .querySelectorAll('.mo-link')
+      .forEach((l) => {
+        l.addEventListener('click', (e) => {
+          const anchor = l as HTMLAnchorElement;
+          // External links (target=_blank) just dismiss cleanly and open normally
+          if (anchor.target === '_blank') {
+            overlay.style.transition = 'none';
+            overlay.style.opacity = '0';
+            overlay.style.visibility = 'hidden';
+            overlay.style.pointerEvents = 'none';
+            overlay.classList.remove('open', 'closing');
+            btn?.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            return;
+          }
+          e.preventDefault();
+          navigateFromMenu(anchor.href);
+        });
+      });
 
     overlay
       .querySelector("#menu-theme-toggle")

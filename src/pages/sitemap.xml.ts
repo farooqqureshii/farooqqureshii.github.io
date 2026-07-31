@@ -10,13 +10,9 @@ export const GET: APIRoute = async () => {
     { url: '/projects', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { url: '/writing', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { url: '/artifacts', lastmod: currentDate, changefreq: 'weekly', priority: '0.7' },
-    { url: '/links', lastmod: currentDate, changefreq: 'monthly', priority: '0.6' },
-    { url: '/graph-view', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
-    { url: '/sitemap', lastmod: currentDate, changefreq: 'monthly', priority: '0.4' },
     { url: '/other', lastmod: currentDate, changefreq: 'monthly', priority: '0.6' },
     { url: '/other/books', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/courses', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
-    { url: '/other/images', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/pencils', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/resources', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     // Writing articles

@@ -1,11 +1,9 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
-import { SITE_URL } from "./src/consts";
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,7 +12,7 @@ export default defineConfig({
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
   output: 'server',
   adapter: vercel(),
-  integrations: [mdx(), react(), sitemap(), tailwind()],
+  integrations: [mdx(), sitemap(), tailwind()],
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'hover'
@@ -26,14 +24,6 @@ export default defineConfig({
         light: "catppuccin-latte",
         dark: "catppuccin-mocha",
       },
-    },
-  },
-  // Environment variables for Spotify API
-  vite: {
-    define: {
-      'process.env.SPOTIFY_CLIENT_ID': JSON.stringify(process.env.SPOTIFY_CLIENT_ID),
-      'process.env.SPOTIFY_CLIENT_SECRET': JSON.stringify(process.env.SPOTIFY_CLIENT_SECRET),
-      'process.env.SPOTIFY_REFRESH_TOKEN': JSON.stringify(process.env.SPOTIFY_REFRESH_TOKEN),
     },
   },
 });

@@ -912,24 +912,6 @@
     finalizeFormatChanges(range);
   }
 
-  // Change font sizing class
-  function setSizeClass(sizeClass: string | null) {
-    if (!currentRange) return;
-
-    captureOriginalsBeforeEdit(currentRange);
-
-    const range = currentRange;
-    // Strip existing sizes
-    const sizeClasses = ["format-size-h1", "format-size-h2", "format-size-h3"];
-    sizeClasses.forEach((cls) => removeFormatClassInRange(range, cls));
-
-    if (sizeClass) {
-      wrapRangeInSpan(range, sizeClass);
-    }
-
-    finalizeFormatChanges(range);
-  }
-
   // Clear all formatting in range
   function clearAllFormatting() {
     if (!currentRange) return;

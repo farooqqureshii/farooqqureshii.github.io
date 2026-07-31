@@ -111,19 +111,3 @@ export const books: Book[] = [
   { title: "Slaughterhouse-Five", author: "Kurt Vonnegut", rating: 5, description: "Anti-war masterpiece that's both funny and devastating. Vonnegut's unique voice is unforgettable.", image: "https://covers.openlibrary.org/b/isbn/9780385333849-M.jpg" },
   { title: "The Master and Margarita", author: "Mikhail Bulgakov", rating: 5, description: "Surreal and satirical masterpiece about good and evil. Bulgakov's imagination is boundless.", image: "https://covers.openlibrary.org/b/isbn/9780679760801-M.jpg" },
 ];
-
-function slugify(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
-
-export function booksToSavedItems() {
-  return books.map((b) => ({
-    id: `book-${slugify(b.title)}`,
-    type: "book" as const,
-    title: b.title,
-    url: `https://www.goodreads.com/search?q=${encodeURIComponent(b.title + " " + b.author)}`,
-    source: b.author,
-    thumbnail: b.image,
-    date: "2024-01-01",
-  }));
-}

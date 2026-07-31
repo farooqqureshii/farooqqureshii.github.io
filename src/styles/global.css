@@ -12,6 +12,12 @@
   }
 }
 
+/* Native text selection — instant, zero JS overhead */
+::selection {
+  background-color: rgba(161, 161, 170, 0.35);
+  color: inherit;
+}
+
 @layer base {
   :root {
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -502,12 +508,59 @@ a[href^="#fn"],
   display: inline !important;
 }
 
-/* Disable all client-side View Transition animations globally */
-::view-transition-group(*),
-::view-transition-old(*),
-::view-transition-new(*) {
-  animation: none !important;
-  transition: none !important;
+/* Editorial Deliberate & Smooth Page Fade Transitions */
+@keyframes astroPageFadeOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+@keyframes astroPageFadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+::view-transition-old(root) {
+  animation: 320ms cubic-bezier(0.16, 1, 0.3, 1) both astroPageFadeOut;
+}
+
+::view-transition-new(root) {
+  animation: 680ms cubic-bezier(0.16, 1, 0.3, 1) both astroPageFadeIn;
+}
+
+/* Initial page load smooth fade & gentle rise */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.page-container {
+  animation: pageFadeIn 750ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-container,
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
 }
 
 
