@@ -51,12 +51,12 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
     </article>
 
     <div
-      class="no-link-underline mt-12 flex items-center justify-between border-t border-zinc-200 pt-8 text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+      class="mt-12 flex items-center justify-between text-sm text-zinc-500 dark:text-zinc-400"
     >
-      <a href="/writing">← All Writing</a>
+      <a href="/writing" class="list-link">← All Writing</a>
       {
         nextPost && (
-          <a href={`/writing/${nextPost.slug}`}>
+          <a href={`/writing/${nextPost.slug}`} class="list-link">
             Next: {nextPost.data.title} →
           </a>
         )

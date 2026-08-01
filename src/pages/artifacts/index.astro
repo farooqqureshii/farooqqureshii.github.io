@@ -50,63 +50,57 @@ while (byType.image.length || byType.link.length || byType.video.length) {
 <Layout
   title="Farooq Q. | Artifacts"
   description={SITE_DESCRIPTION}
-  className="max-w-5xl"
 >
-  <main class="no-link-underline">
-      <nav class="filter-nav mt-4" aria-label="Filter artifacts">
-        <button type="button" class="filter-link" data-tab="all">All</button>
-        <span class="filter-sep">/</span>
-        <button type="button" class="filter-link" data-tab="link">Links</button>
-        <span class="filter-sep">/</span>
-        <button type="button" class="filter-link" data-tab="image">Images</button>
-        <span class="filter-sep">/</span>
-        <button type="button" class="filter-link" data-tab="video">Videos</button>
-      </nav>
+  <div class="no-link-underline">
+    <nav class="filter-nav mb-8 flex items-center gap-1.5 text-sm" aria-label="Filter artifacts">
+      <button type="button" class="filter-link" data-tab="all">All</button>
+      <span class="filter-sep">/</span>
+      <button type="button" class="filter-link" data-tab="link">Links</button>
+      <span class="filter-sep">/</span>
+      <button type="button" class="filter-link" data-tab="image">Images</button>
+      <span class="filter-sep">/</span>
+      <button type="button" class="filter-link" data-tab="video">Videos</button>
+    </nav>
 
-    <div
-      id="artifact-loader"
-      class="flex items-center gap-2 text-sm text-zinc-400 dark:text-zinc-500"
-      style="transition:opacity 200ms ease; min-height:24px;"
-    >
-      <span class="artifact-spinner"></span>
-      Loading…
-    </div>
-
-    <div
-      class="artifact-grid column-gap-4 columns-2 sm:columns-3"
-      style="opacity:0;transition:opacity 250ms ease"
-    >
+    <div class="artifact-grid space-y-4">
       {
-        itemsMixed.map((item, index) => (
+        itemsMixed.map((item) => (
           <a
             href={item.type === "image" ? item.image : item.url}
             target="_blank"
             rel="noopener"
-            class="artifact-card group mb-4 block break-inside-avoid overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 transition-colors hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-zinc-600"
+            class="artifact-card no-underline group block overflow-hidden rounded-md border border-zinc-200 bg-zinc-50/50 p-3 text-sm dark:border-zinc-800 dark:bg-zinc-900/40"
             data-type={item.type}
           >
             {item.type === "image" ? (
-              <img
-                src={item.image}
-                alt={item.alt || item.title || "Artifact image"}
-                class="block h-auto w-full"
-                style="display:block;width:100%;height:auto;"
-                loading={index < 4 ? "eager" : "lazy"}
-                decoding="async"
-                referrerpolicy="no-referrer"
-              />
+              <div>
+                <img
+                  src={item.image}
+                  alt={item.alt || item.title || "Artifact image"}
+                  class="mb-2 block h-auto w-full rounded border border-zinc-200/60 object-cover dark:border-zinc-800/60"
+                  loading="lazy"
+                  decoding="async"
+                />
+                {item.title && (
+                  <p class="text-xs text-zinc-600 dark:text-zinc-400">
+                    {item.title}
+                  </p>
+                )}
+              </div>
             ) : (
-              <div class="p-3">
-                <div class="flex items-start justify-between gap-3">
-                  <p class="text-sm leading-snug text-zinc-900 dark:text-zinc-100">
+              <div>
+                <div class="flex items-baseline justify-between gap-2">
+                  <p class="font-medium text-zinc-900 dark:text-zinc-100 no-underline">
                     {item.title?.trim() || item.domain || (item.url ?? "")}
                   </p>
-                  <span class="shrink-0 text-xs text-zinc-400 dark:text-zinc-500">
-                    {item.type === "video" ? "▶" : "↗"}
-                  </span>
+                  {item.type === "video" && (
+                    <span class="shrink-0 text-xs text-zinc-400 dark:text-zinc-500">
+                      ▶
+                    </span>
+                  )}
                 </div>
                 {(item.description || item.domain) && (
-                  <p class="mt-1 line-clamp-2 text-xs text-zinc-500 dark:text-zinc-400">
+                  <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                     {item.description?.trim() || item.domain}
                   </p>
                 )}
@@ -116,7 +110,7 @@ while (byType.image.length || byType.link.length || byType.video.length) {
         ))
       }
     </div>
-  </main>
+  </div>
 
   <style>
     .filter-nav {
@@ -126,61 +120,39 @@ while (byType.image.length || byType.link.length || byType.video.length) {
       margin-bottom: 2rem;
     }
     .filter-link {
-      font-size: 13px;
-      color: rgb(161 161 170);
+      font-size: 0.875rem;
+      color: #71717a;
       background: none;
       border: none;
       padding: 0;
       cursor: pointer;
-      transition: color 150ms ease;
+      transition: color 150ms cubic-bezier(0.23, 1, 0.32, 1);
     }
     html.dark .filter-link {
-      color: rgb(113 113 122);
+      color: #a1a1aa;
     }
     @media (hover: hover) and (pointer: fine) {
       .filter-link:hover {
-        color: rgb(24 24 27);
+        color: #111111;
       }
       html.dark .filter-link:hover {
-        color: rgb(228 228 231);
+        color: #ffffff;
       }
     }
     .filter-link.is-active {
-      color: rgb(24 24 27);
+      color: #111111 !important;
+      font-weight: 500;
     }
     html.dark .filter-link.is-active {
-      color: rgb(228 228 231);
+      color: #ffffff !important;
     }
     .filter-sep {
-      font-size: 13px;
-      color: rgb(212 212 216);
+      font-size: 0.875rem;
+      color: #e4e4e7;
       user-select: none;
     }
     html.dark .filter-sep {
-      color: rgb(63 63 70);
-    }
-    .artifact-grid {
-      column-fill: balance;
-    }
-    .artifact-spinner {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border: 1.5px solid currentColor;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-    .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      color: #3f3f46;
     }
   </style>
 
@@ -188,41 +160,6 @@ while (byType.image.length || byType.link.length || byType.video.length) {
     (() => {
       const tabs = Array.from(document.querySelectorAll(".filter-link"));
       const cards = Array.from(document.querySelectorAll(".artifact-card"));
-
-      // Fallback broken images (hotlinking / CDN issues) to a nice placeholder.
-      const imgEls = Array.from(
-        document.querySelectorAll(".artifact-card img"),
-      );
-      const placeholder =
-        "data:image/svg+xml;charset=utf-8," +
-        encodeURIComponent(`
-          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
-            <defs>
-              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#f4f4f5"/>
-                <stop offset="1" stop-color="#e4e4e7"/>
-              </linearGradient>
-            </defs>
-            <rect width="1200" height="800" fill="url(#g)"/>
-            <rect x="60" y="60" width="1080" height="680" rx="28" fill="rgba(0,0,0,0.04)"/>
-            <text x="100" y="160" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="42" fill="rgba(0,0,0,0.35)">
-              Image unavailable
-            </text>
-          </svg>
-        `);
-
-      imgEls.forEach((img) => {
-        img.addEventListener(
-          "error",
-          () => {
-            if (img.dataset.fallbackApplied) return;
-            img.dataset.fallbackApplied = "1";
-            img.src = placeholder;
-            img.style.opacity = "0.9";
-          },
-          { once: false },
-        );
-      });
 
       const setActive = (name) => {
         tabs.forEach((t) => {
@@ -240,45 +177,7 @@ while (byType.image.length || byType.link.length || byType.video.length) {
         t.addEventListener("click", () => setActive(t.dataset.tab)),
       );
       
-      // Initialize
-      setTimeout(() => {
-        setActive("all");
-      }, 60);
-
-      const grid = document.querySelector(".artifact-grid");
-      const loader = document.getElementById("artifact-loader");
-
-      const reveal = () => {
-        if (loader) loader.style.opacity = "0";
-        grid.style.opacity = "1";
-        // Keep the loader in the flow to avoid layout shift; hide visibility instead
-        setTimeout(() => {
-          if (loader) loader.style.visibility = "hidden";
-        }, 220);
-      };
-
-      // Reveal as soon as every image has loaded or errored (eager loading means this is fast)
-      let timer = setTimeout(reveal, 2000); // hard cap
-      if (imgEls.length === 0) {
-        clearTimeout(timer);
-        reveal();
-      } else {
-        let remaining = imgEls.length;
-        const check = () => {
-          if (--remaining === 0) {
-            clearTimeout(timer);
-            reveal();
-          }
-        };
-        imgEls.forEach((img) => {
-          if (img.complete) {
-            check();
-          } else {
-            img.addEventListener("load", check, { once: true });
-            img.addEventListener("error", check, { once: true });
-          }
-        });
-      }
+      setActive("all");
     })();
   </script>
 </Layout>

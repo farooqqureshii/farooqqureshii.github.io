@@ -6,8 +6,8 @@ import IndexLayout from "../layouts/IndexLayout.astro";
 <IndexLayout title="Farooq Q." description={SITE_DESCRIPTION}>
   <main class="index-page">
     <article class="index-content space-y-4 text-sm leading-relaxed">
-      <p data-stagger="1">
-        Hi! I'm a third-year <a
+      <p>
+        I'm a third-year <a
           href="https://www.uoee.rocks/"
           target="_blank"
           rel="noopener">Electrical Engineering</a
@@ -23,171 +23,112 @@ import IndexLayout from "../layouts/IndexLayout.astro";
           rel="noopener">Halifax-class Modernization</a
         > effort.
       </p>
-      <p data-stagger="2">
+      <p>
         Before this, I led the team behind <a
           href="https://2026.uottahack.ca/"
           target="_blank"
           rel="noopener">uOttaHack</a
         >. Before that, I debated competitively internationally and now coach.
       </p>
-      <p data-stagger="3">
+      <p>
         I'm interested in power electronics and energy conversion systems.
         In particular, converter design and switching regulator
         topologies.
       </p>
-      <p data-stagger="4">
-        I enjoy <a href="/other/books">reading</a> and <a href="/writing">writing</a>. I'm also passionate about design engineering.
+      <p>
+        I enjoy <a href="/other/books">reading</a> and <a href="/writing">writing</a>.
       </p>
 
-      <p data-stagger="6">
-        Please feel free to <a href="#" id="look-around-btn">look around</a> or 
-        <span class="email-revealer"
-          ><a href="mailto:farooq.qureshi@outlook.com" id="say-hi-btn"> say hi</a
-          ><span class="email-tooltip" id="email-tooltip"
-            >farooq.qureshi@outlook.com</span
-          ></span
-        >. 
+      <p>
+        Please feel free to <button id="say-hi-btn" class="inline-copy-btn">copy</button> <span id="copy-rest-text" class="copy-rest-text">my email and say hi.</span>
       </p>
-      <p data-stagger="7">
+      <p>
         This page was last updated on July 13. Thank you for stopping by.
       </p>
     </article>
 
     <style>
-
-
-      .email-revealer {
-        position: relative;
-        display: inline-block;
+      .inline-copy-btn {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: #8a8a8e;
+        text-underline-offset: 4px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out);
+        -webkit-tap-highlight-color: transparent;
       }
 
-      #say-hi-btn {
-        display: inline-block;
-        transition: transform var(--duration-fast) var(--ease-out);
-        transform-origin: center;
+      html.dark .inline-copy-btn {
+        text-decoration-color: #71717a;
       }
 
-      #say-hi-btn:active {
-        transform: scale(0.92);
+      html.blue .inline-copy-btn {
+        text-decoration-color: rgba(255, 255, 255, 0.5);
       }
 
-      .email-tooltip {
-        position: absolute;
-        bottom: 140%;
-        left: 50%;
-        transform: translateX(-50%) translateY(4px) scale(0.96);
-        background: rgba(255, 255, 255, 0.76);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        color: #18181b; /* zinc-900 */
-        padding: 6px 10px;
-        border-radius: 8px; /* Rounded corners */
-        font-size: 0.76rem;
-        font-family: inherit; /* Same font as page body */
-        font-weight: 500;
-        opacity: 0;
-        pointer-events: none;
-        transition:
-          opacity var(--duration-fast) var(--ease-out),
-          transform var(--duration-fast) var(--ease-out);
-        white-space: nowrap;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-        z-index: 100;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        box-sizing: border-box;
-        user-select: none;
-        -webkit-user-select: none;
+      html.pink .inline-copy-btn {
+        text-decoration-color: #e094a4;
       }
 
-      html.dark .email-tooltip {
-        background: rgba(24, 24, 27, 0.76);
-        color: #f4f4f5; /* zinc-100 */
-        border: 1px solid rgba(255, 255, 255, 0.08);
+      html.green .inline-copy-btn {
+        text-decoration-color: #4a8553;
       }
 
-      /* Hover states on devices that support hover */
-      @media (hover: hover) and (pointer: fine) {
-        .email-revealer:hover .email-tooltip {
-          opacity: 1;
-          transform: translateX(-50%) translateY(0) scale(1);
-        }
+      .inline-copy-btn:hover {
+        color: #000000;
+        text-decoration-color: #000000;
       }
 
-      .email-tooltip.show-active {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0) scale(1);
+      html.dark .inline-copy-btn:hover,
+      html.blue .inline-copy-btn:hover {
+        color: #ffffff;
+        text-decoration-color: #ffffff;
       }
 
-      .email-tooltip.fade-out {
-        opacity: 0 !important;
-        transform: translateX(-50%) translateY(4px) scale(0.96) !important;
+      html.pink .inline-copy-btn:hover {
+        color: #000000;
+        text-decoration-color: #000000;
+      }
+
+      html.green .inline-copy-btn:hover {
+        color: #000000;
+        text-decoration-color: #000000;
+      }
+
+      .copy-rest-text {
+        transition: opacity var(--duration-fast) var(--ease-out);
+      }
+
+      .copy-rest-text.struck {
+        text-decoration: line-through;
+        opacity: 0.5;
       }
     </style>
+
     <script>
       function initIndexPage() {
-        // Look Around Button Handler
-        const lookAroundBtn = document.getElementById("look-around-btn");
-        if (lookAroundBtn) {
-          const handleLookAround = (e: Event) => {
-            e.preventDefault();
-            if (document.getElementById("menu-overlay")) {
-              document.dispatchEvent(
-                new CustomEvent("toggle-hamburger-menu", {
-                  detail: { action: "open" },
-                }),
-              );
-            } else {
-              const burger = document.getElementById("hamburger-btn");
-              if (burger) {
-                burger.click();
-              }
-            }
-          };
-
-          lookAroundBtn.addEventListener("click", handleLookAround);
-          lookAroundBtn.addEventListener("touchstart", handleLookAround, {
-            passive: false,
-          });
-        }
-
-        // Say Hi Copy Tooltip Handler
         const sayHiBtn = document.getElementById("say-hi-btn");
-        const tooltip = document.getElementById("email-tooltip");
+        const restText = document.getElementById("copy-rest-text");
         const email = "farooq.qureshi@outlook.com";
-        let isTransitioning = false;
 
-        if (sayHiBtn && tooltip) {
+        if (sayHiBtn) {
           sayHiBtn.addEventListener("click", async (e) => {
             e.preventDefault();
-            if (isTransitioning) return;
-            isTransitioning = true;
-
-            // 1. Attempt clipboard copy
             try {
               await navigator.clipboard.writeText(email);
             } catch (err) {
               console.error("Could not copy email:", err);
             }
-
-            // 2. Trigger visual transition (fade out, swap text, fade in)
-            tooltip.classList.add("fade-out");
-            tooltip.classList.add("show-active");
+            sayHiBtn.textContent = "copied";
+            if (restText) restText.classList.add("struck");
 
             setTimeout(() => {
-              tooltip.textContent = "Copied!";
-              tooltip.classList.remove("fade-out");
-            }, 120);
-
-            // 3. Restore back to email text after delay
-            setTimeout(() => {
-              tooltip.classList.add("fade-out");
-
-              setTimeout(() => {
-                tooltip.textContent = email;
-                tooltip.classList.remove("fade-out");
-                tooltip.classList.remove("show-active");
-                isTransitioning = false;
-              }, 120);
+              sayHiBtn.textContent = "copy";
+              if (restText) restText.classList.remove("struck");
             }, 2000);
           });
         }

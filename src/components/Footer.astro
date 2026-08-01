@@ -1,10 +1,10 @@
 ---
-// Footer with Ottawa time and weather
+// Footer with Ottawa time and weather condition
 ---
 
 <footer class="relative select-none">
   <p class="footer-text text-sm text-zinc-500 dark:text-zinc-400 relative z-10 m-0 leading-relaxed">
-    It's <span id="ottawa-time" class="inline-block tabular-nums" style="min-width:5.5ch;">--:--:--</span> and <span id="ottawa-weather">--°C</span> in Ottawa, Ontario.
+    It's <span id="ottawa-time" class="inline-block tabular-nums" style="min-width:5.5ch;">--:--:--</span> and <span id="ottawa-weather">sunny</span> in Ottawa, Ontario.
   </p>
 </footer>
 
@@ -21,7 +21,51 @@
 
 <script>
   const OTTAWA = { lat: 45.4215, lon: -75.6972 };
-  const WEATHER_URL = `https://api.open-meteo.com/v1/forecast?latitude=${OTTAWA.lat}&longitude=${OTTAWA.lon}&current=temperature_2m&timezone=America%2FToronto`;
+  const WEATHER_URL = `https://api.open-meteo.com/v1/forecast?latitude=${OTTAWA.lat}&longitude=${OTTAWA.lon}&current=weather_code,is_day&timezone=America%2FToronto`;
+
+  function getWeatherCondition(code: number, isDay: number = 1): string {
+    switch (code) {
+      case 0:
+        return isDay ? "sunny" : "clear";
+      case 1:
+        return isDay ? "mostly sunny" : "mostly clear";
+      case 2:
+        return "partly cloudy";
+      case 3:
+        return "cloudy";
+      case 45:
+      case 48:
+        return "foggy";
+      case 51:
+      case 53:
+      case 55:
+      case 56:
+      case 57:
+        return "drizzling";
+      case 61:
+      case 63:
+      case 65:
+      case 66:
+      case 67:
+      case 80:
+      case 81:
+      case 82:
+        return "rainy";
+      case 71:
+      case 73:
+      case 75:
+      case 77:
+      case 85:
+      case 86:
+        return "snowy";
+      case 95:
+      case 96:
+      case 99:
+        return "thunderstormy";
+      default:
+        return isDay ? "sunny" : "clear";
+    }
+  }
 
   function updateTime() {
     const t = new Date().toLocaleTimeString("en-CA", {
@@ -39,17 +83,17 @@
     const el = document.getElementById("ottawa-weather");
     if (!el) return;
 
-    const cachedTemp = localStorage.getItem("ottawa_temp");
-    const cachedTime = localStorage.getItem("ottawa_temp_time");
+    const cachedCond = localStorage.getItem("ottawa_cond");
+    const cachedTime = localStorage.getItem("ottawa_cond_time");
     const CACHE_DURATION = 15 * 60 * 1000;
 
-    if (cachedTemp && cachedTime) {
+    if (cachedCond && cachedTime) {
       const age = Date.now() - parseInt(cachedTime, 10);
       if (age < CACHE_DURATION) {
-        el.textContent = `${cachedTemp}°C`;
+        el.textContent = cachedCond;
         return;
       } else {
-        el.textContent = `${cachedTemp}°C`;
+        el.textContent = cachedCond;
       }
     }
 
@@ -57,14 +101,16 @@
       const res = await fetch(WEATHER_URL);
       if (!res.ok) throw new Error();
       const data = await res.json();
-      const t = Math.round(data.current.temperature_2m);
-      el.textContent = `${t}°C`;
-      
-      localStorage.setItem("ottawa_temp", t.toString());
-      localStorage.setItem("ottawa_temp_time", Date.now().toString());
+      const code = data.current.weather_code ?? 0;
+      const isDay = data.current.is_day ?? 1;
+      const cond = getWeatherCondition(code, isDay);
+      el.textContent = cond;
+
+      localStorage.setItem("ottawa_cond", cond);
+      localStorage.setItem("ottawa_cond_time", Date.now().toString());
     } catch {
       if (!el.textContent || el.textContent === "--°C") {
-        el.textContent = "—°C";
+        el.textContent = "clear";
       }
     }
   }
@@ -76,9 +122,10 @@
     if (!(window as any).__footer_intervals_setup__) {
       (window as any).__footer_intervals_setup__ = true;
       setInterval(updateTime, 1000);
-      setInterval(updateWeather, 30 * 60 * 1000);
+      setInterval(updateWeather, 15 * 60 * 1000);
     }
   }
 
   document.addEventListener("astro:page-load", init);
+  init();
 </script>

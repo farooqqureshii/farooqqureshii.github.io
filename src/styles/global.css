@@ -28,28 +28,13 @@
   }
 
   html {
-    font-size: 15px;
+    font-size: 16px;
   }
 
-  /* Smooth theme transitions (only when toggling) */
-  @media (prefers-reduced-motion: no-preference) {
-    html.theme-transition,
-    html.theme-transition * {
-      transition-property:
-        background-color, color, border-color, outline-color, fill, stroke,
-        text-decoration-color;
-      transition-duration: var(--duration-base);
-      transition-timing-function: var(--ease-out);
-    }
-
-    /* On mobile, text color compositing is CPU-bound and lags behind
-       background changes. Use a shorter duration so the gap is imperceptible. */
-    @media (max-width: 768px) {
-      html.theme-transition,
-      html.theme-transition * {
-        transition-duration: var(--duration-fast);
-      }
-    }
+  /* Universal transition defaults for micro-interactions */
+  a, button {
+    transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -62,7 +47,26 @@
     color: #e4e4e7;
   }
 
-  /* Inter - 15px, weight 460 */
+  html.blue body {
+    background-color: #0044ff;
+    color: #ffffff;
+  }
+
+  html.pink body {
+    background-color: #ffdbe3;
+    color: #1c1917;
+  }
+
+  html.green body {
+    background-color: #9ee0a1;
+    color: #0a1a0d;
+  }
+
+  html, body {
+    transition: background-color var(--duration-moderate) var(--ease-out), color var(--duration-moderate) var(--ease-out);
+  }
+
+  /* Typography stack — Inter System Sans-Serif */
   html,
   body,
   h1,
@@ -77,39 +81,67 @@
   ol,
   span,
   div {
-    font-family:
-      "Inter",
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-weight: 460;
+    letter-spacing: -0.011em;
   }
 
-  /* Links — warm accent, animated underline */
+  /* Universal Link Styling — clean off-grey underline, black on hover, descender clearance */
   a {
     color: inherit;
-    text-decoration: none;
-    transition: color var(--duration-base) var(--ease-out);
+    text-decoration: underline;
+    text-decoration-color: #8a8a8e;
+    text-underline-offset: 4px;
+    text-decoration-skip-ink: auto;
   }
 
-  /* Article/content links: warm stone accent */
-  article a {
-    color: #8a7968;
-  }
-  html.dark article a {
-    color: #a89880;
+  html.dark a {
+    text-decoration-color: #71717a;
   }
 
-  /* Hover — desktop only */
-  @media (hover: hover) and (pointer: fine) {
-    /* Article links: fade to body text color */
-    article a:hover {
-      color: #111111;
-    }
-    html.dark article a:hover {
-      color: #e4e4e7;
-    }
+  html.blue a {
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+  }
+
+  html.pink a {
+    text-decoration-color: #e094a4;
+  }
+
+  html.green a {
+    text-decoration-color: #4a8553;
+  }
+
+  a:hover {
+    color: #000000;
+    text-decoration-color: #000000;
+  }
+
+  html.dark a:hover {
+    color: #ffffff;
+    text-decoration-color: #ffffff;
+  }
+
+  html.blue a:hover {
+    color: #ffffff;
+    text-decoration-color: #ffffff;
+  }
+
+  html.pink a:hover {
+    color: #000000;
+    text-decoration-color: #000000;
+  }
+
+  html.green a:hover {
+    color: #000000;
+    text-decoration-color: #000000;
+  }
+
+  /* Explicit no-underline overrides for brand, header & menu links */
+  header a,
+  .no-underline,
+  .mo-link,
+  .nav-brand {
+    text-decoration: none !important;
   }
 
   /* Main page: keep links full-width */
@@ -120,22 +152,10 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    text-decoration: none;
+    text-decoration: none !important;
   }
   .index-page .hub-nav-link .hub-nav-label {
     min-width: 0;
-  }
-
-  /* Project card media - subtle lift on hover (desktop only) */
-  @media (hover: hover) and (pointer: fine) {
-    .media-section video,
-    .media-section img {
-      transition: transform var(--duration-moderate) var(--ease-out);
-    }
-    .project-item:hover .media-section video,
-    .project-item:hover .media-section img {
-      transform: translateY(-2px);
-    }
   }
   header a {
     text-decoration: none;
@@ -145,18 +165,28 @@
   }
 
   .nav-brand.home-title {
-    font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
-    font-weight: normal;
-    font-size: 1.7rem;
-    letter-spacing: 0.02em;
-    transform: none;
-    display: inline-block;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 0.875rem !important;
+    font-weight: 460 !important;
+    letter-spacing: -0.011em !important;
     color: #111111;
-    transition: transform var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
-    line-height: 1.1;
+    text-decoration: none !important;
+    line-height: 1.625 !important;
+    display: block;
+    margin-top: 0;
+    padding-top: 0;
   }
   html.dark .nav-brand.home-title {
-    color: #e4e4e7;
+    color: #ffffff;
+  }
+  html.blue .nav-brand.home-title {
+    color: #ffffff;
+  }
+  html.pink .nav-brand.home-title {
+    color: #1c1917;
+  }
+  html.green .nav-brand.home-title {
+    color: #0a1a0d;
   }
   .nav-brand.home-title:hover {
     opacity: 0.85;
@@ -177,9 +207,78 @@
     font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
     font-size: 1.7rem;
     font-weight: normal;
+    letter-spacing: 0.02em;
     line-height: 1.1;
     display: inline-block;
     opacity: 0.8;
+  }
+
+  .sidebar-link,
+  .list-link {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 0.875rem !important;
+    font-weight: 460 !important;
+    letter-spacing: -0.011em !important;
+    color: #71717a;
+    text-decoration: none !important;
+    line-height: 1.625 !important;
+    display: inline-block;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+    transition: color var(--duration-base) var(--ease-out);
+  }
+  .sidebar-link {
+    display: block;
+  }
+  html.dark .sidebar-link,
+  html.dark .list-link {
+    color: #a1a1aa;
+  }
+  html.blue .sidebar-link,
+  html.blue .list-link {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  html.pink .sidebar-link,
+  html.pink .list-link {
+    color: #9c5767;
+  }
+  html.green .sidebar-link,
+  html.green .list-link {
+    color: #2b5932;
+  }
+
+  .sidebar-link:hover,
+  .sidebar-link.active,
+  .list-link:hover,
+  .list-link.active {
+    color: #111111;
+  }
+  html.dark .sidebar-link:hover,
+  html.dark .sidebar-link.active,
+  html.dark .list-link:hover,
+  html.dark .list-link.active {
+    color: #ffffff;
+  }
+  html.blue .sidebar-link:hover,
+  html.blue .sidebar-link.active,
+  html.blue .list-link:hover,
+  html.blue .list-link.active {
+    color: #ffffff;
+  }
+  html.pink .sidebar-link:hover,
+  html.pink .sidebar-link.active,
+  html.pink .list-link:hover,
+  html.pink .list-link.active {
+    color: #1c1917;
+  }
+  html.green .sidebar-link:hover,
+  html.green .sidebar-link.active,
+  html.green .list-link:hover,
+  html.green .list-link.active {
+    color: #0a1a0d;
   }
 
   .font-handwritten {
@@ -199,6 +298,15 @@
   html.dark .section-heading {
     color: #e4e4e7;
   }
+  html.blue .section-heading {
+    color: #ffffff;
+  }
+  html.pink .section-heading {
+    color: #1c1917;
+  }
+  html.green .section-heading {
+    color: #0a1a0d;
+  }
 
   hr {
     border: none;
@@ -208,10 +316,22 @@
   html.dark hr {
     border-top-color: #27272a;
   }
+  html.blue hr {
+    border-top-color: rgba(255, 255, 255, 0.25);
+  }
+  html.pink hr {
+    border-top-color: #f7b0c1;
+  }
+  html.green hr {
+    border-top-color: #7fc983;
+  }
 }
 
 @layer components {
   article {
+    > *:first-child {
+      margin-top: 0 !important;
+    }
     p {
       @apply my-4 leading-relaxed;
     }
@@ -233,24 +353,70 @@
     html.dark :not(pre) > code {
       @apply bg-zinc-800 text-zinc-200;
     }
+    html.blue :not(pre) > code {
+      background-color: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+    html.pink :not(pre) > code {
+      background-color: #f7c2d0;
+      color: #831843;
+    }
+    html.green :not(pre) > code {
+      background-color: #86d18b;
+      color: #052e16;
+    }
+
     pre:has(code) {
       @apply my-4 max-h-[600px] overflow-auto rounded border border-zinc-200 bg-zinc-50 p-4 font-mono text-sm;
     }
     html.dark pre:has(code) {
       @apply border-zinc-700 bg-zinc-900;
     }
+    html.blue pre:has(code) {
+      border-color: rgba(255, 255, 255, 0.25);
+      background-color: #0033cc;
+    }
+    html.pink pre:has(code) {
+      border-color: #f4b3c4;
+      background-color: #fae1e8;
+    }
+    html.green pre:has(code) {
+      border-color: #6ebf73;
+      background-color: #8bd290;
+    }
+
     img {
       @apply my-4 rounded border border-zinc-200;
     }
     html.dark img {
       @apply border-zinc-700;
     }
+    html.blue img {
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    html.pink img {
+      border-color: #f4b3c4;
+    }
+    html.green img {
+      border-color: #6ebf73;
+    }
+
     video {
       @apply my-4 rounded border border-zinc-200;
     }
     html.dark video {
       @apply border-zinc-700;
     }
+    html.blue video {
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    html.pink video {
+      border-color: #f4b3c4;
+    }
+    html.green video {
+      border-color: #6ebf73;
+    }
+
     blockquote {
       @apply my-4 border-l-2 border-zinc-900 pl-4 text-zinc-900;
     }
@@ -297,6 +463,22 @@
     color: rgb(255 255 255);
   }
 
+  html.blue blockquote,
+  html.blue article blockquote {
+    border-left-color: #ffffff;
+    color: #ffffff;
+  }
+  html.pink blockquote,
+  html.pink article blockquote {
+    border-left-color: #1c1917;
+    color: #1c1917;
+  }
+  html.green blockquote,
+  html.green article blockquote {
+    border-left-color: #0a1a0d;
+    color: #0a1a0d;
+  }
+
   /* Footnote styling */
   article .footnotes,
   .footnotes {
@@ -308,6 +490,18 @@
   html.dark article .footnotes,
   html.dark .footnotes {
     color: #999;
+  }
+  html.blue article .footnotes,
+  html.blue .footnotes {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  html.pink article .footnotes,
+  html.pink .footnotes {
+    color: #9c5767;
+  }
+  html.green article .footnotes,
+  html.green .footnotes {
+    color: #2b5932;
   }
   article .footnotes::before,
   .footnotes::before {
@@ -359,6 +553,115 @@ html.dark .notes-separator,
 html.dark .notes-separator ~ *,
 html.dark .notes-section {
   color: #a1a1aa;
+}
+html.blue .notes-separator,
+html.blue .notes-separator ~ *,
+html.blue .notes-section {
+  color: rgba(255, 255, 255, 0.75);
+}
+html.pink .notes-separator,
+html.pink .notes-separator ~ *,
+html.pink .notes-section {
+  color: #9c5767;
+}
+html.green .notes-separator,
+html.green .notes-separator ~ *,
+html.green .notes-section {
+  color: #2b5932;
+}
+
+.notes-section a {
+  color: inherit;
+}
+
+/* Mobile menu overlay theme styling */
+#menu-overlay {
+  background-color: #ffffff;
+  color: #111111;
+}
+html.dark #menu-overlay {
+  background-color: #1a1a1a;
+  color: #e4e4e7;
+}
+html.blue #menu-overlay {
+  background-color: #0044ff;
+  color: #ffffff;
+}
+html.pink #menu-overlay {
+  background-color: #ffdbe3;
+  color: #1c1917;
+}
+html.green #menu-overlay {
+  background-color: #9ee0a1;
+  color: #0a1a0d;
+}
+
+.mobile-nav-link {
+  color: #71717a;
+}
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  color: #111111;
+  font-weight: 500;
+}
+html.dark .mobile-nav-link {
+  color: #a1a1aa;
+}
+html.dark .mobile-nav-link:hover,
+html.dark .mobile-nav-link.active {
+  color: #ffffff;
+}
+html.blue .mobile-nav-link {
+  color: rgba(255, 255, 255, 0.75);
+}
+html.blue .mobile-nav-link:hover,
+html.blue .mobile-nav-link.active {
+  color: #ffffff;
+}
+html.pink .mobile-nav-link {
+  color: #9c5767;
+}
+html.pink .mobile-nav-link:hover,
+html.pink .mobile-nav-link.active {
+  color: #1c1917;
+}
+html.green .mobile-nav-link {
+  color: #2b5932;
+}
+html.green .mobile-nav-link:hover,
+html.green .mobile-nav-link.active {
+  color: #0a1a0d;
+}
+
+/* Global utility overrides for tailwind text colors across pages */
+html.blue .text-zinc-900,
+html.blue .text-zinc-800,
+html.blue .text-zinc-100 {
+  color: #ffffff !important;
+}
+html.blue .text-zinc-500,
+html.blue .text-zinc-400 {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+html.pink .text-zinc-900,
+html.pink .text-zinc-800,
+html.pink .text-zinc-100 {
+  color: #1c1917 !important;
+}
+html.pink .text-zinc-500,
+html.pink .text-zinc-400 {
+  color: #9c5767 !important;
+}
+
+html.green .text-zinc-900,
+html.green .text-zinc-800,
+html.green .text-zinc-100 {
+  color: #0a1a0d !important;
+}
+html.green .text-zinc-500,
+html.green .text-zinc-400 {
+  color: #2b5932 !important;
 }
 .notes-section a {
   color: inherit;
@@ -469,98 +772,16 @@ a[href^="#fn"],
   display: block;
 }
 
-/* Text Selection Formatting Utility Styles */
-.format-bold {
-  font-weight: 700 !important;
-}
-
-.format-italic {
-  font-style: italic !important;
-}
-
-/* Color Highlights (Managed dynamically by @highlighters/core) */
-.format-hl-pink,
-.format-hl-yellow,
-.format-hl-blue,
-.format-hl-green {
-  background: transparent !important;
-}
-
-/* Sizing (to emulate headers inline) */
-.format-size-h1 {
-  font-size: 2.25rem !important;
-  font-weight: 700 !important;
-  line-height: 1.25 !important;
-  display: inline !important;
-}
-
-.format-size-h2 {
-  font-size: 1.75rem !important;
-  font-weight: 600 !important;
-  line-height: 1.3 !important;
-  display: inline !important;
-}
-
-.format-size-h3 {
-  font-size: 1.35rem !important;
-  font-weight: 600 !important;
-  line-height: 1.35 !important;
-  display: inline !important;
-}
-
-/* Editorial Deliberate & Smooth Page Fade Transitions */
-@keyframes astroPageFadeOut {
-  from {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    opacity: 0;
-    transform: translate3d(0, -4px, 0);
-  }
-}
-
-@keyframes astroPageFadeIn {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 12px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-::view-transition-old(root) {
-  animation: 320ms cubic-bezier(0.16, 1, 0.3, 1) both astroPageFadeOut;
-}
-
-::view-transition-new(root) {
-  animation: 680ms cubic-bezier(0.16, 1, 0.3, 1) both astroPageFadeIn;
-}
-
-/* Initial page load smooth fade & gentle rise */
-@keyframes pageFadeIn {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 12px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
+/* Page container — instant display, no keyframe animation */
 .page-container {
-  animation: pageFadeIn 750ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .page-container,
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none !important;
-  }
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none !important;
 }
 
 

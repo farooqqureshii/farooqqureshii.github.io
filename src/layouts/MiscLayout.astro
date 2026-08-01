@@ -3,9 +3,9 @@ import "../styles/global.css";
 const { title } = Astro.props;
 ---
 
-<div class="max-w-xl mx-auto px-6 py-4 sm:p-4 font-sans text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200">
+<div class="max-w-[600px] mx-auto px-6 py-12 sm:px-8 font-sans text-zinc-900 antialiased dark:bg-[#1a1a1a] dark:text-[#e4e4e7]">
   <h1 class="mb-5 text-xl font-medium">{title}</h1>
-  <article class="slide-in">
+  <article>
     <slot />
   </article>
 </div> 

@@ -932,7 +932,6 @@ const displayBooks = [currentlyReading, ...otherBooks];
 <Layout
   title="Farooq Q. | Books"
   description="Books I've read"
-  className="max-w-5xl"
 >
   <main class="books-main no-link-underline">
     <!-- Books Grid -->
@@ -977,8 +976,8 @@ const displayBooks = [currentlyReading, ...otherBooks];
     /* Grid Styles */
     .books-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1.5rem 1rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem 0.85rem;
     }
 
     @media (max-width: 900px) {

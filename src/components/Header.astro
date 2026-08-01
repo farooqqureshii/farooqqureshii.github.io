@@ -1,51 +1,303 @@
 ---
-import HamburgerMenu from "./HamburgerMenu.astro";
-
 const path = Astro.url.pathname;
-const segments = path.split("/").filter(Boolean);
-const segment = segments[0];
-
-let pageName = segment
-  ? segment.charAt(0).toUpperCase() + segment.slice(1)
-  : null;
-let pageHref = segment ? `/${segment}` : "/";
-
-if (path.startsWith("/other/books")) {
-  pageName = "Books";
-  pageHref = "/other/books";
-}
 ---
 
-<header class="mb-6 flex items-center justify-between">
-  <div class="flex items-center gap-2 text-sm">
-    <a href="/" class="nav-brand home-title no-underline">Farooq Qureshi</a>
-    {
-      pageName && (
-        <>
-          <span class="text-zinc-500 dark:text-zinc-400 breadcrumb-separator">/</span>
-          <a
-            href={pageHref}
-            class="text-zinc-500 no-underline transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300 breadcrumb-title"
-          >
-            {pageName}
-          </a>
-        </>
-      )
-    }
+<!-- Desktop Sidebar (Hidden on mobile) -->
+<aside class="sidebar-col hidden md:flex flex-col gap-6 w-[150px] shrink-0">
+  <!-- Title / Brand -->
+  <div>
+    <a href="/" class={`sidebar-link ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
   </div>
-  <div class="flex items-center gap-4">
+
+  <!-- Primary Page Links -->
+  <nav class="flex flex-col gap-y-1">
+    <a
+      href="/projects"
+      class={`sidebar-link ${path.startsWith('/projects') ? 'active' : ''}`}
+    >Projects</a>
+    <a
+      href="/writing"
+      class={`sidebar-link ${path.startsWith('/writing') ? 'active' : ''}`}
+    >Writing</a>
+    <a
+      href="/artifacts"
+      class={`sidebar-link ${path.startsWith('/artifacts') ? 'active' : ''}`}
+    >Artifacts</a>
+    <a
+      href="/other"
+      class={`sidebar-link ${path.startsWith('/other') ? 'active' : ''}`}
+    >Other</a>
+  </nav>
+
+  <!-- External / Contact Links -->
+  <div class="flex flex-col gap-y-1">
     <button
-      id="reset-annotations-btn"
-      class="hidden items-center justify-center w-[18px] h-[18px] text-[#111111] dark:text-[#e4e4e7] transition-all cursor-pointer"
-      title="Reset text edits"
-      aria-label="Reset text edits"
+      id="sidebar-copy-email"
+      class="sidebar-link"
+      title="Copy email to clipboard"
     >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-[15px] h-[15px]">
-        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-        <path d="M3 3v5h5" />
-      </svg>
+      <span class="sidebar-email-label">Email</span>
+    </button>
+    <a
+      href="https://github.com/farooqqureshii"
+      target="_blank"
+      rel="noopener"
+      class="sidebar-link"
+    >GitHub</a>
+    <a
+      href="https://linkedin.com/in/farooqq"
+      target="_blank"
+      rel="noopener"
+      class="sidebar-link"
+    >LinkedIn</a>
+    <a
+      href="https://www.cosmos.so/farooqqureshi"
+      target="_blank"
+      rel="noopener"
+      class="sidebar-link"
+    >Cosmos</a>
+  </div>
+
+  <!-- Theme Toggle Button -->
+  <div>
+    <button
+      id="sidebar-theme-toggle"
+      class="sidebar-link"
+      title="Toggle dark mode"
+    >
+      <span class="sidebar-theme-label">Dark</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Mobile Header (Visible on mobile only) -->
+<div class="mobile-header relative z-[60] flex md:hidden items-center justify-between w-full mb-8">
+  <a id="mobile-brand-title" href="/" class={`sidebar-link no-underline transition-opacity duration-150 ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
+  <button
+    id="hamburger-btn"
+    class="sidebar-link p-1 text-zinc-900 dark:text-zinc-100 hover:opacity-80 transition-opacity no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px]"
+    aria-label="Toggle menu"
+  >
+    <svg id="hamburger-icon" class="w-6 h-6 stroke-current block" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+    <span id="close-icon" class="hidden text-2xl leading-none font-light">×</span>
+  </button>
+</div>
+
+<!-- Mobile Fullscreen Overlay: Left-aligned list without brand title -->
+<div
+  id="menu-overlay"
+  class="fixed inset-0 z-50 flex flex-col justify-center items-start px-6 sm:px-8 opacity-0 pointer-events-none transition-opacity duration-150 ease-out md:hidden"
+>
+  <div class="flex flex-col text-left text-2xl sm:text-3xl font-normal leading-snug tracking-tight gap-2.5 no-underline w-full max-w-[780px] mx-auto">
+    <a
+      href="/projects"
+      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/projects') ? 'active' : ''}`}
+    >Projects</a>
+    <a
+      href="/writing"
+      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/writing') ? 'active' : ''}`}
+    >Writing</a>
+    <a
+      href="/artifacts"
+      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/artifacts') ? 'active' : ''}`}
+    >Artifacts</a>
+    <a
+      href="/other"
+      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/other') ? 'active' : ''}`}
+    >Other</a>
+    <a
+      href="https://www.cosmos.so/farooqqureshi"
+      target="_blank"
+      rel="noopener"
+      class="mobile-nav-link no-underline transition-colors duration-150"
+    >Cosmos</a>
+    <a
+      href="https://linkedin.com/in/farooqq"
+      target="_blank"
+      rel="noopener"
+      class="mobile-nav-link no-underline transition-colors duration-150"
+    >LinkedIn</a>
+    <a
+      href="https://github.com/farooqqureshii"
+      target="_blank"
+      rel="noopener"
+      class="mobile-nav-link no-underline transition-colors duration-150"
+    >GitHub</a>
+    <button
+      id="mobile-copy-email"
+      class="mobile-nav-link no-underline text-left transition-colors duration-150 cursor-pointer"
+    >
+      <span class="mobile-email-label">Email</span>
     </button>
 
-    <HamburgerMenu />
+    <div class="pt-6">
+      <button
+        id="mobile-theme-toggle"
+        class="mobile-nav-link no-underline text-left transition-colors duration-150 cursor-pointer"
+      >
+        <span class="sidebar-theme-label">Light</span>
+      </button>
+    </div>
   </div>
-</header>
+</div>
+
+<script>
+  function initHeader() {
+    const overlay = document.getElementById("menu-overlay");
+    const burgerBtn = document.getElementById("hamburger-btn");
+    const burgerIcon = document.getElementById("hamburger-icon");
+    const closeIcon = document.getElementById("close-icon");
+    const brandTitle = document.getElementById("mobile-brand-title");
+
+    if (!overlay || !burgerBtn) return;
+
+    function openMenu() {
+      if (!overlay) return;
+      overlay.classList.remove("opacity-0", "pointer-events-none");
+      overlay.classList.add("opacity-100", "pointer-events-auto");
+      document.body.style.overflow = "hidden";
+
+      if (brandTitle) {
+        brandTitle.classList.add("opacity-0", "pointer-events-none");
+      }
+      if (burgerIcon) burgerIcon.classList.add("hidden");
+      if (closeIcon) closeIcon.classList.remove("hidden");
+    }
+
+    function closeMenu() {
+      if (!overlay) return;
+      overlay.classList.remove("opacity-100", "pointer-events-auto");
+      overlay.classList.add("opacity-0", "pointer-events-none");
+      document.body.style.overflow = "";
+
+      if (brandTitle) {
+        brandTitle.classList.remove("opacity-0", "pointer-events-none");
+      }
+      if (burgerIcon) burgerIcon.classList.remove("hidden");
+      if (closeIcon) closeIcon.classList.add("hidden");
+    }
+
+    function toggleMenu(e?: Event) {
+      if (e) e.stopPropagation();
+      if (!overlay) return;
+      if (overlay.classList.contains("opacity-100")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    burgerBtn.onclick = (e) => toggleMenu(e);
+
+    const handleCustomToggle = (e: any) => {
+      if (e.detail?.action === "open") openMenu();
+      else if (e.detail?.action === "close") closeMenu();
+      else toggleMenu();
+    };
+
+    document.removeEventListener("toggle-hamburger-menu", handleCustomToggle);
+    document.addEventListener("toggle-hamburger-menu", handleCustomToggle);
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.classList.contains("opacity-100")) {
+        closeMenu();
+      }
+    });
+
+    // Close overlay when clicking any link inside overlay
+    const overlayLinks = overlay.querySelectorAll("a");
+    overlayLinks.forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    // Email Copy handlers
+    const sidebarEmailLabel = document.querySelector(".sidebar-email-label");
+    const mobileEmailLabel = document.querySelector(".mobile-email-label");
+    const desktopCopyBtn = document.getElementById("sidebar-copy-email");
+    const mobileCopyBtn = document.getElementById("mobile-copy-email");
+
+    if (desktopCopyBtn) {
+      desktopCopyBtn.onclick = () => {
+        navigator.clipboard.writeText("farooq.qureshi@outlook.com").then(() => {
+          if (sidebarEmailLabel) sidebarEmailLabel.textContent = "Copied";
+          setTimeout(() => {
+            if (sidebarEmailLabel) sidebarEmailLabel.textContent = "Email";
+          }, 2000);
+        });
+      };
+    }
+
+    if (mobileCopyBtn) {
+      mobileCopyBtn.onclick = () => {
+        navigator.clipboard.writeText("farooq.qureshi@outlook.com").then(() => {
+          if (mobileEmailLabel) mobileEmailLabel.textContent = "Copied";
+          setTimeout(() => {
+            if (mobileEmailLabel) mobileEmailLabel.textContent = "Email";
+          }, 2000);
+        });
+      };
+    }
+
+    // Theme toggle handlers
+    const THEMES = ["light", "dark", "blue", "pink", "green"];
+    const THEME_LABELS: Record<string, string> = {
+      light: "Light",
+      dark: "Dark",
+      blue: "Blue",
+      pink: "Pink",
+      green: "Green",
+    };
+
+    const themeLabels = document.querySelectorAll(".sidebar-theme-label");
+    const desktopThemeBtn = document.getElementById("sidebar-theme-toggle");
+    const mobileThemeBtn = document.getElementById("mobile-theme-toggle");
+
+    function getCurrentTheme(): string {
+      const html = document.documentElement;
+      for (const t of THEMES) {
+        if (t !== "light" && html.classList.contains(t)) {
+          return t;
+        }
+      }
+      return "light";
+    }
+
+    function updateThemeLabels() {
+      const currentTheme = getCurrentTheme();
+      const labelText = THEME_LABELS[currentTheme] || "Light";
+      themeLabels.forEach((lbl) => {
+        lbl.textContent = labelText;
+      });
+    }
+
+    const toggleTheme = () => {
+      const currentTheme = getCurrentTheme();
+      const currentIndex = THEMES.indexOf(currentTheme);
+      const nextIndex = (currentIndex + 1) % THEMES.length;
+      const nextTheme = THEMES[nextIndex];
+
+      const html = document.documentElement;
+      THEMES.forEach((t) => {
+        if (t !== "light") {
+          html.classList.remove(t);
+        }
+      });
+      if (nextTheme !== "light") {
+        html.classList.add(nextTheme);
+      }
+      localStorage.theme = nextTheme;
+      updateThemeLabels();
+    };
+
+    if (desktopThemeBtn) desktopThemeBtn.onclick = toggleTheme;
+    if (mobileThemeBtn) mobileThemeBtn.onclick = toggleTheme;
+
+    updateThemeLabels();
+  }
+
+  document.addEventListener("astro:page-load", initHeader);
+  initHeader();
+</script>

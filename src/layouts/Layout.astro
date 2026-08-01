@@ -3,8 +3,6 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 // import CommandMenu from "../components/CommandMenu.astro";
 
-import AudioEffects from "../components/AudioEffects.astro";
-import TextSelectorMenu from "../components/TextSelectorMenu.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
@@ -40,10 +38,6 @@ const {
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700&display=swap"
-      rel="stylesheet"
-    />
-    <link
       href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"
       rel="stylesheet"
     />
@@ -68,28 +62,33 @@ const {
 
     <style>
       body {
-        font-family:
-          "Inter",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-weight: 460;
-        font-size: 15px;
-        line-height: 1.6;
+        letter-spacing: -0.011em;
+        font-size: 16px;
+        line-height: 1.65;
         margin: 0;
       }
     </style>
     <script is:inline>
+      const THEMES = ["light", "dark", "blue", "pink", "green"];
       const setTheme = () => {
-        if (
-          localStorage.theme === "dark" ||
-          (!("theme" in localStorage) &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
+        let theme = localStorage.theme;
+        if (!theme || !THEMES.includes(theme)) {
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            theme = "dark";
+          } else {
+            theme = "light";
+          }
+        }
+        const html = document.documentElement;
+        THEMES.forEach((t) => {
+          if (t !== "light") {
+            html.classList.remove(t);
+          }
+        });
+        if (theme !== "light") {
+          html.classList.add(theme);
         }
       };
       setTheme();
@@ -101,19 +100,18 @@ const {
     </script>
     <ClientRouter />
   </head>
-  <body
-    class="bg-white text-[#111111] antialiased dark:bg-[#1a1a1a] dark:text-[#e4e4e7]"
-  >
+  <body class="antialiased">
     <div
       class={cn(
-        "max-w-[600px] mx-auto px-6 py-12 sm:px-8 page-container",
+        "max-w-[780px] mx-auto px-6 py-12 sm:px-8 grid grid-cols-1 md:grid-cols-[160px_1fr] gap-8 md:gap-12 items-start page-container",
         className,
       )}
     >
       <Header />
-      <slot />
-      <Footer />
-      <TextSelectorMenu />
+      <main class="min-w-0">
+        <slot />
+        <Footer />
+      </main>
     </div>
     {/* Load after content so it overrides per-post footnote styles */}
     <style is:global>
@@ -124,23 +122,5 @@ const {
         stroke: rgb(161 161 170) !important;
       }
     </style>
-    <AudioEffects />
-    <script>
-      // Release .page-container stacking context the moment the fade completes
-      // so the hamburger button z-index works correctly when the menu is opened.
-      function releaseContainerStacking() {
-        const container = document.querySelector('.page-container') as HTMLElement | null;
-        if (!container) return;
-        const done = () => {
-          container.style.animation = 'none';
-          container.style.opacity = '1';
-          container.style.transform = '';
-        };
-        container.addEventListener('animationend', done, { once: true });
-        // Safety fallback if animation never fires (e.g. prefers-reduced-motion)
-        setTimeout(done, 850);
-      }
-      document.addEventListener('astro:page-load', releaseContainerStacking);
-    </script>
   </body>
 </html>
