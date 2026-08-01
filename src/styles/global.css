@@ -48,18 +48,18 @@
   }
 
   html.blue body {
-    background-color: #0044ff;
-    color: #ffffff;
+    background-color: #c8d8f0;
+    color: #0d1f3c;
   }
 
   html.pink body {
-    background-color: #ffdbe3;
-    color: #1c1917;
+    background-color: #fde8ee;
+    color: #2d1219;
   }
 
   html.green body {
-    background-color: #9ee0a1;
-    color: #0a1a0d;
+    background-color: #d4f0d7;
+    color: #0a2010;
   }
 
   html, body {
@@ -100,11 +100,11 @@
   }
 
   html.blue a {
-    text-decoration-color: rgba(255, 255, 255, 0.5);
+    text-decoration-color: rgba(13, 31, 60, 0.4);
   }
 
   html.pink a {
-    text-decoration-color: #e094a4;
+    text-decoration-color: #c08090;
   }
 
   html.green a {
@@ -122,18 +122,18 @@
   }
 
   html.blue a:hover {
-    color: #ffffff;
-    text-decoration-color: #ffffff;
+    color: #0d1f3c;
+    text-decoration-color: #0d1f3c;
   }
 
   html.pink a:hover {
-    color: #000000;
-    text-decoration-color: #000000;
+    color: #2d1219;
+    text-decoration-color: #2d1219;
   }
 
   html.green a:hover {
-    color: #000000;
-    text-decoration-color: #000000;
+    color: #0a2010;
+    text-decoration-color: #0a2010;
   }
 
   /* Explicit no-underline overrides for brand, header & menu links */
@@ -180,13 +180,13 @@
     color: #ffffff;
   }
   html.blue .nav-brand.home-title {
-    color: #ffffff;
+    color: #0d1f3c;
   }
   html.pink .nav-brand.home-title {
-    color: #1c1917;
+    color: #2d1219;
   }
   html.green .nav-brand.home-title {
-    color: #0a1a0d;
+    color: #0a2010;
   }
   .nav-brand.home-title:hover {
     opacity: 0.85;
@@ -239,15 +239,15 @@
   }
   html.blue .sidebar-link,
   html.blue .list-link {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(13, 31, 60, 0.6);
   }
   html.pink .sidebar-link,
   html.pink .list-link {
-    color: #9c5767;
+    color: rgba(45, 18, 25, 0.55);
   }
   html.green .sidebar-link,
   html.green .list-link {
-    color: #2b5932;
+    color: rgba(10, 32, 16, 0.55);
   }
 
   .sidebar-link:hover,
@@ -266,19 +266,19 @@
   html.blue .sidebar-link.active,
   html.blue .list-link:hover,
   html.blue .list-link.active {
-    color: #ffffff;
+    color: #0d1f3c;
   }
   html.pink .sidebar-link:hover,
   html.pink .sidebar-link.active,
   html.pink .list-link:hover,
   html.pink .list-link.active {
-    color: #1c1917;
+    color: #2d1219;
   }
   html.green .sidebar-link:hover,
   html.green .sidebar-link.active,
   html.green .list-link:hover,
   html.green .list-link.active {
-    color: #0a1a0d;
+    color: #0a2010;
   }
 
   .font-handwritten {
@@ -299,13 +299,13 @@
     color: #e4e4e7;
   }
   html.blue .section-heading {
-    color: #ffffff;
+    color: #0d1f3c;
   }
   html.pink .section-heading {
-    color: #1c1917;
+    color: #2d1219;
   }
   html.green .section-heading {
-    color: #0a1a0d;
+    color: #0a2010;
   }
 
   hr {
@@ -317,13 +317,13 @@
     border-top-color: #27272a;
   }
   html.blue hr {
-    border-top-color: rgba(255, 255, 255, 0.25);
+    border-top-color: rgba(13, 31, 60, 0.2);
   }
   html.pink hr {
-    border-top-color: #f7b0c1;
+    border-top-color: rgba(45, 18, 25, 0.15);
   }
   html.green hr {
-    border-top-color: #7fc983;
+    border-top-color: rgba(10, 32, 16, 0.15);
   }
 }
 
@@ -354,16 +354,16 @@
       @apply bg-zinc-800 text-zinc-200;
     }
     html.blue :not(pre) > code {
-      background-color: rgba(255, 255, 255, 0.18);
-      color: #ffffff;
+      background-color: rgba(13, 31, 60, 0.1);
+      color: #0d1f3c;
     }
     html.pink :not(pre) > code {
-      background-color: #f7c2d0;
-      color: #831843;
+      background-color: rgba(45, 18, 25, 0.1);
+      color: #2d1219;
     }
     html.green :not(pre) > code {
-      background-color: #86d18b;
-      color: #052e16;
+      background-color: rgba(10, 32, 16, 0.1);
+      color: #0a2010;
     }
 
     pre:has(code) {
@@ -373,16 +373,16 @@
       @apply border-zinc-700 bg-zinc-900;
     }
     html.blue pre:has(code) {
-      border-color: rgba(255, 255, 255, 0.25);
-      background-color: #0033cc;
+      border-color: rgba(13, 31, 60, 0.2);
+      background-color: rgba(13, 31, 60, 0.07);
     }
     html.pink pre:has(code) {
-      border-color: #f4b3c4;
-      background-color: #fae1e8;
+      border-color: rgba(45, 18, 25, 0.15);
+      background-color: rgba(45, 18, 25, 0.05);
     }
     html.green pre:has(code) {
-      border-color: #6ebf73;
-      background-color: #8bd290;
+      border-color: rgba(10, 32, 16, 0.15);
+      background-color: rgba(10, 32, 16, 0.05);
     }
 
     img {
@@ -392,13 +392,13 @@
       @apply border-zinc-700;
     }
     html.blue img {
-      border-color: rgba(255, 255, 255, 0.25);
+      border-color: rgba(13, 31, 60, 0.2);
     }
     html.pink img {
-      border-color: #f4b3c4;
+      border-color: rgba(45, 18, 25, 0.15);
     }
     html.green img {
-      border-color: #6ebf73;
+      border-color: rgba(10, 32, 16, 0.15);
     }
 
     video {
@@ -408,13 +408,13 @@
       @apply border-zinc-700;
     }
     html.blue video {
-      border-color: rgba(255, 255, 255, 0.25);
+      border-color: rgba(13, 31, 60, 0.2);
     }
     html.pink video {
-      border-color: #f4b3c4;
+      border-color: rgba(45, 18, 25, 0.15);
     }
     html.green video {
-      border-color: #6ebf73;
+      border-color: rgba(10, 32, 16, 0.15);
     }
 
     blockquote {
@@ -465,18 +465,18 @@
 
   html.blue blockquote,
   html.blue article blockquote {
-    border-left-color: #ffffff;
-    color: #ffffff;
+    border-left-color: #0d1f3c;
+    color: #0d1f3c;
   }
   html.pink blockquote,
   html.pink article blockquote {
-    border-left-color: #1c1917;
-    color: #1c1917;
+    border-left-color: #2d1219;
+    color: #2d1219;
   }
   html.green blockquote,
   html.green article blockquote {
-    border-left-color: #0a1a0d;
-    color: #0a1a0d;
+    border-left-color: #0a2010;
+    color: #0a2010;
   }
 
   /* Footnote styling */
@@ -493,15 +493,15 @@
   }
   html.blue article .footnotes,
   html.blue .footnotes {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(13, 31, 60, 0.6);
   }
   html.pink article .footnotes,
   html.pink .footnotes {
-    color: #9c5767;
+    color: rgba(45, 18, 25, 0.55);
   }
   html.green article .footnotes,
   html.green .footnotes {
-    color: #2b5932;
+    color: rgba(10, 32, 16, 0.55);
   }
   article .footnotes::before,
   .footnotes::before {
@@ -557,17 +557,17 @@ html.dark .notes-section {
 html.blue .notes-separator,
 html.blue .notes-separator ~ *,
 html.blue .notes-section {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(13, 31, 60, 0.6);
 }
 html.pink .notes-separator,
 html.pink .notes-separator ~ *,
 html.pink .notes-section {
-  color: #9c5767;
+  color: rgba(45, 18, 25, 0.55);
 }
 html.green .notes-separator,
 html.green .notes-separator ~ *,
 html.green .notes-section {
-  color: #2b5932;
+  color: rgba(10, 32, 16, 0.55);
 }
 
 .notes-section a {
@@ -584,16 +584,16 @@ html.dark #menu-overlay {
   color: #e4e4e7;
 }
 html.blue #menu-overlay {
-  background-color: #0044ff;
-  color: #ffffff;
+  background-color: #c8d8f0;
+  color: #0d1f3c;
 }
 html.pink #menu-overlay {
-  background-color: #ffdbe3;
-  color: #1c1917;
+  background-color: #fde8ee;
+  color: #2d1219;
 }
 html.green #menu-overlay {
-  background-color: #9ee0a1;
-  color: #0a1a0d;
+  background-color: #d4f0d7;
+  color: #0a2010;
 }
 
 .mobile-nav-link {
@@ -612,56 +612,126 @@ html.dark .mobile-nav-link.active {
   color: #ffffff;
 }
 html.blue .mobile-nav-link {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(13, 31, 60, 0.6);
 }
 html.blue .mobile-nav-link:hover,
 html.blue .mobile-nav-link.active {
-  color: #ffffff;
+  color: #0d1f3c;
 }
 html.pink .mobile-nav-link {
-  color: #9c5767;
+  color: rgba(45, 18, 25, 0.55);
 }
 html.pink .mobile-nav-link:hover,
 html.pink .mobile-nav-link.active {
-  color: #1c1917;
+  color: #2d1219;
 }
 html.green .mobile-nav-link {
-  color: #2b5932;
+  color: rgba(10, 32, 16, 0.55);
 }
 html.green .mobile-nav-link:hover,
 html.green .mobile-nav-link.active {
-  color: #0a1a0d;
+  color: #0a2010;
 }
 
 /* Global utility overrides for tailwind text colors across pages */
 html.blue .text-zinc-900,
 html.blue .text-zinc-800,
 html.blue .text-zinc-100 {
-  color: #ffffff !important;
+  color: #0d1f3c !important;
 }
+html.blue .text-zinc-600,
 html.blue .text-zinc-500,
 html.blue .text-zinc-400 {
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: rgba(13, 31, 60, 0.6) !important;
 }
 
 html.pink .text-zinc-900,
 html.pink .text-zinc-800,
 html.pink .text-zinc-100 {
-  color: #1c1917 !important;
+  color: #2d1219 !important;
 }
+html.pink .text-zinc-600,
 html.pink .text-zinc-500,
 html.pink .text-zinc-400 {
-  color: #9c5767 !important;
+  color: rgba(45, 18, 25, 0.55) !important;
 }
 
 html.green .text-zinc-900,
 html.green .text-zinc-800,
 html.green .text-zinc-100 {
-  color: #0a1a0d !important;
+  color: #0a2010 !important;
 }
+html.green .text-zinc-600,
 html.green .text-zinc-500,
 html.green .text-zinc-400 {
-  color: #2b5932 !important;
+  color: rgba(10, 32, 16, 0.55) !important;
+}
+
+/* Card / media wrapper overrides for blue, pink, green themes */
+html.blue .border-zinc-200,
+html.blue .border-zinc-200\/80,
+html.blue .border-zinc-200\/60 {
+  border-color: rgba(13, 31, 60, 0.18) !important;
+}
+html.pink .border-zinc-200,
+html.pink .border-zinc-200\/80,
+html.pink .border-zinc-200\/60 {
+  border-color: rgba(45, 18, 25, 0.15) !important;
+}
+html.green .border-zinc-200,
+html.green .border-zinc-200\/80,
+html.green .border-zinc-200\/60 {
+  border-color: rgba(10, 32, 16, 0.15) !important;
+}
+
+html.blue .bg-zinc-50\/50,
+html.blue .bg-zinc-100 {
+  background-color: rgba(13, 31, 60, 0.08) !important;
+}
+html.pink .bg-zinc-50\/50,
+html.pink .bg-zinc-100 {
+  background-color: rgba(45, 18, 25, 0.07) !important;
+}
+html.green .bg-zinc-50\/50,
+html.green .bg-zinc-100 {
+  background-color: rgba(10, 32, 16, 0.07) !important;
+}
+
+/* Filter & project links active state per theme */
+html.blue .filter-link.is-active,
+html.blue .filter-link:hover {
+  color: #0d1f3c !important;
+}
+html.pink .filter-link.is-active,
+html.pink .filter-link:hover {
+  color: #2d1219 !important;
+}
+html.green .filter-link.is-active,
+html.green .filter-link:hover {
+  color: #0a2010 !important;
+}
+
+html.blue .filter-link,
+html.blue .project-link {
+  color: rgba(13, 31, 60, 0.55) !important;
+}
+html.pink .filter-link,
+html.pink .project-link {
+  color: rgba(45, 18, 25, 0.5) !important;
+}
+html.green .filter-link,
+html.green .project-link {
+  color: rgba(10, 32, 16, 0.5) !important;
+}
+
+html.blue .filter-sep {
+  color: rgba(13, 31, 60, 0.2) !important;
+}
+html.pink .filter-sep {
+  color: rgba(45, 18, 25, 0.18) !important;
+}
+html.green .filter-sep {
+  color: rgba(10, 32, 16, 0.18) !important;
 }
 .notes-section a {
   color: inherit;
