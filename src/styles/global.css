@@ -90,17 +90,18 @@
     letter-spacing: -0.011em;
   }
 
-  /* Universal Link Styling — clean off-grey underline, black on hover, descender clearance */
+  /* Universal Link Styling — Linear / Design-Eng minimal clean underline (unbroken rule) */
   a {
     color: inherit;
-    text-decoration: underline;
-    text-decoration-color: #8a8a8e;
-    text-underline-offset: 4px;
-    text-decoration-skip-ink: auto;
+    text-decoration: underline solid;
+    text-decoration-thickness: 1px;
+    text-decoration-color: rgba(138, 138, 142, 0.45);
+    text-underline-offset: 5px;
+    text-decoration-skip-ink: none;
   }
 
   html.dark a {
-    text-decoration-color: #71717a;
+    text-decoration-color: rgba(113, 113, 122, 0.5);
   }
 
   html.blue a {

@@ -93,7 +93,7 @@ const path = Astro.url.pathname;
     {path !== '/' && (
       <button
         id="mobile-back-btn"
-        class="back-btn sidebar-link p-1 text-zinc-900 dark:text-zinc-100 hover:opacity-80 transition-opacity duration-150 no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
+        class="back-btn sidebar-link p-1 transition-opacity duration-150 no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
         aria-label="Go back"
         title="Go back"
       >
@@ -104,7 +104,7 @@ const path = Astro.url.pathname;
     )}
     <button
       id="hamburger-btn"
-      class="sidebar-link p-1 text-zinc-900 dark:text-zinc-100 hover:opacity-80 transition-opacity no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
+      class="sidebar-link p-1 transition-opacity no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
       aria-label="Toggle menu"
     >
       <svg id="hamburger-icon" class="w-6 h-6 stroke-current block" fill="none" viewBox="0 0 24 24">
