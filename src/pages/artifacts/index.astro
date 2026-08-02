@@ -156,28 +156,36 @@ while (byType.image.length || byType.link.length || byType.video.length) {
     }
   </style>
 
-  <script is:inline>
-    (() => {
+  <script>
+    function initArtifacts() {
       const tabs = Array.from(document.querySelectorAll(".filter-link"));
       const cards = Array.from(document.querySelectorAll(".artifact-card"));
 
-      const setActive = (name) => {
+      if (!tabs.length || !cards.length) return;
+
+      const setActive = (name: string) => {
         tabs.forEach((t) => {
-          const isAct = t.dataset.tab === name;
+          const isAct = (t as HTMLElement).dataset.tab === name;
           t.classList.toggle("is-active", isAct);
         });
         cards.forEach((c) => {
-          const type = c.dataset.type;
+          const type = (c as HTMLElement).dataset.type;
           const show = name === "all" || type === name;
-          c.style.display = show ? "block" : "none";
+          (c as HTMLElement).style.display = show ? "block" : "none";
         });
       };
 
-      tabs.forEach((t) =>
-        t.addEventListener("click", () => setActive(t.dataset.tab)),
-      );
-      
+      tabs.forEach((t) => {
+        t.addEventListener("click", () => {
+          const tabName = (t as HTMLElement).dataset.tab;
+          if (tabName) setActive(tabName);
+        });
+      });
+
       setActive("all");
-    })();
+    }
+
+    document.addEventListener("astro:page-load", initArtifacts);
+    initArtifacts();
   </script>
 </Layout>

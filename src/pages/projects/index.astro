@@ -251,10 +251,12 @@ const categories = [
     }
   </style>
 
-  <script is:inline>
-    (() => {
+  <script>
+    function initProjects() {
       const tabs = Array.from(document.querySelectorAll(".filter-link"));
       const cards = Array.from(document.querySelectorAll(".project-item"));
+
+      if (!tabs.length || !cards.length) return;
 
       const imgEls = Array.from(document.querySelectorAll(".project-item img"));
       const placeholder =
@@ -279,35 +281,35 @@ const categories = [
         img.addEventListener(
           "error",
           () => {
-            if (img.dataset.fallbackApplied) return;
-            img.dataset.fallbackApplied = "1";
-            img.src = placeholder;
-            img.style.opacity = "0.92";
+            if ((img as HTMLElement).dataset.fallbackApplied) return;
+            (img as HTMLElement).dataset.fallbackApplied = "1";
+            (img as HTMLImageElement).src = placeholder;
+            (img as HTMLElement).style.opacity = "0.92";
           },
           { once: false },
         );
       });
 
-      const setActive = (name) => {
+      const setActive = (name: string) => {
         tabs.forEach((tab) => {
-          const isAct = tab.dataset.tab === name;
+          const isAct = (tab as HTMLElement).dataset.tab === name;
           tab.classList.toggle("is-active", isAct);
         });
 
         cards.forEach((card) => {
-          const show = name === "all" || card.dataset.type === name;
-          card.style.display = show ? "block" : "none";
+          const show = name === "all" || (card as HTMLElement).dataset.type === name;
+          (card as HTMLElement).style.display = show ? "block" : "none";
         });
       };
 
       tabs.forEach((tab) => {
-        tab.addEventListener("click", () => setActive(tab.dataset.tab));
+        tab.addEventListener("click", () => {
+          const tabName = (tab as HTMLElement).dataset.tab;
+          if (tabName) setActive(tabName);
+        });
       });
 
-      // Initialize
-      setTimeout(() => {
-        setActive("software");
-      }, 60);
+      setActive("software");
 
       const lazyVideos = document.querySelectorAll(".lazy-video");
       const videoObserver = new IntersectionObserver(
@@ -335,6 +337,9 @@ const categories = [
           videoObserver.observe(video);
         }
       });
-    })();
+    }
+
+    document.addEventListener("astro:page-load", initProjects);
+    initProjects();
   </script>
 </Layout>

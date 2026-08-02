@@ -13,22 +13,11 @@ export function formatDate(date: Date) {
 }
 
 export function formatLongDate(date: Date) {
-  const formatter = Intl.DateTimeFormat("en-US", {
-    day: "numeric",
+  return Intl.DateTimeFormat("en-US", {
     month: "long",
+    day: "numeric",
     year: "numeric",
-  });
-
-  return formatter
-    .formatToParts(date)
-    .map((part) => {
-      if (part.type === "literal" && part.value === ", ") {
-        return " ";
-      }
-
-      return part.value;
-    })
-    .join("");
+  }).format(date);
 }
 
 export function formatShortDate(date: Date) {

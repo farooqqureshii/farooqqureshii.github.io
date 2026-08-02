@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { formatLongDate, getReadingTime, getWordCount } from "../../lib/utils";
+import { formatLongDate } from "../../lib/utils";
 
 export const prerender = true;
 
@@ -28,9 +28,6 @@ if (!post.data) {
 const { title, date, description } = post.data;
 const { Content } = await post.render();
 
-const rawContent = post.body;
-const wordCount = getWordCount(rawContent);
-const readingTime = getReadingTime(wordCount);
 
 const allPosts = await getCollection("writing");
 const sortedPosts = allPosts.sort(
@@ -44,7 +41,7 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
   <main>
     <h1 class="mb-1 text-sm font-medium text-zinc-900 dark:text-zinc-100">{title}</h1>
     <p class="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
-      Published on {formatLongDate(date)}, {readingTime} minute read
+      Published on {formatLongDate(date)}
     </p>
     <article class="text-sm leading-relaxed [&_p]:my-4">
       <Content />
