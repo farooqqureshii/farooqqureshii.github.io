@@ -33,7 +33,7 @@
 
   /* Universal transition defaults for micro-interactions */
   a, button {
-    transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
+    transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out), text-underline-offset var(--duration-base) var(--ease-out), text-decoration-thickness var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -94,9 +94,9 @@
   a {
     color: inherit;
     text-decoration: underline solid;
-    text-decoration-thickness: 1px;
+    text-decoration-thickness: 1.5px;
     text-decoration-color: rgba(138, 138, 142, 0.45);
-    text-underline-offset: 5px;
+    text-underline-offset: 4px;
     text-decoration-skip-ink: none;
   }
 
@@ -119,6 +119,8 @@
   a:hover {
     color: #000000;
     text-decoration-color: #000000;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
   }
 
   html.dark a:hover {

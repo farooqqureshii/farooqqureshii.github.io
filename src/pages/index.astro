@@ -13,22 +13,19 @@ import IndexLayout from "../layouts/IndexLayout.astro";
           rel="noopener">Electrical Engineering</a
         > student at <a href="https://uottawa.ca" target="_blank" rel="noopener"
           >the University of Ottawa</a
-        >. This summer, I'm working at <a
-          href="https://www.fleetway.ca/en/"
-          target="_blank"
-          rel="noopener">Fleetway</a
-        > on the <a
-          href="https://www.canada.ca/en/department-national-defence/services/procurement/halifax-class-modernization.html"
-          target="_blank"
-          rel="noopener">Halifax-class Modernization</a
-        > effort.
+        >.
       </p>
       <p>
-        Before this, I led the team behind <a
+        This past summer, I worked at <a href="https://www.fleetway.ca/en/"
+          target="_blank" rel="noopener">Fleetway</a
+        > supporting the <a
+          href="https://www.canada.ca/en/department-national-defence/services/procurement/halifax-class-modernization.html"
+          target="_blank" rel="noopener">Halifax-class Modernization</a
+        > effort. Before that, I led the team behind <a
           href="https://2026.uottahack.ca/"
           target="_blank"
           rel="noopener">uOttaHack</a
-        >. Before that, I debated competitively internationally and now coach.
+        >.
       </p>
       <p>
         I'm interested in power electronics and energy conversion systems.
@@ -51,16 +48,16 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       .inline-copy-btn {
         color: inherit;
         text-decoration: underline solid;
-        text-decoration-thickness: 1px;
+        text-decoration-thickness: 1.5px;
         text-decoration-color: rgba(138, 138, 142, 0.45);
-        text-underline-offset: 5px;
+        text-underline-offset: 4px;
         text-decoration-skip-ink: none;
         background: transparent;
         border: none;
         padding: 0;
         font: inherit;
         cursor: pointer;
-        transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out);
+        transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out), text-underline-offset var(--duration-base) var(--ease-out), text-decoration-thickness var(--duration-base) var(--ease-out);
         -webkit-tap-highlight-color: transparent;
       }
 
@@ -83,6 +80,8 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       .inline-copy-btn:hover {
         color: #000000;
         text-decoration-color: #000000;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
       }
 
       html.dark .inline-copy-btn:hover {
