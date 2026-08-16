@@ -87,9 +87,9 @@ const path = Astro.url.pathname;
 </aside>
 
 <!-- Mobile Header (Visible on mobile only) -->
-<div class="mobile-header relative z-[60] flex md:hidden items-center justify-between w-full mb-8">
-  <a id="mobile-brand-title" href="/" class={`sidebar-link no-underline transition-opacity duration-150 ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
-  <div class="flex items-center gap-2">
+<div class="mobile-header relative flex md:hidden items-center justify-between w-full mb-8">
+  <a id="mobile-brand-title" href="/" class={`sidebar-link relative z-10 no-underline ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
+  <div class="flex items-center gap-2 relative z-[60]">
     {path !== '/' && (
       <button
         id="mobile-back-btn"
@@ -120,7 +120,7 @@ const path = Astro.url.pathname;
 <!-- Mobile Fullscreen Overlay: Left-aligned list without brand title -->
 <div
   id="menu-overlay"
-  class="fixed inset-0 z-50 flex flex-col justify-center items-start px-6 sm:px-8 opacity-0 pointer-events-none transition-opacity duration-150 ease-out md:hidden"
+  class="fixed inset-0 z-50 flex flex-col justify-center items-start px-6 sm:px-8 opacity-0 pointer-events-none transition-opacity duration-150 ease-out md:hidden will-change-[opacity]"
 >
   <div class="flex flex-col text-left text-2xl sm:text-3xl font-normal leading-snug tracking-tight gap-2.5 no-underline w-full max-w-[780px] mx-auto">
     <a
@@ -193,7 +193,7 @@ const path = Astro.url.pathname;
       document.body.style.overflow = "hidden";
 
       if (brandTitle) {
-        brandTitle.classList.add("opacity-0", "pointer-events-none");
+        brandTitle.classList.add("pointer-events-none");
       }
       if (mobileBackBtn) {
         mobileBackBtn.classList.add("opacity-0", "pointer-events-none");
@@ -209,7 +209,7 @@ const path = Astro.url.pathname;
       document.body.style.overflow = "";
 
       if (brandTitle) {
-        brandTitle.classList.remove("opacity-0", "pointer-events-none");
+        brandTitle.classList.remove("pointer-events-none");
       }
       if (mobileBackBtn) {
         mobileBackBtn.classList.remove("opacity-0", "pointer-events-none");
