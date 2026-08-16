@@ -47,41 +47,43 @@ import IndexLayout from "../layouts/IndexLayout.astro";
     <style>
       .inline-copy-btn {
         color: inherit;
+        display: inline;
+        vertical-align: baseline;
+        font: inherit;
+        line-height: inherit;
         text-decoration: underline solid;
         text-decoration-thickness: 1.5px;
-        text-decoration-color: rgba(138, 138, 142, 0.45);
-        text-underline-offset: 4px;
+        text-decoration-color: rgba(113, 113, 122, 0.45);
+        text-underline-offset: 3.5px;
         text-decoration-skip-ink: none;
         background: transparent;
         border: none;
         padding: 0;
-        font: inherit;
+        margin: 0;
         cursor: pointer;
-        transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out), text-underline-offset var(--duration-base) var(--ease-out), text-decoration-thickness var(--duration-base) var(--ease-out);
+        transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out);
         -webkit-tap-highlight-color: transparent;
       }
 
       html.dark .inline-copy-btn {
-        text-decoration-color: rgba(113, 113, 122, 0.5);
+        text-decoration-color: rgba(161, 161, 170, 0.35);
       }
 
       html.blue .inline-copy-btn {
-        text-decoration-color: rgba(13, 31, 60, 0.4);
+        text-decoration-color: rgba(13, 31, 60, 0.3);
       }
 
       html.pink .inline-copy-btn {
-        text-decoration-color: #c08090;
+        text-decoration-color: rgba(192, 128, 144, 0.4);
       }
 
       html.green .inline-copy-btn {
-        text-decoration-color: #4a8553;
+        text-decoration-color: rgba(74, 133, 83, 0.4);
       }
 
       .inline-copy-btn:hover {
         color: #000000;
         text-decoration-color: #000000;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 3px;
       }
 
       html.dark .inline-copy-btn:hover {
