@@ -1,8 +1,6 @@
 ---
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-// import CommandMenu from "../components/CommandMenu.astro";
-
 import { cn } from "../lib/utils";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
@@ -91,8 +89,6 @@ const {
           html.classList.add(theme);
         }
       };
-      setTheme();
-
       if (!window.__themeListenerAttached) {
         document.addEventListener("astro:after-swap", setTheme);
         window.__themeListenerAttached = true;

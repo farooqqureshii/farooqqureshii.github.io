@@ -1,0 +1,204 @@
+---
+import { SITE_DESCRIPTION } from "../../consts";
+import type { Bookmark, BookmarkCategory } from "../../data/bookmarks";
+import { bookmarks as baseBookmarks } from "../../data/bookmarks";
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = true;
+
+function withCategories(
+  b: Bookmark,
+): Bookmark & { categories: BookmarkCategory[] } {
+  const cats = b.categories?.length
+    ? b.categories
+    : b.type === "image"
+      ? (["photography"] as BookmarkCategory[])
+      : b.type === "video"
+        ? (["tools"] as BookmarkCategory[])
+        : (["design"] as BookmarkCategory[]);
+  return { ...b, categories: cats };
+}
+
+const bookmarks = baseBookmarks.map(withCategories);
+
+const items = bookmarks.filter((b) => {
+  if (b.type === "link") return !!b.url;
+  if (b.type === "video") return !!b.url;
+  if (b.type === "image") return !!b.image;
+  return false;
+});
+---
+
+<Layout
+  title="Farooq Q. | Bookmarks"
+  description={SITE_DESCRIPTION}
+>
+  <div>
+    <!-- Filter Bar (Links default) -->
+    <nav class="filter-nav mb-8 flex items-center gap-2 text-sm" aria-label="Filter bookmarks">
+      <button type="button" class="filter-link" data-tab="link">Links</button>
+      <span class="filter-sep">/</span>
+      <button type="button" class="filter-link" data-tab="image">Images</button>
+      <span class="filter-sep">/</span>
+      <button type="button" class="filter-link" data-tab="video">Videos</button>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="bookmarks-wrapper">
+      {/* 1. Links Section - Written prose style */}
+      <section class="bookmark-section" data-type-section="link">
+        <ul class="space-y-3 text-sm leading-relaxed">
+          {items.filter(i => i.type === "link").map((item) => (
+            <li class="bookmark-item py-0.5" data-type="link">
+              {item.writtenText ? (
+                <span set:html={item.writtenText} />
+              ) : (
+                <span>
+                  this article from{" "}
+                  <a href={item.url} target="_blank" rel="noopener">
+                    {item.domain || item.title}
+                  </a>
+                  {item.title && item.title !== item.domain && (
+                    <span> &mdash; <a href={item.url} target="_blank" rel="noopener">{item.title}</a></span>
+                  )}
+                  {item.description && (
+                    <span> ({item.description})</span>
+                  )}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* 2. Videos Section - Written text links */}
+      <section class="bookmark-section" data-type-section="video">
+        <ul class="space-y-3 text-sm leading-relaxed">
+          {items.filter(i => i.type === "video").map((item) => (
+            <li class="bookmark-item py-0.5" data-type="video">
+              {item.writtenText ? (
+                <span set:html={item.writtenText} />
+              ) : (
+                <span>
+                  this video from{" "}
+                  <a href={item.url} target="_blank" rel="noopener">
+                    {item.domain || "youtube.com"}
+                  </a>
+                  <span> &mdash; <a href={item.url} target="_blank" rel="noopener">{item.title}</a></span>
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* 3. Images Section - 1 image per row, caption on single line */}
+      <section class="bookmark-section" data-type-section="image">
+        <div class="artifact-grid grid grid-cols-1 gap-6">
+          {items.filter(i => i.type === "image").map((item, index) => (
+            <div
+              class="bookmark-item block overflow-hidden rounded-md border border-zinc-200/80 bg-zinc-50/50 p-3 text-sm dark:border-zinc-800/80 dark:bg-zinc-900/40 select-none cursor-default"
+              data-type="image"
+            >
+              <div class="mb-2 overflow-hidden rounded border border-zinc-200/60 bg-zinc-200/40 dark:border-zinc-800/60 dark:bg-zinc-800/40">
+                <img
+                  src={item.image}
+                  alt={item.alt || item.title || "Bookmark image"}
+                  class="block h-auto w-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none"
+                  loading={index < 3 ? "eager" : "lazy"}
+                  fetchpriority={index < 3 ? "high" : "auto"}
+                  decoding="async"
+                  onload="this.classList.remove('opacity-0')"
+                />
+              </div>
+              {(item.title || item.description) && (
+                <p class="text-xs text-zinc-600 dark:text-zinc-400">
+                  {item.title}{item.title && item.description && item.description !== item.title ? ` — ${item.description}` : (!item.title ? item.description : "")}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <style>
+    .filter-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2rem;
+    }
+    .filter-link {
+      font-size: 0.875rem;
+      color: #71717a;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: color 150ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    html.dark .filter-link {
+      color: #a1a1aa;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .filter-link:hover {
+        color: #111111;
+      }
+      html.dark .filter-link:hover {
+        color: #ffffff;
+      }
+    }
+    .filter-link.is-active {
+      color: #111111 !important;
+      font-weight: 500;
+    }
+    html.dark .filter-link.is-active {
+      color: #ffffff !important;
+    }
+    .filter-sep {
+      font-size: 0.875rem;
+      color: #e4e4e7;
+      user-select: none;
+    }
+    html.dark .filter-sep {
+      color: #3f3f46;
+    }
+  </style>
+
+  <script>
+    function initBookmarks() {
+      const tabs = Array.from(document.querySelectorAll(".filter-link"));
+      const sections = Array.from(document.querySelectorAll(".bookmark-section"));
+
+      if (!tabs.length || !sections.length) return;
+
+      const setActive = (name: string) => {
+        tabs.forEach((t) => {
+          const isAct = (t as HTMLElement).dataset.tab === name;
+          t.classList.toggle("is-active", isAct);
+        });
+
+        sections.forEach((sec) => {
+          const typeSec = (sec as HTMLElement).dataset.typeSection;
+          const show = typeSec === name;
+          (sec as HTMLElement).style.display = show ? "block" : "none";
+        });
+      };
+
+      tabs.forEach((t) => {
+        t.addEventListener("click", () => {
+          const tabName = (t as HTMLElement).dataset.tab;
+          if (tabName) setActive(tabName);
+        });
+      });
+
+      // Default active tab is 'link'
+      setActive("link");
+    }
+
+    document.addEventListener("astro:page-load", initBookmarks);
+    initBookmarks();
+  </script>
+</Layout>

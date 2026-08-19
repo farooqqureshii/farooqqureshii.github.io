@@ -29,6 +29,8 @@
 
   html {
     font-size: 16px;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
   }
 
   /* Universal transition defaults for micro-interactions */
@@ -860,32 +862,13 @@ a[href^="#fn"],
   display: block;
 }
 
-/* Page container — instant display, no keyframe animation */
-.page-container {
-  animation: none !important;
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* Smooth View Transition Crossfade (200ms) for Theme Toggle */
-::view-transition-old(root) {
-  animation: 200ms cubic-bezier(0.23, 1, 0.32, 1) both theme-fade-out;
-  mix-blend-mode: normal;
-}
+/* Instant View Transitions - zero fade animation, zero delay, zero layout shift */
+::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: 200ms cubic-bezier(0.23, 1, 0.32, 1) both theme-fade-in;
-  mix-blend-mode: normal;
+  animation: none !important;
 }
 
-@keyframes theme-fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
 
-@keyframes theme-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
 
 
 

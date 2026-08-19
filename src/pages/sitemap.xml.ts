@@ -9,7 +9,7 @@ export const GET: APIRoute = async () => {
     { url: '/', lastmod: currentDate, changefreq: 'daily', priority: '1.0' },
     { url: '/projects', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
     { url: '/writing', lastmod: currentDate, changefreq: 'weekly', priority: '0.8' },
-    { url: '/artifacts', lastmod: currentDate, changefreq: 'weekly', priority: '0.7' },
+    { url: '/bookmarks', lastmod: currentDate, changefreq: 'weekly', priority: '0.7' },
     { url: '/other', lastmod: currentDate, changefreq: 'monthly', priority: '0.6' },
     { url: '/other/books', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },
     { url: '/other/courses', lastmod: currentDate, changefreq: 'monthly', priority: '0.5' },

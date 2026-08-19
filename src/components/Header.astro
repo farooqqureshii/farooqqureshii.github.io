@@ -20,9 +20,9 @@ const path = Astro.url.pathname;
       class={`sidebar-link ${path.startsWith('/writing') ? 'active' : ''}`}
     >Writing</a>
     <a
-      href="/artifacts"
-      class={`sidebar-link ${path.startsWith('/artifacts') ? 'active' : ''}`}
-    >Artifacts</a>
+      href="/bookmarks"
+      class={`sidebar-link ${path.startsWith('/bookmarks') ? 'active' : ''}`}
+    >Bookmarks</a>
     <a
       href="/other"
       class={`sidebar-link ${path.startsWith('/other') ? 'active' : ''}`}
@@ -62,10 +62,10 @@ const path = Astro.url.pathname;
   <div>
     <button
       id="sidebar-theme-toggle"
-      class="sidebar-link active:scale-95 transform transition-transform"
+      class="sidebar-link cursor-pointer select-none"
       title="Toggle theme"
     >
-      <span class="sidebar-theme-label">Dark</span>
+      <span class="sidebar-theme-label inline-block min-w-[48px]">Dark</span>
     </button>
   </div>
 
@@ -132,9 +132,9 @@ const path = Astro.url.pathname;
       class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/writing') ? 'active' : ''}`}
     >Writing</a>
     <a
-      href="/artifacts"
-      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/artifacts') ? 'active' : ''}`}
-    >Artifacts</a>
+      href="/bookmarks"
+      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/bookmarks') ? 'active' : ''}`}
+    >Bookmarks</a>
     <a
       href="/other"
       class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/other') ? 'active' : ''}`}
@@ -167,9 +167,9 @@ const path = Astro.url.pathname;
     <div class="pt-6">
       <button
         id="mobile-theme-toggle"
-        class="mobile-nav-link no-underline text-left transition-colors duration-150 cursor-pointer active:scale-95 transform transition-transform"
+        class="mobile-nav-link no-underline text-left transition-colors duration-150 cursor-pointer"
       >
-        <span class="sidebar-theme-label">Light</span>
+        <span class="sidebar-theme-label inline-block min-w-[48px]">Light</span>
       </button>
     </div>
   </div>
@@ -337,31 +337,17 @@ const path = Astro.url.pathname;
       const nextIndex = (currentIndex + 1) % THEMES.length;
       const nextTheme = THEMES[nextIndex];
 
-      const applyTheme = () => {
-        const html = document.documentElement;
-        THEMES.forEach((t) => {
-          if (t !== "light") {
-            html.classList.remove(t);
-          }
-        });
-        if (nextTheme !== "light") {
-          html.classList.add(nextTheme);
+      const html = document.documentElement;
+      THEMES.forEach((t) => {
+        if (t !== "light") {
+          html.classList.remove(t);
         }
-        localStorage.theme = nextTheme;
-        updateThemeLabels();
-      };
-
-      const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      // @ts-ignore - startViewTransition is standard in modern browsers
-      if (!document.startViewTransition || isReducedMotion) {
-        applyTheme();
-        return;
-      }
-
-      // @ts-ignore
-      document.startViewTransition(() => {
-        applyTheme();
       });
+      if (nextTheme !== "light") {
+        html.classList.add(nextTheme);
+      }
+      localStorage.theme = nextTheme;
+      updateThemeLabels();
     };
 
     if (desktopThemeBtn) desktopThemeBtn.onclick = () => toggleTheme();
