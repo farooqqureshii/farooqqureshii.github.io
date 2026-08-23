@@ -89,6 +89,8 @@ const {
           html.classList.add(theme);
         }
       };
+      setTheme();
+
       if (!window.__themeListenerAttached) {
         document.addEventListener("astro:after-swap", setTheme);
         window.__themeListenerAttached = true;

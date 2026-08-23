@@ -39,27 +39,27 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  body {
+  html, body {
     background-color: #ffffff;
     color: #111111;
   }
 
-  html.dark body {
+  html.dark, html.dark body {
     background-color: #1a1a1a;
     color: #e4e4e7;
   }
 
-  html.blue body {
+  html.blue, html.blue body {
     background-color: #c8d8f0;
     color: #0d1f3c;
   }
 
-  html.pink body {
+  html.pink, html.pink body {
     background-color: #fde8ee;
     color: #2d1219;
   }
 
-  html.green body {
+  html.green, html.green body {
     background-color: #d4f0d7;
     color: #0a2010;
   }

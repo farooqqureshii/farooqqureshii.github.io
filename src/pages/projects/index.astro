@@ -4,6 +4,28 @@ import Layout from "../../layouts/Layout.astro";
 
 const projects = [
   {
+    title: "PID Position Controller for Antenna Servo",
+    description:
+      "Position controller tuning and disturbance rejection for a DC motor antenna servo in MATLAB and Simulink",
+    media: "/static/antenna_pid.webp",
+    mediaType: "image",
+    category: "engineering",
+    github: "https://github.com/farooqqureshii/pid-antenna-positioner",
+    report: "/reports/antenna-positioner-pid-report.pdf",
+    technologies: ["MATLAB", "Simulink", "Control Systems", "PID Tuning", "Bode Analysis"],
+  },
+  {
+    title: "Digital Filter Design for Interference Rejection",
+    description:
+      "Digital filter design for narrowband interference rejection using Python and SciPy",
+    media: "/static/dsp_filter.webp",
+    mediaType: "image",
+    category: "engineering",
+    github: "https://github.com/farooqqureshii/dsp-filter",
+    report: "/reports/dsp-filter-design-report.pdf",
+    technologies: ["DSP", "FIR / IIR Filters", "Python", "SciPy", "Signal Processing"],
+  },
+  {
     title: "uOttaHack | Director",
     description: "Leading the team behind Ottawa's largest tech event",
     media: "/static/uottahack.jpg",
@@ -107,6 +129,7 @@ const projects = [
 ];
 
 const categories = [
+  { label: "Engineering", value: "engineering" },
   { label: "Software", value: "software" },
   { label: "Product", value: "product" },
 ];
@@ -134,29 +157,33 @@ const categories = [
             class="project-item space-y-2.5"
             data-type={project.category}
           >
-            <div class="media-section w-full overflow-hidden rounded-lg border border-zinc-200/80 bg-zinc-100 dark:border-zinc-800/80 dark:bg-zinc-900/60">
-              {project.mediaType === "video" ? (
-                <video
-                  src={index < 2 ? project.media : undefined}
-                  data-src={index < 2 ? undefined : project.media}
-                  muted
-                  loop
-                  playsinline
-                  autoplay={index < 2}
-                  preload={index < 2 ? "metadata" : "none"}
-                  class={`aspect-[16/9] w-full object-cover ${index < 2 ? "priority-video" : "lazy-video"}`}
-                >
-                  Your browser does not support the video tag.
-                </video>
-              ) : (
-                <img
-                  src={project.media}
-                  alt={project.title}
-                  loading={index < 2 ? "eager" : "lazy"}
-                  class="aspect-[16/9] w-full object-cover"
-                />
-              )}
-            </div>
+            {project.media && (
+              <div class="media-section w-full overflow-hidden rounded-lg border border-zinc-200/80 bg-zinc-100 dark:border-zinc-800/80 dark:bg-zinc-900/60">
+                {project.mediaType === "video" ? (
+                  <video
+                    src={index < 2 ? project.media : undefined}
+                    data-src={index < 2 ? undefined : project.media}
+                    muted
+                    loop
+                    playsinline
+                    autoplay={index < 2}
+                    preload={index < 2 ? "metadata" : "none"}
+                    class={`aspect-[16/9] w-full object-cover ${index < 2 ? "priority-video" : "lazy-video"}`}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <img
+                    src={project.media}
+                    alt={project.title}
+                    loading={index < 2 ? "eager" : "lazy"}
+                    fetchpriority={index < 2 ? "high" : "auto"}
+                    decoding="async"
+                    class="aspect-[16/9] w-full object-cover"
+                  />
+                )}
+              </div>
+            )}
             <div class="space-y-1 text-sm pt-0.5">
               <h2 class="font-medium text-zinc-900 dark:text-zinc-100 text-sm">{project.title}</h2>
               <p class="leading-relaxed text-zinc-500 dark:text-zinc-400">
@@ -182,6 +209,17 @@ const categories = [
                     class="project-link"
                   >
                     Link
+                  </a>
+                )}
+
+                {project.report && (
+                  <a
+                    href={project.report}
+                    target="_blank"
+                    rel="noopener"
+                    class="project-link"
+                  >
+                    Report
                   </a>
                 )}
               </div>
@@ -309,7 +347,9 @@ const categories = [
         });
       });
 
-      setActive("software");
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialTab = urlParams.get("tab") || "engineering";
+      setActive(initialTab);
 
       const lazyVideos = document.querySelectorAll(".lazy-video");
       const videoObserver = new IntersectionObserver(
