@@ -93,7 +93,7 @@ const path = Astro.url.pathname;
     {path !== '/' && (
       <button
         id="mobile-back-btn"
-        class="back-btn sidebar-link p-1 transition-opacity duration-150 no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
+        class="back-btn sidebar-link p-1 no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
         aria-label="Go back"
         title="Go back"
       >
@@ -196,7 +196,7 @@ const path = Astro.url.pathname;
         brandTitle.classList.add("pointer-events-none");
       }
       if (mobileBackBtn) {
-        mobileBackBtn.classList.add("opacity-0", "pointer-events-none");
+        mobileBackBtn.classList.add("hidden");
       }
       if (burgerIcon) burgerIcon.classList.add("hidden");
       if (closeIcon) closeIcon.classList.remove("hidden");
@@ -212,7 +212,7 @@ const path = Astro.url.pathname;
         brandTitle.classList.remove("pointer-events-none");
       }
       if (mobileBackBtn) {
-        mobileBackBtn.classList.remove("opacity-0", "pointer-events-none");
+        mobileBackBtn.classList.remove("hidden");
       }
       if (burgerIcon) burgerIcon.classList.remove("hidden");
       if (closeIcon) closeIcon.classList.add("hidden");
@@ -221,6 +221,8 @@ const path = Astro.url.pathname;
     function toggleMenu(e?: Event) {
       if (e) e.stopPropagation();
       if (!overlay) return;
+      if (burgerBtn) burgerBtn.blur();
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
       if (overlay.classList.contains("opacity-100")) {
         closeMenu();
       } else {
@@ -228,7 +230,10 @@ const path = Astro.url.pathname;
       }
     }
 
-    burgerBtn.onclick = (e) => toggleMenu(e);
+    burgerBtn.onclick = (e) => {
+      toggleMenu(e);
+      burgerBtn.blur();
+    };
 
     const handleCustomToggle = (e: any) => {
       if (e.detail?.action === "open") openMenu();

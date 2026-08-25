@@ -48,59 +48,60 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         vertical-align: baseline;
         font: inherit;
         line-height: inherit;
-        text-decoration: underline solid;
-        text-decoration-thickness: 1.5px;
-        text-decoration-color: rgba(113, 113, 122, 0.45);
-        text-underline-offset: 3.5px;
+        text-decoration-line: underline !important;
+        text-decoration-style: solid !important;
+        text-decoration-color: rgba(113, 113, 122, 0.45) !important;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4.5px !important;
         text-decoration-skip-ink: none;
         background: transparent;
         border: none;
         padding: 0;
         margin: 0;
         cursor: pointer;
-        transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out);
+        transition: none !important;
         -webkit-tap-highlight-color: transparent;
       }
 
       html.dark .inline-copy-btn {
-        text-decoration-color: rgba(161, 161, 170, 0.35);
+        text-decoration-color: rgba(161, 161, 170, 0.35) !important;
       }
 
       html.blue .inline-copy-btn {
-        text-decoration-color: rgba(13, 31, 60, 0.3);
+        text-decoration-color: rgba(13, 31, 60, 0.3) !important;
       }
 
       html.pink .inline-copy-btn {
-        text-decoration-color: rgba(192, 128, 144, 0.4);
+        text-decoration-color: rgba(192, 128, 144, 0.4) !important;
       }
 
       html.green .inline-copy-btn {
-        text-decoration-color: rgba(74, 133, 83, 0.4);
+        text-decoration-color: rgba(74, 133, 83, 0.4) !important;
       }
 
       .inline-copy-btn:hover {
-        color: #000000;
-        text-decoration-color: #000000;
+        color: #000000 !important;
+        text-decoration-color: #000000 !important;
       }
 
       html.dark .inline-copy-btn:hover {
-        color: #ffffff;
-        text-decoration-color: #ffffff;
+        color: #ffffff !important;
+        text-decoration-color: #ffffff !important;
       }
 
       html.blue .inline-copy-btn:hover {
-        color: #0d1f3c;
-        text-decoration-color: #0d1f3c;
+        color: #0d1f3c !important;
+        text-decoration-color: #0d1f3c !important;
       }
 
       html.pink .inline-copy-btn:hover {
-        color: #2d1219;
-        text-decoration-color: #2d1219;
+        color: #2d1219 !important;
+        text-decoration-color: #2d1219 !important;
       }
 
       html.green .inline-copy-btn:hover {
-        color: #0a2010;
-        text-decoration-color: #0a2010;
+        color: #0a2010 !important;
+        text-decoration-color: #0a2010 !important;
       }
 
       .copy-rest-text {
