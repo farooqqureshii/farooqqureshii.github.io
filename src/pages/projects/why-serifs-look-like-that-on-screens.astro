@@ -1,0 +1,1215 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  title="Farooq Q. | What's Up with Serifs on Screens?"
+  description="An investigation into screen typography: Bézier rasterization, scanline algorithms, TrueType bytecode, subpixel rendering, optical sizing, and screen font anatomy."
+>
+  <!-- Web Fonts for Type Specimen Demonstrations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&display=swap"
+    rel="stylesheet"
+  />
+
+  <main class="typo-investigation">
+    <h1 class="mb-1 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+      What's Up with Serifs on Screens?
+    </h1>
+    <p class="mb-8 text-sm text-zinc-500 dark:text-zinc-400">
+      Physics, mathematics, and rasterization engines of digital type
+    </p>
+
+    <article class="text-sm leading-relaxed [&_p]:my-4 text-zinc-700 dark:text-zinc-300">
+      <p>
+        If you opened a browser in 1999, serif typography looked noticeably broken. Classic book typefaces like <a href="https://practicaltypography.com/system-fonts.html" target="_blank" rel="noopener">Baskerville, Caslon, and Bodoni</a> looked jagged and fragile on early CRT monitors. Horizontal strokes disappeared, letters broke apart, and baselines looked uneven across paragraphs.
+      </p>
+
+      <p>
+        Web designers quickly moved to sans-serif fonts like <a href="https://www.monotype.com/resources/articles/the-history-of-helvetica" target="_blank" rel="noopener">Helvetica</a> and <a href="https://learn.microsoft.com/en-us/typography/font-list/arial" target="_blank" rel="noopener">Arial</a>. This started the common belief that serifs are bad for screen reading. In reality, the problem had nothing to do with taste. It was a clash between two mathematical models: continuous Bézier curves designed for print, and the coarse grid of early computer screens.
+      </p>
+
+      <p>
+        In physical printing, metal punches press ink into paper under heavy pressure. Ink naturally bleeds into paper fibers (a physical effect called ink squash). This slightly thickens thin strokes and rounds off sharp corners, giving printed text an effective resolution above 2,400 dots per inch (DPI).
+      </p>
+
+      <p>
+        When digital typography started in the 1980s with <a href="https://history.computer.org/pioneers/warnock.html" target="_blank" rel="noopener">John Warnock</a> and Chuck Geschke at Adobe (<a href="https://adobe-type-tools.github.io/font-tech-notes/pdfs/5015.Type1_Spec.pdf" target="_blank" rel="noopener">PostScript Type 1</a>) and later Apple and Microsoft (<a href="https://developer.apple.com/fonts/TrueType-Reference-Manual/" target="_blank" rel="noopener">TrueType</a>), physical metal was replaced by math. Every letter outline became a set of closed paths made of parametric cubic Bézier curves:
+      </p>
+
+      <div class="math-card">
+        B(t) = (1 - t)³ P₀ + 3(1 - t)² t P₁ + 3(1 - t) t² P₂ + t³ P₃, &emsp; t &isin; [0, 1]
+      </div>
+
+      <p>
+        At its core, a serif is a mathematical fillet transitioning a vertical stroke into a horizontal terminal. Moving the control handles in the interactive figure below demonstrates how small shifts in tangent vectors transform a sharp hairline into a curved bracket or a block slab.
+      </p>
+
+      <!-- DEMO 1: INTERACTIVE BEZIER BRACKET SCULPTOR -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="canvas-viewport">
+          <canvas id="bezier-canvas" class="w-full h-64 block cursor-grab active:cursor-grabbing"></canvas>
+          <div id="bezier-hud" class="canvas-hud">
+            Bracket Radius: 18.4px
+          </div>
+        </div>
+
+        <div class="figure-controls flex flex-wrap items-center justify-between gap-2">
+          <div class="pill-nav">
+            <button type="button" class="pill-link active" data-preset="bracketed">Bracketed (Garamond)</button>
+            <button type="button" class="pill-link" data-preset="hairline">Hairline (Didot)</button>
+            <button type="button" class="pill-link" data-preset="slab">Slab (Rockwell)</button>
+          </div>
+          <span class="text-xs text-zinc-400 dark:text-zinc-500">Drag blue control points P₁ / P₂</span>
+        </div>
+      </div>
+
+      <p>
+        To turn these continuous curves into pixels, a font engine uses scanline rasterization. As documented in <a href="https://freetype.org/freetype2/docs/design/design-4.html" target="_blank" rel="noopener">David Turner's FreeType architecture</a>, the engine casts horizontal rays through the letter outline, calculating where the ray intersects vector edges and applying the non-zero winding rule to determine which pixel spans are solid and which are hollow counters.
+      </p>
+
+      <p>
+        Dragging the horizontal ray in the scanline inspector below shows how the rasterizer tracks entry and exit intersections to fill spans and carve out the interior counter of a letter.
+      </p>
+
+      <!-- DEMO 2: SCANLINE RAY CASTING & WINDING NUMBER INSPECTOR -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="canvas-viewport">
+          <canvas id="scanline-canvas" class="w-full h-64 block cursor-ns-resize"></canvas>
+          <div id="scanline-hud" class="canvas-hud">
+            Scanline Y: 110px &bull; Intersections: 4 &bull; Hollow Counter
+          </div>
+        </div>
+
+        <div class="figure-controls space-y-2">
+          <div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+            <span>Drag Scanline Ray Y-Position across letter geometry</span>
+            <span id="scanline-val" class="font-medium text-zinc-900 dark:text-zinc-100">Y: 110 px</span>
+          </div>
+          <input type="range" id="scanline-slider" min="25" max="190" value="110" class="custom-slider" />
+        </div>
+      </div>
+
+      <p>
+        A Bézier curve has infinite precision in vector math. But computer displays are rigid grids of physical square pixels. When the original Apple Macintosh came out in 1984, its screen had a resolution of 72 pixels per inch (PPI). A standard 10-point letter had only 10 pixels of vertical space.
+      </p>
+
+      <p>
+        In those 10 vertical pixels, the rasterizer had to draw the cap height, x-height, baseline, descender, inner counter holes, and tiny serifs. The main reason classical serifs failed on screens is stroke contrast: the ratio between the thickest vertical stem and the thinnest horizontal stroke. In the late 1700s, type designers like <a href="https://www.linotype.com/492/giambattista-bodoni.html" target="_blank" rel="noopener">Giambattista Bodoni</a> and <a href="https://www.britannica.com/biography/Firmin-Didot" target="_blank" rel="noopener">Firmin Didot</a> made high-contrast typefaces with ratios of 8:1 or 10:1.
+      </p>
+
+      <p>
+        The formula for the physical pixel width of a hairline on screen is:
+      </p>
+
+      <div class="math-card">
+        w_px = (Font Size &times; Resolution / 72) &times; Hairline Fraction
+      </div>
+
+      <p>
+        For a 12pt Bodoni on a 96 DPI screen, where the hairline fraction is 0.025 of the em-square:
+      </p>
+
+      <div class="math-card">
+        w_px = (12 &times; 96 / 72) &times; 0.025 = 0.40 pixels
+      </div>
+
+      <p>
+        When a line is 0.40 pixels wide, the rasterizer faces a difficult dilemma. If it rounds down to 0, the stroke completely disappears (stem dropout). If it rounds up to 1, the stroke expands by 250%, making the typeface look thick and clunky.
+      </p>
+
+      <p>
+        The practical consequence of high stroke contrast appears when continuous curves are quantized onto a raster grid. Reducing the rendered size in the comparison below reveals the threshold where fine hairlines fall below half a pixel and drop out entirely, compared to a typeface engineered with reinforced strokes.
+      </p>
+
+      <!-- DEMO 3: SIDE-BY-SIDE RESOLUTION & DROPOUT SIMULATOR -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="canvas-viewport">
+          <canvas id="dropout-canvas" class="w-full h-72 block"></canvas>
+          <div id="dropout-hud" class="canvas-hud">
+            Bodoni: Hairlines Severed (0.33px &lt; 0.5px) &bull; Georgia: Stems Intact
+          </div>
+        </div>
+
+        <div class="figure-controls space-y-2">
+          <div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+            <span>Rendered Font Size (Drag below 16px to see hairlines drop out)</span>
+            <span id="dropout-size-val" class="font-medium text-zinc-900 dark:text-zinc-100">14 px (Body Text)</span>
+          </div>
+          <input type="range" id="dropout-size-slider" min="9" max="44" value="14" class="custom-slider" />
+        </div>
+      </div>
+
+      <p>
+        Sans-serif fonts like Helvetica worked well on early screens because their strokes are uniform (roughly 1:1 contrast). At 12pt, a Helvetica stem measured about 1.92 pixels, which cleanly rounded to 2 full pixels without missing parts.
+      </p>
+
+      <p>
+        By 1995, this problem led to two different engineering approaches from Microsoft and Apple. Microsoft hired type designer <a href="https://learn.microsoft.com/en-us/typography/font-list/georgia" target="_blank" rel="noopener">Matthew Carter</a> and hinting expert Tom Rickner to build screen-first fonts: <a href="https://learn.microsoft.com/en-us/typography/font-list/georgia" target="_blank" rel="noopener">Georgia</a> (1993) and <a href="https://learn.microsoft.com/en-us/typography/font-list/verdana" target="_blank" rel="noopener">Verdana</a> (1996). Carter designed Georgia by working directly on pixel grids, using thick triangular brackets, large x-heights, open counters, and low contrast.
+      </p>
+
+      <p>
+        To control how fonts rendered across different sizes, Apple and Microsoft created the <a href="https://developer.apple.com/fonts/TrueType-Reference-Manual/RM05/Chap5.html" target="_blank" rel="noopener">TrueType Instruction Set</a>. This is a stack-based virtual machine built right into font files. Using instructions like <code>MDAP</code> (Move Direct Absolute Point) and <code>MIRP</code> (Move Indirect Relative Point), font developers wrote code that snapped control points to whole pixel borders.
+      </p>
+
+      <p>
+        The ideological difference between Microsoft and Apple centers on whether glyph geometry should conform to physical hardware. Shifting a stem horizontally in the simulator below shows how TrueType bytecode forces points onto integer grid lines, while Quartz antialiasing preserves the underlying vector position through fractional gray values.
+      </p>
+
+      <!-- DEMO 4: TRUETYPE BYTECODE SNAPPING SIMULATOR -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="canvas-viewport">
+          <canvas id="hinting-canvas" class="w-full h-64 block"></canvas>
+          <div id="hinting-hud" class="canvas-hud">
+            ClearType Hinting: Snapped to Integer Grid Column
+          </div>
+        </div>
+
+        <div class="figure-controls space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="pill-nav">
+              <button type="button" class="pill-link active hint-mode-btn" data-mode="cleartype">TrueType Bytecode (MS)</button>
+              <button type="button" class="pill-link hint-mode-btn" data-mode="quartz">Quartz 2D (Apple)</button>
+              <button type="button" class="pill-link hint-mode-btn" data-mode="mono">1-Bit (1984)</button>
+              <button type="button" class="pill-link hint-mode-btn" data-mode="vector">Continuous Vector</button>
+            </div>
+            <span id="stem-offset-val" class="text-xs text-zinc-400 dark:text-zinc-500">Offset: 0.35 px</span>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+              <span>Subpixel Horizontal Stem Shift (Drag to observe snap vs blur)</span>
+            </div>
+            <input type="range" id="stem-slider" min="0" max="100" value="35" class="custom-slider" />
+          </div>
+        </div>
+      </div>
+
+      <p>
+        In 1998, Microsoft researchers Bill Hill and Butler Lampson created <a href="https://www.microsoft.com/en-us/research/publication/subpixel-font-rendering-and-cleartype/" target="_blank" rel="noopener">ClearType</a> by taking advantage of LCD screen hardware. An LCD pixel is made of three vertical color bars: Red, Green, and Blue.
+      </p>
+
+      <p>
+        By controlling each color bar separately, the rasterizer tripled the horizontal resolution. A 1024&times;768 display effectively gained 3,072 columns of light. But lighting subpixels individually caused color fringing (visible red and blue edges around black text). As explained in <a href="https://www.grc.com/cleartype.htm" target="_blank" rel="noopener">Steve Gibson's ClearType analysis</a>, Microsoft added a 5-tap spatial filter [0.08, 0.28, 0.28, 0.28, 0.08] across neighboring subpixels to remove color fringes while keeping text sharp.
+      </p>
+
+      <p>
+        Physical LCD panels separate each pixel into three distinct color phosphors. Examining an edge at high magnification in the subpixel microscope illustrates how horizontal resolution triples, and how spatial filtering prevents chromatic fringing along high-contrast boundaries.
+      </p>
+
+      <!-- DEMO 5: 40X LCD SUBPIXEL MICROSCOPE -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="canvas-viewport">
+          <canvas id="subpixel-canvas" class="w-full h-56 block"></canvas>
+          <div id="subpixel-hud" class="canvas-hud">
+            ClearType FIR Filtered: Clean Edge Luminance
+          </div>
+        </div>
+
+        <div class="figure-controls flex flex-wrap items-center justify-between gap-2">
+          <div class="pill-nav">
+            <button type="button" class="pill-link active subpixel-btn" data-filter="cleartype">ClearType Filtered</button>
+            <button type="button" class="pill-link subpixel-btn" data-filter="raw">Raw Color Fringe</button>
+            <button type="button" class="pill-link subpixel-btn" data-filter="grayscale">Grayscale AA</button>
+          </div>
+          <div class="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+            <span>Glyph:</span>
+            <input type="text" id="subpixel-input" maxlength="2" value="R" class="glyph-field" />
+          </div>
+        </div>
+      </div>
+
+      <p>
+        Beyond stroke weight, screen typefaces succeeded because of their anatomical proportions: generous x-heights, wide counter spaces, and open aperture angles. When a font has a large x-height (the height of lowercase letters relative to capitals), lowercase characters receive more vertical pixels on low-resolution grids, keeping counters like the loop of an 'e' or 'a' open and clear.
+      </p>
+
+      <p>
+        The anatomy comparator below lets you inspect these proportion differences directly between Georgia (screen-first), Bodoni (classical print), and Garamond. Notice how Georgia elevates its x-height and expands its inner counters to maximize pixel allocation.
+      </p>
+
+      <!-- DEMO 6: SCREEN FONT ANATOMY COMPARATOR -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="canvas-viewport">
+          <canvas id="anatomy-canvas" class="w-full h-64 block"></canvas>
+          <div id="anatomy-hud" class="canvas-hud">
+            Georgia: Tall x-Height (0.68) &bull; Open Counter Volume
+          </div>
+        </div>
+
+        <div class="figure-controls flex flex-wrap items-center justify-between gap-2">
+          <div class="pill-nav">
+            <button type="button" class="pill-link active anatomy-btn" data-font="georgia">Georgia (Screen Serif)</button>
+            <button type="button" class="pill-link anatomy-btn" data-font="bodoni">Bodoni (Print Didone)</button>
+            <button type="button" class="pill-link anatomy-btn" data-font="garamond">Garamond (Oldstyle)</button>
+          </div>
+          <div class="pill-nav">
+            <button type="button" class="pill-link active anatomy-char-btn" data-char="e">e</button>
+            <button type="button" class="pill-link anatomy-char-btn" data-char="a">a</button>
+            <button type="button" class="pill-link anatomy-char-btn" data-char="h">h</button>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        When high-DPI screens arrived in the 2010s (Retina screens at 220+ PPI, phone OLEDs at 460+ PPI), pixels became small enough that the human eye could no longer see them individually. At 300+ PPI, subpixel tricks were no longer needed, and serif fonts returned to digital products like <a href="https://stripe.com/press" target="_blank" rel="noopener">Stripe Press</a>, <a href="https://substack.com" target="_blank" rel="noopener">Substack</a>, and <a href="https://medium.com" target="_blank" rel="noopener">Medium</a>.
+      </p>
+
+      <p>
+        The latest improvement is the <a href="https://learn.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg#opsz" target="_blank" rel="noopener">OpenType 1.8 Variable Fonts specification</a>, created by Microsoft, Google, Apple, and Adobe. Variable fonts introduced the Optical Size axis (<code>opsz</code>). Instead of using one static shape at all sizes, modern fonts adjust their geometry automatically: at 6pt, hairlines get thicker and counters open up; at 72pt, hairlines become thin and crisp.
+      </p>
+
+      <p>
+        OpenType variable fonts resolve the conflict between small text legibility and large text elegance. Adjusting the optical size axis in the engine below interpolates the vector outlines in real time, shifting from sturdy, open caption proportions to delicate display hairlines.
+      </p>
+
+      <!-- DEMO 7: VARIABLE FONT GEOMETRY MORPH ENGINE -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="canvas-viewport">
+          <canvas id="morph-canvas" class="w-full h-64 block"></canvas>
+          <div id="morph-hud" class="canvas-hud">
+            Optical Size: 12 pt &bull; Hairline: 2.8px (Body Text)
+          </div>
+        </div>
+
+        <div class="figure-controls space-y-2">
+          <div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+            <span>Optical Size Axis (Drag from 6pt Caption to 72pt Display to morph geometry)</span>
+            <span id="morph-size-val" class="font-medium text-zinc-900 dark:text-zinc-100">12 pt</span>
+          </div>
+          <input type="range" id="morph-slider" min="6" max="72" value="12" class="custom-slider" />
+        </div>
+      </div>
+
+      <p>
+        Eye-tracking research by <a href="https://psycnet.apa.org/record/1998-11154-001" target="_blank" rel="noopener">Keith Rayner</a> and <a href="https://readabilityconsortium.org/" target="_blank" rel="noopener">The Readability Consortium at MIT and Adobe</a> shows that reading speed and comprehension depend on line length (55 to 75 characters) and line height (1.5 to 1.7x), not whether a font has serifs.
+      </p>
+
+      <p>
+        Stone carvers in ancient Rome did not add serifs as decoration; they were chisel cuts made to finish straight lines cleanly. Two thousand years later, serifs on screens do the same job: guiding the eye along lines of text and turning light into easy reading.
+      </p>
+    </article>
+
+    <div class="mt-12 flex items-center justify-between text-sm text-zinc-500 dark:text-zinc-400">
+      <a href="/projects?tab=design" class="list-link">&larr; All Projects</a>
+    </div>
+  </main>
+
+  <style>
+    .typo-investigation {
+      max-width: 100%;
+    }
+
+    .math-card {
+      margin: 1rem 0;
+      padding: 0.75rem 1rem;
+      background-color: rgba(0, 0, 0, 0.03);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #18181b;
+      overflow-x: auto;
+    }
+    html.dark .math-card {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: #e4e4e7;
+    }
+    html.blue .math-card {
+      background-color: rgba(255, 255, 255, 0.4);
+      color: #0d1f3c;
+    }
+    html.pink .math-card {
+      background-color: rgba(255, 255, 255, 0.4);
+      color: #2d1219;
+    }
+    html.green .math-card {
+      background-color: rgba(255, 255, 255, 0.4);
+      color: #0a2010;
+    }
+
+    .interactive-figure {
+      width: 100%;
+    }
+
+    .canvas-viewport {
+      position: relative;
+      width: 100%;
+      background: #f0f0f3;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    html.dark .canvas-viewport {
+      background: #141417;
+    }
+    html.blue .canvas-viewport {
+      background: rgba(255, 255, 255, 0.55);
+    }
+    html.pink .canvas-viewport {
+      background: rgba(255, 255, 255, 0.55);
+    }
+    html.green .canvas-viewport {
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .canvas-hud {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #3f3f46;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    html.dark .canvas-hud {
+      background: rgba(0, 0, 0, 0.75);
+      color: #d4d4d8;
+    }
+
+    .figure-controls {
+      padding: 0 2px;
+    }
+
+    .pill-nav {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 2px;
+      border-radius: 5px;
+      gap: 2px;
+    }
+    html.dark .pill-nav {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .pill-link {
+      background: transparent;
+      border: none;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #71717a;
+      cursor: pointer;
+      transition: all 120ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    html.dark .pill-link {
+      color: #a1a1aa;
+    }
+    .pill-link.active {
+      background: #ffffff;
+      color: #111111;
+      font-weight: 500;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    html.dark .pill-link.active {
+      background: #27272a;
+      color: #ffffff;
+    }
+    .pill-link:active {
+      transform: scale(0.97);
+    }
+
+    .custom-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.12);
+      outline: none;
+      cursor: pointer;
+    }
+    html.dark .custom-slider {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .custom-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #18181b;
+      cursor: pointer;
+      transition: transform 120ms ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+    html.dark .custom-slider::-webkit-slider-thumb {
+      background: #f4f4f5;
+    }
+    .custom-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    .custom-slider::-webkit-slider-thumb:active {
+      transform: scale(0.92);
+    }
+
+    .glyph-field {
+      width: 22px;
+      text-align: center;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      padding: 1px 0;
+      color: #111111;
+      outline: none;
+    }
+    html.dark .glyph-field {
+      background: #141417;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+  </style>
+
+  <script>
+    function initScreenTypoLab() {
+      const dpr = window.devicePixelRatio || 1;
+
+      // -------------------------------------------------------------
+      // 1. BEZIER INTERACTIVE CANVAS
+      // -------------------------------------------------------------
+      const bCanvas = document.getElementById("bezier-canvas") as HTMLCanvasElement | null;
+      const bHud = document.getElementById("bezier-hud");
+      if (bCanvas) {
+        const ctx = bCanvas.getContext("2d");
+        let p0 = { x: 60, y: 170 };
+        let p1 = { x: 130, y: 170 };
+        let p2 = { x: 180, y: 90 };
+        let p3 = { x: 180, y: 35 };
+        let draggingPt: any = null;
+
+        const resizeB = () => {
+          const rect = bCanvas.getBoundingClientRect();
+          bCanvas.width = rect.width * dpr;
+          bCanvas.height = rect.height * dpr;
+          const sx = rect.width / 420;
+          const sy = rect.height / 220;
+          p0 = { x: 60 * sx, y: 170 * sy };
+          p1 = { x: 130 * sx, y: 170 * sy };
+          p2 = { x: 180 * sx, y: 90 * sy };
+          p3 = { x: 180 * sx, y: 35 * sy };
+          drawB();
+        };
+
+        const drawB = () => {
+          if (!ctx) return;
+          const w = bCanvas.width;
+          const h = bCanvas.height;
+          ctx.clearRect(0, 0, w, h);
+
+          const dark = document.documentElement.classList.contains("dark");
+
+          ctx.strokeStyle = dark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)";
+          ctx.lineWidth = 1;
+          const step = 20 * dpr;
+          for (let x = 0; x < w; x += step) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, h);
+            ctx.stroke();
+          }
+          for (let y = 0; y < h; y += step) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+          }
+
+          ctx.strokeStyle = "rgba(59, 130, 246, 0.4)";
+          ctx.lineWidth = 1.5 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(p0.x * dpr, p0.y * dpr);
+          ctx.lineTo(p1.x * dpr, p1.y * dpr);
+          ctx.moveTo(p2.x * dpr, p2.y * dpr);
+          ctx.lineTo(p3.x * dpr, p3.y * dpr);
+          ctx.stroke();
+
+          ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+          ctx.beginPath();
+          ctx.moveTo(p0.x * dpr, p0.y * dpr);
+          ctx.bezierCurveTo(p1.x * dpr, p1.y * dpr, p2.x * dpr, p2.y * dpr, p3.x * dpr, p3.y * dpr);
+          ctx.lineTo((p3.x + 45) * dpr, p3.y * dpr);
+          ctx.lineTo((p3.x + 45) * dpr, (p0.y + 12) * dpr);
+          ctx.lineTo(p0.x * dpr, (p0.y + 12) * dpr);
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.strokeStyle = "#0284c7";
+          ctx.lineWidth = 2.5 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(p0.x * dpr, p0.y * dpr);
+          ctx.bezierCurveTo(p1.x * dpr, p1.y * dpr, p2.x * dpr, p2.y * dpr, p3.x * dpr, p3.y * dpr);
+          ctx.stroke();
+
+          [p0, p1, p2, p3].forEach((p, i) => {
+            ctx.fillStyle = (i === 0 || i === 3) ? "#0284c7" : "#38bdf8";
+            ctx.beginPath();
+            ctx.arc(p.x * dpr, p.y * dpr, 4.5 * dpr, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 1.5 * dpr;
+            ctx.stroke();
+          });
+        };
+
+        const getPos = (e: MouseEvent) => {
+          const rect = bCanvas.getBoundingClientRect();
+          return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        };
+
+        bCanvas.addEventListener("mousedown", (e) => {
+          const pos = getPos(e);
+          const thresh = 18;
+          if (Math.hypot(pos.x - p0.x, pos.y - p0.y) < thresh) draggingPt = p0;
+          else if (Math.hypot(pos.x - p1.x, pos.y - p1.y) < thresh) draggingPt = p1;
+          else if (Math.hypot(pos.x - p2.x, pos.y - p2.y) < thresh) draggingPt = p2;
+          else if (Math.hypot(pos.x - p3.x, pos.y - p3.y) < thresh) draggingPt = p3;
+        });
+
+        window.addEventListener("mousemove", (e) => {
+          if (draggingPt) {
+            const pos = getPos(e);
+            draggingPt.x = pos.x;
+            draggingPt.y = pos.y;
+            if (bHud) {
+              const radius = Math.hypot(p1.x - p0.x, p1.y - p0.y).toFixed(1);
+              bHud.textContent = `Bracket Radius: ${radius}px`;
+            }
+            drawB();
+          }
+        });
+
+        window.addEventListener("mouseup", () => {
+          draggingPt = null;
+        });
+
+        const presetBtns = document.querySelectorAll("[data-preset]");
+        presetBtns.forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            presetBtns.forEach((b) => b.classList.remove("active"));
+            const target = e.currentTarget as HTMLElement;
+            target.classList.add("active");
+            const preset = target.dataset.preset;
+
+            const rect = bCanvas.getBoundingClientRect();
+            const sx = rect.width / 420;
+            const sy = rect.height / 220;
+
+            if (preset === "bracketed") {
+              p0 = { x: 60 * sx, y: 170 * sy };
+              p1 = { x: 130 * sx, y: 170 * sy };
+              p2 = { x: 180 * sx, y: 90 * sy };
+              p3 = { x: 180 * sx, y: 35 * sy };
+              if (bHud) bHud.textContent = "Garamond / Georgia: Sturdy Curved Bracket";
+            } else if (preset === "hairline") {
+              p0 = { x: 60 * sx, y: 170 * sy };
+              p1 = { x: 175 * sx, y: 170 * sy };
+              p2 = { x: 180 * sx, y: 165 * sy };
+              p3 = { x: 180 * sx, y: 35 * sy };
+              if (bHud) bHud.textContent = "Didot / Bodoni: Unbracketed Hairline Serif";
+            } else if (preset === "slab") {
+              p0 = { x: 60 * sx, y: 170 * sy };
+              p1 = { x: 180 * sx, y: 170 * sy };
+              p2 = { x: 180 * sx, y: 170 * sy };
+              p3 = { x: 180 * sx, y: 35 * sy };
+              if (bHud) bHud.textContent = "Rockwell: Heavy Slab Block Serif";
+            }
+            drawB();
+          });
+        });
+
+        window.addEventListener("resize", resizeB);
+        setTimeout(resizeB, 50);
+      }
+
+      // -------------------------------------------------------------
+      // 2. SCANLINE RAY CASTING CANVAS
+      // -------------------------------------------------------------
+      const scCanvas = document.getElementById("scanline-canvas") as HTMLCanvasElement | null;
+      const scSlider = document.getElementById("scanline-slider") as HTMLInputElement | null;
+      const scVal = document.getElementById("scanline-val");
+      const scHud = document.getElementById("scanline-hud");
+
+      if (scCanvas && scSlider) {
+        const ctx = scCanvas.getContext("2d");
+
+        const updateScanline = () => {
+          if (!ctx) return;
+          const rect = scCanvas.getBoundingClientRect();
+          scCanvas.width = rect.width * dpr;
+          scCanvas.height = rect.height * dpr;
+          const w = scCanvas.width;
+          const h = scCanvas.height;
+
+          const rayY = parseInt(scSlider.value, 10) * dpr;
+          if (scVal) scVal.textContent = `Y: ${Math.round(rayY / dpr)} px`;
+
+          const dark = document.documentElement.classList.contains("dark");
+          ctx.clearRect(0, 0, w, h);
+
+          const centerX = w / 2;
+          const topY = 25 * dpr;
+          const botY = h - 30 * dpr;
+          const baseW = 100 * dpr;
+
+          ctx.fillStyle = dark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.06)";
+          ctx.beginPath();
+          ctx.moveTo(centerX, topY);
+          ctx.lineTo(centerX + baseW, botY);
+          ctx.lineTo(centerX + baseW - 30 * dpr, botY);
+          ctx.lineTo(centerX + 18 * dpr, topY + 95 * dpr);
+          ctx.lineTo(centerX - 18 * dpr, topY + 95 * dpr);
+          ctx.lineTo(centerX - baseW + 30 * dpr, botY);
+          ctx.lineTo(centerX - baseW, botY);
+          ctx.closePath();
+
+          ctx.moveTo(centerX, topY + 35 * dpr);
+          ctx.lineTo(centerX + 12 * dpr, topY + 75 * dpr);
+          ctx.lineTo(centerX - 12 * dpr, topY + 75 * dpr);
+          ctx.closePath();
+          ctx.fill("evenodd");
+
+          ctx.strokeStyle = "#0284c7";
+          ctx.lineWidth = 2 * dpr;
+          ctx.stroke();
+
+          ctx.strokeStyle = "#f59e0b";
+          ctx.lineWidth = 1.5 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(0, rayY);
+          ctx.lineTo(w, rayY);
+          ctx.stroke();
+
+          let count = 0;
+          if (rayY >= topY && rayY <= botY) {
+            const factor = (rayY - topY) / (botY - topY);
+            const outerLeft = centerX - factor * baseW;
+            const outerRight = centerX + factor * baseW;
+
+            ctx.fillStyle = "#f59e0b";
+            ctx.beginPath();
+            ctx.arc(outerLeft, rayY, 4 * dpr, 0, Math.PI * 2);
+            ctx.arc(outerRight, rayY, 4 * dpr, 0, Math.PI * 2);
+            ctx.fill();
+            count += 2;
+
+            if (rayY >= topY + 35 * dpr && rayY <= topY + 75 * dpr) {
+              const counterFactor = (rayY - (topY + 35 * dpr)) / (40 * dpr);
+              const innerLeft = centerX - counterFactor * 12 * dpr;
+              const innerRight = centerX + counterFactor * 12 * dpr;
+
+              ctx.beginPath();
+              ctx.arc(innerLeft, rayY, 4 * dpr, 0, Math.PI * 2);
+              ctx.arc(innerRight, rayY, 4 * dpr, 0, Math.PI * 2);
+              ctx.fill();
+              count += 2;
+
+              ctx.fillStyle = "rgba(245, 158, 11, 0.35)";
+              ctx.fillRect(outerLeft, rayY - 2 * dpr, innerLeft - outerLeft, 4 * dpr);
+              ctx.fillRect(innerRight, rayY - 2 * dpr, outerRight - innerRight, 4 * dpr);
+            } else {
+              ctx.fillStyle = "rgba(245, 158, 11, 0.35)";
+              ctx.fillRect(outerLeft, rayY - 2 * dpr, outerRight - outerLeft, 4 * dpr);
+            }
+          }
+
+          if (scHud) {
+            scHud.textContent = `Scanline Y: ${Math.round(rayY / dpr)}px • Intersections: ${count} • Spans: ${count > 2 ? "Dual (Hollow Counter)" : count === 2 ? "Solid" : "Empty"}`;
+          }
+        };
+
+        scSlider.addEventListener("input", updateScanline);
+        window.addEventListener("resize", updateScanline);
+        setTimeout(updateScanline, 55);
+      }
+
+      // -------------------------------------------------------------
+      // 3. DROPOUT SIMULATOR (CLEAN MINIMAL, NO RED BOXES)
+      // -------------------------------------------------------------
+      const dropCanvas = document.getElementById("dropout-canvas") as HTMLCanvasElement | null;
+      const sizeSlider = document.getElementById("dropout-size-slider") as HTMLInputElement | null;
+      const sizeVal = document.getElementById("dropout-size-val");
+      const dropHud = document.getElementById("dropout-hud");
+
+      if (dropCanvas && sizeSlider) {
+        const ctx = dropCanvas.getContext("2d");
+
+        const updateDrop = () => {
+          if (!ctx) return;
+          const rect = dropCanvas.getBoundingClientRect();
+          dropCanvas.width = rect.width * dpr;
+          dropCanvas.height = rect.height * dpr;
+          const w = dropCanvas.width;
+          const h = dropCanvas.height;
+
+          const size = parseInt(sizeSlider.value, 10);
+          if (sizeVal) sizeVal.textContent = `${size} px (${size < 16 ? "Low Resolution Body Size" : "High Resolution Display"})`;
+
+          const dark = document.documentElement.classList.contains("dark");
+          ctx.clearRect(0, 0, w, h);
+
+          // Divider Line
+          ctx.strokeStyle = dark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.08)";
+          ctx.lineWidth = 1 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(w / 2, 0);
+          ctx.lineTo(w / 2, h);
+          ctx.stroke();
+
+          // Left Label: Bodoni
+          ctx.fillStyle = dark ? "#a1a1aa" : "#71717a";
+          ctx.font = `${11 * dpr}px Inter, sans-serif`;
+          ctx.textAlign = "center";
+          ctx.fillText("Classical Didone (Bodoni)", w / 4, 30 * dpr);
+          ctx.fillText("Screen Serif (Georgia)", (w * 3) / 4, 30 * dpr);
+
+          const hairlineBodoni = (size / 8.5) * 0.18;
+          const hairlineGeorgia = Math.max(1.0, (size / 2.8) * 0.22);
+          const letterScale = Math.min(70, Math.max(16, size * 2.2)) * dpr;
+
+          // Render Bodoni on Left
+          ctx.font = `bold ${letterScale}px 'Bodoni Moda', serif`;
+          ctx.textBaseline = "middle";
+
+          if (hairlineBodoni < 0.52) {
+            // Draw Bodoni stems with severed broken crossbar (actual dropout simulation)
+            const glyphY = h / 2 - 5 * dpr;
+            const stemW = Math.max(2, size * 0.22) * dpr;
+            const glyphH = letterScale * 0.7;
+
+            ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+            // Left stem
+            ctx.fillRect(w / 4 - 22 * dpr, glyphY - glyphH / 2, stemW, glyphH);
+            // Right stem
+            ctx.fillRect(w / 4 + 22 * dpr - stemW, glyphY - glyphH / 2, stemW, glyphH);
+          } else {
+            ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+            ctx.fillText("H", w / 4, h / 2 - 5 * dpr);
+          }
+
+          // Render Georgia on Right
+          ctx.font = `bold ${letterScale}px 'Newsreader', 'Georgia', serif`;
+          ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+          ctx.fillText("H", (w * 3) / 4, h / 2 - 5 * dpr);
+
+          if (dropHud) {
+            if (hairlineBodoni < 0.52) {
+              dropHud.textContent = `At ${size}px: Bodoni hairlines fall below 0.5px and drop out • Georgia maintains ${hairlineGeorgia.toFixed(1)}px solid stems`;
+            } else {
+              dropHud.textContent = `At ${size}px: Sufficient pixel density for both typefaces`;
+            }
+          }
+        };
+
+        sizeSlider.addEventListener("input", updateDrop);
+        window.addEventListener("resize", updateDrop);
+        setTimeout(updateDrop, 60);
+      }
+
+      // -------------------------------------------------------------
+      // 4. TRUETYPE BYTECODE SNAPPING SIMULATOR
+      // -------------------------------------------------------------
+      const hCanvas = document.getElementById("hinting-canvas") as HTMLCanvasElement | null;
+      const stemSlider = document.getElementById("stem-slider") as HTMLInputElement | null;
+      const stemVal = document.getElementById("stem-offset-val");
+      const hintHud = document.getElementById("hinting-hud");
+      let hintMode = "cleartype";
+
+      if (hCanvas && stemSlider) {
+        const ctx = hCanvas.getContext("2d");
+
+        const updateHint = () => {
+          if (!ctx) return;
+          const rect = hCanvas.getBoundingClientRect();
+          hCanvas.width = rect.width * dpr;
+          hCanvas.height = rect.height * dpr;
+          const w = hCanvas.width;
+          const h = hCanvas.height;
+
+          const offset = parseInt(stemSlider.value, 10) / 100;
+          if (stemVal) stemVal.textContent = `Offset: ${offset.toFixed(2)} px`;
+
+          const dark = document.documentElement.classList.contains("dark");
+          ctx.clearRect(0, 0, w, h);
+
+          const cols = 24;
+          const cellW = w / cols;
+          const cellH = cellW;
+          const rows = Math.ceil(h / cellH);
+
+          ctx.strokeStyle = dark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)";
+          for (let c = 0; c <= cols; c++) {
+            ctx.beginPath();
+            ctx.moveTo(c * cellW, 0);
+            ctx.lineTo(c * cellW, h);
+            ctx.stroke();
+          }
+
+          const rawStemCenter = 11 + offset;
+          const stemWidth = 2.6;
+
+          if (hintMode === "vector") {
+            const x1 = (rawStemCenter - stemWidth / 2) * cellW;
+            const x2 = (rawStemCenter + stemWidth / 2) * cellW;
+            const y1 = 3 * cellH;
+            const y2 = (rows - 3) * cellH;
+
+            ctx.fillStyle = "#0284c7";
+            ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+            ctx.fillRect(x1 - cellW, y1, (x2 - x1) + cellW * 2, cellH * 0.7);
+            ctx.fillRect(x1 - cellW, y2 - cellH * 0.7, (x2 - x1) + cellW * 2, cellH * 0.7);
+
+            if (hintHud) hintHud.textContent = `Continuous Vector (Exact Math Pos: ${(11 + offset).toFixed(2)})`;
+          } else if (hintMode === "mono") {
+            for (let r = 3; r < rows - 3; r++) {
+              for (let c = 0; c < cols; c++) {
+                const dist = Math.abs(c + 0.5 - rawStemCenter);
+                if (dist < stemWidth / 2) {
+                  ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+                  ctx.fillRect(c * cellW + 1, r * cellH + 1, cellW - 2, cellH - 2);
+                }
+              }
+            }
+            if (hintHud) hintHud.textContent = `1-Bit Threshold: Staircase Jumps Across Columns`;
+          } else if (hintMode === "quartz") {
+            for (let r = 3; r < rows - 3; r++) {
+              for (let c = 0; c < cols; c++) {
+                const dist = Math.abs(c + 0.5 - rawStemCenter);
+                const coverage = Math.max(0, Math.min(1, (stemWidth / 2 + 0.5) - dist));
+                if (coverage > 0) {
+                  ctx.fillStyle = dark ? `rgba(244, 244, 245, ${coverage * 0.95})` : `rgba(24, 24, 27, ${coverage * 0.95})`;
+                  ctx.fillRect(c * cellW + 1, r * cellH + 1, cellW - 2, cellH - 2);
+                }
+              }
+            }
+            if (hintHud) hintHud.textContent = `Apple Quartz 2D: Smooth Grayscale Anti-Aliasing`;
+          } else if (hintMode === "cleartype") {
+            const snappedCol = Math.round(rawStemCenter);
+            for (let r = 3; r < rows - 3; r++) {
+              for (let c = snappedCol - 1; c <= snappedCol; c++) {
+                ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+                ctx.fillRect(c * cellW + 1, r * cellH + 1, cellW - 2, cellH - 2);
+              }
+            }
+
+            ctx.strokeStyle = "#0284c7";
+            ctx.lineWidth = 2 * dpr;
+            ctx.beginPath();
+            ctx.moveTo(rawStemCenter * cellW, h / 2);
+            ctx.lineTo(snappedCol * cellW, h / 2);
+            ctx.stroke();
+
+            if (hintHud) hintHud.textContent = `TrueType Opcode MDAP: Snapped ${offset.toFixed(2)}px to Column ${snappedCol}`;
+          }
+        };
+
+        stemSlider.addEventListener("input", updateHint);
+
+        const modeBtns = document.querySelectorAll(".hint-mode-btn");
+        modeBtns.forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            modeBtns.forEach((b) => b.classList.remove("active"));
+            const target = e.currentTarget as HTMLElement;
+            target.classList.add("active");
+            hintMode = target.dataset.mode || "cleartype";
+            updateHint();
+          });
+        });
+
+        window.addEventListener("resize", updateHint);
+        setTimeout(updateHint, 70);
+      }
+
+      // -------------------------------------------------------------
+      // 5. 40X LCD SUBPIXEL PHOSPHOR MICROSCOPE
+      // -------------------------------------------------------------
+      const sCanvas = document.getElementById("subpixel-canvas") as HTMLCanvasElement | null;
+      const subInput = document.getElementById("subpixel-input") as HTMLInputElement | null;
+      const subHud = document.getElementById("subpixel-hud");
+      let activeFilter = "cleartype";
+
+      if (sCanvas && subInput) {
+        const ctx = sCanvas.getContext("2d");
+
+        const updateSub = () => {
+          if (!ctx) return;
+          const rect = sCanvas.getBoundingClientRect();
+          sCanvas.width = rect.width * dpr;
+          sCanvas.height = rect.height * dpr;
+          const w = sCanvas.width;
+          const h = sCanvas.height;
+
+          const char = subInput.value.trim() || "R";
+
+          ctx.clearRect(0, 0, w, h);
+
+          const pixelCols = 22;
+          const pixelW = w / pixelCols;
+          const pixelH = pixelW;
+          const pixelRows = Math.ceil(h / pixelH);
+
+          const offW = pixelCols * 3;
+          const offH = pixelRows;
+          const off = document.createElement("canvas");
+          off.width = offW;
+          off.height = offH;
+          const offCtx = off.getContext("2d");
+          if (!offCtx) return;
+
+          offCtx.fillStyle = "#000";
+          offCtx.fillRect(0, 0, offW, offH);
+          offCtx.fillStyle = "#fff";
+          offCtx.font = `bold ${Math.floor(offH * 0.78)}px 'Newsreader', 'Georgia', serif`;
+          offCtx.textAlign = "center";
+          offCtx.textBaseline = "middle";
+          offCtx.fillText(char, offW / 2, offH / 2);
+
+          const rawData = offCtx.getImageData(0, 0, offW, offH).data;
+
+          for (let r = 0; r < pixelRows; r++) {
+            for (let c = 0; c < pixelCols; c++) {
+              const px = c * pixelW;
+              const py = r * pixelH;
+
+              const rVal = rawData[(r * offW + (c * 3)) * 4] / 255;
+              const gVal = rawData[(r * offW + (c * 3 + 1)) * 4] / 255;
+              const bVal = rawData[(r * offW + (c * 3 + 2)) * 4] / 255;
+
+              if (activeFilter === "grayscale") {
+                const avg = (rVal + gVal + bVal) / 3;
+                ctx.fillStyle = `rgba(24, 24, 27, ${avg * 0.95 + 0.03})`;
+                ctx.fillRect(px + 1, py + 1, pixelW - 2, pixelH - 2);
+              } else if (activeFilter === "raw") {
+                ctx.fillStyle = `rgba(239, 68, 68, ${rVal * 0.92 + 0.08})`;
+                ctx.fillRect(px, py, pixelW * 0.31, pixelH - 1);
+                ctx.fillStyle = `rgba(34, 197, 94, ${gVal * 0.92 + 0.08})`;
+                ctx.fillRect(px + pixelW * 0.34, py, pixelW * 0.31, pixelH - 1);
+                ctx.fillStyle = `rgba(59, 130, 246, ${bVal * 0.92 + 0.08})`;
+                ctx.fillRect(px + pixelW * 0.68, py, pixelW * 0.31, pixelH - 1);
+              } else {
+                ctx.fillStyle = `rgba(239, 68, 68, ${rVal * 0.82 + 0.08})`;
+                ctx.fillRect(px, py, pixelW * 0.31, pixelH - 1);
+                ctx.fillStyle = `rgba(34, 197, 94, ${gVal * 0.82 + 0.08})`;
+                ctx.fillRect(px + pixelW * 0.34, py, pixelW * 0.31, pixelH - 1);
+                ctx.fillStyle = `rgba(59, 130, 246, ${bVal * 0.82 + 0.08})`;
+                ctx.fillRect(px + pixelW * 0.68, py, pixelW * 0.31, pixelH - 1);
+              }
+            }
+          }
+        };
+
+        subInput.addEventListener("input", updateSub);
+
+        const filterBtns = document.querySelectorAll(".subpixel-btn");
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            filterBtns.forEach((b) => b.classList.remove("active"));
+            const target = e.currentTarget as HTMLElement;
+            target.classList.add("active");
+            activeFilter = target.dataset.filter || "cleartype";
+            if (subHud) {
+              subHud.textContent = activeFilter === "cleartype" ? "ClearType FIR Filtered: Clean Edge Luminance" : activeFilter === "raw" ? "Raw Subpixel: Severe Chromatic Fringing" : "Grayscale Anti-Aliasing: Standard Blur";
+            }
+            updateSub();
+          });
+        });
+
+        window.addEventListener("resize", updateSub);
+        setTimeout(updateSub, 80);
+      }
+
+      // -------------------------------------------------------------
+      // 6. SCREEN FONT ANATOMY COMPARATOR
+      // -------------------------------------------------------------
+      const aCanvas = document.getElementById("anatomy-canvas") as HTMLCanvasElement | null;
+      const aHud = document.getElementById("anatomy-hud");
+      let anatomyFont = "georgia";
+      let anatomyChar = "e";
+
+      if (aCanvas) {
+        const ctx = aCanvas.getContext("2d");
+
+        const updateAnatomy = () => {
+          if (!ctx) return;
+          const rect = aCanvas.getBoundingClientRect();
+          aCanvas.width = rect.width * dpr;
+          aCanvas.height = rect.height * dpr;
+          const w = aCanvas.width;
+          const h = aCanvas.height;
+
+          const dark = document.documentElement.classList.contains("dark");
+          ctx.clearRect(0, 0, w, h);
+
+          const centerY = h * 0.52;
+          const fontFace = anatomyFont === "bodoni" ? "'Bodoni Moda', serif" : anatomyFont === "garamond" ? "'Fraunces', serif" : "'Newsreader', 'Georgia', serif";
+          const fontSize = Math.floor(100 * dpr);
+
+          // Metric guide lines
+          const baselineY = centerY + 30 * dpr;
+          const xHeightRatio = anatomyFont === "bodoni" ? 0.48 : anatomyFont === "garamond" ? 0.52 : 0.68;
+          const xHeightY = baselineY - (fontSize * xHeightRatio * 0.7);
+          const capHeightY = baselineY - (fontSize * 0.72);
+
+          ctx.strokeStyle = dark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.08)";
+          ctx.lineWidth = 1 * dpr;
+
+          // Cap height line
+          ctx.beginPath();
+          ctx.moveTo(30 * dpr, capHeightY);
+          ctx.lineTo(w - 30 * dpr, capHeightY);
+          ctx.stroke();
+
+          // x-Height line (Accentuated)
+          ctx.strokeStyle = "#0284c7";
+          ctx.setLineDash([4 * dpr, 4 * dpr]);
+          ctx.beginPath();
+          ctx.moveTo(30 * dpr, xHeightY);
+          ctx.lineTo(w - 30 * dpr, xHeightY);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Baseline
+          ctx.strokeStyle = dark ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.15)";
+          ctx.beginPath();
+          ctx.moveTo(30 * dpr, baselineY);
+          ctx.lineTo(w - 30 * dpr, baselineY);
+          ctx.stroke();
+
+          // Metric text labels
+          ctx.fillStyle = "#0284c7";
+          ctx.font = `${9 * dpr}px Inter, sans-serif`;
+          ctx.textAlign = "left";
+          ctx.fillText(`X-HEIGHT (${(xHeightRatio * 100).toFixed(0)}%)`, 34 * dpr, xHeightY - 4 * dpr);
+
+          ctx.fillStyle = dark ? "#71717a" : "#a1a1aa";
+          ctx.fillText("BASELINE", 34 * dpr, baselineY + 12 * dpr);
+
+          // Draw the character
+          ctx.font = `500 ${fontSize}px ${fontFace}`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "alphabetic";
+          ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+          ctx.fillText(anatomyChar, w / 2, baselineY);
+
+          if (aHud) {
+            if (anatomyFont === "georgia") {
+              aHud.textContent = `Georgia: Tall x-Height (68%) • Large Counter Volume for Screen Pixels`;
+            } else if (anatomyFont === "bodoni") {
+              aHud.textContent = `Bodoni: Compact x-Height (48%) • Compressed Print Proportions`;
+            } else {
+              aHud.textContent = `Garamond: Classical Oldstyle x-Height (52%) • Moderate Openness`;
+            }
+          }
+        };
+
+        const fontBtns = document.querySelectorAll(".anatomy-btn");
+        fontBtns.forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            fontBtns.forEach((b) => b.classList.remove("active"));
+            const target = e.currentTarget as HTMLElement;
+            target.classList.add("active");
+            anatomyFont = target.dataset.font || "georgia";
+            updateAnatomy();
+          });
+        });
+
+        const charBtns = document.querySelectorAll(".anatomy-char-btn");
+        charBtns.forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            charBtns.forEach((b) => b.classList.remove("active"));
+            const target = e.currentTarget as HTMLElement;
+            target.classList.add("active");
+            anatomyChar = target.dataset.char || "e";
+            updateAnatomy();
+          });
+        });
+
+        window.addEventListener("resize", updateAnatomy);
+        setTimeout(updateAnatomy, 85);
+      }
+
+      // -------------------------------------------------------------
+      // 7. VARIABLE FONT OPTICAL SIZING MORPH CANVAS
+      // -------------------------------------------------------------
+      const mCanvas = document.getElementById("morph-canvas") as HTMLCanvasElement | null;
+      const morphSlider = document.getElementById("morph-slider") as HTMLInputElement | null;
+      const morphSizeVal = document.getElementById("morph-size-val");
+      const morphHud = document.getElementById("morph-hud");
+
+      if (mCanvas && morphSlider) {
+        const ctx = mCanvas.getContext("2d");
+
+        const updateMorph = () => {
+          if (!ctx) return;
+          const rect = mCanvas.getBoundingClientRect();
+          mCanvas.width = rect.width * dpr;
+          mCanvas.height = rect.height * dpr;
+          const w = mCanvas.width;
+          const h = mCanvas.height;
+
+          const opsz = parseInt(morphSlider.value, 10);
+          if (morphSizeVal) morphSizeVal.textContent = `${opsz} pt`;
+
+          const factor = (opsz - 6) / (72 - 6);
+          const stemThickness = (28 - factor * 16) * dpr;
+          const hairlineThickness = (12 - factor * 10) * dpr;
+          const bracketRadius = (24 - factor * 20) * dpr;
+
+          const dark = document.documentElement.classList.contains("dark");
+          ctx.clearRect(0, 0, w, h);
+
+          ctx.strokeStyle = dark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.08)";
+          ctx.lineWidth = 1 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(40 * dpr, 45 * dpr);
+          ctx.lineTo(w - 40 * dpr, 45 * dpr);
+          ctx.moveTo(40 * dpr, h - 45 * dpr);
+          ctx.lineTo(w - 40 * dpr, h - 45 * dpr);
+          ctx.stroke();
+
+          ctx.fillStyle = dark ? "#71717a" : "#a1a1aa";
+          ctx.font = `${10 * dpr}px Inter, sans-serif`;
+          ctx.textAlign = "left";
+          ctx.fillText("CAP HEIGHT", 45 * dpr, 40 * dpr);
+          ctx.fillText("BASELINE", 45 * dpr, h - 35 * dpr);
+
+          const centerX = w / 2;
+          const topY = 45 * dpr;
+          const botY = h - 45 * dpr;
+
+          ctx.fillStyle = dark ? "#f4f4f5" : "#18181b";
+          ctx.beginPath();
+
+          const stemLeft = centerX - 90 * dpr;
+          ctx.rect(stemLeft, topY, stemThickness, botY - topY);
+          ctx.rect(stemLeft - bracketRadius, topY, stemThickness + bracketRadius * 2, hairlineThickness * 1.5);
+          ctx.rect(stemLeft - bracketRadius, botY - hairlineThickness * 1.5, stemThickness + bracketRadius * 2, hairlineThickness * 1.5);
+
+          const loopRadius = 40 * dpr;
+          ctx.arc(stemLeft + stemThickness + loopRadius, topY + loopRadius + 10 * dpr, loopRadius, -Math.PI / 2, Math.PI / 2);
+          ctx.fill();
+
+          const contrastRatio = (stemThickness / Math.max(1, hairlineThickness)).toFixed(1);
+
+          if (morphHud) {
+            if (opsz <= 10) {
+              morphHud.textContent = `${opsz}pt Caption: Sturdy Hairlines (${hairlineThickness.toFixed(1)}px) • Contrast: ${contrastRatio}:1`;
+            } else if (opsz >= 48) {
+              morphHud.textContent = `${opsz}pt Display: Razor Hairlines (${hairlineThickness.toFixed(1)}px) • Contrast: ${contrastRatio}:1`;
+            } else {
+              morphHud.textContent = `${opsz}pt Body Text: Balanced Proportions • Contrast: ${contrastRatio}:1`;
+            }
+          }
+        };
+
+        morphSlider.addEventListener("input", updateMorph);
+        window.addEventListener("resize", updateMorph);
+        setTimeout(updateMorph, 90);
+      }
+    }
+
+    document.addEventListener("astro:page-load", initScreenTypoLab);
+    initScreenTypoLab();
+  </script>
+</Layout>

@@ -6,7 +6,7 @@ const projects = [
   {
     title: "PID Position Controller for Antenna Servo",
     description:
-      "Position controller tuning and disturbance rejection for a DC motor antenna servo in MATLAB and Simulink",
+      "Position controller tuning and disturbance rejection in MATLAB and Simulink",
     media: "/static/antenna_pid.webp",
     mediaType: "image",
     category: "engineering",
@@ -17,7 +17,7 @@ const projects = [
   {
     title: "Digital Filter Design for Interference Rejection",
     description:
-      "Digital filter design for narrowband interference rejection using Python and SciPy",
+      "Filter design for interference rejection using Python and SciPy",
     media: "/static/dsp_filter.webp",
     mediaType: "image",
     category: "engineering",
@@ -126,10 +126,19 @@ const projects = [
     mediaType: "video",
     technologies: ["REST API", "Bash", "Scripting", "Python"],
   },
+  {
+    title: "What's Up with Serifs on Screens?",
+    description:
+      "Physics, mathematics, and rasterization engines of digital type",
+    category: "design",
+    link: "/projects/why-serifs-look-like-that-on-screens",
+    technologies: ["Design Engineering", "Typography", "Interactive Essay"],
+  },
 ];
 
 const categories = [
   { label: "Engineering", value: "engineering" },
+  { label: "Design", value: "design" },
   { label: "Software", value: "software" },
   { label: "Product", value: "product" },
 ];
@@ -185,44 +194,50 @@ const categories = [
               </div>
             )}
             <div class="space-y-1 text-sm pt-0.5">
-              <h2 class="font-medium text-zinc-900 dark:text-zinc-100 text-sm">{project.title}</h2>
-              <p class="leading-relaxed text-zinc-500 dark:text-zinc-400">
-                {project.description}
-              </p>
-              <div class="project-links flex flex-row flex-wrap gap-x-4 gap-y-0 pt-1 text-sm">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener"
-                    class="project-link"
-                  >
-                    GitHub
-                  </a>
-                )}
+              <h2 class="project-title font-medium text-zinc-900 dark:text-zinc-100 text-sm">
+                {project.title}
+              </h2>
+              {project.description && (
+                <p class="leading-relaxed text-zinc-500 dark:text-zinc-400">
+                  {project.description}
+                </p>
+              )}
+              {(project.github || project.link || project.report) && (
+                <div class="project-links flex flex-row flex-wrap gap-x-4 gap-y-0 pt-1 text-sm">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener"
+                      class="project-link"
+                    >
+                      GitHub
+                    </a>
+                  )}
 
-                {project.link && (
-                  <a
-                    href={project.link}
-                    target={project.link.startsWith("/") ? undefined : "_blank"}
-                    rel={project.link.startsWith("/") ? undefined : "noopener"}
-                    class="project-link"
-                  >
-                    Link
-                  </a>
-                )}
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target={project.link.startsWith("/") ? undefined : "_blank"}
+                      rel={project.link.startsWith("/") ? undefined : "noopener"}
+                      class="project-link"
+                    >
+                      Link
+                    </a>
+                  )}
 
-                {project.report && (
-                  <a
-                    href={project.report}
-                    target="_blank"
-                    rel="noopener"
-                    class="project-link"
-                  >
-                    Report
-                  </a>
-                )}
-              </div>
+                  {project.report && (
+                    <a
+                      href={project.report}
+                      target="_blank"
+                      rel="noopener"
+                      class="project-link"
+                    >
+                      Report
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ))
