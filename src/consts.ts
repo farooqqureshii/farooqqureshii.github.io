@@ -3,7 +3,8 @@
 
 export const SITE_URL = "https://farooqqureshi.com";
 export const SITE_TITLE = "Farooq Q.";
-export const SITE_DESCRIPTION = "Hi! I'm Farooq, welcome to my digital home.";
+export const SITE_DESCRIPTION =
+  "Electrical Engineering student based out of Ottawa, Ontario.";
 
 export const EMAIL = "farooq.qureshi@outlook.com";
 export const EMAIL_UOTTAWA = "farooq.qureshi@uottawa.ca";
