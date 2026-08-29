@@ -759,7 +759,7 @@ import Layout from "../../layouts/Layout.astro";
 
           // Left Label: Bodoni
           ctx.fillStyle = dark ? "#a1a1aa" : "#71717a";
-          ctx.font = `${11 * dpr}px Inter, sans-serif`;
+          ctx.font = `${11 * dpr}px 'Switzer', sans-serif`;
           ctx.textAlign = "center";
           ctx.fillText("Classical Didone (Bodoni)", w / 4, 30 * dpr);
           ctx.fillText("Screen Serif (Georgia)", (w * 3) / 4, 30 * dpr);
@@ -1078,7 +1078,7 @@ import Layout from "../../layouts/Layout.astro";
 
           // Metric text labels
           ctx.fillStyle = "#0284c7";
-          ctx.font = `${9 * dpr}px Inter, sans-serif`;
+          ctx.font = `${9 * dpr}px 'Switzer', sans-serif`;
           ctx.textAlign = "left";
           ctx.fillText(`X-HEIGHT (${(xHeightRatio * 100).toFixed(0)}%)`, 34 * dpr, xHeightY - 4 * dpr);
 
@@ -1169,7 +1169,7 @@ import Layout from "../../layouts/Layout.astro";
           ctx.stroke();
 
           ctx.fillStyle = dark ? "#71717a" : "#a1a1aa";
-          ctx.font = `${10 * dpr}px Inter, sans-serif`;
+          ctx.font = `${10 * dpr}px 'Switzer', sans-serif`;
           ctx.textAlign = "left";
           ctx.fillText("CAP HEIGHT", 45 * dpr, 40 * dpr);
           ctx.fillText("BASELINE", 45 * dpr, h - 35 * dpr);
