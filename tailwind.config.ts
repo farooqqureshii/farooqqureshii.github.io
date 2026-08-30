@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Switzer'", ...defaultTheme.fontFamily.sans],
+        sans: ["'Geist'", "'Inter'", ...defaultTheme.fontFamily.sans],
         mono: ["'Geist Mono'", ...defaultTheme.fontFamily.mono],
       },
       colors: {

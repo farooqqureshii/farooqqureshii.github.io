@@ -1,4 +1,4 @@
-@import url('https://api.fontshare.com/v2/css?f[]=switzer@100,200,300,400,500,600,700,800,900,1,2&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Nanum+Pen+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -27,6 +27,11 @@
     --duration-fast: 120ms;
     --duration-base: 150ms;
     --duration-moderate: 200ms;
+
+    /* Soft Pill / Background Highlight variables */
+    --link-bg: rgba(0, 0, 0, 0.05);
+    --link-bg-hover: rgba(0, 0, 0, 0.1);
+    --link-hover-color: #000000;
   }
 
   html {
@@ -35,9 +40,9 @@
     scrollbar-gutter: stable;
   }
 
-  /* Universal transition defaults for micro-interactions */
+  /* Universal link & button defaults — Instant zero-overhead transitions */
   a, button {
-    transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out), text-underline-offset var(--duration-base) var(--ease-out), text-decoration-thickness var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
+    transition: none !important;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -46,9 +51,21 @@
     color: #111111;
   }
 
+  html.dark {
+    --link-bg: rgba(255, 255, 255, 0.08);
+    --link-bg-hover: rgba(255, 255, 255, 0.16);
+    --link-hover-color: #ffffff;
+  }
+
   html.dark, html.dark body {
     background-color: #1a1a1a;
     color: #e4e4e7;
+  }
+
+  html.blue {
+    --link-bg: rgba(13, 31, 60, 0.09);
+    --link-bg-hover: rgba(13, 31, 60, 0.16);
+    --link-hover-color: #0d1f3c;
   }
 
   html.blue, html.blue body {
@@ -56,9 +73,21 @@
     color: #0d1f3c;
   }
 
+  html.pink {
+    --link-bg: rgba(45, 18, 25, 0.08);
+    --link-bg-hover: rgba(45, 18, 25, 0.15);
+    --link-hover-color: #2d1219;
+  }
+
   html.pink, html.pink body {
     background-color: #fde8ee;
     color: #2d1219;
+  }
+
+  html.green {
+    --link-bg: rgba(10, 32, 16, 0.08);
+    --link-bg-hover: rgba(10, 32, 16, 0.15);
+    --link-hover-color: #0a2010;
   }
 
   html.green, html.green body {
@@ -70,7 +99,7 @@
     transition: background-color var(--duration-moderate) var(--ease-out), color var(--duration-moderate) var(--ease-out);
   }
 
-  /* Typography stack — Switzer */
+  /* Typography stack — Geist */
   html,
   body,
   h1,
@@ -89,71 +118,92 @@
   input,
   select,
   textarea {
-    font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.011em;
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.012em;
   }
 
-  /* Universal Link Styling — Crisp Native Zigzag / Wavy Underline with Instant Color Switch */
+  /* Default links — Clean text */
   a {
     color: inherit;
-    text-decoration-line: underline !important;
-    text-decoration-style: wavy !important;
-    text-decoration-color: rgba(113, 113, 122, 0.45) !important;
-    text-underline-offset: 4.5px !important;
-    text-decoration-thickness: 1px;
-    border-bottom: none !important;
-    padding-bottom: 0;
+    text-decoration: none;
+    background-color: transparent;
     transition: none !important;
   }
 
-  html.dark a {
-    text-decoration-color: rgba(161, 161, 170, 0.35) !important;
-  }
-
-  html.blue a {
-    text-decoration-color: rgba(13, 31, 60, 0.3) !important;
-  }
-
-  html.pink a {
-    text-decoration-color: rgba(192, 128, 144, 0.4) !important;
-  }
-
-  html.green a {
-    text-decoration-color: rgba(74, 133, 83, 0.4) !important;
-  }
-
-  a:hover {
-    color: #000000 !important;
-    text-decoration-color: #000000 !important;
-  }
-
-  html.dark a:hover {
-    color: #ffffff !important;
-    text-decoration-color: #ffffff !important;
-  }
-
-  html.blue a:hover {
-    color: #0d1f3c !important;
-    text-decoration-color: #0d1f3c !important;
-  }
-
-  html.pink a:hover {
-    color: #2d1219 !important;
-    text-decoration-color: #2d1219 !important;
-  }
-
-  html.green a:hover {
-    color: #0a2010 !important;
-    text-decoration-color: #0a2010 !important;
-  }
-
-  /* Explicit no-underline overrides for brand, header & menu links */
-  header a,
-  .no-underline,
-  .mo-link,
-  .nav-brand {
+  /* Content & Editorial Links — Soft Translucent Pill / Background Highlight */
+  article a,
+  .prose a,
+  main p a,
+  main li a,
+  .bookmarks-wrapper a,
+  .bookmark-section a,
+  .project-link,
+  .project-links a,
+  .inline-copy-btn {
+    color: inherit;
     text-decoration: none !important;
+    background-color: var(--link-bg);
+    padding: 0.08em 0.22em;
+    margin: 0;
+    border-radius: 3.5px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    transition: none !important;
+  }
+
+  article a:hover,
+  .prose a:hover,
+  main p a:hover,
+  main li a:hover,
+  .bookmarks-wrapper a:hover,
+  .bookmark-section a:hover,
+  .project-link:hover,
+  .project-links a:hover,
+  .inline-copy-btn:hover {
+    color: var(--link-hover-color) !important;
+    background-color: var(--link-bg-hover) !important;
+  }
+
+  /* Explicit no-highlight overrides for brand, header, sidebar & menu links */
+  header a,
+  header a:hover,
+  #menu-overlay a,
+  #menu-overlay a:hover,
+  #menu-overlay button,
+  #menu-overlay button:hover,
+  .no-underline,
+  .no-underline:hover,
+  .mo-link,
+  .mo-link:hover,
+  .nav-brand,
+  .nav-brand:hover,
+  .sidebar-link,
+  .sidebar-link:hover,
+  .list-link,
+  .list-link:hover,
+  .mobile-nav-link,
+  .mobile-nav-link:hover,
+  .pill-link,
+  .pill-link:hover,
+  .filter-link,
+  .filter-link:hover,
+  .footnote-back,
+  .footnote-back:hover,
+  a[href^="#fn"],
+  .footnotes a,
+  .footnotes a:hover,
+  .hub-nav-link,
+  .hub-nav-link:hover,
+  .flow-gradient,
+  .flow-gradient:hover {
+    text-decoration: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
   }
 
   /* Main page: keep links full-width */
@@ -165,24 +215,27 @@
     align-items: center;
     gap: 1rem;
     text-decoration: none !important;
+    background-image: none !important;
   }
   .index-page .hub-nav-link .hub-nav-label {
     min-width: 0;
   }
   header a {
-    text-decoration: none;
+    text-decoration: none !important;
+    background-image: none !important;
   }
   /* Hint to the browser to composite the header separately to reduce layout jitter */
   header {
   }
 
   .nav-brand.home-title {
-    font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 0.875rem !important;
-    font-weight: 500 !important;
-    letter-spacing: -0.011em !important;
+    font-weight: 480 !important;
+    letter-spacing: -0.012em !important;
     color: #111111;
     text-decoration: none !important;
+    background-image: none !important;
     line-height: 1.625 !important;
     display: block;
     margin-top: 0;
@@ -227,12 +280,13 @@
 
   .sidebar-link,
   .list-link {
-    font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 0.875rem !important;
-    font-weight: 500 !important;
-    letter-spacing: -0.011em !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.012em !important;
     color: #71717a;
     text-decoration: none !important;
+    background-image: none !important;
     line-height: 1.625 !important;
     display: inline-block;
     background: transparent;
@@ -240,7 +294,7 @@
     padding: 0;
     cursor: pointer;
     text-align: left;
-    transition: color var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
+    transition: none !important;
     touch-action: manipulation;
   }
   .sidebar-link {
@@ -266,6 +320,7 @@
   .sidebar-link.active,
   .list-link.active {
     color: #111111;
+    font-weight: 500 !important;
   }
   html.dark .sidebar-link.active,
   html.dark .list-link.active {
@@ -626,21 +681,26 @@ html.green #menu-overlay {
   color: #71717a;
   font-family: inherit;
   font-size: inherit;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: inherit;
   line-height: inherit;
-  background: transparent;
+  background: transparent !important;
+  background-color: transparent !important;
   border: none;
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
   text-align: left;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+  transition: color var(--duration-base) var(--ease-out) !important;
 }
 .mobile-nav-link.active {
   color: #111111;
   font-weight: 500;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 html.dark .mobile-nav-link {
   color: #a1a1aa;
@@ -669,20 +729,29 @@ html.green .mobile-nav-link.active {
 
 @media (hover: hover) and (pointer: fine) {
   .mobile-nav-link:hover {
-    color: #111111;
-    font-weight: 500;
+    color: #111111 !important;
+    background: transparent !important;
+    background-color: transparent !important;
   }
   html.dark .mobile-nav-link:hover {
-    color: #ffffff;
+    color: #ffffff !important;
+    background: transparent !important;
+    background-color: transparent !important;
   }
   html.blue .mobile-nav-link:hover {
-    color: #0d1f3c;
+    color: #0d1f3c !important;
+    background: transparent !important;
+    background-color: transparent !important;
   }
   html.pink .mobile-nav-link:hover {
-    color: #2d1219;
+    color: #2d1219 !important;
+    background: transparent !important;
+    background-color: transparent !important;
   }
   html.green .mobile-nav-link:hover {
-    color: #0a2010;
+    color: #0a2010 !important;
+    background: transparent !important;
+    background-color: transparent !important;
   }
 }
 

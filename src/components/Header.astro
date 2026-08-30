@@ -125,41 +125,41 @@ const path = Astro.url.pathname;
   <div class="flex flex-col text-left text-2xl sm:text-3xl font-normal leading-snug tracking-tight gap-2.5 no-underline w-full max-w-[780px] mx-auto">
     <a
       href="/projects"
-      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/projects') ? 'active' : ''}`}
+      class={`mobile-nav-link no-underline ${path.startsWith('/projects') ? 'active' : ''}`}
     >Projects</a>
     <a
       href="/writing"
-      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/writing') ? 'active' : ''}`}
+      class={`mobile-nav-link no-underline ${path.startsWith('/writing') ? 'active' : ''}`}
     >Writing</a>
     <a
       href="/bookmarks"
-      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/bookmarks') ? 'active' : ''}`}
+      class={`mobile-nav-link no-underline ${path.startsWith('/bookmarks') ? 'active' : ''}`}
     >Bookmarks</a>
     <a
       href="/other"
-      class={`mobile-nav-link no-underline transition-colors duration-150 ${path.startsWith('/other') ? 'active' : ''}`}
+      class={`mobile-nav-link no-underline ${path.startsWith('/other') ? 'active' : ''}`}
     >Other</a>
     <a
       href="https://www.cosmos.so/farooqqureshi"
       target="_blank"
       rel="noopener"
-      class="mobile-nav-link no-underline transition-colors duration-150"
+      class="mobile-nav-link no-underline"
     >Cosmos</a>
     <a
       href="https://linkedin.com/in/farooqq"
       target="_blank"
       rel="noopener"
-      class="mobile-nav-link no-underline transition-colors duration-150"
+      class="mobile-nav-link no-underline"
     >LinkedIn</a>
     <a
       href="https://github.com/farooqqureshii"
       target="_blank"
       rel="noopener"
-      class="mobile-nav-link no-underline transition-colors duration-150"
+      class="mobile-nav-link no-underline"
     >GitHub</a>
     <button
       id="mobile-copy-email"
-      class="mobile-nav-link no-underline text-left transition-colors duration-150 cursor-pointer"
+      class="mobile-nav-link no-underline text-left cursor-pointer"
     >
       <span class="mobile-email-label">Email</span>
     </button>
@@ -167,7 +167,7 @@ const path = Astro.url.pathname;
     <div class="pt-6">
       <button
         id="mobile-theme-toggle"
-        class="mobile-nav-link no-underline text-left transition-colors duration-150 cursor-pointer"
+        class="mobile-nav-link no-underline text-left cursor-pointer"
       >
         <span class="sidebar-theme-label inline-block min-w-[48px]">Light</span>
       </button>
