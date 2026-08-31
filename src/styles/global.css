@@ -28,9 +28,9 @@
     --duration-base: 150ms;
     --duration-moderate: 200ms;
 
-    /* Soft Pill / Background Highlight variables */
-    --link-bg: rgba(0, 0, 0, 0.05);
-    --link-bg-hover: rgba(0, 0, 0, 0.1);
+    /* Refined Editorial Links — 2px Offset Underline with Color Transition */
+    --link-line: rgba(0, 0, 0, 0.32);
+    --link-line-hover: #000000;
     --link-hover-color: #000000;
   }
 
@@ -52,8 +52,8 @@
   }
 
   html.dark {
-    --link-bg: rgba(255, 255, 255, 0.08);
-    --link-bg-hover: rgba(255, 255, 255, 0.16);
+    --link-line: rgba(255, 255, 255, 0.38);
+    --link-line-hover: #ffffff;
     --link-hover-color: #ffffff;
   }
 
@@ -63,8 +63,8 @@
   }
 
   html.blue {
-    --link-bg: rgba(13, 31, 60, 0.09);
-    --link-bg-hover: rgba(13, 31, 60, 0.16);
+    --link-line: rgba(13, 31, 60, 0.38);
+    --link-line-hover: #0d1f3c;
     --link-hover-color: #0d1f3c;
   }
 
@@ -74,8 +74,8 @@
   }
 
   html.pink {
-    --link-bg: rgba(45, 18, 25, 0.08);
-    --link-bg-hover: rgba(45, 18, 25, 0.15);
+    --link-line: rgba(45, 18, 25, 0.35);
+    --link-line-hover: #2d1219;
     --link-hover-color: #2d1219;
   }
 
@@ -85,8 +85,8 @@
   }
 
   html.green {
-    --link-bg: rgba(10, 32, 16, 0.08);
-    --link-bg-hover: rgba(10, 32, 16, 0.15);
+    --link-line: rgba(10, 32, 16, 0.35);
+    --link-line-hover: #0a2010;
     --link-hover-color: #0a2010;
   }
 
@@ -131,7 +131,7 @@
     transition: none !important;
   }
 
-  /* Content & Editorial Links — Soft Translucent Pill / Background Highlight */
+  /* Content & Editorial Links — 2px Offset Underline with Hover Color Transition */
   article a,
   .prose a,
   main p a,
@@ -139,30 +139,33 @@
   .bookmarks-wrapper a,
   .bookmark-section a,
   .project-link,
-  .project-links a,
-  .inline-copy-btn {
+  .project-links a {
     color: inherit;
-    text-decoration: none !important;
-    background-color: var(--link-bg);
-    padding: 0.08em 0.22em;
-    margin: 0;
-    border-radius: 3.5px;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-    transition: none !important;
+    font-weight: inherit;
+    text-decoration: underline !important;
+    text-decoration-thickness: 2px !important;
+    text-underline-offset: 3.5px !important;
+    text-decoration-color: var(--link-line) !important;
+    text-decoration-skip-ink: none;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    transition: text-decoration-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out) !important;
   }
 
-  article a:hover,
-  .prose a:hover,
-  main p a:hover,
-  main li a:hover,
-  .bookmarks-wrapper a:hover,
-  .bookmark-section a:hover,
-  .project-link:hover,
-  .project-links a:hover,
-  .inline-copy-btn:hover {
-    color: var(--link-hover-color) !important;
-    background-color: var(--link-bg-hover) !important;
+  @media (hover: hover) and (pointer: fine) {
+    article a:hover,
+    .prose a:hover,
+    main p a:hover,
+    main li a:hover,
+    .bookmarks-wrapper a:hover,
+    .bookmark-section a:hover,
+    .project-link:hover,
+    .project-links a:hover {
+      color: var(--link-hover-color) !important;
+      text-decoration-color: var(--link-line-hover) !important;
+    }
   }
 
   /* Explicit no-highlight overrides for brand, header, sidebar & menu links */

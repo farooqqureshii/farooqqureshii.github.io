@@ -1,0 +1,888 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  title="Farooq Q. | Crafting the Dynamic Capsule: Fluid Physics & Micro-State Morphing"
+  description="An in-depth design engineering breakdown of state-shifting floating capsules: SVG viscous thresholding, mass-conserving squash and stretch, interruptible spring kinematics, and tactile micro-interactions."
+>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400..600;1,400&display=swap"
+    rel="stylesheet"
+  />
+
+  <main class="capsule-investigation">
+    <h1 class="mb-1 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+      Crafting the Dynamic Capsule: Fluid Physics, Viscous Detachment, and Micro-State Morphing
+    </h1>
+    <p class="mb-8 text-sm text-zinc-500 dark:text-zinc-400">
+      The mathematical, physical, and design engineering principles behind tactile floating micro-interfaces.
+    </p>
+
+    <article class="text-sm leading-relaxed [&_p]:my-4 text-zinc-700 dark:text-zinc-300">
+      <p>
+        For over two decades, graphical interfaces treated notifications and status indicators as rigid, static rectangular overlays. A toast popped down from the viewport edge at a fixed coordinate, stayed for three seconds, and slid away. But as software shifted toward dense, ambient multitasking, this rigid mental model broke down.
+      </p>
+
+      <p>
+        Modern interfaces require components that can host multiple living background tasks—such as audio playback, active timers, file uploads, and biometric confirmations—without interrupting the user's focal context. What emerged is the <strong>dynamic floating capsule</strong>: a persistent, morphing island of interaction that expands, squashes, detaches sub-badges, and snaps back with physical mass.
+      </p>
+
+      <p>
+        Building a component like this that feels physical rather than synthetic requires solving four distinct engineering challenges: <em>viscous liquid surface tension</em>, <em>mass-conserving geometry</em>, <em>interruptible spring kinematics</em>, and <em>asymmetric micro-timings</em>.
+      </p>
+
+      <!-- DEMO 1: THE MASTER COMPONENT PLAYGROUND -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="figure-header flex items-center justify-between px-1">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200">Interactive Component: The Dynamic Viscous Capsule</span>
+          </div>
+          <span class="text-xs text-zinc-400 dark:text-zinc-500 font-mono">Live Interactive Demo</span>
+        </div>
+
+        <div class="canvas-viewport capsule-stage relative overflow-hidden flex flex-col items-center justify-center min-h-[360px] p-6 bg-zinc-50 dark:bg-[#0c0d0e] border border-zinc-200 dark:border-zinc-800 rounded-lg">
+          <!-- Ambient Background Grid -->
+          <div class="stage-grid absolute inset-0 pointer-events-none opacity-40"></div>
+
+          <!-- SVG Filter for Liquid Viscosity -->
+          <svg class="absolute w-0 h-0" aria-hidden="true">
+            <defs>
+              <filter id="capsule-goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"></feGaussianBlur>
+                <feColorMatrix
+                  in="blur"
+                  mode="matrix"
+                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -8"
+                  result="goo"
+                ></feColorMatrix>
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
+              </filter>
+            </defs>
+          </svg>
+
+          <!-- Goo Container -->
+          <div id="master-goo-wrap" class="relative flex items-center justify-center filter-goo-active" style="filter: url(#capsule-goo);">
+            
+            <!-- Main Dynamic Capsule Shell -->
+            <div
+              id="master-capsule"
+              class="relative flex items-center justify-between bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-xl select-none cursor-pointer transition-transform"
+              style="width: 140px; height: 38px; border-radius: 9999px; padding: 0 14px;"
+            >
+              <!-- Content Slot: Idle State -->
+              <div id="state-idle" class="capsule-state active flex items-center justify-between w-full">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span class="text-xs font-medium tracking-tight">Active</span>
+                </div>
+                <span class="text-[11px] font-mono opacity-70">02:45</span>
+              </div>
+
+              <!-- Content Slot: Audio Player -->
+              <div id="state-audio" class="capsule-state hidden items-center justify-between w-full gap-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="waveform-anim flex items-end gap-[2px] h-4">
+                    <span class="bar bar-1"></span>
+                    <span class="bar bar-2"></span>
+                    <span class="bar bar-3"></span>
+                    <span class="bar bar-4"></span>
+                  </div>
+                  <div class="flex flex-col text-left leading-none">
+                    <span class="text-xs font-medium truncate max-w-[90px]">Solaris Waves</span>
+                    <span class="text-[9px] opacity-60 font-mono mt-0.5">Tycho</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button id="capsule-audio-toggle" type="button" class="audio-btn w-6 h-6 rounded-full flex items-center justify-center bg-white/20 dark:bg-zinc-900/20 hover:scale-110 active:scale-95 transition-transform" aria-label="Play/Pause">
+                    <svg id="capsule-play-icon" class="w-3 h-3 fill-current hidden" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg id="capsule-pause-icon" class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Content Slot: Stopwatch & Split Lap -->
+              <div id="state-timer" class="capsule-state hidden items-center justify-between w-full">
+                <div class="flex items-center gap-2">
+                  <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
+                    <path stroke-width="2" stroke-linecap="round" d="M12 7v5l3 3"></path>
+                  </svg>
+                  <span id="capsule-stopwatch-display" class="text-xs font-mono font-medium">00:14.82</span>
+                </div>
+                <button id="btn-split-lap" type="button" class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 dark:text-amber-700 hover:bg-amber-400/30 active:scale-95 transition-all">
+                  Split
+                </button>
+              </div>
+
+              <!-- Content Slot: Voice Memo Recording -->
+              <div id="state-voice" class="capsule-state hidden items-center justify-between w-full">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+                  <span class="text-xs font-medium">Recording...</span>
+                </div>
+                <div class="flex items-center gap-1 font-mono text-[11px] text-rose-400">
+                  <span id="voice-timer">00:08</span>
+                </div>
+              </div>
+
+              <!-- Content Slot: File Upload / Verification -->
+              <div id="state-upload" class="capsule-state hidden items-center justify-between w-full gap-2">
+                <div class="flex items-center gap-2 flex-1">
+                  <svg id="upload-icon" class="w-3.5 h-3.5 text-sky-400 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                  </svg>
+                  <svg id="upload-check-icon" class="w-3.5 h-3.5 text-emerald-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <div class="flex-1 h-1.5 bg-white/20 dark:bg-zinc-900/20 rounded-full overflow-hidden">
+                    <div id="upload-progress-fill" class="h-full bg-sky-400 transition-all duration-150" style="width: 45%;"></div>
+                  </div>
+                </div>
+                <span id="upload-progress-text" class="text-[10px] font-mono opacity-80">45%</span>
+              </div>
+            </div>
+
+            <!-- Viscous Detached Satellite Droplet -->
+            <div
+              id="satellite-droplet"
+              class="absolute flex items-center justify-center bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 rounded-full select-none opacity-0 pointer-events-none"
+              style="width: 32px; height: 32px; right: -42px; top: 3px;"
+            >
+              <span id="satellite-label" class="text-[10px] font-mono font-bold text-amber-400 dark:text-amber-600">L1</span>
+            </div>
+
+          </div>
+
+          <!-- Interactive HUD Overlay -->
+          <div id="master-hud" class="canvas-hud mt-8">
+            State: <span id="hud-state-name" class="text-zinc-900 dark:text-zinc-100 font-medium">Idle</span> &bull; 
+            Dimensions: <span id="hud-dims" class="font-mono">140px &times; 38px</span> &bull; 
+            Spring: <span class="text-emerald-500">Settled (0.00px/s)</span>
+          </div>
+        </div>
+
+        <!-- Controls for Master Playground -->
+        <div class="figure-controls space-y-3 pt-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="pill-nav flex flex-wrap" id="state-switcher-pills">
+              <button type="button" class="pill-link active" data-state="idle">Idle</button>
+              <button type="button" class="pill-link" data-state="audio">Audio Player</button>
+              <button type="button" class="pill-link" data-state="timer">Stopwatch</button>
+              <button type="button" class="pill-link" data-state="voice">Voice Memo</button>
+              <button type="button" class="pill-link" data-state="upload">File Upload</button>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button id="btn-toggle-slowmo" type="button" class="pill-link text-xs flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
+                <span>0.2x Slow Motion</span>
+              </button>
+              <button id="btn-toggle-viscosity" type="button" class="pill-link active text-xs">
+                Viscous Goo: ON
+              </button>
+            </div>
+          </div>
+
+          <p class="text-xs text-zinc-400 dark:text-zinc-500">
+            Click any state or press <kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-zinc-200 dark:bg-zinc-800 rounded">Split</kbd> inside Stopwatch to watch the satellite droplet detach with fluid meniscus physics.
+          </p>
+        </div>
+      </div>
+
+      <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100 mt-12 mb-3">
+        1. The Mathematics of Viscous Detachment (SVG Filter Pipelines)
+      </h2>
+
+      <p>
+        When real liquid droplets separate (like honey dripping from a spoon or cells undergoing mitosis), they do not suddenly pop into existence. The interface between them stretches into a narrow cylindrical neck—a <em>meniscus</em>—where surface tension pulls the fluid inward before Rayleigh-Plateau instability causes the bridge to pinch off cleanly.
+      </p>
+
+      <p>
+        In screen rendering, replicating this organic coalescence in real-time without computationally heavy physics engines is achieved through an SVG filter pipeline using Gaussian blur and alpha contrast remapping:
+      </p>
+
+      <div class="math-card font-mono text-xs">
+        &alpha;<sub>out</sub> = clamp(&alpha;<sub>in</sub> &times; 19 &minus; 8, &nbsp; 0, &nbsp; 1)
+      </div>
+
+      <p>
+        The pipeline executes in two distinct GPU passes:
+      </p>
+
+      <ol class="list-decimal pl-5 space-y-2 my-4">
+        <li>
+          <strong><code>feGaussianBlur</code> with stdDeviation &sigma;</strong>: Dilates the alpha channel boundaries of neighboring DOM elements, creating an overlapping field of soft, fractional alpha values (0 &lt; &alpha; &lt; 1) in the spatial gap between them.
+        </li>
+        <li>
+          <strong><code>feColorMatrix</code> Alpha Quantization</strong>: Multiplies the blended alpha channel by a steep slope (19&times;) and shifts the baseline (&minus;8). Any pixel where the overlapping blurred halos sum above the threshold (0.42) gets boosted to &alpha; = 1.0, while values below drop to 0.0.
+        </li>
+      </ol>
+
+      <p>
+        This creates an exact mathematical threshold curve. As two elements pull apart, the overlapping blur region falls below the threshold, and the liquid bridge spontaneously snaps shut.
+      </p>
+
+      <!-- DEMO 2: INTERACTIVE VISCOUS DETACHMENT LAB -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="figure-header flex items-center justify-between px-1">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-sky-500"></span>
+            <span class="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200">Interactive Lab: Viscous Bridge &amp; Alpha Thresholding</span>
+          </div>
+          <span class="text-xs text-zinc-400 dark:text-zinc-500 font-mono">Real-time GPU Filter Lab</span>
+        </div>
+
+        <div class="canvas-viewport relative flex flex-col items-center justify-center min-h-[300px] p-6 bg-zinc-50 dark:bg-[#0c0d0e] border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
+          <div class="stage-grid absolute inset-0 pointer-events-none opacity-40"></div>
+
+          <!-- Inline Lab Filter -->
+          <svg class="absolute w-0 h-0" aria-hidden="true">
+            <defs>
+              <filter id="lab-goo">
+                <feGaussianBlur id="lab-blur-node" in="SourceGraphic" stdDeviation="12" result="blur"></feGaussianBlur>
+                <feColorMatrix
+                  id="lab-matrix-node"
+                  in="blur"
+                  mode="matrix"
+                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9"
+                  result="goo"
+                ></feColorMatrix>
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
+              </filter>
+            </defs>
+          </svg>
+
+          <!-- Interactive Detachment Sandbox -->
+          <div class="relative w-full max-w-sm h-32 flex items-center justify-center" style="filter: url(#lab-goo);">
+            <!-- Static Base Capsule -->
+            <div class="w-24 h-16 bg-zinc-950 dark:bg-zinc-100 rounded-full flex items-center justify-center text-white dark:text-zinc-950 font-mono text-xs font-medium select-none shadow-sm">
+              Mother
+            </div>
+
+            <!-- Draggable Child Droplet -->
+            <div
+              id="lab-draggable-droplet"
+              class="absolute w-14 h-14 bg-zinc-950 dark:bg-zinc-100 rounded-full flex items-center justify-center text-white dark:text-zinc-950 font-mono text-xs font-medium cursor-grab active:cursor-grabbing select-none shadow-sm transition-shadow"
+              style="left: 60%; transform: translateX(0px);"
+            >
+              Child
+            </div>
+          </div>
+
+          <div id="lab-hud" class="canvas-hud mt-6">
+            Distance: <span id="lab-dist-val" class="font-mono text-zinc-900 dark:text-zinc-100 font-medium">42px</span> &bull; 
+            Meniscus State: <span id="lab-bridge-state" class="text-sky-500 font-medium">Viscous Bridge Active</span>
+          </div>
+        </div>
+
+        <div class="figure-controls space-y-3 pt-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                <span>Drag Distance (x)</span>
+                <span id="slider-dist-num" class="font-mono text-zinc-800 dark:text-zinc-200">42 px</span>
+              </div>
+              <input type="range" id="slider-lab-dist" min="0" max="140" value="42" class="custom-slider" />
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                <span>Blur Radius (&sigma;)</span>
+                <span id="slider-blur-num" class="font-mono text-zinc-800 dark:text-zinc-200">12 px</span>
+              </div>
+              <input type="range" id="slider-lab-blur" min="4" max="24" value="12" class="custom-slider" />
+            </div>
+          </div>
+          <span class="text-xs text-zinc-400 dark:text-zinc-500 block">
+            Drag the child droplet horizontally or adjust the blur slider to inspect the exact point of surface tension rupture.
+          </span>
+        </div>
+      </div>
+
+      <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100 mt-12 mb-3">
+        2. Mass Conservation: Squash-and-Stretch Geometry
+      </h2>
+
+      <p>
+        In classical animation principles (first codified by Disney animators Ollie Johnston and Frank Thomas), solid objects possess constant mass. When a ball hits the floor, it compresses vertically while expanding horizontally to maintain its internal volume:
+      </p>
+
+      <div class="math-card font-mono text-xs">
+        Volume = Width &times; Height = Constant &emsp; &rArr; &emsp; Height(Width) = V<sub>0</sub> / Width
+      </div>
+
+      <p>
+        Most web UI components feel stiff and lifeless because they animate dimensions linearly: an element expanding from 140px to 280px width maintains a constant 38px height. To the human visual system, this looks like a cardboard cutout expanding into thin air.
+      </p>
+
+      <p>
+        To make a capsule feel like a cohesive, fluid body, we apply a <strong>transient squash compensation</strong> during rapid width expansions. As width expansion peaks, the vertical scale dips by an elastic factor before springing back to its resting height:
+      </p>
+
+      <div class="math-card font-mono text-xs">
+        Scale<sub>y</sub>(t) = 1.0 &minus; &kappa; &middot; |&Delta;Width / Width<sub>0</sub>| &middot; e<sup>&minus;&zeta; &omega;<sub>n</sub> t</sup> sin(&omega;<sub>d</sub> t)
+      </div>
+
+      <!-- DEMO 3: MASS CONSERVATION COMPARISON -->
+      <div class="interactive-figure my-10 space-y-3">
+        <div class="figure-header flex items-center justify-between px-1">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-violet-500"></span>
+            <span class="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200">Side-by-Side: Rigid Expansion vs. Mass-Conserving Squash</span>
+          </div>
+          <span class="text-xs text-zinc-400 dark:text-zinc-500 font-mono">Kinematic Comparison</span>
+        </div>
+
+        <div class="canvas-viewport relative grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-zinc-50 dark:bg-[#0c0d0e] border border-zinc-200 dark:border-zinc-800 rounded-lg">
+          <!-- Left: Standard Rigid -->
+          <div class="flex flex-col items-center justify-center p-4 rounded border border-zinc-200/50 dark:border-zinc-800/50 bg-white/50 dark:bg-zinc-900/30">
+            <span class="text-xs font-mono text-zinc-500 mb-6">Standard Linear Morph</span>
+            <div
+              id="box-rigid"
+              class="bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 flex items-center justify-center text-xs font-mono rounded-full select-none"
+              style="width: 140px; height: 38px;"
+            >
+              Rigid Box
+            </div>
+            <span id="rigid-metric" class="text-[11px] font-mono text-zinc-400 mt-6">Area: 5,320 px² &bull; Height: 38px</span>
+          </div>
+
+          <!-- Right: Mass-Conserving Elastic -->
+          <div class="flex flex-col items-center justify-center p-4 rounded border border-zinc-200/50 dark:border-zinc-800/50 bg-white/50 dark:bg-zinc-900/30">
+            <span class="text-xs font-mono text-violet-500 dark:text-violet-400 mb-6">Elastic Mass-Conserving</span>
+            <div
+              id="box-elastic"
+              class="bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center text-xs font-mono rounded-full select-none transition-transform"
+              style="width: 140px; height: 38px;"
+            >
+              Fluid Capsule
+            </div>
+            <span id="elastic-metric" class="text-[11px] font-mono text-violet-400 dark:text-violet-300 mt-6">Area: 5,320 px² &bull; Height: 38px</span>
+          </div>
+        </div>
+
+        <div class="figure-controls space-y-3 pt-2">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex gap-2">
+              <button id="btn-trigger-expand" type="button" class="pill-link active text-xs">
+                Trigger Morph (Expand / Contract)
+              </button>
+            </div>
+            <span class="text-xs text-zinc-400 dark:text-zinc-500 font-mono">Observe vertical compression during width stretch</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100 mt-12 mb-3">
+        3. Interruptible Springs: Velocity Preservation vs. CSS Keyframes
+      </h2>
+
+      <p>
+        The single most frequent defect in complex web components is <em>animation interruption stutter</em>. When a user clicks a button that triggers a CSS keyframe animation, and then rapidly clicks another action mid-flight, the browser cancels the keyframe and starts the new animation from frame zero. This causes a visible snap and discards the element's existing physical momentum.
+      </p>
+
+      <p>
+        Physical springs governed by the second-order differential equation maintain position and velocity continuously across state changes:
+      </p>
+
+      <div class="math-card font-mono text-xs">
+        m &middot; x&Prime;(t) + c &middot; x&prime;(t) + k &middot; (x(t) &minus; x<sub>target</sub>) = 0
+      </div>
+
+      <p>
+        When the target coordinate changes at time t<sub>int</sub>, the spring solver passes the current instantaneous velocity v(t<sub>int</sub>) as the initial boundary condition for the new trajectory. The motion curves smoothly into the new path without jarring discontinuities.
+      </p>
+
+      <div class="my-6 overflow-x-auto">
+        <table class="w-full text-left text-xs border border-zinc-200 dark:border-zinc-800 rounded-lg">
+          <thead>
+            <tr class="bg-zinc-100 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-mono">
+              <th class="p-3">Animation System</th>
+              <th class="p-3">Interruption Behavior</th>
+              <th class="p-3">Velocity Conservation</th>
+              <th class="p-3">Best Use Case</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 font-mono">
+            <tr>
+              <td class="p-3 text-zinc-800 dark:text-zinc-200">CSS Keyframes (@keyframes)</td>
+              <td class="p-3 text-rose-500">Restarts from 0% frame</td>
+              <td class="p-3 text-rose-500">None (Zeroed out)</td>
+              <td class="p-3 text-zinc-500">Uninterrupted looping loaders</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-zinc-800 dark:text-zinc-200">CSS Transitions (transition: transform)</td>
+              <td class="p-3 text-amber-500">Retargets position</td>
+              <td class="p-3 text-amber-500">Partial (Linear slope match)</td>
+              <td class="p-3 text-zinc-500">Hover states, simple toggles</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-zinc-800 dark:text-zinc-200">Physics Springs (RK4 / Analytical)</td>
+              <td class="p-3 text-emerald-500">Smooth continuous redirection</td>
+              <td class="p-3 text-emerald-500">Complete (Velocity Preserved)</td>
+              <td class="p-3 text-zinc-500">Gestures, morphing components</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100 mt-12 mb-3">
+        4. Design Engineering Review &amp; Polish Checklist
+      </h2>
+
+      <p>
+        Following Emil Kowalski's design engineering principles, the difference between a sloppy component and a revered piece of software lies in the unseen compound details:
+      </p>
+
+      <div class="my-6 overflow-x-auto">
+        <table class="w-full text-left text-xs border border-zinc-200 dark:border-zinc-800 rounded-lg">
+          <thead>
+            <tr class="bg-zinc-100 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100">
+              <th class="p-3 font-mono">Before</th>
+              <th class="p-3 font-mono">After</th>
+              <th class="p-3">Why</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+            <tr>
+              <td class="p-3 font-mono text-zinc-500">transform: scale(0) on enter</td>
+              <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">transform: scale(0.95); opacity: 0</td>
+              <td class="p-3 text-zinc-600 dark:text-zinc-300">Nothing in physical reality appears from a zero-dimensional point. Starting from 0.95 feels natural.</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-mono text-zinc-500">transition: all 300ms ease</td>
+              <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">transition: transform 180ms var(--ease-out)</td>
+              <td class="p-3 text-zinc-600 dark:text-zinc-300">Specifying exact properties skips expensive layout recalculations; custom ease-out starts fast.</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-mono text-zinc-500">Instant crossfade between state icons</td>
+              <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">filter: blur(2px) during 140ms crossfade</td>
+              <td class="p-3 text-zinc-600 dark:text-zinc-300">Subtle blur bridges the optical gap between different icon geometries so they don't visually collide.</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-mono text-zinc-500">No active state on inner pill buttons</td>
+              <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">transform: scale(0.96) on :active</td>
+              <td class="p-3 text-zinc-600 dark:text-zinc-300">Buttons must provide immediate tactile physical confirmation the millisecond they are pressed.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100 mt-12 mb-3">
+        5. Production-Ready Implementation
+      </h2>
+
+      <p>
+        Below is the modular, zero-dependency implementation of the dynamic capsule with viscous filter detachment, spring interpolation, and FLIP layout mechanics:
+      </p>
+
+      <div class="code-block-container my-6 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-900 text-zinc-100">
+        <div class="flex items-center justify-between px-4 py-2 bg-zinc-950 border-b border-zinc-800 text-xs font-mono text-zinc-400">
+          <span>DynamicCapsule.ts</span>
+          <span>TypeScript / Web APIs</span>
+        </div>
+        <pre class="p-4 text-xs font-mono overflow-x-auto leading-relaxed text-zinc-300"><code><span class="text-emerald-400">interface</span> <span class="text-amber-300">SpringConfig</span> &#123;
+  stiffness: <span class="text-sky-300">number</span>;
+  damping: <span class="text-sky-300">number</span>;
+  mass: <span class="text-sky-300">number</span>;
+&#125;
+
+<span class="text-emerald-400">export class</span> <span class="text-amber-300">DynamicCapsule</span> &#123;
+  <span class="text-zinc-500">// Second-order analytical spring state solver</span>
+  <span class="text-emerald-400">private</span> solveSpring(
+    current: <span class="text-sky-300">number</span>,
+    target: <span class="text-sky-300">number</span>,
+    velocity: <span class="text-sky-300">number</span>,
+    config: <span class="text-amber-300">SpringConfig</span>,
+    dt: <span class="text-sky-300">number</span>
+  ) &#123;
+    <span class="text-emerald-400">const</span> k = config.stiffness;
+    <span class="text-emerald-400">const</span> c = config.damping;
+    <span class="text-emerald-400">const</span> m = config.mass;
+
+    <span class="text-emerald-400">const</span> force = -k * (current - target) - c * velocity;
+    <span class="text-emerald-400">const</span> accel = force / m;
+    <span class="text-emerald-400">const</span> nextVelocity = velocity + accel * dt;
+    <span class="text-emerald-400">const</span> nextPosition = current + nextVelocity * dt;
+
+    <span class="text-emerald-400">return</span> &#123; position: nextPosition, velocity: nextVelocity &#125;;
+  &#125;
+
+  <span class="text-zinc-500">// Squashes Y proportionally during high X expansion velocities</span>
+  <span class="text-emerald-400">public</span> calculateVolumeSquash(widthDelta: <span class="text-sky-300">number</span>, baseWidth: <span class="text-sky-300">number</span>): <span class="text-sky-300">number</span> &#123;
+    <span class="text-emerald-400">const</span> ratio = Math.abs(widthDelta) / baseWidth;
+    <span class="text-emerald-400">return</span> Math.max(0.85, 1.0 - ratio * 0.18);
+  &#125;
+&#125;</code></pre>
+      </div>
+
+      <p>
+        Interfaces that honor physical laws create an instinctive bond with users. When components stretch, snap, and conserve mass, they transcend flat pixels and feel like tactile instruments crafted with genuine care.
+      </p>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  /* Ambient grid background */
+  .stage-grid {
+    background-image: radial-gradient(rgba(120, 120, 120, 0.2) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  /* HUD badge */
+  .canvas-hud {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.72rem;
+    color: #71717a;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 5px 12px;
+    border-radius: 9999px;
+  }
+  html.dark .canvas-hud {
+    color: #a1a1aa;
+    background: rgba(24, 24, 27, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Pill controls */
+  .pill-nav {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 3px;
+    border-radius: 6px;
+    gap: 2px;
+  }
+  html.dark .pill-nav {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .pill-link {
+    background: transparent;
+    border: none;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: #71717a;
+    cursor: pointer;
+    transition: all 140ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  html.dark .pill-link {
+    color: #a1a1aa;
+  }
+  .pill-link.active {
+    background: #ffffff;
+    color: #111111;
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+  html.dark .pill-link.active {
+    background: #27272a;
+    color: #ffffff;
+  }
+  .pill-link:active {
+    transform: scale(0.97);
+  }
+
+  /* Custom Sliders */
+  .custom-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.12);
+    outline: none;
+    cursor: pointer;
+  }
+  html.dark .custom-slider {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #18181b;
+    cursor: pointer;
+    transition: transform 120ms ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+  html.dark .custom-slider::-webkit-slider-thumb {
+    background: #f4f4f5;
+  }
+  .custom-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+  .custom-slider::-webkit-slider-thumb:active {
+    transform: scale(0.92);
+  }
+
+  /* Math Card */
+  .math-card {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 1rem 0;
+    text-align: center;
+    color: #18181b;
+  }
+  html.dark .math-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #f4f4f5;
+  }
+
+  /* Audio Waveform animation */
+  .waveform-anim .bar {
+    width: 2px;
+    background: #38bdf8;
+    border-radius: 1px;
+    animation: wavePulse 1s ease-in-out infinite alternate;
+  }
+  .waveform-anim .bar-1 { height: 40%; animation-delay: 0.1s; }
+  .waveform-anim .bar-2 { height: 90%; animation-delay: 0.3s; }
+  .waveform-anim .bar-3 { height: 60%; animation-delay: 0.15s; }
+  .waveform-anim .bar-4 { height: 80%; animation-delay: 0.4s; }
+
+  @keyframes wavePulse {
+    0% { transform: scaleY(0.3); }
+    100% { transform: scaleY(1); }
+  }
+
+  /* Micro-transitions */
+  .capsule-state {
+    transition: opacity 160ms cubic-bezier(0.23, 1, 0.32, 1), filter 160ms ease;
+  }
+  .capsule-state.transitioning {
+    filter: blur(2px);
+    opacity: 0.5;
+  }
+</style>
+
+<script>
+  // ==========================================
+  // DEMO 1: MASTER VISCOUS DYNAMIC CAPSULE
+  // ==========================================
+  const masterCapsule = document.getElementById("master-capsule");
+  const satelliteDroplet = document.getElementById("satellite-droplet");
+  const masterGooWrap = document.getElementById("master-goo-wrap");
+  const hudStateName = document.getElementById("hud-state-name");
+  const hudDims = document.getElementById("hud-dims");
+  const statePills = document.querySelectorAll("#state-switcher-pills .pill-link");
+  const btnSlowmo = document.getElementById("btn-toggle-slowmo");
+  const btnViscosity = document.getElementById("btn-toggle-viscosity");
+  const btnSplitLap = document.getElementById("btn-split-lap");
+
+  let isSlowMo = false;
+  let isGooEnabled = true;
+  let currentState = "idle";
+  let lapCount = 0;
+
+  const stateConfigs: Record<string, { width: number; height: number; title: string }> = {
+    idle: { width: 140, height: 38, title: "Idle Pill" },
+    audio: { width: 220, height: 42, title: "Audio Player" },
+    timer: { width: 190, height: 38, title: "Stopwatch Active" },
+    voice: { width: 175, height: 38, title: "Voice Memo" },
+    upload: { width: 205, height: 38, title: "File Uploading" },
+  };
+
+  function transitionToState(nextState: string) {
+    if (!masterCapsule) return;
+    const config = stateConfigs[nextState];
+    if (!config) return;
+
+    currentState = nextState;
+    if (hudStateName) hudStateName.textContent = config.title;
+    if (hudDims) hudDims.textContent = `${config.width}px × ${config.height}px`;
+
+    // Update active pill button
+    statePills.forEach((p) => {
+      p.classList.toggle("active", (p as HTMLElement).dataset.state === nextState);
+    });
+
+    // Animate content crossfade with blur bridging
+    const allStates = document.querySelectorAll(".capsule-state");
+    allStates.forEach((st) => {
+      st.classList.add("transitioning");
+      setTimeout(() => {
+        st.classList.add("hidden");
+        st.classList.remove("flex");
+      }, 80);
+    });
+
+    setTimeout(() => {
+      const targetElement = document.getElementById(`state-${nextState}`);
+      if (targetElement) {
+        targetElement.classList.remove("hidden");
+        targetElement.classList.add("flex");
+        targetElement.classList.remove("transitioning");
+      }
+    }, isSlowMo ? 300 : 90);
+
+    // Apply Elastic Morph with Squash and Stretch
+    const duration = isSlowMo ? 800 : 260;
+    const currentWidth = masterCapsule.offsetWidth;
+    const widthDiff = config.width - currentWidth;
+    const squashScaleY = Math.max(0.88, 1 - Math.abs(widthDiff) * 0.0012);
+
+    masterCapsule.style.transition = `width ${duration}ms cubic-bezier(0.32, 0.72, 0, 1), height ${duration}ms cubic-bezier(0.32, 0.72, 0, 1), transform ${duration / 2}ms ease-out`;
+    masterCapsule.style.width = `${config.width}px`;
+    masterCapsule.style.height = `${config.height}px`;
+    masterCapsule.style.transform = `scaleY(${squashScaleY}) scaleX(${1 + (1 - squashScaleY) * 0.5})`;
+
+    setTimeout(() => {
+      masterCapsule.style.transform = "scale(1)";
+    }, duration / 2);
+
+    // If leaving timer state, hide satellite if needed
+    if (nextState !== "timer" && satelliteDroplet) {
+      satelliteDroplet.style.opacity = "0";
+      satelliteDroplet.style.pointerEvents = "none";
+    }
+  }
+
+  statePills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      const target = (pill as HTMLElement).dataset.state;
+      if (target) transitionToState(target);
+    });
+  });
+
+  // Split Lap Viscous Detachment Effect
+  btnSplitLap?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    lapCount++;
+    if (!satelliteDroplet) return;
+
+    const satLabel = document.getElementById("satellite-label");
+    if (satLabel) satLabel.textContent = `L${lapCount}`;
+
+    // Detach droplet with spring launch
+    const duration = isSlowMo ? 900 : 340;
+    satelliteDroplet.style.transition = "none";
+    satelliteDroplet.style.transform = "translateX(0px) scale(0.6)";
+    satelliteDroplet.style.opacity = "1";
+
+    requestAnimationFrame(() => {
+      satelliteDroplet.style.transition = `transform ${duration}ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 150ms ease`;
+      satelliteDroplet.style.transform = "translateX(48px) scale(1)";
+    });
+  });
+
+  // Slow motion toggle
+  btnSlowmo?.addEventListener("click", () => {
+    isSlowMo = !isSlowMo;
+    btnSlowmo.classList.toggle("active", isSlowMo);
+    const label = btnSlowmo.querySelector("span:last-child");
+    if (label) label.textContent = isSlowMo ? "0.2x Slow Motion (Active)" : "0.2x Slow Motion";
+  });
+
+  // Viscosity toggle
+  btnViscosity?.addEventListener("click", () => {
+    isGooEnabled = !isGooEnabled;
+    btnViscosity.classList.toggle("active", isGooEnabled);
+    btnViscosity.textContent = isGooEnabled ? "Viscous Goo: ON" : "Viscous Goo: OFF";
+    if (masterGooWrap) {
+      masterGooWrap.style.filter = isGooEnabled ? "url(#capsule-goo)" : "none";
+    }
+  });
+
+  // Master Capsule Click Expansion Toggle
+  masterCapsule?.addEventListener("click", () => {
+    if (currentState === "idle") {
+      transitionToState("audio");
+    }
+  });
+
+  // ==========================================
+  // DEMO 2: VISCOUS DETACHMENT LAB
+  // ==========================================
+  const labDroplet = document.getElementById("lab-draggable-droplet");
+  const labDistSlider = document.getElementById("slider-lab-dist") as HTMLInputElement;
+  const labBlurSlider = document.getElementById("slider-lab-blur") as HTMLInputElement;
+  const labDistVal = document.getElementById("lab-dist-val");
+  const sliderDistNum = document.getElementById("slider-dist-num");
+  const sliderBlurNum = document.getElementById("slider-blur-num");
+  const labBridgeState = document.getElementById("lab-bridge-state");
+  const labBlurNode = document.getElementById("lab-blur-node");
+
+  function updateLabDetachment(distance: number, blur: number) {
+    if (labDroplet) {
+      labDroplet.style.transform = `translateX(${distance}px)`;
+    }
+    if (labBlurNode) {
+      labBlurNode.setAttribute("stdDeviation", blur.toString());
+    }
+    if (labDistVal) labDistVal.textContent = `${distance}px`;
+    if (sliderDistNum) sliderDistNum.textContent = `${distance} px`;
+    if (sliderBlurNum) sliderBlurNum.textContent = `${blur} px`;
+
+    // Calculate rupture threshold
+    const ruptureThreshold = blur * 4.4;
+    if (distance > ruptureThreshold) {
+      if (labBridgeState) {
+        labBridgeState.textContent = "Detached (Droplet Ruptured)";
+        labBridgeState.className = "text-rose-500 font-medium";
+      }
+    } else {
+      if (labBridgeState) {
+        labBridgeState.textContent = "Viscous Bridge Active";
+        labBridgeState.className = "text-sky-500 font-medium";
+      }
+    }
+  }
+
+  labDistSlider?.addEventListener("input", (e) => {
+    const d = parseFloat((e.target as HTMLInputElement).value);
+    const b = parseFloat(labBlurSlider?.value || "12");
+    updateLabDetachment(d, b);
+  });
+
+  labBlurSlider?.addEventListener("input", (e) => {
+    const b = parseFloat((e.target as HTMLInputElement).value);
+    const d = parseFloat(labDistSlider?.value || "42");
+    updateLabDetachment(d, b);
+  });
+
+  // ==========================================
+  // DEMO 3: MASS CONSERVATION SQUASH
+  // ==========================================
+  const btnTriggerExpand = document.getElementById("btn-trigger-expand");
+  const boxRigid = document.getElementById("box-rigid");
+  const boxElastic = document.getElementById("box-elastic");
+  let isExpandedState = false;
+
+  btnTriggerExpand?.addEventListener("click", () => {
+    isExpandedState = !isExpandedState;
+    const targetW = isExpandedState ? 240 : 140;
+
+    // Rigid linear
+    if (boxRigid) {
+      boxRigid.style.transition = "width 300ms ease";
+      boxRigid.style.width = `${targetW}px`;
+    }
+
+    // Elastic mass-conserving
+    if (boxElastic) {
+      const squashScaleY = isExpandedState ? 0.84 : 1.14;
+      boxElastic.style.transition = "width 300ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 150ms ease-out";
+      boxElastic.style.width = `${targetW}px`;
+      boxElastic.style.transform = `scaleY(${squashScaleY})`;
+
+      setTimeout(() => {
+        boxElastic.style.transform = "scale(1)";
+      }, 150);
+    }
+  });
+</script>

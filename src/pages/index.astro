@@ -48,22 +48,27 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         vertical-align: baseline;
         font: inherit;
         line-height: inherit;
-        text-decoration: none !important;
-        background-color: var(--link-bg);
-        padding: 0.12em 0.38em;
-        margin: 0 -0.05em;
-        border-radius: 4px;
+        font-weight: inherit;
+        text-decoration: underline !important;
+        text-decoration-thickness: 2px !important;
+        text-underline-offset: 3.5px !important;
+        text-decoration-color: var(--link-line) !important;
+        text-decoration-skip-ink: none;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 0;
         border: none;
         cursor: pointer;
-        box-decoration-break: clone;
-        -webkit-box-decoration-break: clone;
-        transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out) !important;
+        transition: text-decoration-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out) !important;
         -webkit-tap-highlight-color: transparent;
       }
 
-      .inline-copy-btn:hover {
-        color: var(--link-hover-color) !important;
-        background-color: var(--link-bg-hover) !important;
+      @media (hover: hover) and (pointer: fine) {
+        .inline-copy-btn:hover {
+          color: var(--link-hover-color) !important;
+          text-decoration-color: var(--link-line-hover) !important;
+        }
       }
 
       .copy-rest-text {
