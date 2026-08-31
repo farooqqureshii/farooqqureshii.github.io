@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Nanum+Pen+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Nanum+Pen+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -28,8 +28,8 @@
     --duration-base: 150ms;
     --duration-moderate: 200ms;
 
-    /* Refined Editorial Links — 2px Offset Underline with Color Transition */
-    --link-line: rgba(0, 0, 0, 0.32);
+    /* Refined Editorial Links — Whisper 1px Underline with Skip-Ink */
+    --link-line: rgba(0, 0, 0, 0.22);
     --link-line-hover: #000000;
     --link-hover-color: #000000;
   }
@@ -52,7 +52,7 @@
   }
 
   html.dark {
-    --link-line: rgba(255, 255, 255, 0.38);
+    --link-line: rgba(255, 255, 255, 0.32);
     --link-line-hover: #ffffff;
     --link-hover-color: #ffffff;
   }
@@ -63,7 +63,7 @@
   }
 
   html.blue {
-    --link-line: rgba(13, 31, 60, 0.38);
+    --link-line: rgba(13, 31, 60, 0.28);
     --link-line-hover: #0d1f3c;
     --link-hover-color: #0d1f3c;
   }
@@ -74,7 +74,7 @@
   }
 
   html.pink {
-    --link-line: rgba(45, 18, 25, 0.35);
+    --link-line: rgba(45, 18, 25, 0.25);
     --link-line-hover: #2d1219;
     --link-hover-color: #2d1219;
   }
@@ -85,7 +85,7 @@
   }
 
   html.green {
-    --link-line: rgba(10, 32, 16, 0.35);
+    --link-line: rgba(10, 32, 16, 0.25);
     --link-line-hover: #0a2010;
     --link-hover-color: #0a2010;
   }
@@ -99,7 +99,7 @@
     transition: background-color var(--duration-moderate) var(--ease-out), color var(--duration-moderate) var(--ease-out);
   }
 
-  /* Typography stack — Geist */
+  /* Typography stack — Sans Default (Geist) */
   html,
   body,
   h1,
@@ -119,8 +119,47 @@
   select,
   textarea {
     font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 400;
-    letter-spacing: -0.012em;
+    font-weight: 450;
+    letter-spacing: -0.005em;
+  }
+
+  /* Typography stack — Serif Mode (IBM Plex Serif: technical, architectural, balanced) */
+  html.serif-mode,
+  html.serif-mode body,
+  html.serif-mode h1,
+  html.serif-mode h2,
+  html.serif-mode h3,
+  html.serif-mode h4,
+  html.serif-mode h5,
+  html.serif-mode h6,
+  html.serif-mode p,
+  html.serif-mode li,
+  html.serif-mode ul,
+  html.serif-mode ol,
+  html.serif-mode span:not(.breadcrumb-title):not(.breadcrumb-separator):not(.font-handwritten),
+  html.serif-mode div:not(.font-handwritten),
+  html.serif-mode button,
+  html.serif-mode input,
+  html.serif-mode select,
+  html.serif-mode textarea,
+  html.serif-mode .sidebar-link,
+  html.serif-mode .list-link,
+  html.serif-mode .nav-brand,
+  html.serif-mode .mobile-nav-link {
+    font-family: "IBM Plex Serif", "Source Serif 4", "Charter", "Sitka Text", Cambria, Georgia, serif !important;
+    letter-spacing: -0.003em !important;
+  }
+
+  html.serif-mode .sidebar-link,
+  html.serif-mode .list-link,
+  html.serif-mode .mobile-nav-link {
+    font-weight: 420 !important;
+    font-size: 0.9375rem !important;
+  }
+
+  html.serif-mode .nav-brand.home-title {
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
   }
 
   /* Default links — Clean text */
@@ -131,7 +170,7 @@
     transition: none !important;
   }
 
-  /* Content & Editorial Links — 2px Offset Underline with Hover Color Transition */
+  /* Content & Editorial Links — Straight 1px Underline with Generous Clearance */
   article a,
   .prose a,
   main p a,
@@ -143,10 +182,10 @@
     color: inherit;
     font-weight: inherit;
     text-decoration: underline !important;
-    text-decoration-thickness: 2px !important;
-    text-underline-offset: 3.5px !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 4.5px !important;
     text-decoration-color: var(--link-line) !important;
-    text-decoration-skip-ink: none;
+    text-decoration-skip-ink: auto !important;
     background: transparent !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -234,8 +273,8 @@
   .nav-brand.home-title {
     font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 0.875rem !important;
-    font-weight: 480 !important;
-    letter-spacing: -0.012em !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.01em !important;
     color: #111111;
     text-decoration: none !important;
     background-image: none !important;
@@ -285,8 +324,8 @@
   .list-link {
     font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 0.875rem !important;
-    font-weight: 400 !important;
-    letter-spacing: -0.012em !important;
+    font-weight: 450 !important;
+    letter-spacing: -0.005em !important;
     color: #71717a;
     text-decoration: none !important;
     background-image: none !important;
@@ -309,15 +348,15 @@
   }
   html.blue .sidebar-link,
   html.blue .list-link {
-    color: rgba(13, 31, 60, 0.6);
+    color: rgba(13, 31, 60, 0.68);
   }
   html.pink .sidebar-link,
   html.pink .list-link {
-    color: rgba(45, 18, 25, 0.55);
+    color: rgba(45, 18, 25, 0.68);
   }
   html.green .sidebar-link,
   html.green .list-link {
-    color: rgba(10, 32, 16, 0.55);
+    color: rgba(10, 32, 16, 0.68);
   }
 
   .sidebar-link.active,
