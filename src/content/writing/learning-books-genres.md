@@ -1,18 +1,17 @@
 ---
-title: "On Learning, Books and Genres"
+title: "Learnings, Books and Genres"
 description: "Thoughts on nonfiction books, their purpose, and the value of different reading approaches"
 date: "September 28 2025"
 draft: false
 ---
 
-I recently came across an interesting tweet. Here is the link.
+I recently came across an interesting tweet. The content goes:
 
-The content goes:
-"I find it frustrating that almost every nonfiction book is basically just a history lesson, even if it's nominally about some science/tech/policy topic.
-
-Nobody will just explain how something works.
-
-Books about the semiconductor industry will never actually explain the basic process flow inside a fab, but you can bet that there will be a minute-by-minute recounting of a dramatic 1980s Intel boardroom battle."
+> I find it frustrating that almost every nonfiction book is basically just a history lesson, even if it's nominally about some science/tech/policy topic.
+>
+> Nobody will just explain how something works.
+>
+> Books about the semiconductor industry will never actually explain the basic process flow inside a fab, but you can bet that there will be a minute-by-minute recounting of a dramatic 1980s Intel boardroom battle.
 
 This resonated with me in more ways that one. So let's talk about it.
 

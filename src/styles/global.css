@@ -229,17 +229,14 @@
     text-decoration: none !important;
     background-image: none !important;
   }
-  /* Hint to the browser to composite the header separately to reduce layout jitter */
-  header {
-  }
-
   .sidebar-brand,
   .nav-brand.home-title {
     font-family: 'Nanum Pen Script', 'Caveat', cursive !important;
     font-size: 1.5rem !important;
     font-weight: normal !important;
     letter-spacing: 0.01em !important;
-    color: #71717a;
+    color: inherit !important;
+    opacity: 0.6;
     text-decoration: none !important;
     background-image: none !important;
     line-height: 1.2 !important;
@@ -248,65 +245,18 @@
     margin-top: 0;
     padding-top: 0;
     touch-action: manipulation;
-  }
-  html.dark .sidebar-brand,
-  html.dark .nav-brand.home-title {
-    color: #a1a1aa;
-  }
-  html.blue .sidebar-brand,
-  html.blue .nav-brand.home-title {
-    color: rgba(13, 31, 60, 0.68);
-  }
-  html.pink .sidebar-brand,
-  html.pink .nav-brand.home-title {
-    color: rgba(45, 18, 25, 0.68);
-  }
-  html.green .sidebar-brand,
-  html.green .nav-brand.home-title {
-    color: rgba(10, 32, 16, 0.68);
+    transition: opacity var(--duration-fast) var(--ease-out) !important;
   }
 
   .sidebar-brand.active,
   .nav-brand.home-title.active {
-    color: #111111;
-  }
-  html.dark .sidebar-brand.active,
-  html.dark .nav-brand.home-title.active {
-    color: #ffffff;
-  }
-  html.blue .sidebar-brand.active,
-  html.blue .nav-brand.home-title.active {
-    color: #0d1f3c;
-  }
-  html.pink .sidebar-brand.active,
-  html.pink .nav-brand.home-title.active {
-    color: #2d1219;
-  }
-  html.green .sidebar-brand.active,
-  html.green .nav-brand.home-title.active {
-    color: #0a2010;
+    opacity: 1 !important;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .sidebar-brand:hover,
     .nav-brand.home-title:hover {
-      color: #111111;
-    }
-    html.dark .sidebar-brand:hover,
-    html.dark .nav-brand.home-title:hover {
-      color: #ffffff;
-    }
-    html.blue .sidebar-brand:hover,
-    html.blue .nav-brand.home-title:hover {
-      color: #0d1f3c;
-    }
-    html.pink .sidebar-brand:hover,
-    html.pink .nav-brand.home-title:hover {
-      color: #2d1219;
-    }
-    html.green .sidebar-brand:hover,
-    html.green .nav-brand.home-title:hover {
-      color: #0a2010;
+      opacity: 1 !important;
     }
   }
 
@@ -314,8 +264,10 @@
     font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
     font-size: 1.7rem;
     font-weight: normal;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     line-height: 1.1;
+    color: inherit;
+    text-decoration: none;
     display: inline-block;
   }
 
@@ -326,7 +278,7 @@
     letter-spacing: 0.02em;
     line-height: 1.1;
     display: inline-block;
-    opacity: 0.8;
+    opacity: 0.5;
   }
 
   .sidebar-link,
@@ -335,7 +287,8 @@
     font-size: 0.875rem !important;
     font-weight: 450 !important;
     letter-spacing: -0.005em !important;
-    color: #71717a;
+    color: inherit !important;
+    opacity: 0.6;
     text-decoration: none !important;
     background-image: none !important;
     line-height: 1.625 !important;
@@ -345,71 +298,23 @@
     padding: 0;
     cursor: pointer;
     text-align: left;
-    transition: none !important;
+    transition: opacity var(--duration-fast) var(--ease-out) !important;
     touch-action: manipulation;
   }
   .sidebar-link {
     display: block;
   }
-  html.dark .sidebar-link,
-  html.dark .list-link {
-    color: #a1a1aa;
-  }
-  html.blue .sidebar-link,
-  html.blue .list-link {
-    color: rgba(13, 31, 60, 0.68);
-  }
-  html.pink .sidebar-link,
-  html.pink .list-link {
-    color: rgba(45, 18, 25, 0.68);
-  }
-  html.green .sidebar-link,
-  html.green .list-link {
-    color: rgba(10, 32, 16, 0.68);
-  }
 
   .sidebar-link.active,
   .list-link.active {
-    color: #111111;
+    opacity: 1 !important;
     font-weight: 500 !important;
-  }
-  html.dark .sidebar-link.active,
-  html.dark .list-link.active {
-    color: #ffffff;
-  }
-  html.blue .sidebar-link.active,
-  html.blue .list-link.active {
-    color: #0d1f3c;
-  }
-  html.pink .sidebar-link.active,
-  html.pink .list-link.active {
-    color: #2d1219;
-  }
-  html.green .sidebar-link.active,
-  html.green .list-link.active {
-    color: #0a2010;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .sidebar-link:hover,
     .list-link:hover {
-      color: #111111;
-    }
-    html.dark .sidebar-link:hover,
-    html.dark .list-link:hover {
-      color: #ffffff;
-    }
-    html.blue .sidebar-link:hover,
-    html.blue .list-link:hover {
-      color: #0d1f3c;
-    }
-    html.pink .sidebar-link:hover,
-    html.pink .list-link:hover {
-      color: #2d1219;
-    }
-    html.green .sidebar-link:hover,
-    html.green .list-link:hover {
-      color: #0a2010;
+      opacity: 1 !important;
     }
   }
 
@@ -729,7 +634,8 @@ html.green #menu-overlay {
 }
 
 .mobile-nav-link {
-  color: #71717a;
+  color: inherit !important;
+  opacity: 0.6;
   font-family: inherit;
   font-size: 1.5rem !important;
   line-height: 1.375 !important;
@@ -745,7 +651,7 @@ html.green #menu-overlay {
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  transition: color var(--duration-base) var(--ease-out) !important;
+  transition: opacity var(--duration-base) var(--ease-out) !important;
 }
 
 @media (min-width: 640px) {
@@ -753,164 +659,36 @@ html.green #menu-overlay {
     font-size: 1.875rem !important;
   }
 }
+
 .mobile-nav-link.active {
-  color: #111111;
+  opacity: 1 !important;
   font-weight: 500;
-  background: transparent !important;
-  background-color: transparent !important;
-}
-html.dark .mobile-nav-link {
-  color: #a1a1aa;
-}
-html.dark .mobile-nav-link.active {
-  color: #ffffff;
-}
-html.blue .mobile-nav-link {
-  color: rgba(13, 31, 60, 0.6);
-}
-html.blue .mobile-nav-link.active {
-  color: #0d1f3c;
-}
-html.pink .mobile-nav-link {
-  color: rgba(45, 18, 25, 0.55);
-}
-html.pink .mobile-nav-link.active {
-  color: #2d1219;
-}
-html.green .mobile-nav-link {
-  color: rgba(10, 32, 16, 0.55);
-}
-html.green .mobile-nav-link.active {
-  color: #0a2010;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .mobile-nav-link:hover {
-    color: #111111 !important;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-  html.dark .mobile-nav-link:hover {
-    color: #ffffff !important;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-  html.blue .mobile-nav-link:hover {
-    color: #0d1f3c !important;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-  html.pink .mobile-nav-link:hover {
-    color: #2d1219 !important;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-  html.green .mobile-nav-link:hover {
-    color: #0a2010 !important;
-    background: transparent !important;
-    background-color: transparent !important;
+    opacity: 1 !important;
   }
 }
 
-/* Global utility overrides for tailwind text colors across pages */
-html.blue .text-zinc-900,
-html.blue .text-zinc-800,
-html.blue .text-zinc-100 {
-  color: #0d1f3c !important;
-}
-html.blue .text-zinc-600,
-html.blue .text-zinc-500,
-html.blue .text-zinc-400 {
-  color: rgba(13, 31, 60, 0.6) !important;
+/* Universal unified project and filter link styles */
+.project-link,
+.filter-link {
+  color: inherit !important;
+  opacity: 0.6;
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 
-html.pink .text-zinc-900,
-html.pink .text-zinc-800,
-html.pink .text-zinc-100 {
-  color: #2d1219 !important;
-}
-html.pink .text-zinc-600,
-html.pink .text-zinc-500,
-html.pink .text-zinc-400 {
-  color: rgba(45, 18, 25, 0.55) !important;
+.project-link:hover,
+.filter-link:hover,
+.filter-link.is-active {
+  opacity: 1 !important;
 }
 
-html.green .text-zinc-900,
-html.green .text-zinc-800,
-html.green .text-zinc-100 {
-  color: #0a2010 !important;
-}
-html.green .text-zinc-600,
-html.green .text-zinc-500,
-html.green .text-zinc-400 {
-  color: rgba(10, 32, 16, 0.55) !important;
-}
-
-/* Card / media wrapper overrides for blue, pink, green themes */
-html.blue .border-zinc-200,
-html.blue .border-zinc-200\/80,
-html.blue .border-zinc-200\/60 {
-  border-color: rgba(13, 31, 60, 0.18) !important;
-}
-html.pink .border-zinc-200,
-html.pink .border-zinc-200\/80,
-html.pink .border-zinc-200\/60 {
-  border-color: rgba(45, 18, 25, 0.15) !important;
-}
-html.green .border-zinc-200,
-html.green .border-zinc-200\/80,
-html.green .border-zinc-200\/60 {
-  border-color: rgba(10, 32, 16, 0.15) !important;
-}
-
-html.blue .bg-zinc-50\/50,
-html.blue .bg-zinc-100 {
-  background-color: rgba(13, 31, 60, 0.08) !important;
-}
-html.pink .bg-zinc-50\/50,
-html.pink .bg-zinc-100 {
-  background-color: rgba(45, 18, 25, 0.07) !important;
-}
-html.green .bg-zinc-50\/50,
-html.green .bg-zinc-100 {
-  background-color: rgba(10, 32, 16, 0.07) !important;
-}
-
-/* Filter & project links active state per theme */
-html.blue .filter-link.is-active,
-html.blue .filter-link:hover {
-  color: #0d1f3c !important;
-}
-html.pink .filter-link.is-active,
-html.pink .filter-link:hover {
-  color: #2d1219 !important;
-}
-html.green .filter-link.is-active,
-html.green .filter-link:hover {
-  color: #0a2010 !important;
-}
-
-html.blue .filter-link,
-html.blue .project-link {
-  color: rgba(13, 31, 60, 0.55) !important;
-}
-html.pink .filter-link,
-html.pink .project-link {
-  color: rgba(45, 18, 25, 0.5) !important;
-}
-html.green .filter-link,
-html.green .project-link {
-  color: rgba(10, 32, 16, 0.5) !important;
-}
-
-html.blue .filter-sep {
-  color: rgba(13, 31, 60, 0.2) !important;
-}
-html.pink .filter-sep {
-  color: rgba(45, 18, 25, 0.18) !important;
-}
-html.green .filter-sep {
-  color: rgba(10, 32, 16, 0.18) !important;
+.filter-sep {
+  color: inherit !important;
+  opacity: 0.25;
+  user-select: none;
 }
 .notes-section a {
   color: inherit;

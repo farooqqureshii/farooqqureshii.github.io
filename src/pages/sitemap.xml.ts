@@ -23,7 +23,6 @@ export const GET: APIRoute = async () => {
     { url: '/writing/w25', lastmod: currentDate, changefreq: 'yearly', priority: '0.7' },
     { url: '/writing/7', lastmod: currentDate, changefreq: 'yearly', priority: '0.7' },
     { url: '/writing/f25', lastmod: currentDate, changefreq: 'yearly', priority: '0.7' },
-    { url: '/writing/latin', lastmod: currentDate, changefreq: 'yearly', priority: '0.7' },
     { url: '/writing/reading', lastmod: currentDate, changefreq: 'yearly', priority: '0.7' },
     { url: '/writing/readmore', lastmod: currentDate, changefreq: 'yearly', priority: '0.7' },
     { url: '/writing/substack', lastmod: currentDate, changefreq: 'yearly', priority: '0.7' },

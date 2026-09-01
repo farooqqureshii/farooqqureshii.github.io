@@ -1,5 +1,5 @@
 ---
-title: "Precisely, Little Things"
+title: "Precisely Little Things"
 description: "Leadership advice, the Forer effect, and why character beats frameworks."
 date: "October 19 2025"
 draft: false

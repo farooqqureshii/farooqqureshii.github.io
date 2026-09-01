@@ -1,5 +1,5 @@
 ---
-title: "On BCNY and Software Monetization"
+title: "Software Monetization"
 description: "Thoughts on Arc, Dia, and why pricing timing matters."
 date: "Sep 4 2025"
 draft: false

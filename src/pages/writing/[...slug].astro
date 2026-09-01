@@ -39,8 +39,8 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 
 <Layout title={`Farooq Q. | ${title}`} description={description}>
   <main>
-    <h1 class="mb-1 text-sm font-medium text-zinc-900 dark:text-zinc-100">{title}</h1>
-    <p class="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
+    <h1 class="mb-1 text-sm font-medium">{title}</h1>
+    <p class="mb-6 text-sm opacity-60">
       Published on {formatLongDate(date)}
     </p>
     <article class="text-sm leading-relaxed [&_p]:my-4">
@@ -48,7 +48,7 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
     </article>
 
     <div
-      class="mt-12 flex items-center justify-between text-sm text-zinc-500 dark:text-zinc-400"
+      class="mt-12 flex items-center justify-between text-sm opacity-70"
     >
       <a href="/writing" class="list-link">← All Writing</a>
       {

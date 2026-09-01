@@ -982,10 +982,10 @@ const filterTabs = [
               class="book-row flex items-baseline justify-between gap-4"
               data-tags={tags}
             >
-              <span class="text-zinc-900 dark:text-zinc-100 min-w-0">
+              <span class="min-w-0">
                 {book.title} — {book.author}
               </span>
-              <span class="shrink-0 text-xs text-zinc-400 select-none dark:text-zinc-500">
+              <span class="shrink-0 text-xs opacity-45 select-none">
                 {"★".repeat(book.rating)}{"☆".repeat(5 - book.rating)}
               </span>
             </div>
@@ -1003,38 +1003,28 @@ const filterTabs = [
     }
     .filter-link {
       font-size: 0.875rem;
-      color: #71717a;
+      color: inherit;
+      opacity: 0.6;
       background: none;
       border: none;
       padding: 0;
       cursor: pointer;
-      transition: color 150ms cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    html.dark .filter-link {
-      color: #a1a1aa;
+      transition: opacity var(--duration-fast) var(--ease-out);
     }
     @media (hover: hover) and (pointer: fine) {
       .filter-link:hover {
-        color: #111111;
-      }
-      html.dark .filter-link:hover {
-        color: #ffffff;
+        opacity: 1;
       }
     }
     .filter-link.is-active {
-      color: #111111 !important;
+      opacity: 1 !important;
       font-weight: 500;
-    }
-    html.dark .filter-link.is-active {
-      color: #ffffff !important;
     }
     .filter-sep {
       font-size: 0.875rem;
-      color: #e4e4e7;
+      color: inherit;
+      opacity: 0.25;
       user-select: none;
-    }
-    html.dark .filter-sep {
-      color: #3f3f46;
     }
   </style>
 

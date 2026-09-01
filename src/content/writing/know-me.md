@@ -5,10 +5,6 @@ date: "Sep 3 2025"
 draft: false
 ---
 
-In advance, this is more a stream of consciousness piece than anything else. Apologies if it reads messy or incoherent. 
-
------------------- 
-
 Something that I became fixated upon a long time ago was making it easy for people to get to know me. I spent a lot of time thinking about my answers to common questions that would come up, things that I'd do in my free time - the dreaded "What's a fun fact about you?" question. 
 
 I wanted to do this because for a long time, I struggled with giving answers to these questions. A part of me felt like my answers weren't the greatest. Another part of me didn't want to get into a conversation about something I didn't know. 
