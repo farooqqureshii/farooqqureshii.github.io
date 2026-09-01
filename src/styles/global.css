@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Nanum+Pen+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Nanum+Pen+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -28,7 +28,7 @@
     --duration-base: 150ms;
     --duration-moderate: 200ms;
 
-    /* Refined Editorial Links — Whisper 1px Underline with Skip-Ink */
+    /* Refined Editorial Links */
     --link-line: rgba(0, 0, 0, 0.22);
     --link-line-hover: #000000;
     --link-hover-color: #000000;
@@ -123,45 +123,6 @@
     letter-spacing: -0.005em;
   }
 
-  /* Typography stack — Serif Mode (IBM Plex Serif: technical, architectural, balanced) */
-  html.serif-mode,
-  html.serif-mode body,
-  html.serif-mode h1,
-  html.serif-mode h2,
-  html.serif-mode h3,
-  html.serif-mode h4,
-  html.serif-mode h5,
-  html.serif-mode h6,
-  html.serif-mode p,
-  html.serif-mode li,
-  html.serif-mode ul,
-  html.serif-mode ol,
-  html.serif-mode span:not(.breadcrumb-title):not(.breadcrumb-separator):not(.font-handwritten),
-  html.serif-mode div:not(.font-handwritten),
-  html.serif-mode button,
-  html.serif-mode input,
-  html.serif-mode select,
-  html.serif-mode textarea,
-  html.serif-mode .sidebar-link,
-  html.serif-mode .list-link,
-  html.serif-mode .nav-brand,
-  html.serif-mode .mobile-nav-link {
-    font-family: "IBM Plex Serif", "Source Serif 4", "Charter", "Sitka Text", Cambria, Georgia, serif !important;
-    letter-spacing: -0.003em !important;
-  }
-
-  html.serif-mode .sidebar-link,
-  html.serif-mode .list-link,
-  html.serif-mode .mobile-nav-link {
-    font-weight: 420 !important;
-    font-size: 0.9375rem !important;
-  }
-
-  html.serif-mode .nav-brand.home-title {
-    font-weight: 500 !important;
-    font-size: 0.95rem !important;
-  }
-
   /* Default links — Clean text */
   a {
     color: inherit;
@@ -170,7 +131,7 @@
     transition: none !important;
   }
 
-  /* Content & Editorial Links — Straight 1px Underline with Generous Clearance */
+  /* Content & Editorial Links — Thicker underline with generous clearance */
   article a,
   .prose a,
   main p a,
@@ -182,8 +143,8 @@
     color: inherit;
     font-weight: inherit;
     text-decoration: underline !important;
-    text-decoration-thickness: 1px !important;
-    text-underline-offset: 4.5px !important;
+    text-decoration-thickness: 1.5px !important;
+    text-underline-offset: 4px !important;
     text-decoration-color: var(--link-line) !important;
     text-decoration-skip-ink: auto !important;
     background: transparent !important;
@@ -722,10 +683,10 @@ html.green #menu-overlay {
 .mobile-nav-link {
   color: #71717a;
   font-family: inherit;
-  font-size: inherit;
+  font-size: 1.5rem !important;
+  line-height: 1.375 !important;
   font-weight: 400;
   letter-spacing: inherit;
-  line-height: inherit;
   background: transparent !important;
   background-color: transparent !important;
   border: none;
@@ -737,6 +698,12 @@ html.green #menu-overlay {
   -webkit-appearance: none;
   appearance: none;
   transition: color var(--duration-base) var(--ease-out) !important;
+}
+
+@media (min-width: 640px) {
+  .mobile-nav-link {
+    font-size: 1.875rem !important;
+  }
 }
 .mobile-nav-link.active {
   color: #111111;

@@ -38,7 +38,7 @@ const imageURL = new URL(image, Astro.site || Astro.url);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Nanum+Pen+Script&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Nanum+Pen+Script&display=swap"
       rel="stylesheet"
     />
 
@@ -99,26 +99,11 @@ const imageURL = new URL(image, Astro.site || Astro.url);
         }
       };
 
-      const setFontMode = () => {
-        let fontMode = localStorage.fontMode;
-        if (!fontMode) {
-          fontMode = "sans";
-        }
-        const html = document.documentElement;
-        if (fontMode === "serif") {
-          html.classList.add("serif-mode");
-        } else {
-          html.classList.remove("serif-mode");
-        }
-      };
-
       setTheme();
-      setFontMode();
 
       if (!window.__themeListenerAttached) {
         document.addEventListener("astro:after-swap", () => {
           setTheme();
-          setFontMode();
         });
         window.__themeListenerAttached = true;
       }

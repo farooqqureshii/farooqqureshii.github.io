@@ -58,7 +58,7 @@ const path = Astro.url.pathname;
     >Cosmos</a>
   </div>
 
-  <!-- Theme & Font Mode Toggle Buttons -->
+  <!-- Theme Toggle Button -->
   <div class="flex flex-col gap-y-1">
     <button
       id="sidebar-theme-toggle"
@@ -66,13 +66,6 @@ const path = Astro.url.pathname;
       title="Toggle theme"
     >
       <span class="sidebar-theme-label inline-block min-w-[48px]">Dark</span>
-    </button>
-    <button
-      id="sidebar-font-toggle"
-      class="sidebar-link cursor-pointer select-none"
-      title="Toggle font mode"
-    >
-      <span class="sidebar-font-label inline-block min-w-[48px]">Sans-serif</span>
     </button>
   </div>
 
@@ -177,12 +170,6 @@ const path = Astro.url.pathname;
         class="mobile-nav-link no-underline text-left cursor-pointer"
       >
         <span class="sidebar-theme-label inline-block min-w-[48px]">Light</span>
-      </button>
-      <button
-        id="mobile-font-toggle"
-        class="mobile-nav-link no-underline text-left cursor-pointer"
-      >
-        <span class="sidebar-font-label inline-block min-w-[48px]">Sans-serif</span>
       </button>
     </div>
   </div>
@@ -372,41 +359,6 @@ const path = Astro.url.pathname;
     if (mobileThemeBtn) mobileThemeBtn.onclick = () => toggleTheme();
 
     updateThemeLabels();
-
-    // Font toggle handlers
-    const fontLabels = document.querySelectorAll(".sidebar-font-label");
-    const desktopFontBtn = document.getElementById("sidebar-font-toggle");
-    const mobileFontBtn = document.getElementById("mobile-font-toggle");
-
-    function getCurrentFontMode(): "sans" | "serif" {
-      return document.documentElement.classList.contains("serif-mode") ? "serif" : "sans";
-    }
-
-    function updateFontLabels() {
-      const currentMode = getCurrentFontMode();
-      const labelText = currentMode === "serif" ? "Serif" : "Sans-serif";
-      fontLabels.forEach((lbl) => {
-        lbl.textContent = labelText;
-      });
-    }
-
-    const toggleFontMode = () => {
-      const currentMode = getCurrentFontMode();
-      const nextMode = currentMode === "sans" ? "serif" : "sans";
-      const html = document.documentElement;
-      if (nextMode === "serif") {
-        html.classList.add("serif-mode");
-      } else {
-        html.classList.remove("serif-mode");
-      }
-      localStorage.fontMode = nextMode;
-      updateFontLabels();
-    };
-
-    if (desktopFontBtn) desktopFontBtn.onclick = () => toggleFontMode();
-    if (mobileFontBtn) mobileFontBtn.onclick = () => toggleFontMode();
-
-    updateFontLabels();
   }
 
   document.addEventListener("astro:page-load", initHeader);
