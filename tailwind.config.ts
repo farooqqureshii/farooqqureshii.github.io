@@ -13,6 +13,7 @@ const config: Config = {
         sans: ["'Geist'", "'Inter'", ...defaultTheme.fontFamily.sans],
         serif: ["'IBM Plex Serif'", "'Source Serif 4'", "'Charter'", "Georgia", ...defaultTheme.fontFamily.serif],
         mono: ["'Geist Mono'", ...defaultTheme.fontFamily.mono],
+        handwritten: ["'Nanum Pen Script'", "'Caveat'", "cursive"],
       },
       colors: {
         // Flexoki color palette

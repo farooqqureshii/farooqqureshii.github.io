@@ -6,7 +6,7 @@ const path = Astro.url.pathname;
 <aside class="sidebar-col hidden md:flex flex-col gap-6 w-[150px] shrink-0">
   <!-- Title / Brand -->
   <div>
-    <a href="/" class={`sidebar-link ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
+    <a href="/" class={`sidebar-brand ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
   </div>
 
   <!-- Primary Page Links -->
@@ -88,7 +88,7 @@ const path = Astro.url.pathname;
 
 <!-- Mobile Header (Visible on mobile only) -->
 <div class="mobile-header relative flex md:hidden items-center justify-between w-full mb-8">
-  <a id="mobile-brand-title" href="/" class={`sidebar-link relative z-10 no-underline ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
+  <a id="mobile-brand-title" href="/" class={`sidebar-brand relative z-10 no-underline ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
   <div class="flex items-center gap-2 relative z-[60]">
     {path !== '/' && (
       <button

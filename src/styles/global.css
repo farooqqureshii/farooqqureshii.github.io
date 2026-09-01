@@ -181,6 +181,8 @@
   .mo-link:hover,
   .nav-brand,
   .nav-brand:hover,
+  .sidebar-brand,
+  .sidebar-brand:hover,
   .sidebar-link,
   .sidebar-link:hover,
   .list-link,
@@ -231,35 +233,81 @@
   header {
   }
 
+  .sidebar-brand,
   .nav-brand.home-title {
-    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    font-size: 0.875rem !important;
-    font-weight: 500 !important;
-    letter-spacing: -0.01em !important;
-    color: #111111;
+    font-family: 'Nanum Pen Script', 'Caveat', cursive !important;
+    font-size: 1.5rem !important;
+    font-weight: normal !important;
+    letter-spacing: 0.01em !important;
+    color: #71717a;
     text-decoration: none !important;
     background-image: none !important;
-    line-height: 1.625 !important;
-    display: block;
+    line-height: 1.2 !important;
+    display: inline-block;
+    cursor: pointer;
     margin-top: 0;
     padding-top: 0;
+    touch-action: manipulation;
   }
+  html.dark .sidebar-brand,
   html.dark .nav-brand.home-title {
+    color: #a1a1aa;
+  }
+  html.blue .sidebar-brand,
+  html.blue .nav-brand.home-title {
+    color: rgba(13, 31, 60, 0.68);
+  }
+  html.pink .sidebar-brand,
+  html.pink .nav-brand.home-title {
+    color: rgba(45, 18, 25, 0.68);
+  }
+  html.green .sidebar-brand,
+  html.green .nav-brand.home-title {
+    color: rgba(10, 32, 16, 0.68);
+  }
+
+  .sidebar-brand.active,
+  .nav-brand.home-title.active {
+    color: #111111;
+  }
+  html.dark .sidebar-brand.active,
+  html.dark .nav-brand.home-title.active {
     color: #ffffff;
   }
-  html.blue .nav-brand.home-title {
+  html.blue .sidebar-brand.active,
+  html.blue .nav-brand.home-title.active {
     color: #0d1f3c;
   }
-  html.pink .nav-brand.home-title {
+  html.pink .sidebar-brand.active,
+  html.pink .nav-brand.home-title.active {
     color: #2d1219;
   }
-  html.green .nav-brand.home-title {
+  html.green .sidebar-brand.active,
+  html.green .nav-brand.home-title.active {
     color: #0a2010;
   }
-  .nav-brand.home-title:hover {
-    opacity: 0.85;
-  }
-  .nav-brand.home-title:active {
+
+  @media (hover: hover) and (pointer: fine) {
+    .sidebar-brand:hover,
+    .nav-brand.home-title:hover {
+      color: #111111;
+    }
+    html.dark .sidebar-brand:hover,
+    html.dark .nav-brand.home-title:hover {
+      color: #ffffff;
+    }
+    html.blue .sidebar-brand:hover,
+    html.blue .nav-brand.home-title:hover {
+      color: #0d1f3c;
+    }
+    html.pink .sidebar-brand:hover,
+    html.pink .nav-brand.home-title:hover {
+      color: #2d1219;
+    }
+    html.green .sidebar-brand:hover,
+    html.green .nav-brand.home-title:hover {
+      color: #0a2010;
+    }
   }
 
   .breadcrumb-title {
