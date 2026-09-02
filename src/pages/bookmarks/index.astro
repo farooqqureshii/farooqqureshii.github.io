@@ -112,7 +112,7 @@ const items = bookmarks.filter((b) => {
                 />
               </div>
               {(item.title || item.description) && (
-                <p class="text-xs opacity-65">
+                <p class="text-xs opacity-60">
                   {item.title}{item.title && item.description && item.description !== item.title ? ` — ${item.description}` : (!item.title ? item.description : "")}
                 </p>
               )}
