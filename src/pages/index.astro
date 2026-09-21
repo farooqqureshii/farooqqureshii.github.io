@@ -1,18 +1,17 @@
 ---
 import { SITE_DESCRIPTION } from "../consts";
 import IndexLayout from "../layouts/IndexLayout.astro";
+import HandwrittenSignoff from "../components/HandwrittenSignoff.astro";
 ---
 
 <IndexLayout title="Farooq Q." description={SITE_DESCRIPTION}>
   <main class="index-page">
     <article class="index-content space-y-4 text-[15px] leading-[1.65]">
       <p>
-        I'm a third-year <a
-          href="https://www.uoee.rocks/"
+        I'm a third-year Electrical Engineering student at <a
+          href="https://uottawa.ca"
           target="_blank"
-          rel="noopener">Electrical Engineering</a
-        > student at <a href="https://uottawa.ca" target="_blank" rel="noopener"
-          >the University of Ottawa</a
+          rel="noopener">the University of Ottawa</a
         >.
       </p>
       <p>
@@ -25,11 +24,6 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         >.
       </p>
       <p>
-        I'm interested in power electronics and energy conversion systems.
-        In particular, converter design and switching regulator
-        topologies.
-      </p>
-      <p>
         I also <a href="/other/books">read</a> and <a href="/writing">write</a>.
       </p>
 
@@ -37,8 +31,12 @@ import IndexLayout from "../layouts/IndexLayout.astro";
         Please feel free to <button id="say-hi-btn" class="inline-copy-btn">copy</button> <span id="copy-rest-text" class="copy-rest-text">my email and say hi.</span>
       </p>
       <p>
-        This page was last updated on August 16. Thank you for stopping by.
+        This page was last updated on August 16.
       </p>
+
+      <div class="pt-3 pb-2">
+        <HandwrittenSignoff />
+      </div>
     </article>
 
     <style>
@@ -107,6 +105,7 @@ import IndexLayout from "../layouts/IndexLayout.astro";
       }
 
       document.addEventListener("astro:page-load", initIndexPage);
+      initIndexPage();
     </script>
   </main>
 </IndexLayout>

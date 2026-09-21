@@ -17,12 +17,16 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/mdx": "^4.0.2",
+    "@astrojs/react": "^6.0.6",
     "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.2",
     "@astrojs/vercel": "^8.2.0",
     "astro": "^5.10.1",
     "cuelume": "^0.1.2",
+    "drawesome": "^0.1.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"

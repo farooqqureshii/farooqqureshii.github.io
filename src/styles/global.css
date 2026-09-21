@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Nanum+Pen+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Nanum+Pen+Script&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -231,15 +231,15 @@
   }
   .sidebar-brand,
   .nav-brand.home-title {
-    font-family: 'Nanum Pen Script', 'Caveat', cursive !important;
-    font-size: 1.5rem !important;
-    font-weight: normal !important;
-    letter-spacing: 0.01em !important;
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.005em !important;
     color: inherit !important;
     opacity: 0.6;
     text-decoration: none !important;
     background-image: none !important;
-    line-height: 1.2 !important;
+    line-height: 1.625 !important;
     display: inline-block;
     cursor: pointer;
     margin-top: 0;
@@ -261,22 +261,22 @@
   }
 
   .breadcrumb-title {
-    font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
-    font-size: 1.7rem;
-    font-weight: normal;
-    letter-spacing: 0.01em;
-    line-height: 1.1;
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1.625;
     color: inherit;
     text-decoration: none;
     display: inline-block;
   }
 
   .breadcrumb-separator {
-    font-family: 'Nanum Pen Script', 'Water Brush', 'Caveat', cursive;
-    font-size: 1.7rem;
-    font-weight: normal;
-    letter-spacing: 0.02em;
-    line-height: 1.1;
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 450;
+    letter-spacing: -0.005em;
+    line-height: 1.625;
     display: inline-block;
     opacity: 0.5;
   }

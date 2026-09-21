@@ -7,8 +7,6 @@ const projects = [
     title: "PID Position Controller for Antenna Servo",
     description:
       "Position controller tuning and disturbance rejection in MATLAB and Simulink",
-    media: "/static/antenna_pid.webp",
-    mediaType: "image",
     category: "engineering",
     github: "https://github.com/farooqqureshii/pid-antenna-positioner",
     report: "/reports/antenna-positioner-pid-report.pdf",
@@ -18,8 +16,6 @@ const projects = [
     title: "Digital Filter Design for Interference Rejection",
     description:
       "Filter design for interference rejection using Python and SciPy",
-    media: "/static/dsp_filter.webp",
-    mediaType: "image",
     category: "engineering",
     github: "https://github.com/farooqqureshii/dsp-filter",
     report: "/reports/dsp-filter-design-report.pdf",
@@ -28,60 +24,48 @@ const projects = [
   {
     title: "uOttaHack | Director",
     description: "Leading the team behind Ottawa's largest tech event",
-    media: "/static/uottahack.jpg",
     category: "product",
     link: "https://www.uottahack.ca/",
-    mediaType: "image",
     technologies: ["PM", "UI/UX", "Figma", "Software", "Sales"],
   },
   {
     title: "Substack Case Study",
     description: "Product/strategy case study for Substack growth",
-    media: "/static/Marketing_Spaces.png",
     category: "product",
     link: "/writing/substack/",
-    mediaType: "image",
     technologies: ["PM", "Strategy", "UI/UX", "Marketing"],
   },
   {
     title: "uoee.rocks",
     description: "Course visualizer and search, for uOttawa EE students",
-    media: "/static/uoee.rocks-1755366145491.webm",
     category: "software",
     link: "https://uoee.rocks/",
     github: "https://github.com/farooqqureshii/uoee.rocks",
-    mediaType: "video",
     technologies: ["React", "TypeScript", "Tailwind", "Framer Motion"],
   },
   {
     title: "okbutpitchit",
     description: "Code to Pitch-Ready slides, in an Instant",
-    media: "/static/okbutpitchit_vid.webm",
     category: "software",
     link: "https://okbutpitchit.vercel.app/",
     github: "https://github.com/farooqqureshii/okbutpitchit",
-    mediaType: "video",
     technologies: ["Next.js", "React", "Tailwind", "Node", "Llama 3"],
   },
   {
     title: "Voltus",
     description: "RLC circuit visualization, analysis, and simulation",
-    media: "/static/voltus.webm",
     category: "software",
     link: "https://voltus.streamlit.app/",
     github: "https://github.com/farooqqureshii/voltus",
-    mediaType: "video",
     technologies: ["Streamlit", "Plotly", "NumPy", "SciPy", "Pandas"],
   },
   {
     title: "Code Compass",
     description:
       "Understand any GitHub repo and find beginner-friendly issues, fast",
-    media: "/static/codecompass_vid.webm",
     category: "software",
     link: "https://trycodecompass.vercel.app/",
     github: "https://github.com/farooqqureshii/code-compass",
-    mediaType: "video",
     technologies: [
       "Next.js",
       "TypeScript",
@@ -94,36 +78,30 @@ const projects = [
     title: "EchoScope",
     description:
       "Use AI to uncover sentiment, bias, and diversity in YouTube comments",
-    media: "/static/echoscope_vid.webm",
     category: "software",
     link: "https://echoscope.vercel.app/",
     github: "https://github.com/farooqqureshii/echoscope",
-    mediaType: "video",
     technologies: ["TypeScript", "Node", "TensorFlow", "Sentiment Analysis"],
   },
   {
     title: "Analyzing and predicting housing prices in London",
     description: "Smarter housing price predictions with machine learning",
-    media: "/static/london_vid.webm",
     category: "software",
     link: "https://farooq.craft.me/write-up",
-    mediaType: "video",
     technologies: ["Pandas", "Matplotlib", "Scikit-learn", "SHAP", "LightGBM"],
   },
   {
     title: "NLP for Google Calendar",
     description: "Conversational AI for Google Calendar using NLP",
-    media: "/static/nlp_vid.webm",
     category: "software",
-    mediaType: "video",
+    link: "/static/nlp_vid.webm",
     technologies: ["LangChain", "Rasa", "Typescript", "OAuth"],
   },
   {
     title: "Notion2Todoist",
     description: "Syncing Tasks from Notion to Todoist",
-    media: "/static/notion api video.webm",
     category: "software",
-    mediaType: "video",
+    link: "/static/notion api video.webm",
     technologies: ["REST API", "Bash", "Scripting", "Python"],
   },
   {
@@ -159,41 +137,14 @@ const categories = [
       }
     </nav>
 
-    <div class="space-y-10">
+    <div class="space-y-6">
       {
-        projects.map((project, index) => (
+        projects.map((project) => (
           <div
-            class="project-item space-y-2.5"
+            class="project-item space-y-1"
             data-type={project.category}
           >
-            {project.media && (
-              <div class="media-section w-full overflow-hidden rounded-lg border border-zinc-200/80 bg-zinc-100 dark:border-zinc-800/80 dark:bg-zinc-900/60">
-                {project.mediaType === "video" ? (
-                  <video
-                    src={index < 2 ? project.media : undefined}
-                    data-src={index < 2 ? undefined : project.media}
-                    muted
-                    loop
-                    playsinline
-                    autoplay={index < 2}
-                    preload={index < 2 ? "metadata" : "none"}
-                    class={`aspect-[16/9] w-full object-cover ${index < 2 ? "priority-video" : "lazy-video"}`}
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <img
-                    src={project.media}
-                    alt={project.title}
-                    loading={index < 2 ? "eager" : "lazy"}
-                    fetchpriority={index < 2 ? "high" : "auto"}
-                    decoding="async"
-                    class="aspect-[16/9] w-full object-cover"
-                  />
-                )}
-              </div>
-            )}
-            <div class="space-y-1 text-sm pt-0.5">
+            <div class="space-y-1 text-sm">
               <h2 class="project-title font-medium text-sm">
                 {project.title}
               </h2>
@@ -218,8 +169,8 @@ const categories = [
                   {project.link && (
                     <a
                       href={project.link}
-                      target={project.link.startsWith("/") ? undefined : "_blank"}
-                      rel={project.link.startsWith("/") ? undefined : "noopener"}
+                      target={project.link.startsWith("/") && !project.link.startsWith("/static/") ? undefined : "_blank"}
+                      rel={project.link.startsWith("/") && !project.link.startsWith("/static/") ? undefined : "noopener"}
                       class="project-link"
                     >
                       Link
@@ -311,38 +262,6 @@ const categories = [
 
       if (!tabs.length || !cards.length) return;
 
-      const imgEls = Array.from(document.querySelectorAll(".project-item img"));
-      const placeholder =
-        "data:image/svg+xml;charset=utf-8," +
-        encodeURIComponent(`
-          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
-            <defs>
-              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#f4f4f5"/>
-                <stop offset="1" stop-color="#e4e4e7"/>
-              </linearGradient>
-            </defs>
-            <rect width="1200" height="800" fill="url(#g)"/>
-            <rect x="60" y="60" width="1080" height="680" rx="28" fill="rgba(0,0,0,0.04)"/>
-            <text x="100" y="160" font-family="'Geist', 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="42" fill="rgba(0,0,0,0.35)">
-              Preview unavailable
-            </text>
-          </svg>
-        `);
-
-      imgEls.forEach((img) => {
-        img.addEventListener(
-          "error",
-          () => {
-            if ((img as HTMLElement).dataset.fallbackApplied) return;
-            (img as HTMLElement).dataset.fallbackApplied = "1";
-            (img as HTMLImageElement).src = placeholder;
-            (img as HTMLElement).style.opacity = "0.92";
-          },
-          { once: false },
-        );
-      });
-
       const setActive = (name: string) => {
         tabs.forEach((tab) => {
           const isAct = (tab as HTMLElement).dataset.tab === name;
@@ -365,33 +284,6 @@ const categories = [
       const urlParams = new URLSearchParams(window.location.search);
       const initialTab = urlParams.get("tab") || "engineering";
       setActive(initialTab);
-
-      const lazyVideos = document.querySelectorAll(".lazy-video");
-      const videoObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const video = entry.target;
-              if (video instanceof HTMLVideoElement) {
-                const src = video.getAttribute("data-src");
-                if (src && !video.src) {
-                  video.src = src;
-                  video.autoplay = true;
-                  video.load();
-                  videoObserver.unobserve(video);
-                }
-              }
-            }
-          });
-        },
-        { rootMargin: "200px 0px", threshold: 0 },
-      );
-
-      lazyVideos.forEach((video) => {
-        if (video.classList.contains("lazy-video")) {
-          videoObserver.observe(video);
-        }
-      });
     }
 
     document.addEventListener("astro:page-load", initProjects);

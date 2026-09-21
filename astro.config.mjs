@@ -5,6 +5,8 @@ import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
 
+import react from "@astrojs/react";
+
 // https://astro.build/config
 export default defineConfig({
   site: process.env.NODE_ENV === 'production' 
@@ -12,7 +14,7 @@ export default defineConfig({
     : 'https://farooqqureshii.github.io', // GitHub Pages domain
   output: 'server',
   adapter: vercel(),
-  integrations: [mdx(), sitemap(), tailwind()],
+  integrations: [mdx(), sitemap(), tailwind(), react()],
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'hover'
