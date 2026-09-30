@@ -58,18 +58,7 @@ const path = Astro.url.pathname;
     >Cosmos</a>
   </div>
 
-  <!-- Theme Toggle Button -->
-  <div class="flex flex-col gap-y-1">
-    <button
-      id="sidebar-theme-toggle"
-      class="sidebar-link cursor-pointer select-none"
-      title="Toggle theme"
-    >
-      <span class="sidebar-theme-label inline-block min-w-[48px]">Dark</span>
-    </button>
-  </div>
-
-  <!-- Back Button (Equal gap-6 spacing below theme switcher) -->
+  <!-- Back Button -->
   {path !== '/' && (
     <div>
       <button
@@ -163,15 +152,6 @@ const path = Astro.url.pathname;
     >
       <span class="mobile-email-label">Email</span>
     </button>
-
-    <div class="pt-6 flex flex-col gap-2.5">
-      <button
-        id="mobile-theme-toggle"
-        class="mobile-nav-link no-underline text-left cursor-pointer"
-      >
-        <span class="sidebar-theme-label inline-block min-w-[48px]">Light</span>
-      </button>
-    </div>
   </div>
 </div>
 
@@ -303,62 +283,6 @@ const path = Astro.url.pathname;
         });
       };
     }
-
-    // Theme toggle handlers
-    const THEMES = ["light", "dark", "blue", "pink", "green"];
-    const THEME_LABELS: Record<string, string> = {
-      light: "Light",
-      dark: "Dark",
-      blue: "Blue",
-      pink: "Pink",
-      green: "Green",
-    };
-
-    const themeLabels = document.querySelectorAll(".sidebar-theme-label");
-    const desktopThemeBtn = document.getElementById("sidebar-theme-toggle");
-    const mobileThemeBtn = document.getElementById("mobile-theme-toggle");
-
-    function getCurrentTheme(): string {
-      const html = document.documentElement;
-      for (const t of THEMES) {
-        if (t !== "light" && html.classList.contains(t)) {
-          return t;
-        }
-      }
-      return "light";
-    }
-
-    function updateThemeLabels() {
-      const currentTheme = getCurrentTheme();
-      const labelText = THEME_LABELS[currentTheme] || "Light";
-      themeLabels.forEach((lbl) => {
-        lbl.textContent = labelText;
-      });
-    }
-
-    const toggleTheme = () => {
-      const currentTheme = getCurrentTheme();
-      const currentIndex = THEMES.indexOf(currentTheme);
-      const nextIndex = (currentIndex + 1) % THEMES.length;
-      const nextTheme = THEMES[nextIndex];
-
-      const html = document.documentElement;
-      THEMES.forEach((t) => {
-        if (t !== "light") {
-          html.classList.remove(t);
-        }
-      });
-      if (nextTheme !== "light") {
-        html.classList.add(nextTheme);
-      }
-      localStorage.theme = nextTheme;
-      updateThemeLabels();
-    };
-
-    if (desktopThemeBtn) desktopThemeBtn.onclick = () => toggleTheme();
-    if (mobileThemeBtn) mobileThemeBtn.onclick = () => toggleTheme();
-
-    updateThemeLabels();
   }
 
   document.addEventListener("astro:page-load", initHeader);

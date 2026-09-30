@@ -76,37 +76,6 @@ const imageURL = new URL(image, Astro.site || Astro.url);
         margin: 0;
       }
     </style>
-    <script is:inline>
-      const THEMES = ["light", "dark", "blue", "pink", "green"];
-      const setTheme = () => {
-        let theme = localStorage.theme;
-        if (!theme || !THEMES.includes(theme)) {
-          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            theme = "dark";
-          } else {
-            theme = "light";
-          }
-        }
-        const html = document.documentElement;
-        THEMES.forEach((t) => {
-          if (t !== "light") {
-            html.classList.remove(t);
-          }
-        });
-        if (theme !== "light") {
-          html.classList.add(theme);
-        }
-      };
-
-      setTheme();
-
-      if (!window.__themeListenerAttached) {
-        document.addEventListener("astro:after-swap", () => {
-          setTheme();
-        });
-        window.__themeListenerAttached = true;
-      }
-    </script>
     <ClientRouter />
   </head>
   <body class="antialiased min-h-screen min-h-dvh flex flex-col justify-center">

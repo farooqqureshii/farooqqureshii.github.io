@@ -51,54 +51,6 @@
     color: #111111;
   }
 
-  html.dark {
-    --link-line: rgba(255, 255, 255, 0.28);
-    --link-line-hover: #ffffff;
-    --link-hover-color: #ffffff;
-  }
-
-  html.dark, html.dark body {
-    background-color: #1a1a1a;
-    color: #e4e4e7;
-  }
-
-  html.blue {
-    --link-line: rgba(13, 31, 60, 0.25);
-    --link-line-hover: #0d1f3c;
-    --link-hover-color: #0d1f3c;
-  }
-
-  html.blue, html.blue body {
-    background-color: #c8d8f0;
-    color: #0d1f3c;
-  }
-
-  html.pink {
-    --link-line: rgba(45, 18, 25, 0.25);
-    --link-line-hover: #2d1219;
-    --link-hover-color: #2d1219;
-  }
-
-  html.pink, html.pink body {
-    background-color: #fde8ee;
-    color: #2d1219;
-  }
-
-  html.green {
-    --link-line: rgba(10, 32, 16, 0.25);
-    --link-line-hover: #0a2010;
-    --link-hover-color: #0a2010;
-  }
-
-  html.green, html.green body {
-    background-color: #d4f0d7;
-    color: #0a2010;
-  }
-
-  html, body {
-    transition: background-color var(--duration-moderate) var(--ease-out), color var(--duration-moderate) var(--ease-out);
-  }
-
   /* Typography stack — Sans Default (Geist) */
   html,
   body,
@@ -139,8 +91,9 @@
   .bookmarks-wrapper a,
   .bookmark-section a,
   .project-link,
-  .project-links a {
-    color: inherit;
+  .project-links a,
+  .inline-copy-btn {
+    color: inherit !important;
     font-weight: inherit;
     text-decoration: underline !important;
     text-decoration-thickness: 1.5px !important;
@@ -151,6 +104,7 @@
     padding: 0 !important;
     margin: 0 !important;
     border-radius: 0 !important;
+    display: inline !important;
     transition: text-decoration-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out) !important;
   }
 
@@ -162,7 +116,8 @@
     .bookmarks-wrapper a:hover,
     .bookmark-section a:hover,
     .project-link:hover,
-    .project-links a:hover {
+    .project-links a:hover,
+    .inline-copy-btn:hover {
       color: var(--link-hover-color) !important;
       text-decoration-color: var(--link-line-hover) !important;
     }
@@ -335,15 +290,6 @@
   html.dark .section-heading {
     color: #e4e4e7;
   }
-  html.blue .section-heading {
-    color: #0d1f3c;
-  }
-  html.pink .section-heading {
-    color: #2d1219;
-  }
-  html.green .section-heading {
-    color: #0a2010;
-  }
 
   hr {
     border: none;
@@ -352,15 +298,6 @@
   }
   html.dark hr {
     border-top-color: #27272a;
-  }
-  html.blue hr {
-    border-top-color: rgba(13, 31, 60, 0.2);
-  }
-  html.pink hr {
-    border-top-color: rgba(45, 18, 25, 0.15);
-  }
-  html.green hr {
-    border-top-color: rgba(10, 32, 16, 0.15);
   }
 }
 
@@ -390,36 +327,12 @@
     html.dark :not(pre) > code {
       @apply bg-zinc-800 text-zinc-200;
     }
-    html.blue :not(pre) > code {
-      background-color: rgba(13, 31, 60, 0.1);
-      color: #0d1f3c;
-    }
-    html.pink :not(pre) > code {
-      background-color: rgba(45, 18, 25, 0.1);
-      color: #2d1219;
-    }
-    html.green :not(pre) > code {
-      background-color: rgba(10, 32, 16, 0.1);
-      color: #0a2010;
-    }
 
     pre:has(code) {
       @apply my-4 max-h-[600px] overflow-auto rounded border border-zinc-200 bg-zinc-50 p-4 font-mono text-sm;
     }
     html.dark pre:has(code) {
       @apply border-zinc-700 bg-zinc-900;
-    }
-    html.blue pre:has(code) {
-      border-color: rgba(13, 31, 60, 0.2);
-      background-color: rgba(13, 31, 60, 0.07);
-    }
-    html.pink pre:has(code) {
-      border-color: rgba(45, 18, 25, 0.15);
-      background-color: rgba(45, 18, 25, 0.05);
-    }
-    html.green pre:has(code) {
-      border-color: rgba(10, 32, 16, 0.15);
-      background-color: rgba(10, 32, 16, 0.05);
     }
 
     img {
@@ -428,30 +341,12 @@
     html.dark img {
       @apply border-zinc-700;
     }
-    html.blue img {
-      border-color: rgba(13, 31, 60, 0.2);
-    }
-    html.pink img {
-      border-color: rgba(45, 18, 25, 0.15);
-    }
-    html.green img {
-      border-color: rgba(10, 32, 16, 0.15);
-    }
 
     video {
       @apply my-4 rounded border border-zinc-200;
     }
     html.dark video {
       @apply border-zinc-700;
-    }
-    html.blue video {
-      border-color: rgba(13, 31, 60, 0.2);
-    }
-    html.pink video {
-      border-color: rgba(45, 18, 25, 0.15);
-    }
-    html.green video {
-      border-color: rgba(10, 32, 16, 0.15);
     }
 
     blockquote {
@@ -498,22 +393,6 @@
   html.dark article blockquote {
     border-left-color: rgb(255 255 255);
     color: rgb(255 255 255);
-  }
-
-  html.blue blockquote,
-  html.blue article blockquote {
-    border-left-color: #0d1f3c;
-    color: #0d1f3c;
-  }
-  html.pink blockquote,
-  html.pink article blockquote {
-    border-left-color: #2d1219;
-    color: #2d1219;
-  }
-  html.green blockquote,
-  html.green article blockquote {
-    border-left-color: #0a2010;
-    color: #0a2010;
   }
 
   /* Footnote styling */
@@ -585,18 +464,6 @@
 html.dark #menu-overlay {
   background-color: #1a1a1a;
   color: #e4e4e7;
-}
-html.blue #menu-overlay {
-  background-color: #c8d8f0;
-  color: #0d1f3c;
-}
-html.pink #menu-overlay {
-  background-color: #fde8ee;
-  color: #2d1219;
-}
-html.green #menu-overlay {
-  background-color: #d4f0d7;
-  color: #0a2010;
 }
 
 .mobile-nav-link {
