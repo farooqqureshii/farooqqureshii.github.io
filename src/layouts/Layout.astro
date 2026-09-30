@@ -1,5 +1,4 @@
 ---
-import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION } from "../consts";
 import { cn } from "../lib/utils";
@@ -86,7 +85,6 @@ const imageURL = new URL(image, Astro.site || Astro.url);
       <Header />
       <main class="min-w-0">
         <slot />
-        <Footer />
       </main>
     </div>
     {/* Load after content so it overrides per-post footnote styles */}
