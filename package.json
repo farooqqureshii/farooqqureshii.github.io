@@ -2,7 +2,7 @@
   "name": "miniblog",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "version": "0.0.2",
   "scripts": {
