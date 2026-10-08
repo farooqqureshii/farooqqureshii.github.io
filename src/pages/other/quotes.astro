@@ -39,22 +39,14 @@ import Layout from "../../layouts/Layout.astro";
       font-size: 0.9375rem;
       line-height: 1.6;
       margin: 0 0 0.25rem 0;
-      color: #111111;
-    }
-
-    :global(html.dark) .quote-text {
-      color: #e4e4e7;
+      color: var(--text-color);
     }
 
     .quote-author {
       font-size: 0.8125rem;
       font-style: normal;
-      color: #71717a;
+      color: var(--text-muted);
       display: block;
-    }
-
-    :global(html.dark) .quote-author {
-      color: #a1a1aa;
     }
   </style>
 </Layout>

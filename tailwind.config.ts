@@ -11,7 +11,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["'Geist'", "'Inter'", ...defaultTheme.fontFamily.sans],
-        serif: ["'IBM Plex Serif'", "'Source Serif 4'", "'Charter'", "Georgia", ...defaultTheme.fontFamily.serif],
+        serif: ["'Newsreader'", "'Source Serif 4'", "'Charter'", "Georgia", ...defaultTheme.fontFamily.serif],
         mono: ["'Geist Mono'", ...defaultTheme.fontFamily.mono],
         handwritten: ["'Nanum Pen Script'", "'Caveat'", "cursive"],
       },

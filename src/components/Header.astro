@@ -58,11 +58,23 @@ const path = Astro.url.pathname;
     >Cosmos</a>
   </div>
 
+  <!-- Theme Toggle (separated by same gap-6 as previous sections) -->
+  <div class="flex flex-col gap-y-1">
+    <button
+      id="desktop-theme-toggle"
+      class="sidebar-link cursor-pointer text-left select-none"
+      aria-label="Toggle theme"
+      title="Toggle theme"
+    >
+      <span class="theme-toggle-label">Dark</span>
+    </button>
+  </div>
+
   <!-- Back Button -->
   {path !== '/' && (
     <div>
       <button
-        class="back-btn sidebar-link inline-flex items-center gap-1.5 cursor-pointer select-none active:scale-95 transform"
+        class="back-btn sidebar-link inline-flex items-center gap-1.5 cursor-pointer select-none"
         aria-label="Go back"
         title="Go back"
       >
@@ -82,7 +94,7 @@ const path = Astro.url.pathname;
     {path !== '/' && (
       <button
         id="mobile-back-btn"
-        class="back-btn sidebar-link p-1 no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
+        class="back-btn sidebar-link p-1 no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px]"
         aria-label="Go back"
         title="Go back"
       >
@@ -92,8 +104,22 @@ const path = Astro.url.pathname;
       </button>
     )}
     <button
+      id="mobile-theme-toggle"
+      class="sidebar-link p-1 no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px]"
+      aria-label="Toggle theme"
+      title="Toggle theme"
+    >
+      <svg id="theme-sun-icon" class="w-5 h-5 stroke-current hidden" fill="none" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5" stroke-width="1.75"></circle>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+      </svg>
+      <svg id="theme-moon-icon" class="w-5 h-5 stroke-current block" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+    <button
       id="hamburger-btn"
-      class="sidebar-link p-1 transition-opacity no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-95"
+      class="sidebar-link p-1 transition-opacity no-underline cursor-pointer select-none flex items-center justify-center min-w-[32px] min-h-[32px]"
       aria-label="Toggle menu"
     >
       <svg id="hamburger-icon" class="w-6 h-6 stroke-current block" fill="none" viewBox="0 0 24 24">
@@ -152,6 +178,12 @@ const path = Astro.url.pathname;
     >
       <span class="mobile-email-label">Email</span>
     </button>
+    <button
+      id="overlay-theme-toggle"
+      class="mobile-nav-link no-underline text-left cursor-pointer"
+    >
+      <span class="theme-toggle-label">Dark</span>
+    </button>
   </div>
 </div>
 
@@ -163,6 +195,50 @@ const path = Astro.url.pathname;
     const closeIcon = document.getElementById("close-icon");
     const brandTitle = document.getElementById("mobile-brand-title");
     const mobileBackBtn = document.getElementById("mobile-back-btn");
+
+    // Theme toggles
+    function updateThemeUI() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const labels = document.querySelectorAll(".theme-toggle-label");
+      labels.forEach((el) => {
+        el.textContent = isDark ? "Light" : "Dark";
+      });
+      const sunIcon = document.getElementById("theme-sun-icon");
+      const moonIcon = document.getElementById("theme-moon-icon");
+      if (sunIcon && moonIcon) {
+        if (isDark) {
+          sunIcon.classList.remove("hidden");
+          moonIcon.classList.add("hidden");
+        } else {
+          sunIcon.classList.add("hidden");
+          moonIcon.classList.remove("hidden");
+        }
+      }
+    }
+
+    function toggleTheme(e?: Event) {
+      if (e) e.preventDefault();
+      const isDark = document.documentElement.classList.toggle("dark");
+      try {
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      } catch (err) {}
+      updateThemeUI();
+    }
+
+    const desktopThemeToggle = document.getElementById("desktop-theme-toggle");
+    const mobileThemeToggle = document.getElementById("mobile-theme-toggle");
+    const overlayThemeToggle = document.getElementById("overlay-theme-toggle");
+
+    if (desktopThemeToggle) desktopThemeToggle.onclick = toggleTheme;
+    if (mobileThemeToggle) mobileThemeToggle.onclick = toggleTheme;
+    if (overlayThemeToggle) {
+      overlayThemeToggle.onclick = (e) => {
+        toggleTheme(e);
+        closeMenu();
+      };
+    }
+
+    updateThemeUI();
 
     if (!overlay || !burgerBtn) return;
 
@@ -285,6 +361,7 @@ const path = Astro.url.pathname;
     }
   }
 
+  document.addEventListener("astro:after-swap", initHeader);
   document.addEventListener("astro:page-load", initHeader);
   initHeader();
 </script>
