@@ -938,7 +938,7 @@ const filterTabs = [
 <Layout title="Farooq Q. | Books" description="Books read by Farooq Qureshi">
   <main class="no-link-underline">
     <!-- Filter Tabs -->
-    <nav class="filter-nav mb-6 flex flex-wrap items-center gap-2 text-sm" aria-label="Filter books">
+    <nav class="filter-nav mb-6 flex flex-wrap items-center gap-2 text-[15px]" aria-label="Filter books">
       {
         filterTabs.map((tab, i) => (
           <>
@@ -956,7 +956,7 @@ const filterTabs = [
     </nav>
 
     <!-- Books List -->
-    <div class="space-y-2.5 text-sm">
+    <div class="space-y-2.5 text-[15px]">
       {
         sortedBooks.map((book) => {
           const g = book.genre.toLowerCase();

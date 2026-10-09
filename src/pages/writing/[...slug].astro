@@ -39,16 +39,16 @@ const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 
 <Layout title={`Farooq Q. | ${title}`} description={description}>
   <main>
-    <h1 class="mb-1 text-sm font-medium">{title}</h1>
-    <p class="mb-6 text-sm opacity-60">
+    <h1 class="mb-1 text-[15px] font-medium">{title}</h1>
+    <p class="mb-6 text-[15px] opacity-60">
       Published on {formatLongDate(date)}
     </p>
-    <article class="text-sm leading-relaxed [&_p]:my-4">
+    <article class="text-[15px] leading-[1.65] [&_p]:my-4">
       <Content />
     </article>
 
     <div
-      class="mt-12 flex items-center justify-between text-sm"
+      class="mt-12 flex items-center justify-between text-[15px]"
     >
       <a href="/writing" class="list-link">← All Writing</a>
       {

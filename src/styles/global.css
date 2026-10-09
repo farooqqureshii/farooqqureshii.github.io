@@ -14,14 +14,12 @@
   }
 }
 
-/* Native text selection with refined pink tint */
-::selection {
-  background-color: rgba(219, 39, 119, 0.22);
-  color: inherit;
-}
-html.dark ::selection {
-  background-color: rgba(244, 114, 182, 0.28);
-  color: inherit;
+/* Unified text selection (Cool Teal/Cyan complementary to pink) */
+::selection,
+*::selection {
+  background-color: var(--selection-bg) !important;
+  color: var(--selection-fg) !important;
+  -webkit-text-fill-color: var(--selection-fg) !important;
 }
 
 @layer base {
@@ -45,6 +43,10 @@ html.dark ::selection {
     /* Clean, Modern Pink Links — hover turns to black */
     --link-color: #db2777;
     --link-hover-color: #000000;
+
+    /* Complementary Soft Periwinkle Selection (Gentle & non-jarring) */
+    --selection-bg: #e0e7ff;
+    --selection-fg: #1e1b4b;
   }
 
   html.dark {
@@ -58,6 +60,10 @@ html.dark ::selection {
     /* Luminous Clean Pink Links — hover turns to pure white */
     --link-color: #f472b6;
     --link-hover-color: #ffffff;
+
+    /* Complementary Deep Muted Indigo Selection */
+    --selection-bg: #312e81;
+    --selection-fg: #e0e7ff;
   }
 
   html {
@@ -327,19 +333,34 @@ html.dark ::selection {
       margin-top: 0 !important;
     }
     p {
-      @apply my-4 leading-relaxed;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      font-size: 15px;
+      line-height: 1.65;
     }
     h1 {
-      @apply my-6 text-sm font-semibold;
+      margin-top: 1.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.65;
     }
     h2 {
-      @apply my-6 text-sm font-semibold;
+      margin-top: 1.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.65;
     }
     h3,
     h4,
     h5,
     h6 {
-      @apply my-4 text-sm font-medium;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.65;
     }
     :not(pre) > code {
       @apply whitespace-nowrap rounded px-1 py-0.5 font-mono text-sm;
@@ -366,7 +387,7 @@ html.dark ::selection {
 
     blockquote {
       @apply my-4 pl-4;
-      border-left: 2px solid var(--link-color);
+      border-left: 2px solid var(--border-color);
       color: inherit;
     }
     table {

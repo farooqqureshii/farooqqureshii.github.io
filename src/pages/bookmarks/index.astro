@@ -35,7 +35,7 @@ const items = bookmarks.filter((b) => {
 >
   <div>
     <!-- Filter Bar (Links default) -->
-    <nav class="filter-nav mb-8 flex items-center gap-2 text-sm" aria-label="Filter bookmarks">
+    <nav class="filter-nav mb-8 flex items-center gap-2 text-[15px]" aria-label="Filter bookmarks">
       <button type="button" class="filter-link" data-tab="link">Links</button>
       <span class="filter-sep">/</span>
       <button type="button" class="filter-link" data-tab="image">Images</button>
@@ -47,7 +47,7 @@ const items = bookmarks.filter((b) => {
     <div class="bookmarks-wrapper">
       {/* 1. Links Section - Written prose style */}
       <section class="bookmark-section" data-type-section="link">
-        <ul class="space-y-3 text-sm leading-relaxed">
+        <ul class="space-y-3 text-[15px] leading-[1.65]">
           {items.filter(i => i.type === "link").map((item) => (
             <li class="bookmark-item py-0.5" data-type="link">
               {item.writtenText ? (
@@ -73,7 +73,7 @@ const items = bookmarks.filter((b) => {
 
       {/* 2. Videos Section - Written text links */}
       <section class="bookmark-section" data-type-section="video">
-        <ul class="space-y-3 text-sm leading-relaxed">
+        <ul class="space-y-3 text-[15px] leading-[1.65]">
           {items.filter(i => i.type === "video").map((item) => (
             <li class="bookmark-item py-0.5" data-type="video">
               {item.writtenText ? (
@@ -97,7 +97,7 @@ const items = bookmarks.filter((b) => {
         <div class="artifact-grid grid grid-cols-1 gap-6">
           {items.filter(i => i.type === "image").map((item, index) => (
             <div
-              class="bookmark-item block overflow-hidden rounded-md border border-zinc-200/80 bg-zinc-50/50 p-3 text-sm dark:border-zinc-800/80 dark:bg-zinc-900/40 select-none cursor-default"
+              class="bookmark-item block overflow-hidden rounded-md border border-zinc-200/80 bg-zinc-50/50 p-3 text-[15px] leading-[1.65] dark:border-zinc-800/80 dark:bg-zinc-900/40 select-none cursor-default"
               data-type="image"
             >
               <div class="mb-2 overflow-hidden rounded border border-zinc-200/60 bg-zinc-200/40 dark:border-zinc-800/60 dark:bg-zinc-800/40">
