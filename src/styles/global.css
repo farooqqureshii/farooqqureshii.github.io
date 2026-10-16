@@ -526,15 +526,13 @@
   }
 }
 
-/* Universal unified project and filter link styles */
-.project-link,
+/* Universal unified filter link styles */
 .filter-link {
   color: inherit !important;
   opacity: 0.6;
   transition: opacity var(--duration-fast) var(--ease-out);
 }
 
-.project-link:hover,
 .filter-link:hover,
 .filter-link.is-active {
   opacity: 1 !important;
