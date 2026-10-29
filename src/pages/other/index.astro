@@ -3,15 +3,30 @@ import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout title="Farooq Q. | Other" description="Other pages by Farooq Qureshi">
-  <main class="no-link-underline">
-    <nav class="flex flex-col gap-1 text-[15px]">
-      <a href="/other/books" class="list-link">Books</a>
-      <a href="/other/advice" class="list-link">Advice</a>
-      <a href="/other/resources" class="list-link">Resources</a>
-      <a href="/other/pencils" class="list-link">Pencils</a>
-      <a href="/other/courses" class="list-link">Courses</a>
-      <a href="/other/tools" class="list-link">Tools</a>
-      <a href="/other/quotes" class="list-link">Quotes</a>
+  <main>
+    <nav class="flex flex-col gap-y-1 text-[15px]">
+      <a href="/bookmarks" class="other-link">Bookmarks</a>
+      <a href="/other/books" class="other-link">Books</a>
+      <a href="/other/advice" class="other-link">Advice</a>
+      <a href="/other/resources" class="other-link">Resources</a>
+      <a href="/other/pencils" class="other-link">Pencils</a>
+      <a href="/other/courses" class="other-link">Courses</a>
+      <a href="/other/tools" class="other-link">Tools</a>
+      <a href="/other/quotes" class="other-link">Quotes</a>
     </nav>
   </main>
+
+  <style>
+    .other-link {
+      color: var(--text-muted) !important;
+      text-decoration: none !important;
+      background-image: none !important;
+      transition: color 150ms ease;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .other-link:hover {
+        color: var(--text-color) !important;
+      }
+    }
+  </style>
 </Layout>

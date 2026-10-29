@@ -32,10 +32,9 @@ const imageURL = new URL(image, Astro.site || Astro.url);
     <meta name="generator" content={Astro.generator} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Nanum+Pen+Script&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap"
       rel="stylesheet"
     />
 
@@ -89,16 +88,14 @@ const imageURL = new URL(image, Astro.site || Astro.url);
     <style is:global>
       body {
         font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        font-weight: 450;
-        letter-spacing: -0.005em;
-        font-size: 15px;
-        line-height: 1.65;
+        font-size: 15px !important;
+        line-height: 1.65 !important;
         margin: 0;
       }
     </style>
     <ClientRouter />
   </head>
-  <body class="antialiased">
+  <body class="antialiased min-h-screen">
     <div
       class={cn(
         "max-w-[780px] mx-auto px-6 py-12 sm:px-8 grid grid-cols-1 md:grid-cols-[160px_1fr] gap-8 md:gap-12 items-start page-container",
@@ -110,11 +107,5 @@ const imageURL = new URL(image, Astro.site || Astro.url);
         <slot />
       </main>
     </div>
-    {/* Load after content so it overrides per-post footnote styles */}
-    <style is:global>
-      .footnote-back svg {
-        stroke: rgb(113 113 122) !important;
-      }
-    </style>
   </body>
 </html>

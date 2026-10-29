@@ -10,15 +10,29 @@ const sortedPosts = posts
 ---
 
 <Layout title="Farooq Q. | Writing" description={SITE_DESCRIPTION}>
-  <main class="no-link-underline">
-    <div class="space-y-2.5 text-[15px]">
+  <main>
+    <div class="flex flex-col gap-y-1 text-[15px]">
       {
         sortedPosts.map((post) => (
-          <div class="flex items-baseline gap-2">
-            <a href={`/writing/${post.slug}`} class="list-link">{post.data.title}</a>
+          <div class="flex items-baseline justify-between gap-4">
+            <a href={`/writing/${post.slug}`} class="writing-link">{post.data.title}</a>
           </div>
         ))
       }
     </div>
   </main>
+
+  <style>
+    .writing-link {
+      color: var(--text-muted) !important;
+      text-decoration: none !important;
+      background-image: none !important;
+      transition: color 150ms ease;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .writing-link:hover {
+        color: var(--text-color) !important;
+      }
+    }
+  </style>
 </Layout>

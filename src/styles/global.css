@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Nanum+Pen+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital@0;1&family=Nanum+Pen+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -33,59 +33,54 @@
     --duration-base: 150ms;
     --duration-moderate: 200ms;
 
-    /* Light Theme Palette - Clean & crisp */
+    /* Two colors only: Primary text/links and Secondary/headers */
     --bg-color: #ffffff;
-    --text-color: #111111;
-    --text-muted: #6b6b72;
-    --border-color: #e5e5ea;
-    --card-bg: rgba(0, 0, 0, 0.03);
+    --text-color: #000000;
+    --text-muted: #737373;
+    --border-color: #e5e5e5;
+    --card-bg: rgba(0, 0, 0, 0.02);
 
-    /* Clean, Modern Pink Links — hover turns to black */
-    --link-color: #db2777;
-    --link-hover-color: #000000;
-
-    /* Complementary Soft Periwinkle Selection (Gentle & non-jarring) */
-    --selection-bg: #e0e7ff;
-    --selection-fg: #1e1b4b;
+    /* Subtle Neutral Selection */
+    --selection-bg: #e5e5e5;
+    --selection-fg: #000000;
   }
 
   html.dark {
-    /* Unique Charcoal Graphite Theme — Deep & warm, solid crisp text */
-    --bg-color: #161618;
-    --text-color: #edece9;
-    --text-muted: #9fa0a6;
-    --border-color: #27272c;
-    --card-bg: rgba(255, 255, 255, 0.035);
+    /* Sleek Deep Dark Theme - Two colors only */
+    --bg-color: #111113;
+    --text-color: #ffffff;
+    --text-muted: #a3a3a3;
+    --border-color: #262626;
+    --card-bg: rgba(255, 255, 255, 0.03);
 
-    /* Luminous Clean Pink Links — hover turns to pure white */
-    --link-color: #f472b6;
-    --link-hover-color: #ffffff;
-
-    /* Complementary Deep Muted Indigo Selection */
-    --selection-bg: #312e81;
-    --selection-fg: #e0e7ff;
+    /* Subtle Neutral Selection */
+    --selection-bg: #262626;
+    --selection-fg: #ffffff;
   }
 
   html {
-    font-size: 16px;
+    font-size: 15px !important;
     overflow-y: scroll;
     scrollbar-gutter: stable;
     background-color: var(--bg-color);
     color: var(--text-color);
+    height: 100%;
   }
 
-  /* Universal link & button defaults */
-  a, button {
-    -webkit-tap-highlight-color: transparent;
+  body {
+    min-height: 100%;
   }
 
-  html, body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
+  body.index-body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    margin: 0 !important;
   }
 
-  /* Typography stack — Sans Default (Geist) */
+  /* Enforce strictly ONE text size across the entire site */
   html,
   body,
   h1,
@@ -103,55 +98,161 @@
   button,
   input,
   select,
-  textarea {
-    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 450;
-    letter-spacing: -0.005em;
+  textarea,
+  a,
+  small,
+  time,
+  code,
+  pre,
+  kbd {
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+    letter-spacing: -0.005em !important;
   }
 
-  /* Default links — Clean text */
-  a {
-    color: inherit;
+  /* Brand title: clean 15px standard font */
+  .header-brand,
+  a.header-brand,
+  .sidebar-brand,
+  a.sidebar-brand {
+    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.65 !important;
+    letter-spacing: -0.005em !important;
+    color: var(--text-color) !important;
     text-decoration: none !important;
-    background-color: transparent;
+    background-image: none !important;
+    display: inline-block;
+    cursor: pointer;
   }
 
-  /* Content & Editorial Links — Solid Pink, No Underlines, Hover to Black/White */
+  /* Article and Page titles: pure primary text */
+  h1 {
+    color: var(--text-color) !important;
+    font-weight: 500 !important;
+  }
+
+  /* Secondary headings and metadata: muted grey */
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .section-heading,
+  .secondary-text {
+    color: var(--text-muted) !important;
+    font-weight: 500 !important;
+  }
+
+  /* Main page: content prose text pure black/white */
+  .index-content p,
+  .index-content span {
+    color: var(--text-color) !important;
+  }
+
+  /* Universal link & button defaults */
+  a, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
+  }
+
+  /* Content & editorial links: solid underline with clean italic on hover */
   article a,
   .prose a,
   main p a,
-  main li a,
-  .bookmarks-wrapper a,
-  .bookmark-section a,
-  .project-link,
-  .project-links a,
   .inline-copy-btn,
-  .notes-section a {
-    color: var(--link-color) !important;
-    font-weight: 450;
-    text-decoration: none !important;
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border-radius: 0 !important;
-    display: inline !important;
+  .project-link,
+  .bookmark-section a {
+    color: var(--text-color) !important;
+    text-decoration: underline !important;
+    text-decoration-color: var(--text-color) !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 3.5px !important;
+    background-image: none !important;
+    padding-bottom: 0 !important;
     cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-out) !important;
+    transition: font-style 120ms ease, text-decoration-thickness 120ms ease !important;
   }
 
   @media (hover: hover) and (pointer: fine) {
     article a:hover,
     .prose a:hover,
     main p a:hover,
-    main li a:hover,
-    .bookmarks-wrapper a:hover,
-    .bookmark-section a:hover,
-    .project-link:hover,
-    .project-links a:hover,
     .inline-copy-btn:hover,
-    .notes-section a:hover {
-      color: var(--link-hover-color) !important;
-      text-decoration: none !important;
+    .project-link:hover,
+    .bookmark-section a:hover {
+      font-style: italic !important;
+      text-decoration-thickness: 1.5px !important;
+    }
+  }
+
+  /* Elements with NO underlines */
+  header a,
+  header button,
+  .header-brand,
+  .header-nav-link,
+  .theme-toggle-btn,
+  .filter-link,
+  .writing-link,
+  .other-link,
+  .no-underline {
+    text-decoration: none !important;
+    background-image: none !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Navbar & Theme toggle: muted grey, turn black on hover */
+  .header-nav-link,
+  #theme-toggle,
+  .theme-toggle-btn,
+  .theme-toggle-label {
+    color: var(--text-muted) !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    background-image: none !important;
+    transition: color 150ms ease !important;
+    font-size: 15px !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .header-nav-link:hover,
+    #theme-toggle:hover,
+    #theme-toggle:hover .theme-toggle-label,
+    .theme-toggle-btn:hover,
+    .theme-toggle-btn:hover .theme-toggle-label {
+      color: var(--text-color) !important;
+    }
+  }
+
+  .header-nav-link.active {
+    color: var(--text-color) !important;
+    font-weight: 500 !important;
+  }
+
+  /* Writing and Other lists: grey, turns black on hover */
+  .writing-link,
+  .other-link {
+    color: var(--text-muted) !important;
+    text-decoration: none !important;
+    background-image: none !important;
+    transition: color 150ms ease !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .writing-link:hover,
+    .other-link:hover {
+      color: var(--text-color) !important;
     }
   }
 
@@ -222,8 +323,7 @@
     font-size: 15px !important;
     font-weight: 500 !important;
     letter-spacing: -0.005em !important;
-    color: inherit !important;
-    opacity: 0.6;
+    color: var(--text-color) !important;
     text-decoration: none !important;
     background-image: none !important;
     line-height: 1.65 !important;
@@ -232,40 +332,6 @@
     margin-top: 0;
     padding-top: 0;
     touch-action: manipulation;
-    transition: opacity var(--duration-fast) var(--ease-out) !important;
-  }
-
-  .sidebar-brand.active,
-  .nav-brand.home-title.active {
-    opacity: 1 !important;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .sidebar-brand:hover,
-    .nav-brand.home-title:hover {
-      opacity: 1 !important;
-    }
-  }
-
-  .breadcrumb-title {
-    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: -0.005em;
-    line-height: 1.65;
-    color: inherit;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .breadcrumb-separator {
-    font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 15px;
-    font-weight: 450;
-    letter-spacing: -0.005em;
-    line-height: 1.65;
-    display: inline-block;
-    opacity: 0.45;
   }
 
   .sidebar-link,
@@ -274,8 +340,7 @@
     font-size: 15px !important;
     font-weight: 450 !important;
     letter-spacing: -0.005em !important;
-    color: inherit !important;
-    opacity: 0.6;
+    color: var(--text-muted) !important;
     text-decoration: none !important;
     background-image: none !important;
     line-height: 1.65 !important;
@@ -285,7 +350,7 @@
     padding: 0;
     cursor: pointer;
     text-align: left;
-    transition: opacity var(--duration-fast) var(--ease-out) !important;
+    transition: color var(--duration-fast) var(--ease-out) !important;
     touch-action: manipulation;
   }
   .sidebar-link {
@@ -294,14 +359,14 @@
 
   .sidebar-link.active,
   .list-link.active {
-    opacity: 1 !important;
+    color: var(--text-color) !important;
     font-weight: 500 !important;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .sidebar-link:hover,
     .list-link:hover {
-      opacity: 1 !important;
+      color: var(--text-color) !important;
     }
   }
 
@@ -315,9 +380,9 @@
 
   /* Section headings */
   .section-heading {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-color);
+    font-size: 15px !important;
+    font-weight: 500;
+    color: var(--text-muted) !important;
   }
 
   hr {
@@ -335,42 +400,28 @@
     p {
       margin-top: 1rem;
       margin-bottom: 1rem;
-      font-size: 15px;
-      line-height: 1.65;
+      font-size: 15px !important;
+      line-height: 1.65 !important;
     }
-    h1 {
+    h1, h2, h3, h4, h5, h6 {
       margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.65;
-    }
-    h2 {
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.65;
-    }
-    h3,
-    h4,
-    h5,
-    h6 {
-      margin-top: 1rem;
       margin-bottom: 1rem;
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 1.65;
+      font-size: 15px !important;
+      font-weight: 500 !important;
+      line-height: 1.65 !important;
+      color: var(--text-muted) !important;
     }
     :not(pre) > code {
-      @apply whitespace-nowrap rounded px-1 py-0.5 font-mono text-sm;
+      @apply whitespace-nowrap rounded px-1 py-0.5 font-mono;
+      font-size: 15px !important;
       background-color: var(--card-bg);
-      color: var(--link-color);
+      color: inherit;
       border: 1px solid var(--border-color);
     }
 
     pre:has(code) {
-      @apply my-4 max-h-[600px] overflow-auto rounded p-4 font-mono text-sm;
+      @apply my-4 max-h-[600px] overflow-auto rounded p-4 font-mono;
+      font-size: 15px !important;
       border: 1px solid var(--border-color);
       background-color: var(--card-bg);
     }
@@ -391,11 +442,13 @@
       color: inherit;
     }
     table {
-      @apply my-4 w-full table-auto border-collapse text-sm;
+      @apply my-4 w-full table-auto border-collapse;
+      font-size: 15px !important;
     }
     th {
       @apply p-4 text-left font-medium;
       border-bottom: 1px solid var(--border-color);
+      color: var(--text-muted) !important;
     }
     td {
       @apply p-4;
@@ -409,13 +462,14 @@
       @apply my-1 list-inside list-disc space-y-1 [&_ol]:pl-5 [&_ul]:pl-5;
     }
     kbd {
-      @apply rounded px-1 py-0.5 font-mono text-xs;
+      @apply rounded px-1 py-0.5 font-mono;
+      font-size: 15px !important;
       border: 1px solid var(--border-color);
       background-color: var(--card-bg);
     }
     mark {
-      background: var(--highlight-bg);
-      color: var(--highlight-fg);
+      background: var(--card-bg);
+      color: var(--text-color);
     }
   }
 
@@ -424,9 +478,8 @@
   .footnotes {
     margin-top: 3rem;
     padding-top: 2rem;
-    font-size: 0.875rem;
-    color: inherit;
-    opacity: 0.6;
+    font-size: 15px !important;
+    color: var(--text-muted) !important;
   }
   article .footnotes::before,
   .footnotes::before {
@@ -445,28 +498,24 @@
   article .footnotes li,
   .footnotes li {
     margin-bottom: 0.5rem;
-    font-size: 0.75rem;
-    line-height: 1.4;
+    font-size: 15px !important;
+    line-height: 1.65 !important;
   }
   article .footnotes a,
   .footnotes a {
-    color: var(--link-color) !important;
-    text-decoration: none !important;
-  }
-  article .footnotes a:hover,
-  .footnotes a:hover {
-    color: var(--link-hover-color) !important;
-    text-decoration: none !important;
+    color: var(--text-color) !important;
+    text-decoration: underline !important;
+    text-decoration-color: var(--text-muted) !important;
+    text-underline-offset: 3.5px !important;
   }
   article sup a,
   sup a {
-    color: var(--link-color) !important;
+    color: var(--text-muted) !important;
     text-decoration: none !important;
   }
   article sup a:hover,
   sup a:hover {
-    color: var(--link-hover-color) !important;
-    text-decoration: none !important;
+    color: var(--text-color) !important;
   }
 }
 
@@ -482,65 +531,33 @@
   color: var(--link-color) !important;
 }
 
-/* Mobile menu overlay theme styling */
+/* Mobile menu overlay theme styling (legacy overlay removed) */
 #menu-overlay {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-
-.mobile-nav-link {
-  color: inherit !important;
-  opacity: 0.6;
-  font-family: inherit;
-  font-size: 1.5rem !important;
-  line-height: 1.375 !important;
-  font-weight: 400;
-  letter-spacing: inherit;
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-  text-align: left;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  transition: opacity var(--duration-base) var(--ease-out) !important;
-}
-
-@media (min-width: 640px) {
-  .mobile-nav-link {
-    font-size: 1.875rem !important;
-  }
-}
-
-.mobile-nav-link.active {
-  opacity: 1 !important;
-  font-weight: 500;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .mobile-nav-link:hover {
-    opacity: 1 !important;
-  }
+  display: none !important;
 }
 
 /* Universal unified filter link styles */
 .filter-link {
-  color: inherit !important;
-  opacity: 0.6;
-  transition: opacity var(--duration-fast) var(--ease-out);
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
+  font-weight: 450 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: color var(--duration-fast) var(--ease-out) !important;
 }
 
 .filter-link:hover,
 .filter-link.is-active {
+  color: var(--text-color) !important;
   opacity: 1 !important;
 }
 
 .filter-sep {
-  color: inherit !important;
-  opacity: 0.25;
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
   user-select: none;
 }
 .notes-section a {
