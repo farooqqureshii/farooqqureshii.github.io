@@ -84,7 +84,7 @@
     margin: 0 !important;
   }
 
-  /* Enforce strictly ONE text size and ONE font weight (400) across the entire site */
+  /* Enforce strictly ONE text size and ONE font weight (450) across the entire site */
   html,
   body,
   h1,
@@ -114,7 +114,7 @@
   th {
     font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 15px !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
     line-height: 1.65 !important;
     letter-spacing: -0.005em !important;
   }
@@ -133,7 +133,7 @@
   a.sidebar-brand {
     font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 15px !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
     line-height: 1.65 !important;
     letter-spacing: -0.005em !important;
     color: var(--text-color) !important;
@@ -146,7 +146,7 @@
   /* Article and Page titles: pure primary text */
   h1 {
     color: var(--text-color) !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
   }
 
   /* Secondary headings and metadata: muted grey */
@@ -158,7 +158,7 @@
   .section-heading,
   .secondary-text {
     color: var(--text-muted) !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
   }
 
   /* Main page: content prose text pure black/white */
@@ -178,7 +178,7 @@
     transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
   }
 
-  /* Content & editorial links: solid underline with clean italic on hover */
+  /* Content & editorial links: solid 1px underline with clean italic on hover */
   article a,
   .prose a,
   main p a,
@@ -193,7 +193,7 @@
     background-image: none !important;
     padding-bottom: 0 !important;
     cursor: pointer;
-    transition: font-style 120ms ease, text-decoration-thickness 120ms ease !important;
+    transition: font-style 120ms ease !important;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -204,7 +204,7 @@
     .project-link:hover,
     .bookmark-section a:hover {
       font-style: italic !important;
-      text-decoration-thickness: 1.5px !important;
+      text-decoration-thickness: 1px !important;
     }
   }
 
@@ -252,7 +252,7 @@
 
   .header-nav-link.active {
     color: var(--text-color) !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
   }
 
   /* Writing and Other lists: grey, turns black on hover */
@@ -336,7 +336,7 @@
   .nav-brand.home-title {
     font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 15px !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
     letter-spacing: -0.005em !important;
     color: var(--text-color) !important;
     text-decoration: none !important;
@@ -353,7 +353,7 @@
   .list-link {
     font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     font-size: 15px !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
     letter-spacing: -0.005em !important;
     color: var(--text-muted) !important;
     text-decoration: none !important;
@@ -375,7 +375,7 @@
   .sidebar-link.active,
   .list-link.active {
     color: var(--text-color) !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -396,7 +396,7 @@
   /* Section headings */
   .section-heading {
     font-size: 15px !important;
-    font-weight: 400 !important;
+    font-weight: 450 !important;
     color: var(--text-muted) !important;
   }
 
@@ -422,7 +422,7 @@
       margin-top: 1.5rem;
       margin-bottom: 1rem;
       font-size: 15px !important;
-      font-weight: 400 !important;
+      font-weight: 450 !important;
       line-height: 1.65 !important;
       color: var(--text-muted) !important;
     }
@@ -555,7 +555,7 @@
 .filter-link {
   color: var(--text-muted) !important;
   opacity: 1 !important;
-  font-weight: 400 !important;
+  font-weight: 450 !important;
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
