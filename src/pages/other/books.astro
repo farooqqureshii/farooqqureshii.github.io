@@ -985,7 +985,7 @@ const filterTabs = [
               <span class="min-w-0">
                 {book.title} — {book.author}
               </span>
-              <span class="shrink-0 text-xs opacity-45 select-none">
+              <span class="shrink-0 text-xs secondary-text select-none">
                 {"★".repeat(book.rating)}{"☆".repeat(5 - book.rating)}
               </span>
             </div>
@@ -1000,31 +1000,6 @@ const filterTabs = [
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-    .filter-link {
-      font-size: 0.875rem;
-      color: inherit;
-      opacity: 0.6;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      transition: opacity var(--duration-fast) var(--ease-out);
-    }
-    @media (hover: hover) and (pointer: fine) {
-      .filter-link:hover {
-        opacity: 1;
-      }
-    }
-    .filter-link.is-active {
-      opacity: 1 !important;
-      font-weight: 400;
-    }
-    .filter-sep {
-      font-size: 0.875rem;
-      color: inherit;
-      opacity: 0.25;
-      user-select: none;
     }
   </style>
 
