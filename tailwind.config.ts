@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Geist'", "'Inter'", ...defaultTheme.fontFamily.sans],
+        sans: ["'Inter'", ...defaultTheme.fontFamily.sans],
         serif: ["'Newsreader'", "'Source Serif 4'", "'Charter'", "Georgia", ...defaultTheme.fontFamily.serif],
         mono: ["'Geist Mono'", ...defaultTheme.fontFamily.mono],
         handwritten: ["'Nanum Pen Script'", "'Caveat'", "cursive"],
