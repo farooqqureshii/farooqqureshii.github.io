@@ -34,12 +34,12 @@ const imageURL = new URL(image, Astro.site || Astro.url);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..600;1,14..32,300..600&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..600;1,14..32,300..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..500;1,8..60,400..500&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap"
       rel="stylesheet"
     />
 
     <script is:inline>
-      function applyTheme() {
+      function applyPreferences() {
         const theme = (() => {
           if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
             return localStorage.getItem('theme');
@@ -54,10 +54,17 @@ const imageURL = new URL(image, Astro.site || Astro.url);
         } else {
           document.documentElement.classList.remove('dark');
         }
+
+        const font = typeof localStorage !== 'undefined' ? localStorage.getItem('font') : null;
+        if (font === 'serif') {
+          document.documentElement.classList.add('serif');
+        } else {
+          document.documentElement.classList.remove('serif');
+        }
       }
-      applyTheme();
-      document.addEventListener('astro:after-swap', applyTheme);
-      document.addEventListener('astro:page-load', applyTheme);
+      applyPreferences();
+      document.addEventListener('astro:after-swap', applyPreferences);
+      document.addEventListener('astro:page-load', applyPreferences);
     </script>
 
     <link rel="canonical" href={canonicalURL} />
@@ -90,9 +97,9 @@ const imageURL = new URL(image, Astro.site || Astro.url);
         height: 100%;
       }
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        font-size: 15px !important;
-        line-height: 1.65 !important;
+        font-family: var(--font-active);
+        font-size: var(--font-size-base) !important;
+        line-height: var(--line-height-base) !important;
         margin: 0;
         min-height: 100%;
       }

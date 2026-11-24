@@ -30,6 +30,13 @@ const path = Astro.url.pathname;
     >
       <span class="theme-label inline-block">Dark</span>
     </button>
+    <button
+      id="sidebar-font-toggle"
+      class="sidebar-link cursor-pointer select-none text-left font-toggle-action"
+      title="Toggle font"
+    >
+      <span class="font-label inline-block">Serif</span>
+    </button>
   </nav>
 </aside>
 
@@ -58,6 +65,13 @@ const path = Astro.url.pathname;
       title="Toggle theme"
     >
       <span class="theme-label inline-block">Dark</span>
+    </button>
+    <button
+      id="mobile-font-toggle"
+      class="sidebar-link cursor-pointer select-none text-left font-toggle-action"
+      title="Toggle font"
+    >
+      <span class="font-label inline-block">Serif</span>
     </button>
   </nav>
 </header>
@@ -104,6 +118,45 @@ const path = Astro.url.pathname;
     });
 
     updateThemeLabels();
+
+    // Font toggle handlers (Sans / Serif)
+    const fontLabels = document.querySelectorAll(".font-label");
+    const fontToggleButtons = document.querySelectorAll(".font-toggle-action");
+
+    function isSerifMode(): boolean {
+      return document.documentElement.classList.contains("serif");
+    }
+
+    function updateFontLabels() {
+      const isSerif = isSerifMode();
+      fontLabels.forEach((lbl) => {
+        lbl.textContent = isSerif ? "Sans" : "Serif";
+      });
+    }
+
+    const toggleFont = (e?: Event) => {
+      if (e) e.preventDefault();
+      const html = document.documentElement;
+      const willBeSerif = !html.classList.contains("serif");
+
+      if (willBeSerif) {
+        html.classList.add("serif");
+      } else {
+        html.classList.remove("serif");
+      }
+
+      try {
+        localStorage.setItem("font", willBeSerif ? "serif" : "sans");
+      } catch (err) {}
+
+      updateFontLabels();
+    };
+
+    fontToggleButtons.forEach((btn) => {
+      (btn as HTMLElement).onclick = toggleFont;
+    });
+
+    updateFontLabels();
   }
 
   document.addEventListener("astro:page-load", initHeader);
