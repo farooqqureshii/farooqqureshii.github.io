@@ -62,7 +62,7 @@ export const projects: Project[] = [
     ],
     links: [
       {
-        label: "MakerRepo",
+        label: "Website",
         url: "https://makerepo.com/farooqqureshi/2841.ctrl-syncs-one-handed-switch-controller-",
       },
     ],
