@@ -53,6 +53,41 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "adaptive-switch-controller",
+    title: "One-Handed Adaptive Switch Controller",
+    description:
+      "3D-printed clip-on attachment for playing the Nintendo Switch Pro Controller one-handed.",
+    writeup: [
+      "A 3D-printed clip-on attachment for the Nintendo Switch Pro Controller that reroutes the shoulder triggers so you can play one-handed without modifying the controller.",
+    ],
+    links: [
+      {
+        label: "MakerRepo",
+        url: "https://makerepo.com/farooqqureshi/2841.ctrl-syncs-one-handed-switch-controller-",
+      },
+    ],
+    media: [
+      {
+        type: "image",
+        src: "/static/adaptive-controller-cad.jpg",
+        alt: "CAD assembly of the one-handed Switch Pro Controller attachment",
+        caption: "CAD assembly fitted to the Switch Pro Controller",
+      },
+      {
+        type: "image",
+        src: "/static/adaptive-controller-exploded.jpg",
+        alt: "Exploded CAD view of the clip-on shell and trigger linkage",
+        caption: "Exploded CAD view of the two-piece clip and linkage",
+      },
+      {
+        type: "image",
+        src: "/static/adaptive-controller-print.jpg",
+        alt: "3D-printed one-handed Switch controller attachment",
+        caption: "3D-printed prototype with trigger linkage",
+      },
+    ],
+  },
+  {
     slug: "antenna-servo-pid",
     title: "PID Position Controller for Antenna Servo",
     description:
