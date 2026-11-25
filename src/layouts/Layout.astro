@@ -39,17 +39,20 @@ const imageURL = new URL(image, Astro.site || Astro.url);
     />
 
     <script is:inline>
-      function syncSystemTheme() {
-        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', isDark);
+      function syncPalette() {
+        document.documentElement.classList.remove('dark');
+        try {
+          const palette = localStorage.getItem('palette');
+          if (palette) {
+            document.documentElement.setAttribute('data-palette', palette);
+          } else {
+            document.documentElement.removeAttribute('data-palette');
+          }
+        } catch (err) {}
       }
-      syncSystemTheme();
-      if (!window.__themeListenerAdded) {
-        window.__themeListenerAdded = true;
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncSystemTheme);
-      }
-      document.addEventListener('astro:after-swap', syncSystemTheme);
-      document.addEventListener('astro:page-load', syncSystemTheme);
+      syncPalette();
+      document.addEventListener('astro:after-swap', syncPalette);
+      document.addEventListener('astro:page-load', syncPalette);
     </script>
 
     <link rel="canonical" href={canonicalURL} />

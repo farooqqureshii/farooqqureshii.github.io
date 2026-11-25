@@ -23,6 +23,14 @@ const path = Astro.url.pathname;
       href="/other"
       class={`sidebar-link ${path.startsWith('/other') || path.startsWith('/bookmarks') ? 'active' : ''}`}
     >Other</a>
+    <button
+      type="button"
+      class="palette-btn"
+      aria-label="Cycle color palette"
+      title="Switch palette"
+    >
+      <span class="palette-square" aria-hidden="true"></span>
+    </button>
   </nav>
 </aside>
 
@@ -45,5 +53,89 @@ const path = Astro.url.pathname;
       href="/other"
       class={`sidebar-link ${path.startsWith('/other') || path.startsWith('/bookmarks') ? 'active' : ''}`}
     >Other</a>
+    <button
+      type="button"
+      class="palette-btn"
+      aria-label="Cycle color palette"
+      title="Switch palette"
+    >
+      <span class="palette-square" aria-hidden="true"></span>
+    </button>
   </nav>
 </header>
+
+<style>
+  .palette-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 24.75px;
+    width: fit-content;
+    padding: 0 4px 0 0;
+    margin: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .mobile-header .palette-btn {
+    padding: 0 2px;
+  }
+
+  .palette-square {
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+    background-color: var(--text-muted);
+    transition:
+      transform 150ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 150ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .palette-btn:hover .palette-square {
+      background-color: var(--text-color);
+      transform: scale(1.2);
+    }
+  }
+
+  .palette-btn:active .palette-square {
+    transform: scale(0.9);
+  }
+</style>
+
+<script>
+  const PALETTES = ["", "cobalt", "forest", "pink", "marigold", "tangerine"] as const;
+
+  function initPaletteCycler() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>(".palette-btn");
+
+    const cyclePalette = (e: Event) => {
+      e.preventDefault();
+      const html = document.documentElement;
+      const current = html.getAttribute("data-palette") || "";
+      const currentIndex = PALETTES.indexOf(current as (typeof PALETTES)[number]);
+      const next = PALETTES[(currentIndex + 1) % PALETTES.length];
+
+      if (next) {
+        html.setAttribute("data-palette", next);
+        try {
+          localStorage.setItem("palette", next);
+        } catch {}
+      } else {
+        html.removeAttribute("data-palette");
+        try {
+          localStorage.removeItem("palette");
+        } catch {}
+      }
+    };
+
+    buttons.forEach((btn) => {
+      btn.onclick = cyclePalette;
+    });
+  }
+
+  document.addEventListener("astro:page-load", initPaletteCycler);
+  initPaletteCycler();
+</script>

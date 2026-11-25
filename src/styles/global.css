@@ -68,6 +68,67 @@
     --selection-fg: #ffffff;
   }
 
+  /* Vibrant 2-color palettes (cycled via navbar dot) */
+  html[data-palette="cobalt"] {
+    --bg-color: #1648ff;
+    --text-color: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.68);
+    --border-color: rgba(255, 255, 255, 0.22);
+    --card-bg: rgba(255, 255, 255, 0.06);
+    --underline-color: rgba(255, 255, 255, 0.55);
+    --underline-color-hover: #ffffff;
+    --selection-bg: #ffffff;
+    --selection-fg: #1648ff;
+  }
+
+  html[data-palette="forest"] {
+    --bg-color: #0d3b2e;
+    --text-color: #f4f1e8;
+    --text-muted: rgba(244, 241, 232, 0.62);
+    --border-color: rgba(244, 241, 232, 0.18);
+    --card-bg: rgba(244, 241, 232, 0.05);
+    --underline-color: rgba(244, 241, 232, 0.5);
+    --underline-color-hover: #f4f1e8;
+    --selection-bg: #f4f1e8;
+    --selection-fg: #0d3b2e;
+  }
+
+  html[data-palette="pink"] {
+    --bg-color: #f7a8c8;
+    --text-color: #111111;
+    --text-muted: rgba(17, 17, 17, 0.58);
+    --border-color: rgba(17, 17, 17, 0.18);
+    --card-bg: rgba(17, 17, 17, 0.05);
+    --underline-color: rgba(17, 17, 17, 0.45);
+    --underline-color-hover: #111111;
+    --selection-bg: #111111;
+    --selection-fg: #f7a8c8;
+  }
+
+  html[data-palette="marigold"] {
+    --bg-color: #f5c518;
+    --text-color: #111111;
+    --text-muted: rgba(17, 17, 17, 0.58);
+    --border-color: rgba(17, 17, 17, 0.18);
+    --card-bg: rgba(17, 17, 17, 0.05);
+    --underline-color: rgba(17, 17, 17, 0.45);
+    --underline-color-hover: #111111;
+    --selection-bg: #111111;
+    --selection-fg: #f5c518;
+  }
+
+  html[data-palette="tangerine"] {
+    --bg-color: #e84a1b;
+    --text-color: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.72);
+    --border-color: rgba(255, 255, 255, 0.24);
+    --card-bg: rgba(255, 255, 255, 0.07);
+    --underline-color: rgba(255, 255, 255, 0.58);
+    --underline-color-hover: #ffffff;
+    --selection-bg: #ffffff;
+    --selection-fg: #e84a1b;
+  }
+
   html {
     font-size: 15px !important;
     overflow-y: scroll;
