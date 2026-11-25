@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..600;1,14..32,300..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..500;1,8..60,400..500&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital@0;1&family=Nanum+Pen+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..500;1,8..60,400..500&family=Geist+Mono:wght@100..900&family=Nanum+Pen+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -27,11 +27,11 @@
     --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-serif: "Source Serif 4", "Charter", Georgia, serif;
     --font-mono: "Geist Mono", monospace;
-    --font-active: var(--font-sans);
-    --font-size-base: 15px;
-    --line-height-base: 1.65;
-    --letter-spacing-base: -0.011em;
-    --font-features-base: "cv02", "cv03", "cv04", "cv11";
+    --font-active: var(--font-serif);
+    --font-size-base: 16px;
+    --line-height-base: 1.546875;
+    --letter-spacing-base: -0.005em;
+    --font-features-base: normal;
 
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -66,15 +66,6 @@
     /* Subtle Neutral Selection */
     --selection-bg: #262626;
     --selection-fg: #ffffff;
-  }
-
-  /* Optically matched Serif mode: 16px * 1.546875 = 24.75px line-box (matches Inter 15px * 1.65) */
-  html.serif {
-    --font-active: var(--font-serif);
-    --font-size-base: 16px;
-    --line-height-base: 1.546875;
-    --letter-spacing-base: -0.005em;
-    --font-features-base: normal;
   }
 
   html {

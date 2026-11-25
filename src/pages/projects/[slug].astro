@@ -1,0 +1,99 @@
+---
+import { projects, type Project } from "../../data/projects";
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return projects
+    .filter((project) => !project.href)
+    .map((project) => ({
+      params: { slug: project.slug },
+      props: { project },
+    }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const currentIndex = projects.findIndex((p) => p.slug === project.slug);
+const nextProject =
+  currentIndex >= 0 && currentIndex < projects.length - 1
+    ? projects[currentIndex + 1]
+    : null;
+---
+
+<Layout
+  title={`Farooq Q. | ${project.title}`}
+  description={project.description}
+>
+  <main>
+    <h1 class="mb-1">{project.title}</h1>
+
+    <p class="mb-5">
+      {project.links.map((item, idx) => (<><a href={item.url} target={item.isInternal ? undefined : "_blank"} rel={item.isInternal ? undefined : "noopener"} class="project-link">{item.label}</a>{idx < project.links.length - 1 && ", "}</>))}
+    </p>
+
+    {
+      project.writeup && project.writeup.length > 0 ? (
+        <div class="space-y-4 mb-8">
+          {project.writeup.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      ) : (
+        <p class="mb-8">{project.description}</p>
+      )
+    }
+
+    {
+      project.media && project.media.length > 0 && (
+        <div class="space-y-8">
+          {project.media.map((item) => (
+            <figure class="m-0 flex flex-col items-center space-y-2">
+              {item.type === "video" ? (
+                <video
+                  src={item.src}
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  controls
+                  class="w-full rounded border border-[var(--border-color)]"
+                />
+              ) : (
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  loading="lazy"
+                  class={`w-full rounded border border-[var(--border-color)] ${item.lightSurface ? "bg-white p-2" : ""}`}
+                />
+              )}
+              {item.caption && (
+                <figcaption class="secondary-text text-center">
+                  {item.caption}
+                </figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="mt-12 flex items-center justify-between gap-4">
+      <a href="/projects" class="list-link">← All Projects</a>
+      {
+        nextProject && (
+          <a
+            href={nextProject.href ?? `/projects/${nextProject.slug}`}
+            class="list-link text-right"
+          >
+            Next: {nextProject.title} →
+          </a>
+        )
+      }
+    </div>
+  </main>
+</Layout>

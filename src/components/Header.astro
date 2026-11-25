@@ -9,7 +9,7 @@ const path = Astro.url.pathname;
     <a href="/" class={`sidebar-brand ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
   </div>
 
-  <!-- Primary Page Links & Theme Toggle -->
+  <!-- Primary Page Links -->
   <nav class="flex flex-col gap-y-1">
     <a
       href="/projects"
@@ -23,20 +23,6 @@ const path = Astro.url.pathname;
       href="/other"
       class={`sidebar-link ${path.startsWith('/other') || path.startsWith('/bookmarks') ? 'active' : ''}`}
     >Other</a>
-    <button
-      id="sidebar-theme-toggle"
-      class="sidebar-link cursor-pointer select-none text-left theme-toggle-action"
-      title="Toggle theme"
-    >
-      <span class="theme-label inline-block">Dark</span>
-    </button>
-    <button
-      id="sidebar-font-toggle"
-      class="sidebar-link cursor-pointer select-none text-left font-toggle-action"
-      title="Toggle font"
-    >
-      <span class="font-label inline-block">Serif</span>
-    </button>
   </nav>
 </aside>
 
@@ -46,7 +32,7 @@ const path = Astro.url.pathname;
     <a href="/" class={`sidebar-brand ${path === '/' ? 'active' : ''}`}>Farooq Qureshi</a>
   </div>
 
-  <nav class="flex items-center gap-3.5 text-[15px]" aria-label="Mobile Navigation">
+  <nav class="flex items-center gap-3.5" aria-label="Mobile Navigation">
     <a
       href="/projects"
       class={`sidebar-link ${path.startsWith('/projects') ? 'active' : ''}`}
@@ -59,106 +45,5 @@ const path = Astro.url.pathname;
       href="/other"
       class={`sidebar-link ${path.startsWith('/other') || path.startsWith('/bookmarks') ? 'active' : ''}`}
     >Other</a>
-    <button
-      id="mobile-theme-toggle"
-      class="sidebar-link cursor-pointer select-none text-left theme-toggle-action"
-      title="Toggle theme"
-    >
-      <span class="theme-label inline-block">Dark</span>
-    </button>
-    <button
-      id="mobile-font-toggle"
-      class="sidebar-link cursor-pointer select-none text-left font-toggle-action"
-      title="Toggle font"
-    >
-      <span class="font-label inline-block">Serif</span>
-    </button>
   </nav>
 </header>
-
-<script>
-  function initHeader() {
-    // Theme toggle handlers (strictly Light / Dark)
-    const themeLabels = document.querySelectorAll(".theme-label");
-    const toggleButtons = document.querySelectorAll(".theme-toggle-action");
-
-    function isDarkMode(): boolean {
-      return document.documentElement.classList.contains("dark");
-    }
-
-    function updateThemeLabels() {
-      const isDark = isDarkMode();
-      themeLabels.forEach((lbl) => {
-        lbl.textContent = isDark ? "Light" : "Dark";
-      });
-    }
-
-    const toggleTheme = (e?: Event) => {
-      if (e) e.preventDefault();
-      const html = document.documentElement;
-      const willBeDark = !html.classList.contains("dark");
-      
-      html.classList.remove("blue", "pink", "green");
-
-      if (willBeDark) {
-        html.classList.add("dark");
-      } else {
-        html.classList.remove("dark");
-      }
-
-      try {
-        localStorage.setItem("theme", willBeDark ? "dark" : "light");
-      } catch (err) {}
-
-      updateThemeLabels();
-    };
-
-    toggleButtons.forEach((btn) => {
-      (btn as HTMLElement).onclick = toggleTheme;
-    });
-
-    updateThemeLabels();
-
-    // Font toggle handlers (Sans / Serif)
-    const fontLabels = document.querySelectorAll(".font-label");
-    const fontToggleButtons = document.querySelectorAll(".font-toggle-action");
-
-    function isSerifMode(): boolean {
-      return document.documentElement.classList.contains("serif");
-    }
-
-    function updateFontLabels() {
-      const isSerif = isSerifMode();
-      fontLabels.forEach((lbl) => {
-        lbl.textContent = isSerif ? "Sans" : "Serif";
-      });
-    }
-
-    const toggleFont = (e?: Event) => {
-      if (e) e.preventDefault();
-      const html = document.documentElement;
-      const willBeSerif = !html.classList.contains("serif");
-
-      if (willBeSerif) {
-        html.classList.add("serif");
-      } else {
-        html.classList.remove("serif");
-      }
-
-      try {
-        localStorage.setItem("font", willBeSerif ? "serif" : "sans");
-      } catch (err) {}
-
-      updateFontLabels();
-    };
-
-    fontToggleButtons.forEach((btn) => {
-      (btn as HTMLElement).onclick = toggleFont;
-    });
-
-    updateFontLabels();
-  }
-
-  document.addEventListener("astro:page-load", initHeader);
-  initHeader();
-</script>

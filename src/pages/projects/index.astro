@@ -1,108 +1,24 @@
 ---
 import { SITE_DESCRIPTION } from "../../consts";
+import { projects } from "../../data/projects";
 import Layout from "../../layouts/Layout.astro";
-
-interface ProjectLink {
-  label: string;
-  url: string;
-  isInternal?: boolean;
-}
-
-interface Project {
-  title: string;
-  description: string;
-  links: ProjectLink[];
-}
-
-const projects: Project[] = [
-  {
-    title: "2.4 GHz Inductorless CMOS RF Receiver Front-End",
-    description:
-      "Shunt-feedback cascode LNA and Gilbert-cell mixer in 180 nm CMOS using ngspice",
-    links: [
-      { label: "Report", url: "/reports/cmos-rf-rx-report.pdf" },
-      { label: "Schematic", url: "/reports/cmos-rf-rx-schematic.svg" },
-      { label: "Code", url: "https://github.com/farooqqureshii/cmos-rf-rx" },
-    ],
-  },
-  {
-    title: "PID Position Controller for Antenna Servo",
-    description:
-      "Position controller tuning and disturbance rejection in MATLAB and Simulink",
-    links: [
-      { label: "Report", url: "/reports/antenna-positioner-pid-report.pdf" },
-      { label: "Code", url: "https://github.com/farooqqureshii/pid-antenna-positioner" },
-    ],
-  },
-  {
-    title: "Digital Filter Design for Interference Rejection",
-    description:
-      "Filter design for interference rejection using Python and SciPy",
-    links: [
-      { label: "Report", url: "/reports/dsp-filter-design-report.pdf" },
-      { label: "Code", url: "https://github.com/farooqqureshii/dsp-filter" },
-    ],
-  },
-  {
-    title: "uOttaHack",
-    description: "Director leading the team behind Ottawa's largest tech event",
-    links: [
-      { label: "Website", url: "https://www.uottahack.ca/" },
-      { label: "Recap", url: "https://www.youtube.com/watch?v=RCi04EDupSw" },
-    ],
-  },
-  {
-    title: "uoee.rocks",
-    description: "Course visualizer and search for uOttawa EE students",
-    links: [
-      { label: "Website", url: "https://uoee-rocks.vercel.app/" },
-      { label: "Code", url: "https://github.com/farooqqureshii/uoee.rocks" },
-    ],
-  },
-  {
-    title: "What's Up with Serifs on Screens?",
-    description:
-      "Physics, mathematics, and rasterization engines of digital type",
-    links: [
-      { label: "Essay", url: "/projects/why-serifs-look-like-that-on-screens", isInternal: true },
-    ],
-  },
-];
 ---
 
 <Layout title="Farooq Q. | Projects" description={SITE_DESCRIPTION}>
-  <div class="space-y-6 text-[var(--text-color)]">
-    {
-      projects.map((project) => (
-        <div class="project-item space-y-0.5 text-[15px] leading-[1.65]">
-          <div class="project-title text-[var(--text-color)]">
-            {project.title}
+  <main>
+    <div class="flex flex-col gap-y-1">
+      {
+        projects.map((project) => (
+          <div>
+            <a
+              href={project.href ?? `/projects/${project.slug}`}
+              class="writing-link"
+            >
+              {project.title}
+            </a>
           </div>
-          <div class="project-desc text-[var(--text-color)]">
-            {project.description}
-          </div>
-          <div class="project-links text-[var(--text-color)]">
-            Links:{" "}
-            {project.links.map((item, idx) => (
-              <>
-                {idx > 0 && ", "}
-                <a
-                  href={item.url}
-                  target={item.isInternal ? undefined : "_blank"}
-                  rel={item.isInternal ? undefined : "noopener"}
-                  class="project-link"
-                >
-                  {item.label}
-                </a>
-              </>
-            ))}
-          </div>
-        </div>
-      ))
-    }
-
-    <p class="pt-2 text-[15px] leading-[1.65] text-[var(--text-color)]">
-      More on <a href="https://github.com/farooqqureshii?tab=repositories" target="_blank" rel="noopener" class="project-link">GitHub</a>.
-    </p>
-  </div>
+        ))
+      }
+    </div>
+  </main>
 </Layout>
